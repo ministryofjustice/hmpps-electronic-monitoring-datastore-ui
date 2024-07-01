@@ -1,0 +1,83 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Home" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% block content %}
+
+  <h1>Search for case details</h1>
+  
+  <p>You can search by subject ID, name, date of birth and alias</p>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form action="/form-handler" method="post" novalidate>
+
+        {{ govukInput({
+          label: {
+            text: "Subject ID",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "subject-id",
+          name: "subjectId"
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "First name",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "first-name",
+          name: "firstName"
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Last name",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "last-name",
+          name: "lastName"
+        }) }}
+
+        {{ govukDateInput({
+          id: "date-of-birth",
+          namePrefix: "date-of-birth",
+          fieldset: {
+            legend: {
+              text: "Date of birth",
+              classes: "govuk-fieldset__legend--s"
+            }
+          }
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Alias",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "alias",
+          name: "alias"
+        }) }}
+
+
+        {{ govukButton({
+          text: "Search"
+          
+        }) }}
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
