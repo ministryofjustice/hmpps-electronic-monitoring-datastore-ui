@@ -1,0 +1,172 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = applicationName + " - Search for case details" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% set mockValidationData = {
+  subjectId: {
+    value: "123456",
+    errorMessage: null
+  },
+  firstName: {
+    value: null,
+    errorMessage: "Error message"
+  },
+  lastName: {
+    value: null,
+    errorMessage: null
+  },
+  dateOfBirth: {
+    errorMessage: "Please enter a date in the past",
+    day: {
+      value: "12",
+      error: false
+    },
+    month: {
+      value: "12",
+      error: false
+    },
+    year: {
+      value: "3000",
+      error: true
+    }
+  },
+  alias: {
+    value: null,
+    errorMessage: null
+  }
+} %}
+
+{% block content %}
+
+  {{ govukWarningText({
+    text: "This service gives you access to all case data that was held by Capita and G4S from [date] to [date]",
+    iconFallbackText: "Warning",
+    classes: "service-information"
+  }) }}
+
+  <h1>Search for case details</h1>
+  
+  <p>You can search by subject ID, name, date of birth and alias</p>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <form id="case-search-form" action="/form-handler" method="post" novalidate>
+
+        {{ govukInput({
+          label: {
+            text: "Subject ID",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "subject-id",
+          name: "subjectId",
+          value: mockValidationData.subjectId.value,
+          errorMessage: (
+            {
+              text: mockValidationData.subjectId.errorMessage
+            }
+            if mockValidationData.subjectId.errorMessage
+          )
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "First name",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "first-name",
+          name: "firstName",
+          value: mockValidationData.firstName.value,
+          errorMessage: (
+            {
+              text: mockValidationData.firstName.errorMessage
+            }
+            if mockValidationData.firstName.errorMessage
+          )
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Last name",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "last-name",
+          name: "lastName",
+          value: mockValidationData.lastName.value,
+          errorMessage: (
+            {
+              text: mockValidationData.lastName.errorMessage
+            }
+            if mockValidationData.lastName.errorMessage
+          )
+        }) }}
+
+        {{ govukDateInput({
+          id: "date-of-birth",
+          namePrefix: "date-of-birth",
+          fieldset: {
+            legend: {
+              text: "Date of birth",
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          errorMessage: (
+            {
+              text: mockValidationData.dateOfBirth.errorMessage
+            }
+            if mockValidationData.dateOfBirth.errorMessage
+          ),
+          items: [
+            {
+              classes: 'govuk-input--width-2' + (' govuk-input--error' if mockValidationData.dateOfBirth.day.error else ''),
+              name: "day",
+              value: mockValidationData.dateOfBirth.day.value
+            },
+            {
+              classes: 'govuk-input--width-2' + (' govuk-input--error' if mockValidationData.dateOfBirth.month.error else ''),
+              name: "month",
+              value: mockValidationData.dateOfBirth.month.value
+            },
+            {
+              classes: 'govuk-input--width-4' + (' govuk-input--error' if mockValidationData.dateOfBirth.year.error else ''),
+              name: "year",
+              value: mockValidationData.dateOfBirth.year.value
+            }
+          ]
+        }) }}
+
+        {{ govukInput({
+          label: {
+            text: "Alias",
+            classes: "govuk-label--s"
+          },
+          classes: "govuk-input--width-20",
+          id: "alias",
+          name: "alias",
+          value: mockValidationData.alias.value,
+          errorMessage: (
+            {
+              text: mockValidationData.alias.errorMessage
+            }
+            if mockValidationData.alias.errorMessage
+            else mockValidationData.alias.errorMessage
+          )
+        }) }}
+        {{ govukButton({
+          text: "Search"
+        }) }}
+
+      </form>
+    </div>
+  </div>
+
+{% endblock %}
