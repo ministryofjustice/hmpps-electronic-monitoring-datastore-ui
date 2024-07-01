@@ -8,6 +8,23 @@ context('Search', () => {
     cy.visit('/search')
   })
 
+  describe('Service information banner', () => {
+    it('Service information banner renders', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.serviceInformation().should('be.visible')
+    })
+
+    it('Service information banner text is correct', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage
+        .serviceInformation()
+        .should(
+          'contain',
+          'This service gives you access to all case data that was held by Capita and G4S from [date] to [date]',
+        )
+    })
+  })
+
   describe('Subject ID field', () => {
     it('Subject ID field renders', () => {
       const searchPage = Page.verifyOnPage(SearchPage)

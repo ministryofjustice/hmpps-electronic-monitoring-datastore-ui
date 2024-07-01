@@ -5,6 +5,10 @@ export default class SearchPage extends Page {
     super('Search for case details')
   }
 
+  serviceInformation = (): PageElement => cy.get('.service-information')
+
+  serviceInformationText = (): PageElement => cy.get('.service-information').children('.govuk-warning-text__text')
+
   subjectIdField = (): PageElement => cy.get('#subject-id')
 
   subjectIdLabel = (): PageElement => cy.get('#subject-id').prev('label')
