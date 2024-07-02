@@ -1,10 +1,10 @@
 context('Healthcheck', () => {
   context('All healthy', () => {
-    beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubAuthPing')
-      cy.task('stubTokenVerificationPing')
-    })
+    // beforeEach(() => {
+    //   cy.task('reset')
+    //   cy.task('stubAuthPing')
+    //   cy.task('stubTokenVerificationPing')
+    // })
 
     it('Health check page is visible and UP', () => {
       cy.request('/health').its('body.status').should('equal', 'UP')
