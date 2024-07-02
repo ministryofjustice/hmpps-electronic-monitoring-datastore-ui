@@ -67,7 +67,7 @@ const redirect = () =>
       status: 200,
       headers: {
         'Content-Type': 'text/html',
-        Location: 'http://localhost:3007/sign-in/callback?code=codexxxx&state=stateyyyy',
+        Location: 'http://localhost:3000/sign-in/callback?code=codexxxx&state=stateyyyy',
       },
       body: '<html><body>Sign in page<h1>Sign in</h1></body></html>',
     },
@@ -113,7 +113,7 @@ const token = (userToken: UserToken) =>
       status: 200,
       headers: {
         'Content-Type': 'application/json;charset=UTF-8',
-        Location: 'http://localhost:3007/sign-in/callback?code=codexxxx&state=stateyyyy',
+        Location: 'http://localhost:3000/sign-in/callback?code=codexxxx&state=stateyyyy',
       },
       jsonBody: {
         access_token: createToken(userToken),
