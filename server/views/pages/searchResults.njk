@@ -7,6 +7,96 @@
 {% set pageTitle = applicationName + " - Search results" %}
 {% set mainClasses = "app-container govuk-body" %}
 
+{% set mockRecords = [
+  {
+    subject_id: 1000000,
+    name: "Amy Smith",
+    alias: null,
+    date_of_birth: "01-01-1970",
+    order_start_date: "08-02-2019",
+    order_details_url: "#"
+  },{
+    subject_id: 2000000,
+    name: "Bill Smith",
+    alias: "Plato",
+    date_of_birth: "01-02-1971",
+    order_start_date: "03-11-2020",
+    order_details_url: "#"
+  },
+  {
+    subject_id: 3000000,
+    name: "Claire Smith",
+    alias: null,
+    date_of_birth: "09-04-1962",
+    order_start_date: "05-08-2001",
+    order_details_url: "#"
+  },
+  {
+    subject_id: 8000000,
+    name: "Daniel Smith",
+    alias: "Aristotle",
+    date_of_birth: "12-11-1978",
+    order_start_date: "18-02-2012",
+    order_details_url: "#"
+  },
+  {
+    subject_id: 30000,
+    name: "Emma Smith",
+    alias: "Socrates",
+    date_of_birth: "03-03-2001",
+    order_start_date: "24-01-2017",
+    order_details_url: "#"
+  },
+  {
+    subject_id: 4000000,
+    name: "Fred Smith",
+    alias: null,
+    date_of_birth: "08-10-1980",
+    order_start_date: "01-05-2021",
+    order_details_url: "#"
+  }
+]
+%}
+
+{% set rows = [] %}
+{% for record in mockRecords %}
+  {% set rows = rows.concat(
+    [[
+      {
+        attributes: {
+            "data-sort-value": record.subject_id
+        },
+        html: '
+          <a href="' + record.order_details_url + '">
+            '+ record.subject_id +'
+          </a>
+        '
+      },
+      {
+        attributes: {
+          "data-sort-value": record.name
+        },
+        html:
+        ' <p>' + record.name + '</p>'
+        + (('Alias: ' + record.alias) if record.alias else '')
+      },
+      {
+        text: record.date_of_birth,
+        attributes: {
+            "data-sort-value": record.date_of_birth.split('-')[2] ~ record.date_of_birth.split[1] ~ record.date_of_birth.split[0]
+        }
+      },
+      {
+        text: record.order_start_date,
+        attributes: {
+            "data-sort-value": record.order_start_date.split('-')[2] ~ record.order_start_date.split[1] ~ record.order_start_date.split[0]
+        },
+        classes: 'govuk-table__cell--numeric'
+      }
+    ]]
+  ) %}
+{% endfor %}
+
 {% block content %}
 
   {{ govukWarningText({
@@ -28,180 +118,32 @@
   },
   head: [
     {
-      text: "Name",
+      text: "Subject ID",
       attributes: {
         "aria-sort": "ascending"
       }
     },
     {
-      text: "Elevation",
+      text: "Name",
       attributes: {
         "aria-sort": "none"
       }
     },
     {
-      text: "Continent",
+      text: "Date of birth",
       attributes: {
         "aria-sort": "none"
       }
     },
     {
-      text: "First summit",
+      text: "Order start date",
       attributes: {
         "aria-sort": "none"
       },
       format: "numeric"
     }
   ],
-  rows: [
-    [
-      {
-        text: "Aconcagua"
-      },
-      {
-        text: "6,961 meters",
-        attributes: {
-          "data-sort-value": "6961"
-        }
-      },
-      {
-        text: "South America"
-      },
-      {
-        text: "1897",
-        format: "numeric",
-        attributes: {
-          "data-sort-value": "1897"
-        }
-      }
-    ],
-    [
-      {
-        text: "Denali"
-      },
-      {
-        text: "6,194 meters",
-        attributes: {
-          "data-sort-value": "6194"
-        }
-      },
-      {
-        text: "North America"
-      },
-      {
-        text: "1913",
-        format: "numeric",
-        attributes: {
-          "data-sort-value": "1913"
-        }
-      }
-    ],
-    [
-      {
-        text: "Elbrus"
-      },
-      {
-        text: "5,642 meters",
-        attributes: {
-          "data-sort-value": "5642"
-        }
-      },
-      {
-        text: "Europe"
-      },
-      {
-        text: "1874",
-        format: "numeric",
-        attributes: {
-          "data-sort-value": "1874"
-        }
-      }
-    ],
-    [
-      {
-        text: "Everest"
-      },
-      {
-        text: "8,850 meters",
-        attributes: {
-          "data-sort-value": "8850"
-        }
-      },
-      {
-        text: "Asia"
-      },
-      {
-        text: "1953",
-        format: "numeric",
-        attributes: {
-          "data-sort-value": "1953"
-        }
-      }
-    ],
-    [
-      {
-        text: "Kilimanjaro"
-      },
-      {
-        text: "5,895 meters",
-        attributes: {
-          "data-sort-value": "5895"
-        }
-      },
-      {
-        text: "Africa"
-      },
-      {
-        text: "1889",
-        format: "numeric",
-        attributes: {
-          "data-sort-value": "1889"
-        }
-      }
-    ],
-    [
-      {
-        text: "Puncak Jaya"
-      },
-      {
-        text: "4,884 meters",
-        attributes: {
-          "data-sort-value": "4884"
-        }
-      },
-      {
-        text: "Australia"
-      },
-      {
-        text: "1962",
-        format: "numeric",
-        attributes: {
-          "data-sort-value": "1962"
-        }
-      }
-    ],
-    [
-      {
-        text: "Vinson"
-      },
-      {
-        text: "4,897 meters",
-        attributes: {
-          "data-sort-value": "4897"
-        }
-      },
-      {
-        text: "Antarctica"
-      },
-      {
-        text: "1966",
-        format: "numeric",
-        attributes: {
-          "data-sort-value": "1966"
-        }
-      }
-    ]
-  ]
+  rows: rows
 }) }}
 
 {% endblock %}
