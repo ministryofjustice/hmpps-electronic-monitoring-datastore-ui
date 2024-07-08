@@ -1,0 +1,179 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+
+{% set pageTitle = applicationName + " - Order details" %}
+{% set mainClasses = "app-container govuk-body" %}
+
+{% set mockData = {
+  order_details: {
+    legacy_subject_id: "1234567",
+    name: "John Smith",
+    alias: "Zeno",
+    date_of_birth: "01-02-1980",
+    postcode: "ABC 123",
+    address_1: "1 Primary Street",
+    address_2: "Sutton",
+    address_3: "London",
+    tag_type: "Alcohol tag",
+    start_date: "01-02-2012",
+    end_date: "03-04-2013"
+  },
+  subject_history_report: {
+    report_url: "#", 
+    name: "1234567",
+    created_on: "01-02-2020",
+    time: "0900"
+  },
+  urls: {
+    back: "#",
+    order_details: "#",
+    visits_and_tasks: "#",
+    event_hsitory: "#",
+    equipment_details: "#",
+    curfew_hours: "#",
+    curfew_violations: "#",
+    contact_history: "#",
+    suspensions: "#"
+  },
+  documents: [
+    {
+      name: "Order details",
+      url: "#",
+      created_on: "01-02-2020",
+      time: "0900",
+      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+    },
+    {
+      name: "Document 2",
+      url: "#",
+      created_on: "01-02-2020",
+      time: "0900",
+      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+    },
+    {
+      name: "Document 3",
+      url: "#",
+      created_on: "01-02-2020",
+      time: "0900",
+      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+    },
+    {
+      name: "Document 4",
+      url: "#",
+      created_on: "01-02-2020",
+      time: "0900",
+      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+    },
+    {
+      name: "Document 5",
+      url: "#",
+      created_on: "01-02-2020",
+      time: "0900",
+      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+    }
+  ]
+} %}
+
+{% set orderDetails = mockData.order_details %}
+
+{% block content %}
+
+  {{ govukBackLink({
+    text: "refine search",
+    href: back_url
+  }) }}
+
+  {{ govukWarningText({
+    text: "This service gives you access to all case data that was held by Capita and G4S from [date] to [date]",
+    iconFallbackText: "Warning",
+    classes: "service-information"
+  }) }}
+
+  {{ govukTable({
+    caption: "Key order details",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: true,
+    rows: [
+      [
+        {
+          text: "Legacy subject ID"
+        },
+        {
+          text: orderDetails.legacy_subject_id
+        }
+      ],
+      [
+        {
+          text: "Name"
+        },
+        {
+          text: orderDetails.name
+        }
+      ],
+      [
+        {
+          text: "Alias"
+        },
+        {
+          text: orderDetails.alias
+        }
+      ],
+      [
+        {
+          text: "Date of birth"
+        },
+        {
+          text: orderDetails.date_of_birth
+        }
+      ],
+      [
+        {
+          text: "Postcode"
+        },
+        {
+          text: orderDetails.postcode
+        }
+      ],
+      [
+        {
+          text: "Address"
+        },
+        {
+          html: ' <span>'
+            + orderDetails.address_1
+            + (('<br/>' + orderDetails.address_2) if orderDetails.address_2 else '')
+            + (('<br/>' +  orderDetails.address_3) if orderDetails.address_3 else '')
+          + '</span>'
+        }
+      ],
+      [
+        {
+          text: "Tag type"
+        },
+        {
+          text: orderDetails.tag_type
+        }
+      ],
+      [
+        {
+          text: "Start date"
+        },
+        {
+          text: orderDetails.start_date
+        }
+      ],
+      [
+        {
+          text: "End date"
+        },
+        {
+          text: orderDetails.end_date
+        }
+      ]
+    ]
+  }) }}
+
+{% endblock %}
