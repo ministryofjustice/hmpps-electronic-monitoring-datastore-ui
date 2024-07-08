@@ -179,7 +179,7 @@
     ]
   }) }}
 
- <div class="govuk-button-group ems-ui-button-grid">
+  <div class="govuk-button-group ems-ui-button-grid">
     {{ govukButton({
       text: "Order details",
       href: urls.order_details,
@@ -228,5 +228,39 @@
       classes: "govuk-button--secondary ems-ui-button-grid__button"
     }) }}
   </div>
+
+  {{ govukTable({
+    caption: "Subject history report",
+    captionClasses: "govuk-table__caption--m",
+    firstCellIsHeader: false,
+    head: [
+      {
+        text: "Name"
+      },
+      {
+        text: "Created on"
+      },
+      {
+        text: "Time"
+      }
+    ],
+    rows: [
+      [
+        {
+          html: '
+            <a href="' + subjectHistory.report_url + '">
+              '+ subjectHistory.name +'
+            </a>
+          ' 
+        },
+        {
+          text: subjectHistory.created_on
+        },
+        {
+          text: subjectHistory.time
+        }
+      ]
+    ]
+  }) }}
 
 {% endblock %}
