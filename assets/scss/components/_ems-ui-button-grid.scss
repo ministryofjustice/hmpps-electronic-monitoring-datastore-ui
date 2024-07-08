@@ -1,0 +1,14 @@
+.ems-ui-button-grid {
+  padding-top: 28px;
+  padding-bottom: 27px;
+
+  &__button {
+    @media(min-width: 641px) {
+      width: calc(50% - 15px);
+    }
+
+    @media(min-width: 1000px) {
+      width: calc(25% - 15px);
+    }
+  }
+}

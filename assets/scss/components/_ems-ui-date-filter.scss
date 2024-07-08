@@ -1,0 +1,27 @@
+.ems-ui-date-filter {
+  margin-bottom: 30px;
+
+  &--accordion-panel {
+    display: flex;
+    flex-direction: column;
+
+    @media(min-width: 641px) {
+      flex-direction: row;
+    }
+  }
+
+  &--fieldset {
+    display: flex;
+    flex-direction: row;
+  }
+
+  span {
+    margin: 0 10px;
+  }
+
+  &--search-button {
+    @media(min-width: 641px) {
+      margin-left: 15px;
+    }
+  }
+}
