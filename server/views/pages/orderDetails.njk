@@ -1,9 +1,12 @@
 {% extends "../partials/layout.njk" %}
 
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+{% from  "../components/dateFilter.njk" import dateFilter %}
 
 {% set pageTitle = applicationName + " - Order details" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -39,7 +42,7 @@
     contact_history: "#",
     suspensions: "#"
   },
-  documents: [
+  order_documents: [
     {
       name: "Order details",
       url: "#",
@@ -50,29 +53,29 @@
     {
       name: "Document 2",
       url: "#",
-      created_on: "01-02-2020",
-      time: "0900",
+      created_on: "21-09-2017",
+      time: "1200",
       notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     },
     {
       name: "Document 3",
       url: "#",
-      created_on: "01-02-2020",
-      time: "0900",
+      created_on: "08-04-2021",
+      time: "1000",
       notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     },
     {
       name: "Document 4",
       url: "#",
-      created_on: "01-02-2020",
-      time: "0900",
+      created_on: "09-12-2002",
+      time: "1700",
       notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     },
     {
       name: "Document 5",
       url: "#",
-      created_on: "01-02-2020",
-      time: "0900",
+      created_on: "04-09-2011",
+      time: "2100",
       notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     }
   ]
@@ -81,6 +84,39 @@
 {% set orderDetails = mockData.order_details %}
 {% set urls = mockData.urls %}
 {% set subjectHistory = mockData.subject_history_report %}
+
+{% set orderDocuments = [] %}
+{% for document in mockData.order_documents %}
+  {% set orderDocuments = orderDocuments.concat(
+    [[
+      {
+        html: '
+          <a href="' + document.url + '">
+            '+ document.name +'
+          </a>
+        ',
+        attributes: {
+            "data-sort-value": document.name
+        }
+      },
+      {
+        text: document.created_on,
+        attributes: {
+          "data-sort-value": document.created_on.split('-')[2] ~ document.created_on.split[1] ~ document.created_on.split[0]
+        }
+      },
+      {
+        text: document.time,
+        attributes: {
+          "data-sort-value": document.time
+        }
+      },
+      {
+        text: "See notes +"
+      }
+    ]]
+  ) %}
+{% endfor %}
 
 {% block content %}
 
@@ -262,5 +298,267 @@
       ]
     ]
   }) }}
+
+  <h2 class="govuk-heading-m"> All documents </h2>
+
+  {{ dateFilter() }}
+
+
+{% set orderDocumentsHtml %}
+
+  {{ govukTable({
+    attributes: {
+      'data-module': 'moj-sortable-table'
+    },
+    classes: "search-results-table",
+    head: [
+      {
+        text: "Name",
+        classes: "name-header",
+        attributes: {
+          "aria-sort": "ascending"
+        }
+      },
+      {
+        text: "Created on",
+        classes: "created-on-header",
+        attributes: {
+          "aria-sort": "none"
+        }
+      },
+      {
+        text: "Time",
+        classes: "time-header",
+        attributes: {
+          "aria-sort": "none"
+        }
+      },
+      {
+        classes: "notes"
+      }
+    ],
+    rows: orderDocuments
+  }) }}
+
+  {{ mojPagination({
+    items: [{
+      text: '1',
+      href: '/page=1'
+    }, {
+      text: '2',
+      href: '/page=2',
+      selected: true
+    }, {
+      text: '3',
+      href: '/page=3'
+    }, {
+      type: 'dots'
+    }, {
+      text: '5',
+      href: '/page=5'
+    }],
+    results: {
+      count: 30,
+      from: 10,
+      to: 20,
+      text: 'pages'
+    },
+    previous: {
+      text: 'Previous',
+      href: ''
+    },
+    next: {
+      text: 'Next',
+      href: ''
+    }
+  }) }}
+
+{% endset -%}
+
+  {% set variationsHtml %}
+{{ govukTable({
+  head: [
+    {
+      text: "Case manager"
+    },
+    {
+      text: "Cases opened"
+    },
+    {
+      text: "Cases closed"
+    }
+  ],
+  rows: [
+    [
+      {
+        text: "David Francis"
+      },
+      {
+        text: "3"
+      },
+      {
+        text: "0"
+      }
+    ],
+    [
+      {
+        text: "Paul Farmer"
+      },
+      {
+        text: "1"
+      },
+      {
+        text: "0"
+      }
+    ],
+    [
+      {
+        text: "Rita Patel"
+      },
+      {
+        text: "2"
+      },
+      {
+        text: "0"
+      }
+    ]
+  ]
+}) }}
+{% endset -%}
+
+{% set enforcementsHtml %}
+{{ govukTable({
+  head: [
+    {
+      text: "Case manager"
+    },
+    {
+      text: "Cases opened"
+    },
+    {
+      text: "Cases closed"
+    }
+  ],
+  rows: [
+    [
+      {
+        text: "David Francis"
+      },
+      {
+        text: "98"
+      },
+      {
+        text: "95"
+      }
+    ],
+    [
+      {
+        text: "Paul Farmer"
+      },
+      {
+        text: "122"
+      },
+      {
+        text: "131"
+      }
+    ],
+    [
+      {
+        text: "Rita Patel"
+      },
+      {
+        text: "126"
+      },
+      {
+        text: "142"
+      }
+    ]
+  ]
+}) }}
+{% endset -%}
+
+{% set visitReportsHtml %}
+{{ govukTable({
+  head: [
+    {
+      text: "Case manager"
+    },
+    {
+      text: "Cases opened"
+    },
+    {
+      text: "Cases closed"
+    }
+  ],
+  rows: [
+    [
+      {
+        text: "David Francis"
+      },
+      {
+        text: "1380"
+      },
+      {
+        text: "1472"
+      }
+    ],
+    [
+      {
+        text: "Paul Farmer"
+      },
+      {
+        text: "1129"
+      },
+      {
+        text: "1083"
+      }
+    ],
+    [
+      {
+        text: "Rita Patel"
+      },
+      {
+        text: "1539"
+      },
+      {
+        text: "1265"
+      }
+    ]
+  ]
+}) }}
+{% endset -%}
+
+{{ govukTabs({
+  items: [
+    {
+      label: "Order documents",
+      id: "order-documents",
+      panel: {
+        html: orderDocumentsHtml
+      }
+    },
+    {
+      label: "Variations",
+      id: "variations",
+      panel: {
+        html: variationsHtml
+      }
+    },
+    {
+      label: "Enforcements",
+      id: "enforcements",
+      panel: {
+        html: enforcementsHtml
+      }
+    },
+    {
+      label: "Visit reports",
+      id: "visit-reports",
+      panel: {
+        html: visitReportsHtml
+      }
+    }
+  ]
+}) }}
 
 {% endblock %}

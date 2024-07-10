@@ -1,0 +1,52 @@
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro dateFilter() %}
+
+  <div class="ems-ui-date-filter">
+
+    {{ govukButton({
+      text: "Date filter",
+      classes: "govuk-button--secondary"
+    }) }}
+
+    <div class="ems-ui-date-filter--accordion-panel">
+
+      {% call govukFieldset({
+        classes: "ems-ui-date-filter--fieldset"
+      }) %}
+
+        {{ govukInput({
+          label: {
+            classes: "govuk-label--l",
+            isPageHeading: false
+          },
+          classes: "ems-ui-date-filter--input",
+          name: "startDate"
+        }) }}
+
+        <span> to </span>
+
+        {{ govukInput({
+          label: {
+            classes: "govuk-label--l",
+            isPageHeading: false
+          },
+          name: "endDate"
+        }) }}
+
+      {% endcall %}
+
+      {{ govukButton({
+        text: "Search",
+        classes: "ems-ui-date-filter--search-button"
+      }) }}
+
+    </div>
+
+    <a href="#">x clear filters</a>
+
+  </div>
+
+{% endmacro %}
