@@ -1,4 +1,4 @@
-.ems-ui-date-filter {
+.ems-date-filter {
   margin-bottom: 30px;
 
   &--accordion-panel {
@@ -24,4 +24,8 @@
       margin-left: 15px;
     }
   }
+}
+
+.filter-active {
+  display: none;
 }
