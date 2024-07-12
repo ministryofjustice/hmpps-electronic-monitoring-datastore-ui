@@ -7,6 +7,7 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {%- from "moj/components/pagination/macro.njk" import mojPagination -%}
 {% from  "../components/dateFilter.njk" import dateFilter %}
+{% from  "../components/sortableTable.njk" import sortableTable %}
 
 {% set pageTitle = applicationName + " - Order details" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -304,261 +305,194 @@
   {{ dateFilter() }}
 
 
-{% set orderDocumentsHtml %}
-
-  {{ govukTable({
-    attributes: {
-      'data-module': 'moj-sortable-table'
-    },
-    classes: "search-results-table",
-    head: [
-      {
-        text: "Name",
-        classes: "name-header",
-        attributes: {
-          "aria-sort": "ascending"
-        }
-      },
-      {
-        text: "Created on",
-        classes: "created-on-header",
-        attributes: {
-          "aria-sort": "none"
-        }
-      },
-      {
-        text: "Time",
-        classes: "time-header",
-        attributes: {
-          "aria-sort": "none"
-        }
-      },
-      {
-        classes: "notes"
-      }
-    ],
-    rows: orderDocuments
-  }) }}
-
-  {{ mojPagination({
-    items: [{
-      text: '1',
-      href: '/page=1'
-    }, {
-      text: '2',
-      href: '/page=2',
-      selected: true
-    }, {
-      text: '3',
-      href: '/page=3'
-    }, {
-      type: 'dots'
-    }, {
-      text: '5',
-      href: '/page=5'
-    }],
-    results: {
-      count: 30,
-      from: 10,
-      to: 20,
-      text: 'pages'
-    },
-    previous: {
-      text: 'Previous',
-      href: ''
-    },
-    next: {
-      text: 'Next',
-      href: ''
-    }
-  }) }}
-
-{% endset -%}
+  {% set orderDocumentsHtml %}
+    {{ sortableTable(mockData.order_documents) }}
+  {% endset %}
 
   {% set variationsHtml %}
-{{ govukTable({
-  head: [
-    {
-      text: "Case manager"
-    },
-    {
-      text: "Cases opened"
-    },
-    {
-      text: "Cases closed"
-    }
-  ],
-  rows: [
-    [
+    {{ govukTable({
+      head: [
+        {
+          text: "Case manager"
+        },
+        {
+          text: "Cases opened"
+        },
+        {
+          text: "Cases closed"
+        }
+      ],
+      rows: [
+        [
+          {
+            text: "David Francis"
+          },
+          {
+            text: "3"
+          },
+          {
+            text: "0"
+          }
+        ],
+        [
+          {
+            text: "Paul Farmer"
+          },
+          {
+            text: "1"
+          },
+          {
+            text: "0"
+          }
+        ],
+        [
+          {
+            text: "Rita Patel"
+          },
+          {
+            text: "2"
+          },
+          {
+            text: "0"
+          }
+        ]
+      ]
+    }) }}
+  {% endset -%}
+
+  {% set enforcementsHtml %}
+    {{ govukTable({
+      head: [
+        {
+          text: "Case manager"
+        },
+        {
+          text: "Cases opened"
+        },
+        {
+          text: "Cases closed"
+        }
+      ],
+      rows: [
+        [
+          {
+            text: "David Francis"
+          },
+          {
+            text: "98"
+          },
+          {
+            text: "95"
+          }
+        ],
+        [
+          {
+            text: "Paul Farmer"
+          },
+          {
+            text: "122"
+          },
+          {
+            text: "131"
+          }
+        ],
+        [
+          {
+            text: "Rita Patel"
+          },
+          {
+            text: "126"
+          },
+          {
+            text: "142"
+          }
+        ]
+      ]
+    }) }}
+  {% endset -%}
+
+  {% set visitReportsHtml %}
+    {{ govukTable({
+      head: [
+        {
+          text: "Case manager"
+        },
+        {
+          text: "Cases opened"
+        },
+        {
+          text: "Cases closed"
+        }
+      ],
+      rows: [
+        [
+          {
+            text: "David Francis"
+          },
+          {
+            text: "1380"
+          },
+          {
+            text: "1472"
+          }
+        ],
+        [
+          {
+            text: "Paul Farmer"
+          },
+          {
+            text: "1129"
+          },
+          {
+            text: "1083"
+          }
+        ],
+        [
+          {
+            text: "Rita Patel"
+          },
+          {
+            text: "1539"
+          },
+          {
+            text: "1265"
+          }
+        ]
+      ]
+    }) }}
+  {% endset -%}
+
+  {{ govukTabs({
+    items: [
       {
-        text: "David Francis"
+        label: "Order documents",
+        id: "order-documents",
+        panel: {
+          html: orderDocumentsHtml
+        }
       },
       {
-        text: "3"
+        label: "Variations",
+        id: "variations",
+        panel: {
+          html: variationsHtml
+        }
       },
       {
-        text: "0"
-      }
-    ],
-    [
-      {
-        text: "Paul Farmer"
+        label: "Enforcements",
+        id: "enforcements",
+        panel: {
+          html: enforcementsHtml
+        }
       },
       {
-        text: "1"
-      },
-      {
-        text: "0"
-      }
-    ],
-    [
-      {
-        text: "Rita Patel"
-      },
-      {
-        text: "2"
-      },
-      {
-        text: "0"
+        label: "Visit reports",
+        id: "visit-reports",
+        panel: {
+          html: visitReportsHtml
+        }
       }
     ]
-  ]
-}) }}
-{% endset -%}
-
-{% set enforcementsHtml %}
-{{ govukTable({
-  head: [
-    {
-      text: "Case manager"
-    },
-    {
-      text: "Cases opened"
-    },
-    {
-      text: "Cases closed"
-    }
-  ],
-  rows: [
-    [
-      {
-        text: "David Francis"
-      },
-      {
-        text: "98"
-      },
-      {
-        text: "95"
-      }
-    ],
-    [
-      {
-        text: "Paul Farmer"
-      },
-      {
-        text: "122"
-      },
-      {
-        text: "131"
-      }
-    ],
-    [
-      {
-        text: "Rita Patel"
-      },
-      {
-        text: "126"
-      },
-      {
-        text: "142"
-      }
-    ]
-  ]
-}) }}
-{% endset -%}
-
-{% set visitReportsHtml %}
-{{ govukTable({
-  head: [
-    {
-      text: "Case manager"
-    },
-    {
-      text: "Cases opened"
-    },
-    {
-      text: "Cases closed"
-    }
-  ],
-  rows: [
-    [
-      {
-        text: "David Francis"
-      },
-      {
-        text: "1380"
-      },
-      {
-        text: "1472"
-      }
-    ],
-    [
-      {
-        text: "Paul Farmer"
-      },
-      {
-        text: "1129"
-      },
-      {
-        text: "1083"
-      }
-    ],
-    [
-      {
-        text: "Rita Patel"
-      },
-      {
-        text: "1539"
-      },
-      {
-        text: "1265"
-      }
-    ]
-  ]
-}) }}
-{% endset -%}
-
-{{ govukTabs({
-  items: [
-    {
-      label: "Order documents",
-      id: "order-documents",
-      panel: {
-        html: orderDocumentsHtml
-      }
-    },
-    {
-      label: "Variations",
-      id: "variations",
-      panel: {
-        html: variationsHtml
-      }
-    },
-    {
-      label: "Enforcements",
-      id: "enforcements",
-      panel: {
-        html: enforcementsHtml
-      }
-    },
-    {
-      label: "Visit reports",
-      id: "visit-reports",
-      panel: {
-        html: visitReportsHtml
-      }
-    }
-  ]
-}) }}
+  }) }}
 
 {% endblock %}

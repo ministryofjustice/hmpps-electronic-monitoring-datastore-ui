@@ -1,0 +1,98 @@
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+
+{% macro sortableTable(records) %}
+
+  <table class="govuk-table" data-module="moj-sortable-table">
+
+    <thead class="govuk-table__head">
+      <tr class="govuk-table__row">
+
+        <th
+          scope="col"
+          class="govuk-table__header name-header"
+          aria-sort="none"
+        >Name</th>
+
+        <th
+          scope="col"
+          class="govuk-table__header created-on-header"
+          aria-sort="ascending"
+        >Created on</th>
+
+        <th
+          scope="col"
+          class="govuk-table__header time-header"
+          aria-sort="none"
+        >Time</th>
+
+        <th
+          scope="col"
+          class="govuk-table__header details-header govuk-!-width-one-half"
+        >Notes</th>
+
+      </tr>
+    </thead>
+
+    <tbody class="govuk-table__body">
+      {% for record in records %}
+        <tr class="govuk-table__row  ems-ui-table--row__hidden">
+
+          <td
+            class="govuk-table__cell"
+            data-sort-value="{{ record.name }} "
+          >
+            <a href="{{ record.url }}">{{ record.name }}</a>
+          </td>
+
+          <td
+            class="govuk-table__cell"
+            data-sort-value="{{ record.created_on }}"
+          >{{ record.created_on }}</td>
+
+          <td
+            class="govuk-table__cell"
+            data-sort-value="{{ record.time }}"
+          >{{ record.time }}</td>
+
+          <td class="govuk-table__cell">{{ record.notes }}</td>
+          
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {{ mojPagination({
+    items: [{
+      text: '1',
+      href: '/page=1'
+    }, {
+      text: '2',
+      href: '/page=2',
+      selected: true
+    }, {
+      text: '3',
+      href: '/page=3'
+    }, {
+      type: 'dots'
+    }, {
+      text: '5',
+      href: '/page=5'
+    }],
+    results: {
+      count: 0,
+      from: 0,
+      to: 0,
+      text: 'documents'
+    },
+    previous: {
+      text: 'Previous',
+      href: ''
+    },
+    next: {
+      text: 'Next',
+      href: ''
+    }
+  }) }}
+
+{% endmacro %}
