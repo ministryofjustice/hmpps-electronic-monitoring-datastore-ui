@@ -6,8 +6,8 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {%- from "moj/components/pagination/macro.njk" import mojPagination -%}
-{% from  "../components/dateFilter.njk" import dateFilter %}
-{% from  "../components/sortableTable.njk" import sortableTable %}
+{% from  "../components/emsDateFilter.njk" import emsDateFilter %}
+{% from  "../components/emsSortableTable.njk" import emsSortableTable %}
 
 {% set pageTitle = applicationName + " - Order details" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -45,39 +45,39 @@
   },
   order_documents: [
     {
-      name: "Order details",
+      name: "Document 1",
       url: "#",
       created_on: "01-02-2020",
       time: "0900",
-      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+      notes: "Order 1 documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     },
     {
       name: "Document 2",
       url: "#",
       created_on: "21-09-2017",
       time: "1200",
-      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+      notes: "Order 2 documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     },
     {
       name: "Document 3",
       url: "#",
       created_on: "08-04-2021",
       time: "1000",
-      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+      notes: "Order 3 documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     },
     {
       name: "Document 4",
       url: "#",
       created_on: "09-12-2002",
       time: "1700",
-      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+      notes: "Order 4 documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     },
     {
       name: "Document 5",
       url: "#",
       created_on: "04-09-2011",
       time: "2100",
-      notes: "Order documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
+      notes: "Order 5 documents xxxxxx xxxxxxx NAME HDC New.msg application/octet-stream NAME - TOLD TO IGNORE AS SUBJECT STILL IN CUSTODY ABCD 12 345678 xx-xxxxxx"
     }
   ]
 } %}
@@ -302,11 +302,11 @@
 
   <h2 class="govuk-heading-m"> All documents </h2>
 
-  {{ dateFilter() }}
+  {{ emsDateFilter() }}
 
 
   {% set orderDocumentsHtml %}
-    {{ sortableTable(mockData.order_documents) }}
+    {{ emsSortableTable(mockData.order_documents) }}
   {% endset %}
 
   {% set variationsHtml %}
