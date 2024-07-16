@@ -7,11 +7,27 @@ function init() {
     const pageSize = parseInt(table.dataset.pagesize)
     let currentPage = parseInt(table.dataset.currentpage)
 
+    // Get pagination elements
     const pagination = table.querySelector('.govuk-pagination')
     const prevButton = pagination.querySelector('.govuk-pagination__prev')
     const nextButton = pagination.querySelector('.govuk-pagination__next')
     const pageButtons = pagination.getElementsByClassName('govuk-pagination__item--link')
     const ellipses = pagination.getElementsByClassName('govuk-pagination__item--ellipses')
+
+    // Show the correct page of records
+    const updateTable = page => {
+      // Get table rows in the order that they appear in the DOM
+      const tableRows = Array.from(table.getElementsByClassName('govuk-table__data-row'))
+
+      // Hide all rows
+      tableRows.forEach(row => row.classList.add('hidden'))
+
+      // Display the current page's records
+      const firstIndex = (currentPage - 1) * pageSize
+      const lastIndex = currentPage * pageSize
+      const visibleRows = tableRows.slice(firstIndex, lastIndex)
+      visibleRows.forEach(row => row.classList.remove('hidden'))
+    }
 
     // Show the correct pagination buttons based on the current page. Used to update the pagination component when the page is changed.
     const updatePagination = page => {
@@ -62,6 +78,7 @@ function init() {
         event.preventDefault()
         if (currentPage != 1) {
           currentPage--
+          updateTable(currentPage)
           updatePagination(currentPage)
         }
         return false
@@ -71,6 +88,7 @@ function init() {
         event.preventDefault()
         if (currentPage != totalPages) {
           currentPage++
+          updateTable(currentPage)
           updatePagination(currentPage)
         }
         return false
@@ -81,13 +99,15 @@ function init() {
           event.preventDefault()
           const newPage = parseInt(button.dataset.buttonnumber)
           currentPage = newPage
-          updatePagination(newPage)
+          updateTable(currentPage)
+          updatePagination(currentPage)
           return false
         })
       }
     }
 
-    // Initialise pagination
+    // Initialise the component
+    updateTable(currentPage)
     updatePagination(currentPage)
     initialisePaginationButtons()
   }
