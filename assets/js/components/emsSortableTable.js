@@ -41,6 +41,9 @@ function init() {
         page < 4 ? ellipses[0].classList.add('hidden') : ellipses[0].classList.remove('hidden')
 
         page > totalPages - 3 ? ellipses[1].classList.add('hidden') : ellipses[1].classList.remove('hidden')
+      } else {
+        ellipses[0].classList.add('hidden')
+        ellipses[1].classList.add('hidden')
       }
 
       // Show or hide page number buttons
