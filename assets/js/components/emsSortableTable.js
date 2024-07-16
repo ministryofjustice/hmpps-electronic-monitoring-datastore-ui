@@ -8,7 +8,6 @@ function init() {
     let currentPage = parseInt(table.dataset.currentpage)
 
     const pagination = table.querySelector('.govuk-pagination')
-    pagination.classList.add('test-m')
     const prevButton = pagination.querySelector('.govuk-pagination__prev')
     const nextButton = pagination.querySelector('.govuk-pagination__next')
     const pageButtons = pagination.getElementsByClassName('govuk-pagination__item--link')
