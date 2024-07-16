@@ -4,12 +4,14 @@
 
   {% set totalRecords = records.length %}
   {% set totalPages = (totalRecords / pageSize) | round(0, 'ceil') %}
+  {% set currentPage = 1 %}
 
   <div
     class="ems-sortable-table"
     data-totalrecords={{ totalRecords }}
-    data-pagesize={{ pageSize }}
     data-totalpages={{ totalPages }}
+    data-pagesize={{ pageSize }}
+    data-currentpage={{ currentPage }}
   >
 
     <table
@@ -47,7 +49,7 @@
 
       <tbody class="govuk-table__body">
         {% for record in records %}
-          <tr class="govuk-table__row  ems-ui-table--row__hidden">
+          <tr class="govuk-table__row  hidden">
 
             <td
               class="govuk-table__cell"
@@ -74,7 +76,7 @@
     </table>
 
 
-    <nav class="govuk-pagination ems-sortable-table--pagination" aria-label="Pagination" data-current-page="1" data-total-pages={{ numberOfRecords }}>
+    <nav class="govuk-pagination ems-sortable-table--pagination" aria-label="Pagination" data-current-page="1" data-total-pages={{ totalRecords }}>
       <div class="govuk-pagination__prev">
         <a class="govuk-link govuk-pagination__link" href="#" rel="prev">
           <svg class="govuk-pagination__icon govuk-pagination__icon--prev" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13">
@@ -86,21 +88,15 @@
         </a>
       </div>
       <ul class="govuk-pagination__list">
-        <li class="govuk-pagination__item">
-          <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page 1">
-            1
-          </a>
-        </li>
-        <li class="govuk-pagination__item govuk-pagination__item--current">
-          <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page 2" aria-current="page">
-            2
-          </a>
-        </li>
-        <li class="govuk-pagination__item">
-          <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page 3">
-            3
-          </a>
-        </li>
+
+        {% for i in range(1, totalPages + 1) %}
+          <li class="govuk-pagination__item">
+            <a class="govuk-link govuk-pagination__link" href="#" aria-label="Page {{ i }}">
+              {{ i }}
+            </a>
+          </li>
+        {% endfor %}
+
       </ul>
       <div class="govuk-pagination__next">
         <a class="govuk-link govuk-pagination__link" href="#" rel="next">
