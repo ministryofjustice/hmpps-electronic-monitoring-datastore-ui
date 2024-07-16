@@ -95,6 +95,11 @@
               {{ i }}
             </a>
           </li>
+          {% if (i == 1) or (i == totalPages - 1) %}
+            <li class="govuk-pagination__item  govuk-pagination__item--ellipses">
+              ⋯
+            </li>
+          {% endif %}
         {% endfor %}
 
       </ul>
