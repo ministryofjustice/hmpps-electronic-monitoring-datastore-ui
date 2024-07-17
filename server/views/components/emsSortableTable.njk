@@ -73,7 +73,7 @@
     </table>
 
 
-    <nav class="moj-pagination ems-sortable-table--pagination" aria-label="Pagination navigation" data-current-page="1" data-total-pages={{ totalRecords }}>
+    <nav class="moj-pagination ems-sortable-table--pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation" data-current-page="1" data-total-pages={{ totalRecords }}>
 
       <ul class="moj-pagination__list">
         <li class="moj-pagination__item  moj-pagination__item--prev">
