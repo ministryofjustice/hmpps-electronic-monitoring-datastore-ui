@@ -11,6 +11,7 @@
     data-pagesize={{ pageSize }}
     data-currentpage={{ currentPage }}
   >
+    <p class="ems-sortable-table__no-results hidden">No documents to show.</p>
 
     <table
       class="govuk-table"  data-module="moj-sortable-table"
@@ -73,7 +74,7 @@
     </table>
 
 
-    <nav class="moj-pagination ems-sortable-table--pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation" data-current-page="1" data-total-pages={{ totalRecords }}>
+    <nav class="moj-pagination ems-sortable-table--pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
 
       <ul class="moj-pagination__list">
         <li class="moj-pagination__item  moj-pagination__item--prev">
