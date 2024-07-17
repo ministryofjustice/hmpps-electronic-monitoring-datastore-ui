@@ -8,11 +8,11 @@ function init() {
     let currentPage = parseInt(table.dataset.currentpage)
 
     // Get pagination elements
-    const pagination = table.querySelector('.govuk-pagination')
-    const prevButton = pagination.querySelector('.govuk-pagination__prev')
-    const nextButton = pagination.querySelector('.govuk-pagination__next')
-    const pageButtons = pagination.getElementsByClassName('govuk-pagination__item--link')
-    const ellipses = pagination.getElementsByClassName('govuk-pagination__item--ellipses')
+    const pagination = table.querySelector('.moj-pagination')
+    const prevButton = pagination.querySelector('.moj-pagination__item--prev')
+    const nextButton = pagination.querySelector('.moj-pagination__item--next')
+    const pageButtons = pagination.getElementsByClassName('moj-pagination__item--link')
+    const dots = pagination.getElementsByClassName('moj-pagination__item--dots')
 
     // Function to update the table to show the correct page's records.
     const updateTable = page => {
@@ -35,14 +35,14 @@ function init() {
       page == 1 ? prevButton.classList.add('hidden') : prevButton.classList.remove('hidden')
       page == totalPages ? nextButton.classList.add('hidden') : nextButton.classList.remove('hidden')
 
-      // Show or hide ellipses
+      // Show or hide dots
       if (totalPages > 5) {
-        page < 4 ? ellipses[0].classList.add('hidden') : ellipses[0].classList.remove('hidden')
+        page < 4 ? dots[0].classList.add('hidden') : dots[0].classList.remove('hidden')
 
-        page > totalPages - 3 ? ellipses[1].classList.add('hidden') : ellipses[1].classList.remove('hidden')
+        page > totalPages - 3 ? dots[1].classList.add('hidden') : dots[1].classList.remove('hidden')
       } else {
-        ellipses[0].classList.add('hidden')
-        ellipses[1].classList.add('hidden')
+        dots[0].classList.add('hidden')
+        dots[1].classList.add('hidden')
       }
 
       for (let button of pageButtons) {
@@ -50,8 +50,8 @@ function init() {
 
         // Highlight the active page number
         buttonNumber == page
-          ? button.classList.add('govuk-pagination__item--current')
-          : button.classList.remove('govuk-pagination__item--current')
+          ? button.classList.add('moj-pagination__item--active')
+          : button.classList.remove('moj-pagination__item--active')
 
         // Show or hide page number buttons
         if (buttonNumber != 1 && buttonNumber != totalPages) {
