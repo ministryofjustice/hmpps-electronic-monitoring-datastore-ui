@@ -14,26 +14,25 @@ function init() {
     const pageButtons = pagination.getElementsByClassName('govuk-pagination__item--link')
     const ellipses = pagination.getElementsByClassName('govuk-pagination__item--ellipses')
 
-    // Show the correct page of records
+    // Function to update the table to show the correct page's records.
     const updateTable = page => {
-      // Get table rows in the order that they appear in the DOM
       const tableRows = Array.from(table.getElementsByClassName('govuk-table__data-row'))
-
-      // Hide all rows
-      tableRows.forEach(row => row.classList.add('hidden'))
-
-      // Display the current page's records
       const firstIndex = (currentPage - 1) * pageSize
       const lastIndex = currentPage * pageSize
-      const visibleRows = tableRows.slice(firstIndex, lastIndex)
-      visibleRows.forEach(row => row.classList.remove('hidden'))
+
+      tableRows.forEach((row, index) => {
+        if (index >= firstIndex && index <= lastIndex - 1) {
+          row.classList.remove('hidden')
+        } else {
+          row.classList.add('hidden')
+        }
+      })
     }
 
-    // Show the correct pagination buttons based on the current page. Used to update the pagination component when the page is changed.
+    // Function to update the pagination component when pagination is used.
     const updatePagination = page => {
       // Show or hide previous & next buttons
       page == 1 ? prevButton.classList.add('hidden') : prevButton.classList.remove('hidden')
-
       page == totalPages ? nextButton.classList.add('hidden') : nextButton.classList.remove('hidden')
 
       // Show or hide ellipses
@@ -46,7 +45,6 @@ function init() {
         ellipses[1].classList.add('hidden')
       }
 
-      // Show or hide page number buttons
       for (let button of pageButtons) {
         const buttonNumber = parseInt(button.dataset.buttonnumber)
 
@@ -55,17 +53,15 @@ function init() {
           ? button.classList.add('govuk-pagination__item--current')
           : button.classList.remove('govuk-pagination__item--current')
 
-        // Hide all page buttons except the first and last ones, which are always visible
+        // Show or hide page number buttons
         if (buttonNumber != 1 && buttonNumber != totalPages) {
           button.classList.add('hidden')
         }
 
-        // Show the buttons for the current page ±1
         if (buttonNumber == page || buttonNumber == page + 1 || buttonNumber == page - 1) {
           button.classList.remove('hidden')
         }
 
-        // If the first or last page is selected, show the first or last three page buttons.
         if (page == 1 && buttonNumber == 3) {
           button.classList.remove('hidden')
         }
@@ -109,9 +105,23 @@ function init() {
       }
     }
 
+    // Add an additional event listener to the moj sortable table's sort buttons. After records are sorted, the table will update to show the correct records.
+    const initialiseSortableTableButtons = () => {
+      const sortableTableButtons = Array.from(table.querySelector('.govuk-table__head').getElementsByTagName('button'))
+
+      sortableTableButtons.forEach(button =>
+        button.addEventListener('click', function () {
+          setTimeout(function () {
+            updateTable(currentPage)
+          }, 0)
+        }),
+      )
+    }
+
     // Initialise the component
     updateTable(currentPage)
     updatePagination(currentPage)
+    initialiseSortableTableButtons()
     initialisePaginationButtons()
   }
 }
