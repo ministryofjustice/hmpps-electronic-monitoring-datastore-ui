@@ -13,6 +13,7 @@ function init() {
     const nextButton = pagination.querySelector('.moj-pagination__item--next')
     const pageButtons = pagination.getElementsByClassName('moj-pagination__item--link')
     const dots = pagination.getElementsByClassName('moj-pagination__item--dots')
+    const paginationResults = pagination.querySelector('.moj-pagination__results').getElementsByTagName('b')
 
     // Function to update the table to show the correct page's records.
     const updateTable = page => {
@@ -69,6 +70,13 @@ function init() {
           button.classList.remove('hidden')
         }
       }
+
+      // Update the pagination results
+      const firstRecord = (currentPage - 1) * pageSize + 1
+      const lastRecord = currentPage * pageSize
+      paginationResults[0].innerHTML = firstRecord
+      paginationResults[1].innerHTML = Math.min(lastRecord, totalRecords)
+      paginationResults[2].innerHTML = totalRecords
     }
 
     // Function to initialise the pagination buttons
