@@ -4,17 +4,17 @@
 
 {% macro emsDateFilter() %}
 
-  <div class="ems-ui-date-filter">
+  <div class="ems-date-filter">
 
     {{ govukButton({
       text: "Show date filter",
       classes: "govuk-button--secondary"
     }) }}
 
-    <div class="ems-ui-date-filter--accordion-panel">
+    <div class="ems-date-filter--accordion-panel">
 
       {% call govukFieldset({
-        classes: "ems-ui-date-filter--fieldset"
+        classes: "ems-date-filter--fieldset"
       }) %}
 
         {{ govukInput({
@@ -22,7 +22,7 @@
             classes: "govuk-label--l",
             isPageHeading: false
           },
-          classes: "ems-ui-date-filter--input",
+          classes: "ems-date-filter--input",
           name: "startDate"
         }) }}
 
@@ -40,7 +40,7 @@
 
       {{ govukButton({
         text: "Search",
-        classes: "ems-ui-date-filter--search-button"
+        classes: "ems-date-filter--search-button"
       }) }}
 
     </div>
