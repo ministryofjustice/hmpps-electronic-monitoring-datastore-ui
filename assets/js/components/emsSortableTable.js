@@ -2,10 +2,10 @@ function init() {
   const emsSortableTables = document.getElementsByClassName('ems-sortable-table')
 
   for (let table of emsSortableTables) {
-    const totalRecords = parseInt(table.dataset.totalrecords)
-    const totalPages = parseInt(table.dataset.totalpages)
-    const pageSize = parseInt(table.dataset.pagesize)
-    let currentPage = parseInt(table.dataset.currentpage)
+    const totalRecords = parseInt(table.dataset.totalRecords)
+    const totalPages = parseInt(table.dataset.totalPages)
+    const pageSize = parseInt(table.dataset.pageSize)
+    let currentPage = parseInt(table.dataset.currentPage)
 
     // If there are no records, show a message to this effect.
     // Otherwise, execute code for the component.
@@ -56,7 +56,7 @@ function init() {
         }
 
         for (let button of pageButtons) {
-          const buttonNumber = parseInt(button.dataset.buttonnumber)
+          const buttonNumber = parseInt(button.dataset.buttonNumber)
 
           // Highlight the active page number
           buttonNumber == page
@@ -113,7 +113,7 @@ function init() {
         for (let button of pageButtons) {
           button.addEventListener('click', function (event) {
             event.preventDefault()
-            const newPage = parseInt(button.dataset.buttonnumber)
+            const newPage = parseInt(button.dataset.buttonNumber)
             currentPage = newPage
             updateTable(currentPage)
             updatePagination(currentPage)

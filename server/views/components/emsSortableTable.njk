@@ -6,10 +6,10 @@
 
   <div
     class="ems-sortable-table"
-    data-totalrecords={{ totalRecords }}
-    data-totalpages={{ totalPages }}
-    data-pagesize={{ pageSize }}
-    data-currentpage={{ currentPage }}
+    data-total-records={{ totalRecords }}
+    data-total-pages={{ totalPages }}
+    data-page-size={{ pageSize }}
+    data-current-page={{ currentPage }}
   >
     <p class="ems-sortable-table__no-results hidden">No documents to show.</p>
 
@@ -84,7 +84,7 @@
         {% for i in range(1, totalPages + 1) %}
           <li
             class="moj-pagination__item moj-pagination__item--link"
-            data-buttonnumber="{{ i }}"
+            data-button-number="{{ i }}"
           >
             <a class="moj-pagination__link" href="#" aria-label="Page {{ i }} of {{ totalPages }}">
               {{ i }}
