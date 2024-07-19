@@ -11,10 +11,10 @@
       classes: "govuk-button--secondary"
     }) }}
 
-    <div class="ems-date-filter--accordion-panel">
+    <div class="ems-date-filter__accordion-panel">
 
       {% call govukFieldset({
-        classes: "ems-date-filter--fieldset"
+        classes: "ems-date-filter__fieldset"
       }) %}
 
         {{ govukInput({
@@ -22,7 +22,7 @@
             classes: "govuk-label--l",
             isPageHeading: false
           },
-          classes: "ems-date-filter--input",
+          classes: "ems-date-filter__input",
           name: "startDate"
         }) }}
 
@@ -39,8 +39,8 @@
       {% endcall %}
 
       {{ govukButton({
-        text: "Search",
-        classes: "ems-date-filter--search-button"
+        text: "Apply",
+        classes: "ems-date-filter__filter-button"
       }) }}
 
     </div>

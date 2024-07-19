@@ -2,14 +2,25 @@ function init() {
   const emsSortableTables = document.getElementsByClassName('ems-sortable-table')
 
   for (let table of emsSortableTables) {
-    const totalRecords = parseInt(table.dataset.totalRecords)
-    const totalPages = parseInt(table.dataset.totalPages)
     const pageSize = parseInt(table.dataset.pageSize)
     let currentPage = parseInt(table.dataset.currentPage)
+    let rows
+    let totalRows
+    let totalPages
 
-    // If there are no records, show a message to this effect.
+    // Function to get the number of table rows and pages, accounting for filtered-out rows, and set these variables.
+    const setRowsAndPages = () => {
+      const unfilteredRows = Array.from(table.getElementsByClassName('govuk-table__data-row'))
+      rows = unfilteredRows.filter(row => !row.classList.contains('filter-active'))
+      totalRows = rows.length
+      totalPages = Math.ceil(totalRows / pageSize)
+      currentPage = currentPage <= totalPages ? currentPage : 1
+    }
+    setRowsAndPages()
+
+    // If there are no Rows, show a message to this effect.
     // Otherwise, execute code for the component.
-    if (totalRecords == 0) {
+    if (totalRows == 0) {
       table.querySelector('.govuk-table').classList.add('hidden')
       table.querySelector('.ems-sortable-table__no-results').classList.remove('hidden')
     } else {
@@ -24,13 +35,13 @@ function init() {
       const dots = pagination.getElementsByClassName('moj-pagination__item--dots')
       const paginationResults = pagination.querySelector('.moj-pagination__results').getElementsByTagName('b')
 
-      // Function to update the table to show the correct page's records.
-      const updateTable = page => {
-        const tableRows = Array.from(table.getElementsByClassName('govuk-table__data-row'))
+      // Function to update the table to show the correct page's Rows.
+      const updateTable = () => {
+        setRowsAndPages()
         const firstIndex = (currentPage - 1) * pageSize
         const lastIndex = currentPage * pageSize
 
-        tableRows.forEach((row, index) => {
+        rows.forEach((row, index) => {
           if (index >= firstIndex && index <= lastIndex - 1) {
             row.classList.remove('hidden')
           } else {
@@ -40,16 +51,18 @@ function init() {
       }
 
       // Function to update the pagination component when pagination is used.
-      const updatePagination = page => {
+      const updatePagination = () => {
+        setRowsAndPages()
+
         // Show or hide previous & next buttons
-        page == 1 ? prevButton.classList.add('hidden') : prevButton.classList.remove('hidden')
-        page == totalPages ? nextButton.classList.add('hidden') : nextButton.classList.remove('hidden')
+        currentPage == 1 ? prevButton.classList.add('hidden') : prevButton.classList.remove('hidden')
+        currentPage == totalPages ? nextButton.classList.add('hidden') : nextButton.classList.remove('hidden')
 
         // Show or hide dots
         if (totalPages > 5) {
-          page < 4 ? dots[0].classList.add('hidden') : dots[0].classList.remove('hidden')
+          currentPage < 4 ? dots[0].classList.add('hidden') : dots[0].classList.remove('hidden')
 
-          page > totalPages - 3 ? dots[1].classList.add('hidden') : dots[1].classList.remove('hidden')
+          currentPage > totalPages - 3 ? dots[1].classList.add('hidden') : dots[1].classList.remove('hidden')
         } else {
           dots[0].classList.add('hidden')
           dots[1].classList.add('hidden')
@@ -59,7 +72,7 @@ function init() {
           const buttonNumber = parseInt(button.dataset.buttonNumber)
 
           // Highlight the active page number
-          buttonNumber == page
+          buttonNumber == currentPage
             ? button.classList.add('moj-pagination__item--active')
             : button.classList.remove('moj-pagination__item--active')
 
@@ -68,15 +81,18 @@ function init() {
             button.classList.add('hidden')
           }
 
-          if (buttonNumber == page || buttonNumber == page + 1 || buttonNumber == page - 1) {
+          if (buttonNumber == currentPage || buttonNumber == currentPage + 1 || buttonNumber == currentPage - 1) {
             button.classList.remove('hidden')
           }
 
-          if (page == 1 && buttonNumber == 3) {
+          if (currentPage == 1 && buttonNumber == 3) {
             button.classList.remove('hidden')
           }
-          if (page == totalPages && buttonNumber == totalPages - 2) {
+          if (currentPage == totalPages && buttonNumber == totalPages - 2) {
             button.classList.remove('hidden')
+          }
+          if (buttonNumber > totalPages) {
+            button.classList.add('hidden')
           }
         }
 
@@ -84,8 +100,8 @@ function init() {
         const firstRecord = (currentPage - 1) * pageSize + 1
         const lastRecord = currentPage * pageSize
         paginationResults[0].innerHTML = firstRecord
-        paginationResults[1].innerHTML = Math.min(lastRecord, totalRecords)
-        paginationResults[2].innerHTML = totalRecords
+        paginationResults[1].innerHTML = Math.min(lastRecord, totalRows)
+        paginationResults[2].innerHTML = totalRows
       }
 
       // Function to initialise the pagination buttons
@@ -115,14 +131,14 @@ function init() {
             event.preventDefault()
             const newPage = parseInt(button.dataset.buttonNumber)
             currentPage = newPage
-            updateTable(currentPage)
-            updatePagination(currentPage)
+            updateTable()
+            updatePagination()
             return false
           })
         }
       }
 
-      // Add an additional event listener to the moj sortable table's sort buttons. After records are sorted, the table will update to show the correct records.
+      // Add an additional event listener to the moj sortable table's sort buttons. After Rows are sorted, the table will update to show the correct Rows.
       const initialiseSortableTableButtons = () => {
         const sortableTableButtons = Array.from(
           table.querySelector('.govuk-table__head').getElementsByTagName('button'),
@@ -131,15 +147,15 @@ function init() {
         sortableTableButtons.forEach(button =>
           button.addEventListener('click', function () {
             setTimeout(function () {
-              updateTable(currentPage)
+              updateTable()
             }, 0)
           }),
         )
       }
 
       // Initialise the component
-      updateTable(currentPage)
-      updatePagination(currentPage)
+      updateTable()
+      updatePagination()
       initialiseSortableTableButtons()
       initialisePaginationButtons()
     }

@@ -5,7 +5,7 @@
   {% set currentPage = 1 %}
 
   <div
-    class="ems-sortable-table"
+    class="ems-sortable-table date-filterable"
     data-total-records={{ totalRecords }}
     data-total-pages={{ totalPages }}
     data-page-size={{ pageSize }}
@@ -47,8 +47,11 @@
 
       <tbody class="govuk-table__body">
         {% for record in records %}
-          {% set sortDate = record.created_on.split('-')[2] ~ record.created_on.split[1] ~ record.created_on.split[0] %}
-          <tr class="govuk-table__row govuk-table__data-row hidden">
+          {% set standardDate = record.created_on.split('-')[2] + record.created_on.split('-')[1] + record.created_on.split('-')[0] %}
+          <tr
+            class="govuk-table__row govuk-table__data-row hidden"
+            data-filter-date="{{ standardDate }}"
+          >
 
             <td
               class="govuk-table__cell"
@@ -59,7 +62,7 @@
 
             <td
               class="govuk-table__cell"
-              data-sort-value="{{ sortDate }}"
+              data-sort-value="{{ standardDate }}"
             >{{ record.created_on }}</td>
 
             <td
