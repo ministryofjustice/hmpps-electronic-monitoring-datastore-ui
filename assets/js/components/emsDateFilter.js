@@ -4,8 +4,12 @@ function init() {
   for (let dateFilter of emsDateFilters) {
     const applyFilter = () => {
       // Get the start and end dates
-      const startDate = dateFilter.querySelector('[name="startDate"]').value
-      const endDate = dateFilter.querySelector('[name="endDate"]').value
+      const getDateString = dateInputs => {
+        return `${dateInputs[2].value + dateInputs[1].value + dateInputs[0].value}`
+      }
+
+      const startDate = getDateString(dateFilter.querySelector('#start-date').querySelectorAll('input'))
+      const endDate = getDateString(dateFilter.querySelector('#end-date').querySelectorAll('input'))
 
       // Filter the records
       const filterableTables = document.querySelectorAll('.date-filterable')
