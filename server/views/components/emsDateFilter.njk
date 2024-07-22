@@ -1,49 +1,48 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% macro emsDateFilter() %}
 
   <div class="ems-date-filter">
 
-    {{ govukButton({
-      text: "Show date filter",
-      classes: "govuk-button--secondary"
-    }) }}
-
-    <div class="ems-date-filter__accordion-panel">
+    <h3 class="govuk-heading-s">Date filter</h3>
+    <p>For example, 31/3/2023</p>
 
       {% call govukFieldset({
         classes: "ems-date-filter__fieldset"
       }) %}
 
-        {{ govukInput({
-          label: {
-            classes: "govuk-label--l",
-            isPageHeading: false
-          },
+      <div class="ems-date-filter__input-row">
+        <span class="ems-date-filter__text--small-display"> From: </span>
+
+        {{ govukDateInput({
+          id: "start-date",
+          namePrefix: "start-date",
           classes: "ems-date-filter__input",
           name: "startDate"
         }) }}
+      </div>
 
-        <span> to </span>
+        <span class="ems-date-filter__text--large-display"> to </span>
 
-        {{ govukInput({
-          label: {
-            classes: "govuk-label--l",
-            isPageHeading: false
-          },
+      <div class="ems-date-filter__input-row">
+        <span class="ems-date-filter__text--small-display"> To: </span>
+        {{ govukDateInput({
+          id: "end-date",
+          namePrefix: "end-date",
+          classes: "ems-date-filter__input",
           name: "endDate"
         }) }}
-
-      {% endcall %}
+      </div>
 
       {{ govukButton({
         text: "Apply",
         classes: "ems-date-filter__filter-button"
       }) }}
 
-    </div>
+      {% endcall %}
 
     <a href="#">x clear filters</a>
 
