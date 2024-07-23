@@ -1,4 +1,4 @@
-import { validateDate } from '../utils/validateDate.js'
+import { validateDateRange } from '../utils/validateDateRange.js'
 
 function init() {
   const emsDateFilters = document.getElementsByClassName('ems-date-filter')
@@ -18,7 +18,6 @@ function init() {
     // Method for the filter button
     const applyFilter = () => {
       //Validate dates
-
       const startDate = {
         day: startDateInputs[0].value,
         month: startDateInputs[1].value,
@@ -37,18 +36,22 @@ function init() {
         isMandatory: false,
       }
 
-      const validatedStartDate = validateDate(startDate)
+      const {
+        startDate: validatedStartDate,
+        endDate: validatedEndDate,
+        error: dateRangeError,
+      } = validateDateRange(startDate, endDate)
 
-      const validatedEndDate = validateDate(endDate)
-
-      // Filter the records
-      if (validatedStartDate.error || validatedEndDate.error) {
+      // If there are validation errors, display error styles & messages.
+      if (validatedStartDate.error || validatedEndDate.error || dateRangeError) {
         console.log('Date validation failed. Filter was not applied.')
         console.log(
           validatedStartDate.error ? 'Start date error: ' + validatedStartDate.error : 'No error in start date.',
         )
         console.log(validatedEndDate.error ? 'End date error: ' + validatedEndDate.error : 'No error in end date.')
+        console.log(dateRangeError ? 'Date range error: ' + dateRangeError : 'No error in date range.')
       } else {
+        // Filter the records if there are no validation errors.
         for (let table of filterableTables) {
           const rows = table.querySelectorAll('[data-filter-date]')
 
