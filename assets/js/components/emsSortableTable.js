@@ -29,6 +29,7 @@ function init() {
 
       // Get pagination elements
       const pagination = table.querySelector('.moj-pagination')
+      const allPaginationButtons = pagination.querySelectorAll('.moj-pagination__item')
       const prevButton = pagination.querySelector('.moj-pagination__item--prev')
       const nextButton = pagination.querySelector('.moj-pagination__item--next')
       const pageButtons = pagination.getElementsByClassName('moj-pagination__item--link')
@@ -88,16 +89,25 @@ function init() {
           if (currentPage == 1 && buttonNumber == 3) {
             button.classList.remove('hidden')
           }
+
           if (currentPage == totalPages && buttonNumber == totalPages - 2) {
             button.classList.remove('hidden')
           }
+
           if (buttonNumber > totalPages) {
             button.classList.add('hidden')
           }
         }
 
+        // If there are 0 or 1 pages, hide all pagination buttons
+        for (let button of allPaginationButtons) {
+          if (totalPages <= 1) {
+            button.classList.add('hidden')
+          }
+        }
+
         // Update the pagination results
-        const firstRecord = (currentPage - 1) * pageSize + 1
+        const firstRecord = totalPages == 0 ? 0 : (currentPage - 1) * pageSize + 1
         const lastRecord = currentPage * pageSize
         paginationResults[0].innerHTML = firstRecord
         paginationResults[1].innerHTML = Math.min(lastRecord, totalRows)
