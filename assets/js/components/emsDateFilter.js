@@ -18,23 +18,28 @@ function init() {
     // Method for the filter button
     const applyFilter = () => {
       //Validate dates
-      const validatedStartDate = validateDate(
-        startDateInputs[0].value,
-        startDateInputs[1].value,
-        startDateInputs[2].value,
-        'Start date',
-        false,
-        true,
-      )
 
-      const validatedEndDate = validateDate(
-        endDateInputs[0].value,
-        endDateInputs[1].value,
-        endDateInputs[2].value,
-        'End date',
-        false,
-        false,
-      )
+      const startDate = {
+        day: startDateInputs[0].value,
+        month: startDateInputs[1].value,
+        year: startDateInputs[2].value,
+        dateName: 'Start date',
+        isPast: true,
+        isMandatory: false,
+      }
+
+      const endDate = {
+        day: endDateInputs[0].value,
+        month: endDateInputs[1].value,
+        year: endDateInputs[2].value,
+        dateName: 'End date',
+        isPast: false,
+        isMandatory: false,
+      }
+
+      const validatedStartDate = validateDate(startDate)
+
+      const validatedEndDate = validateDate(endDate)
 
       // Filter the records
       if (validatedStartDate.error || validatedEndDate.error) {
@@ -91,7 +96,6 @@ function init() {
     // Initialise the clear filters button
     clearFiltersButton.addEventListener('click', function (event) {
       event.preventDefault()
-      console.log('Clear filters button clicked.')
       clearFilters()
       applyFilter()
       return false

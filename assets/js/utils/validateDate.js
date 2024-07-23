@@ -1,4 +1,6 @@
-function validateDate(day, month, year, dateName, isMandatory, isPast) {
+function validateDate(dateInputs) {
+  const { day, month, year, dateName, isPast, isMandatory } = dateInputs
+
   const date = {
     dateStamp: new Date(`${year + '/' + month + '/' + day}`),
     dateString: null,
