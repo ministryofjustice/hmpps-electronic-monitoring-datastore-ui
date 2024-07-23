@@ -1,4 +1,4 @@
-function validateDate(day, month, year, dateName, isPast) {
+function validateDate(day, month, year, dateName, isMandatory, isPast) {
   const date = {
     dateStamp: new Date(`${year + '/' + month + '/' + day}`),
     dateString: null,
@@ -9,8 +9,11 @@ function validateDate(day, month, year, dateName, isPast) {
 
   const isNumericalString = string => string.match(/^\d+$/)
 
-  if (!day & !month & !year) {
+  if (!day & !month & !year && isMandatory) {
     date.error = 'Enter a date.'
+    return date
+  } else if (!day & !month & !year) {
+    date.dateStamp = null
     return date
   }
 

@@ -4,16 +4,19 @@ function init() {
   const emsDateFilters = document.getElementsByClassName('ems-date-filter')
 
   for (let dateFilter of emsDateFilters) {
+    // Method for the filter button
     const applyFilter = () => {
-      //Validate dates
+      // Get date inputs
       const startDateInputs = dateFilter.querySelector('#start-date').querySelectorAll('input')
       const endDateInputs = dateFilter.querySelector('#end-date').querySelectorAll('input')
 
+      //Validate dates
       const validatedStartDate = validateDate(
         startDateInputs[0].value,
         startDateInputs[1].value,
         startDateInputs[2].value,
         'Start date',
+        false,
         true,
       )
 
@@ -22,6 +25,7 @@ function init() {
         endDateInputs[1].value,
         endDateInputs[2].value,
         'End date',
+        false,
         false,
       )
 
@@ -43,10 +47,10 @@ function init() {
             const startDate = validatedStartDate.dateString
             const endDate = validatedEndDate.dateString
 
-            if (filterDate < startDate || filterDate > endDate) {
-              row.classList.add('filter-active')
-            } else {
+            if ((startDate == null || filterDate > startDate) && (endDate == null || filterDate < endDate)) {
               row.classList.remove('filter-active')
+            } else {
+              row.classList.add('filter-active')
             }
           }
 
