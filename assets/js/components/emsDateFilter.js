@@ -4,12 +4,19 @@ function init() {
   const emsDateFilters = document.getElementsByClassName('ems-date-filter')
 
   for (let dateFilter of emsDateFilters) {
+    // Get buttons
+    const filterButton = dateFilter.querySelector('.ems-date-filter__filter-button')
+    const clearFiltersButton = dateFilter.querySelector('.ems-date-filter__clear-filters-button')
+
+    // Get filter date inputs
+    const startDateInputs = dateFilter.querySelector('#start-date').querySelectorAll('input')
+    const endDateInputs = dateFilter.querySelector('#end-date').querySelectorAll('input')
+
+    //Get all filterable tables within the page
+    const filterableTables = document.querySelectorAll('.date-filterable')
+
     // Method for the filter button
     const applyFilter = () => {
-      // Get date inputs
-      const startDateInputs = dateFilter.querySelector('#start-date').querySelectorAll('input')
-      const endDateInputs = dateFilter.querySelector('#end-date').querySelectorAll('input')
-
       //Validate dates
       const validatedStartDate = validateDate(
         startDateInputs[0].value,
@@ -30,8 +37,6 @@ function init() {
       )
 
       // Filter the records
-      const filterableTables = document.querySelectorAll('.date-filterable')
-
       if (validatedStartDate.error || validatedEndDate.error) {
         console.log('Date validation failed. Filter was not applied.')
         console.log(
@@ -54,17 +59,42 @@ function init() {
             }
           }
 
+          // If any records are filtered out, show the clear filters button
+          if (table.querySelectorAll('.filter-active').length) {
+            clearFiltersButton.classList.remove('hidden')
+          } else {
+            clearFiltersButton.classList.add('hidden')
+          }
+
           // Invoke the table's pagination, returning it to page 1 and refreshing the results table.
           table.getElementsByClassName('moj-pagination__item--link')[0].click()
         }
       }
     }
 
-    const filterButton = dateFilter.querySelector('.ems-date-filter__filter-button')
+    // Method for the clear filters button
+    const clearFilters = () => {
+      for (let dateInput of startDateInputs) {
+        dateInput.value = ''
+      }
+      for (let dateInput of endDateInputs) {
+        dateInput.value = ''
+      }
+    }
 
+    // Initialise the filter button
     filterButton.addEventListener('click', function (event) {
       event.preventDefault()
       applyFilter()
+    })
+
+    // Initialise the clear filters button
+    clearFiltersButton.addEventListener('click', function (event) {
+      event.preventDefault()
+      console.log('Clear filters button clicked.')
+      clearFilters()
+      applyFilter()
+      return false
     })
   }
 }

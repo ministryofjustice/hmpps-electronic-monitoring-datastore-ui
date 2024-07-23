@@ -43,8 +43,12 @@
     flex-direction: row;
     align-items: center;
   }
-}
 
-.filter-active {
-  display: none;
+  .filter-active {
+    display: none;
+  }
+
+  .hidden {
+    display: none;
+  }
 }
