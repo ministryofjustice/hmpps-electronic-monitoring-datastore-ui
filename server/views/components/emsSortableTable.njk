@@ -1,13 +1,10 @@
 {% macro emsSortableTable(records, pageSize) %}
 
-  {% set totalRecords = records.length %}
-  {% set totalPages = (totalRecords / pageSize) | round(0, 'ceil') %}
+  {% set totalPages = (records.length / pageSize) | round(0, 'ceil') %}
   {% set currentPage = 1 %}
 
   <div
     class="ems-sortable-table date-filterable"
-    data-total-records={{ totalRecords }}
-    data-total-pages={{ totalPages }}
     data-page-size={{ pageSize }}
     data-current-page={{ currentPage }}
   >
