@@ -1,9 +1,9 @@
 {% extends "../partials/layout.njk" %}
 
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 
 {% set pageTitle = applicationName + " - Search for case details" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -44,11 +44,7 @@
 
 {% block content %}
 
-  {{ govukWarningText({
-    text: "This service gives you access to all case data that was held by Capita and G4S from [date] to [date]",
-    iconFallbackText: "Warning",
-    classes: "service-information"
-  }) }}
+  {{ emsServiceInformation() }}
 
   <h1>Search for case details</h1>
   
