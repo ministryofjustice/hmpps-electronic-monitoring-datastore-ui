@@ -6,6 +6,7 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 {% from  "../components/emsDateFilter.njk" import emsDateFilter %}
 {% from  "../components/emsSortableTable.njk" import emsSortableTable %}
 
@@ -192,11 +193,7 @@
     href: back_url
   }) }}
 
-  {{ govukWarningText({
-    text: "This service gives you access to all case data that was held by Capita and G4S from [date] to [date]",
-    iconFallbackText: "Warning",
-    classes: "service-information"
-  }) }}
+  {{ emsServiceInformation() }}
 
   {{ govukTable({
     caption: "Key order details",

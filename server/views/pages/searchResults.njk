@@ -4,6 +4,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {%- from "govuk/components/table/macro.njk" import govukTable -%}
 {%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 
 {% set pageTitle = applicationName + " - Search results" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -104,11 +105,7 @@
 
 {% block content %}
 
-  {{ govukWarningText({
-    text: "This service gives you access to all case data that was held by Capita and G4S from [date] to [date]",
-    iconFallbackText: "Warning",
-    classes: "service-information"
-  }) }}
+  {{ emsServiceInformation() }}
 
   {{ govukBackLink({
     text: "refine search",
