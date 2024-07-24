@@ -18,14 +18,22 @@ function init() {
     }
     setRowsAndPages()
 
-    // If there are no Rows, show a message to this effect.
-    // Otherwise, execute code for the component.
-    if (totalRows == 0) {
+    // Functions to hide table & show a message if there are no records
+    const displayNoRecords = () => {
       table.querySelector('.govuk-table').classList.add('hidden')
       table.querySelector('.ems-sortable-table__no-results').classList.remove('hidden')
-    } else {
+    }
+    const displayRecords = () => {
       table.querySelector('.govuk-table').classList.remove('hidden')
       table.querySelector('.ems-sortable-table__no-results').classList.add('hidden')
+    }
+
+    // If there are no rows, show a message to this effect & hide the table.
+    // Otherwise, show the table & execute code for the component.
+    if (totalRows == 0) {
+      displayNoRecords()
+    } else {
+      displayRecords()
 
       // Get pagination elements
       const pagination = table.querySelector('.moj-pagination')
@@ -42,6 +50,7 @@ function init() {
         const firstIndex = (currentPage - 1) * pageSize
         const lastIndex = currentPage * pageSize
 
+        // Apply the filter to the table rows.
         rows.forEach((row, index) => {
           if (index >= firstIndex && index <= lastIndex - 1) {
             row.classList.remove('hidden')
@@ -49,6 +58,13 @@ function init() {
             row.classList.add('hidden')
           }
         })
+
+        // Hide the table & display a message if there are no rows to show. Otherwise, show the table.
+        if (totalRows == 0) {
+          displayNorecords()
+        } else {
+          displayRecords()
+        }
       }
 
       // Function to update the pagination component when pagination is used.
