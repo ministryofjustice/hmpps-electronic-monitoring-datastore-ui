@@ -33,5 +33,11 @@ export default function routes({ auditService }: Services): Router {
     res.render('pages/orderDetails')
   })
 
+  get('/details-table', async (req, res, next) => {
+    // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
+    res.render('pages/detailsTable')
+  })
+
   return router
 }
