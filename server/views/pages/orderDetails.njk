@@ -188,12 +188,12 @@
 
 {% block content %}
 
+  {{ emsServiceInformation() }}
+
   {{ govukBackLink({
     text: "refine search",
     href: back_url
   }) }}
-
-  {{ emsServiceInformation() }}
 
   {{ govukTable({
     caption: "Key order details",
