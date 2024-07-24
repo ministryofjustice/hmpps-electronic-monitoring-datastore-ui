@@ -3,7 +3,7 @@ function validateDate(dateInputs) {
 
   const date = {
     dateStamp: new Date(`${year + '/' + month + '/' + day}`),
-    dateString: null,
+    date: null,
     error: null,
     errorFields: null,
   }
@@ -67,7 +67,7 @@ function validateDate(dateInputs) {
   // Convert the input date to a time string in format YYYYMMDD & return it
   const offset = date.dateStamp.getTimezoneOffset()
   const offsetDate = new Date(date.dateStamp.getTime() - offset * 60 * 1000)
-  date.dateString = offsetDate.toISOString().split('T')[0].replaceAll('-', '')
+  date.date = parseInt(offsetDate.toISOString().split('T')[0].replaceAll('-', ''))
 
   return date
 }

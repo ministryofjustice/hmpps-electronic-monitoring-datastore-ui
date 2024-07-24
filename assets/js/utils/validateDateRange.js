@@ -1,24 +1,23 @@
 import { validateDate } from './validateDate.js'
 
 function validateDateRange(startDateInputs, endDateInputs) {
+  const startDate = validateDate(startDateInputs)
+  const endDate = validateDate(endDateInputs)
+
   const dateRange = {
-    startDate: validateDate(startDateInputs),
-    endDate: validateDate(endDateInputs),
+    startDate: startDate.date,
+    endDate: endDate.date,
     error: null,
     errorFields: null,
   }
 
-  if (dateRange.startDate.error) {
-    dateRange.error = dateRange.startDate.error
-    dateRange.errorFields = dateRange.startDate.errorFields.map(field => `start-date-${field}`)
-  } else if (dateRange.endDate.error) {
-    dateRange.error = dateRange.endDate.error
-    dateRange.errorFields = dateRange.endDate.errorFields.map(field => `end-date-${field}`)
-  } else if (
-    dateRange.startDate.dateString &&
-    dateRange.endDate.dateString &&
-    dateRange.startDate.dateString > dateRange.endDate.dateString
-  ) {
+  if (startDate.error) {
+    dateRange.error = startDate.error
+    dateRange.errorFields = startDate.errorFields.map(field => `start-date-${field}`)
+  } else if (endDate.error) {
+    dateRange.error = endDate.error
+    dateRange.errorFields = endDate.errorFields.map(field => `end-date-${field}`)
+  } else if (startDate.dateString && endDate.dateString && startDate.dateString > endDate.dateString) {
     dateRange.error = 'The start date must be the same as or after the end date'
     dateRange.errorFields = [
       'start-date-day',

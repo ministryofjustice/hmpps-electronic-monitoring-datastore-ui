@@ -9,8 +9,8 @@ function init() {
     const clearFiltersButton = dateFilter.querySelector('.ems-date-filter__clear-filters-button')
 
     // Get filter date elements
-    const startDateInputs = dateFilter.querySelector('#start-date').querySelectorAll('input')
-    const endDateInputs = dateFilter.querySelector('#end-date').querySelectorAll('input')
+    const startDateFields = dateFilter.querySelector('#start-date').querySelectorAll('input')
+    const endDateFields = dateFilter.querySelector('#end-date').querySelectorAll('input')
     const errorMessage = dateFilter.querySelector('.govuk-error-message')
 
     //Get all filterable tables within the page
@@ -19,30 +19,30 @@ function init() {
     // Method for the filter button
     const applyFilter = () => {
       //Validate dates
-      const startDate = {
-        day: startDateInputs[0].value,
-        month: startDateInputs[1].value,
-        year: startDateInputs[2].value,
+      const startDateInputs = {
+        day: startDateFields[0].value,
+        month: startDateFields[1].value,
+        year: startDateFields[2].value,
         dateName: 'Start date',
         isPast: true,
         isMandatory: false,
       }
 
-      const endDate = {
-        day: endDateInputs[0].value,
-        month: endDateInputs[1].value,
-        year: endDateInputs[2].value,
+      const endDateInputs = {
+        day: endDateFields[0].value,
+        month: endDateFields[1].value,
+        year: endDateFields[2].value,
         dateName: 'End date',
         isPast: false,
         isMandatory: false,
       }
 
       const {
-        startDate: validatedStartDate,
-        endDate: validatedEndDate,
+        startDate: startDate,
+        endDate: endDate,
         error: dateRangeError,
         errorFields,
-      } = validateDateRange(startDate, endDate)
+      } = validateDateRange(startDateInputs, endDateInputs)
 
       // If input validation fails, show error message & styling.
       // Else, remove error messge & styling & filter the table.
@@ -69,8 +69,8 @@ function init() {
 
           for (let row of rows) {
             const filterDate = parseInt(row.dataset.filterDate)
-            const startDate = validatedStartDate.dateString
-            const endDate = validatedEndDate.dateString
+            // const startDate = startDateString
+            // const endDate = endDateString
 
             if ((startDate == null || filterDate > startDate) && (endDate == null || filterDate < endDate)) {
               row.classList.remove('filter-active')
@@ -94,11 +94,11 @@ function init() {
 
     // Method for the clear filters button
     const clearFilters = () => {
-      for (let dateInput of startDateInputs) {
-        dateInput.value = ''
+      for (let dateField of startDateFields) {
+        dateField.value = ''
       }
-      for (let dateInput of endDateInputs) {
-        dateInput.value = ''
+      for (let dateField of endDateFields) {
+        dateField.value = ''
       }
     }
 
