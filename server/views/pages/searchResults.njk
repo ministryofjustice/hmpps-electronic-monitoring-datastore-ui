@@ -112,9 +112,11 @@
     href: back_url
   }) }}
 
-  <h1>Search results</h1>
+  <hr class="govuk-section-break govuk-section-break--m">
 
 {{ govukTable({
+  caption: "Search results",
+  captionClasses: "govuk-table__caption--l",
   attributes: {
     'data-module': 'moj-sortable-table'
   },
