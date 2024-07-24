@@ -5,7 +5,7 @@ function validateDate(dateInputs) {
     dateStamp: new Date(`${year + '/' + month + '/' + day}`),
     dateString: null,
     error: null,
-    errorType: null,
+    errorFields: null,
   }
 
   const now = new Date().setHours(0, 0, 0, 0)
@@ -14,7 +14,7 @@ function validateDate(dateInputs) {
 
   if (!day & !month & !year && isMandatory) {
     date.error = 'Enter a date.'
-    date.errorType = 'all'
+    date.errorFieldss = ['day', 'month', 'year']
     return date
   } else if (!day & !month & !year) {
     date.dateStamp = null
@@ -23,43 +23,43 @@ function validateDate(dateInputs) {
 
   if (isNaN(date.dateStamp)) {
     date.error = `${dateName} must be a real date.`
-    date.errorType = 'all'
+    date.errorFields = ['day', 'month', 'year']
     return date
   }
 
   if (!day) {
     date.error = 'Enter a day.'
-    date.errorType = 'day'
+    date.errorFields = ['day']
     return date
   }
 
   if (!month) {
     date.error = 'Enter a month.'
-    date.errorType = 'month'
+    date.errorFields = ['month']
     return date
   }
 
   if (!year) {
     date.error = 'Enter a year.'
-    date.errorType = 'year'
+    date.errorFields = ['year']
     return date
   }
 
   if (!isNumericalString(day) || !isNumericalString(month) || !isNumericalString(year)) {
     date.error = `${dateName} must be a real date.`
-    date.errorType = 'all'
+    date.errorFields = ['day', 'month', 'year']
     return date
   }
 
   if (year && year.length != 4) {
     date.error = `Enter a full year (eg. 2001).`
-    date.errorType = 'year'
+    date.errorFields = ['year']
     return date
   }
 
   if (isPast && date.value > now) {
     date.error = `${dateName} must be in the past.`
-    date.errorType = 'all'
+    date.errorFields = ['day', 'month', 'year']
     return date
   }
 

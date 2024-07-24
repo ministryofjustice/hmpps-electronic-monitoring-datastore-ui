@@ -8,9 +8,10 @@ function init() {
     const filterButton = dateFilter.querySelector('.ems-date-filter__filter-button')
     const clearFiltersButton = dateFilter.querySelector('.ems-date-filter__clear-filters-button')
 
-    // Get filter date inputs
+    // Get filter date elements
     const startDateInputs = dateFilter.querySelector('#start-date').querySelectorAll('input')
     const endDateInputs = dateFilter.querySelector('#end-date').querySelectorAll('input')
+    const errorMessage = dateFilter.querySelector('.govuk-error-message')
 
     //Get all filterable tables within the page
     const filterableTables = document.querySelectorAll('.date-filterable')
@@ -40,17 +41,28 @@ function init() {
         startDate: validatedStartDate,
         endDate: validatedEndDate,
         error: dateRangeError,
+        errorFields,
       } = validateDateRange(startDate, endDate)
 
-      // If there are validation errors, display error styles & messages.
-      if (validatedStartDate.error || validatedEndDate.error || dateRangeError) {
-        console.log('Date validation failed. Filter was not applied.')
-        console.log(
-          validatedStartDate.error ? 'Start date error: ' + validatedStartDate.error : 'No error in start date.',
-        )
-        console.log(validatedEndDate.error ? 'End date error: ' + validatedEndDate.error : 'No error in end date.')
-        console.log(dateRangeError ? 'Date range error: ' + dateRangeError : 'No error in date range.')
+      // If input validation fails, show error message & styling.
+      // Else, remove error messge & styling & filter the table.
+      if (dateRangeError) {
+        dateFilter.classList.add('ems-date-filter--error')
+        errorMessage.classList.remove('hidden')
+        errorMessage.textContent = dateRangeError
+
+        for (let field of dateFilter.querySelectorAll('.govuk-input')) {
+          field.classList.remove('govuk-input--error')
+        }
+        errorFields.forEach(field => dateFilter.querySelector(`#${field}`).classList.add('govuk-input--error'))
       } else {
+        dateFilter.classList.remove('ems-date-filter--error')
+        errorMessage.classList.add('hidden')
+        errorMessage.textContent = ''
+        for (let field of dateFilter.querySelectorAll('.govuk-input')) {
+          field.classList.remove('govuk-input--error')
+        }
+
         // Filter the records if there are no validation errors.
         for (let table of filterableTables) {
           const rows = table.querySelectorAll('[data-filter-date]')

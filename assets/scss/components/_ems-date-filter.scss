@@ -13,9 +13,16 @@
   }
 
   &__filter-button {
+    margin-bottom: 0;
+
     @media(min-width: 641px) {
-      margin-bottom: 0
+      margin-top: 28px;
     }
+  }
+
+  &__clear-filters-button {
+    display: block;
+    margin-top: 16px;
   }
 
   &__text {
@@ -25,6 +32,7 @@
 
       @media(min-width: 641px) {
         display: block;
+        margin-top: 28px;
       }
     }
 
@@ -42,6 +50,22 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+  }
+
+  &--error {
+    padding-left: govuk-spacing(3);
+    border-left: $govuk-border-width-form-group-error solid $govuk-error-colour;
+
+    .govuk-form-group {
+      padding: 0;
+      border: 0;
+    }
+  }
+
+  .govuk-form-group {
+    @media(min-width: 641px) {
+      margin-bottom: 0;
+    }
   }
 
   .hidden {
