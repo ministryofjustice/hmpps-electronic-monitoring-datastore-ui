@@ -53,7 +53,7 @@ function init() {
         })
 
         if (totalRows == 0) {
-          displayNorecords()
+          displayNoRecords()
         } else {
           displayRecords()
         }
