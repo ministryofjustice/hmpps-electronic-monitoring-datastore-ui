@@ -6,7 +6,7 @@ function init() {
   for (let dateFilter of emsDateFilters) {
     // Get buttons
     const filterButton = dateFilter.querySelector('.ems-date-filter__filter-button')
-    const clearFiltersButton = dateFilter.querySelector('.ems-date-filter__clear-filters-button')
+    const clearFilterButton = dateFilter.querySelector('.ems-date-filter__clear-filter-button')
 
     // Get filter date elements
     const startDateFields = dateFilter.querySelector('#start-date').querySelectorAll('input')
@@ -79,11 +79,12 @@ function init() {
             }
           }
 
-          // If any records are filtered out, show the clear filters button
-          if (table.querySelectorAll('.filter-active').length) {
-            clearFiltersButton.classList.remove('hidden')
+          // If a filter has been applied, show the clear filter button.
+          // Otherwise, hide it.
+          if (startDate || endDate) {
+            clearFilterButton.classList.remove('hidden')
           } else {
-            clearFiltersButton.classList.add('hidden')
+            clearFilterButton.classList.add('hidden')
           }
 
           // Invoke the table's pagination, returning it to page 1 and refreshing the results table.
@@ -92,8 +93,8 @@ function init() {
       }
     }
 
-    // Method for the clear filters button
-    const clearFilters = () => {
+    // Method for the clear filter button
+    const clearFilter = () => {
       for (let dateField of startDateFields) {
         dateField.value = ''
       }
@@ -108,10 +109,10 @@ function init() {
       applyFilter()
     })
 
-    // Initialise the clear filters button
-    clearFiltersButton.addEventListener('click', function (event) {
+    // Initialise the clear filter button
+    clearFilterButton.addEventListener('click', function (event) {
       event.preventDefault()
-      clearFilters()
+      clearFilter()
       applyFilter()
       return false
     })
