@@ -63,8 +63,6 @@ function validateDate(dateInputs) {
     return date
   }
 
-  // If validation is successful,
-  // Convert the input date to a time string in format YYYYMMDD & return it
   const offset = date.dateStamp.getTimezoneOffset()
   const offsetDate = new Date(date.dateStamp.getTime() - offset * 60 * 1000)
   date.date = parseInt(offsetDate.toISOString().split('T')[0].replaceAll('-', ''))
