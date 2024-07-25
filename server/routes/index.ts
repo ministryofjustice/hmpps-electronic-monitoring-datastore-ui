@@ -23,6 +23,10 @@ export default function routes({ auditService }: Services): Router {
 
   get('/search-results', async (req, res, next) => {
     // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    const formData = req.query
+
+    // Once data is available to be served to the frontend from Athena, this get method will request that data and serve it into the searchResults page.
+    console.log(formData)
 
     res.render('pages/searchResults')
   })
