@@ -53,7 +53,7 @@
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
 
-      <form id="case-search-form" action="/form-handler" method="post" novalidate>
+      <form id="case-search-form" method="get" action="/search-results" novalidate>
 
         {{ govukInput({
           label: {
@@ -157,8 +157,10 @@
             else mockValidationData.alias.errorMessage
           )
         }) }}
+
         {{ govukButton({
-          text: "Search"
+          text: "Search",
+          type: "submit"
         }) }}
 
       </form>
