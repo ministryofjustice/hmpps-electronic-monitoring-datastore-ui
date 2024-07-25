@@ -2,6 +2,7 @@
 import path from 'path'
 import nunjucks from 'nunjucks'
 import express from 'express'
+import allMojFilters from '@ministryofjustice/frontend/moj/filters/all'
 import { initialiseName } from './utils'
 import { ApplicationInfo } from '../applicationInfo'
 import config from '../config'
@@ -41,4 +42,10 @@ export default function nunjucksSetup(app: express.Express, applicationInfo: App
   )
 
   njkEnv.addFilter('initialiseName', initialiseName)
+
+  // Add filters from MOJ Frontend
+  const mojFilters = Object.assign(allMojFilters())
+  Object.keys(mojFilters).forEach(function (filterName) {
+    njkEnv.addFilter(filterName, mojFilters[filterName])
+  })
 }

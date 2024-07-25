@@ -1,0 +1,72 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{%- from "moj/components/timeline/macro.njk" import mojTimeline -%}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{%- set firstRecordHTML %}
+  <p>First record.</p>
+{% endset -%}
+
+{%- set secondRecordHTML %}
+  <p>Second record.</p>
+{% endset -%}
+
+{%- set thirdRecordHTML %}
+  <p>Third record.</p>
+{% endset -%}
+
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: "#"
+  }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
+{{ mojTimeline({
+  items: [
+    {
+      label: {
+        text: "First record"
+      },
+      html: firstRecordHTML,
+      datetime: {
+        timestamp: "2019-06-14T14:01:00.000Z",
+        type: "datetime"
+      }
+    },
+    {
+      label: {
+        text: "Second record"
+      },
+      html: secondRecordHTML,
+      datetime: {
+        timestamp: "2019-06-15T14:01:00.000Z",
+        type: "datetime"
+      }
+    },
+    {
+      label: {
+        text: "Third record"
+      },
+      html: thirdRecordHTML,
+      datetime: {
+        timestamp: "2019-06-16T14:01:00.000Z",
+        type: "datetime"
+      },
+      byline: {
+        text: "Reporting Individual"
+      }
+    }
+  ]
+}) }}
+
+
+
+{% endblock %}
