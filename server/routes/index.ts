@@ -1,6 +1,8 @@
 import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
+import getOrders from '../data/getOrders'
+import tablateOrders from '../utils/tablateOrders'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
 
@@ -23,12 +25,14 @@ export default function routes({ auditService }: Services): Router {
 
   get('/search-results', async (req, res, next) => {
     // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
-    const formData = req.query
 
-    // Once data is available to be served to the frontend from Athena, this get method will request that data and serve it into the searchResults page.
-    console.log(formData)
-
-    res.render('pages/searchResults')
+    try {
+      const orders = await getOrders()
+      const tablatedOrders = tablateOrders(orders)
+      res.render('pages/searchResults', { data: tablatedOrders })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
   })
 
   get('/order-details', async (req, res, next) => {
