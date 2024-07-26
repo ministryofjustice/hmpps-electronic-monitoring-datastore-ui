@@ -57,7 +57,7 @@ function validateDate(dateInputs) {
     return date
   }
 
-  if (isPast && date.value > now) {
+  if (isPast && date.dateStamp > now) {
     date.error = `${dateName} must be in the past.`
     date.errorFields = ['day', 'month', 'year']
     return date
