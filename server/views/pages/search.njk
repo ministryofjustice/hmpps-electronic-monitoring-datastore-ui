@@ -24,7 +24,7 @@
   dateOfBirth: {
     errorMessage: "Enter a day.",
     day: {
-      value: "12",
+      value: null,
       error: true
     },
     month: {
@@ -91,7 +91,7 @@
           <input class="govuk-input govuk-input--width-20{% if mockValidationData.lastName.errorMessage %} govuk-input--error{% endif %}" id="last-name" name="lastName" type="text">
         </div>
 
-        <div class="govuk-form-group{% if mockValidationData.dateOfBirth.errorMessage %} govuk-form-group--error{% endif %}">
+        <div class="govuk-form-group{% if mockValidationData.dateOfBirth.errorMessage %} govuk-form-group--error{% endif %} ems-form-group__date">
           <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint">
             <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
               Date of birth
@@ -149,8 +149,6 @@
           text: "Search",
           classes: "ems-search-form__button--submit"
         }) }}
-
-      <p class="test-insert"></p>
       </form>
     </div>
   </div>
