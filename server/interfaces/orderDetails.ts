@@ -1,45 +1,45 @@
 interface KeyOrderDetails {
-  legacy_subject_id: string
+  legacySubjectId: string
   name: string
   alias: string | null
-  date_of_birth: string
+  dateOfBirth: string
   postcode: string
-  address_1: string
-  address_2: string | null
-  address_3: string | null
-  tag_type: string
-  start_date: string
-  end_date: string
+  address1: string
+  address2: string | null
+  address3: string | null
+  tagType: string
+  startDate: string
+  endDate: string
 }
 
 interface Reports {
-  back: string
-  order_details: string
-  visits_and_tasks: string
-  event_hsitory: string
-  equipment_details: string
-  curfew_hours: string
-  curfew_violations: string
-  contact_history: string
+  orderDetails: string
+  visitsAndTasks: string
+  eventHistory: string
+  equipmentDetails: string
+  curfewHours: string
+  curfewViolations: string
+  contactHistory: string
   suspensions: string
 }
 
 interface SubjectHistoryReport {
-  report_url: string
+  reportUrl: string
   name: string
-  created_on: string
+  createdOn: string
   time: string
 }
 
 interface OrderDocument {
   name: string
   url: string
-  created_on: string
+  createdOn: string
   time: string
   notes: string
 }
 
 export interface OrderDetails {
+  backUrl: string
   keyOrderDetails: KeyOrderDetails
   subjectHistoryReport: SubjectHistoryReport
   reports: Reports

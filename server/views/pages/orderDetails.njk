@@ -12,7 +12,7 @@
 
 {% set pageTitle = applicationName + " - Order details" %}
 {% set mainClasses = "app-container govuk-body" %}
-
+{% set backUrl = data.backUrl %}
 {% set orderDetails = data.keyOrderDetails %}
 {% set reports = data.reports %}
 {% set subjectHistory = data.subjectHistoryReport %}
@@ -32,9 +32,9 @@
         }
       },
       {
-        text: document.created_on,
+        text: document.createdOn,
         attributes: {
-          "data-sort-value": document.created_on.split('-')[2] ~ document.created_on.split[1] ~ document.created_on.split[0]
+          "data-sort-value": document.createdOn.split('-')[2] ~ document.createdOn.split[1] ~ document.createdOn.split[0]
         }
       },
       {
@@ -56,7 +56,7 @@
 
   {{ govukBackLink({
     text: "refine search",
-    href: back_url
+    href: backUrl
   }) }}
 
   {{ govukTable({
@@ -69,7 +69,7 @@
           text: "Legacy subject ID"
         },
         {
-          text: orderDetails.legacy_subject_id
+          text: orderDetails.legacySubjectId
         }
       ],
       [
@@ -93,7 +93,7 @@
           text: "Date of birth"
         },
         {
-          text: orderDetails.date_of_birth
+          text: orderDetails.dateOfBirth
         }
       ],
       [
@@ -110,9 +110,9 @@
         },
         {
           html: ' <span>'
-            + orderDetails.address_1
-            + (('<br/>' + orderDetails.address_2) if orderDetails.address_2 else '')
-            + (('<br/>' +  orderDetails.address_3) if orderDetails.address_3 else '')
+            + orderDetails.address1
+            + (('<br/>' + orderDetails.address2) if orderDetails.address2 else '')
+            + (('<br/>' +  orderDetails.address3) if orderDetails.address3 else '')
           + '</span>'
         }
       ],
@@ -121,7 +121,7 @@
           text: "Tag type"
         },
         {
-          text: orderDetails.tag_type
+          text: orderDetails.tagType
         }
       ],
       [
@@ -129,7 +129,7 @@
           text: "Start date"
         },
         {
-          text: orderDetails.start_date
+          text: orderDetails.startDate
         }
       ],
       [
@@ -137,7 +137,7 @@
           text: "End date"
         },
         {
-          text: orderDetails.end_date
+          text: orderDetails.endDate
         }
       ]
     ]
@@ -148,43 +148,43 @@
   <div class="govuk-button-group ems-button-grid">
     {{ govukButton({
       text: "Order details",
-      href: reports.order_details,
+      href: reports.orderDetails,
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }}
 
     {{ govukButton({
       text: "Visits and tasks",
-      href: reports.vistis_and_tasks,
+      href: reports.vistisAndTasks,
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }}
 
     {{ govukButton({
       text: "Event history",
-      href: reports.event_history,
+      href: reports.eventHistory,
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }}
 
     {{ govukButton({
       text: "Equipment details",
-      href: reports.equipment_details,
+      href: reports.equipmentDetails,
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }}
 
     {{ govukButton({
       text: "Curfew hours",
-      href: reports.curfew_hours,
+      href: reports.curfewHours,
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }}
 
     {{ govukButton({
       text: "Curfew violations",
-      href: reports.curfew_violations,
+      href: reports.curfewViolations,
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }}
 
     {{ govukButton({
       text: "Contact history",
-      href: reports.contact_history,
+      href: reports.contactHistory,
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }}
 
@@ -216,13 +216,13 @@
       [
         {
           html: '
-            <a href="' + subjectHistory.report_url + '">
+            <a href="' + subjectHistory.reportUrl + '">
               '+ subjectHistory.name +'
             </a>
           ' 
         },
         {
-          text: subjectHistory.created_on
+          text: subjectHistory.createdOn
         },
         {
           text: subjectHistory.time
