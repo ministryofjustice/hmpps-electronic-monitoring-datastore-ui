@@ -2,7 +2,7 @@ import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import getOrders from '../data/getOrders'
-import getOrderDetails from '../data/getOrderDetails'
+import getOrderSummary from '../data/getOrderSummary'
 import tablateOrders from '../utils/tablateOrders'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
@@ -36,12 +36,12 @@ export default function routes({ auditService }: Services): Router {
     }
   })
 
-  get('/order-details', async (req, res, next) => {
+  get('/order-summary', async (req, res, next) => {
     // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
-      const orderDetails = await getOrderDetails()
-      res.render('pages/orderDetails', { data: orderDetails })
+      const orderSummary = await getOrderSummary()
+      res.render('pages/orderSummary', { data: orderSummary })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }

@@ -2,15 +2,15 @@
 
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
-import orderDetails from './mockData/orderDetails'
+import orderSummary from './mockData/orderSummary'
 
-const getOrderDetails = async () => {
+const getOrderSummary = async () => {
   try {
-    return orderDetails
+    return orderSummary
   } catch (error) {
-    logger.error(getSanitisedError(error), 'Error retrieving order details')
+    logger.error(getSanitisedError(error), 'Error retrieving order summary')
     return error
   }
 }
 
-export default getOrderDetails
+export default getOrderSummary

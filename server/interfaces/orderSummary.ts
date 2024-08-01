@@ -38,7 +38,7 @@ interface OrderDocument {
   notes: string
 }
 
-export interface OrderDetails {
+export interface OrderSummary {
   backUrl: string
   keyOrderDetails: KeyOrderDetails
   subjectHistoryReport: SubjectHistoryReport

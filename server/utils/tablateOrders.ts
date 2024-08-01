@@ -8,7 +8,7 @@ const tablateOrders = (orders: Order[]) => {
           'data-sort-value': order.subjectId,
         },
         html: `
-          <a href="${order.orderDetailsUrl}">
+          <a href="${order.orderSummaryUrl}">
             ${order.subjectId}
           </a>
         `,

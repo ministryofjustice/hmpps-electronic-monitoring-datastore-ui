@@ -1,6 +1,6 @@
-import { OrderDetails } from '../../interfaces/orderDetails'
+import { OrderSummary } from '../../interfaces/orderSummary'
 
-const orderDetails: OrderDetails = {
+const orderSummary: OrderSummary = {
   backUrl: '/search-results',
   keyOrderDetails: {
     legacySubjectId: '1234567',
@@ -150,4 +150,4 @@ const orderDetails: OrderDetails = {
   },
 }
 
-export default orderDetails
+export default orderSummary
