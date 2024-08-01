@@ -70,10 +70,11 @@ function init() {
         if (totalPages > 5) {
           currentPage < 4 ? dots[0].classList.add('hidden') : dots[0].classList.remove('hidden')
 
-          currentPage > totalPages - 3 ? dots[1].classList.add('hidden') : dots[1].classList.remove('hidden')
+          currentPage > totalPages - 3 && dots[1] ? dots[1].classList.add('hidden') : dots[1].classList.remove('hidden')
         } else {
-          dots[0].classList.add('hidden')
-          dots[1].classList.add('hidden')
+          for (let dotsElement of dots) {
+            dotsElement.classList.add('hidden')
+          }
         }
 
         for (let button of pageButtons) {
