@@ -7,8 +7,9 @@ function init() {
     const dateForm = searchForm.querySelector('.ems-form-group__date')
     const dateErrorMessage = dateForm.querySelector('#date-of-birth-error')
     const dateFields = dateForm.querySelectorAll('.govuk-input')
+    const submitButton = searchForm.querySelector('.ems-search-form__button--submit')
 
-    const dateOfBirthIsValid = () => {
+    const validateDateOfBirth = () => {
       const dateInputs = {
         day: dateFields[0].value,
         month: dateFields[1].value,
@@ -18,8 +19,10 @@ function init() {
         isMandatory: false,
       }
 
-      const { error: errorMessage, errorFields } = validateDate(dateInputs)
+      return validateDate(dateInputs)
+    }
 
+    const updateDateFields = (errorMessage, errorFields) => {
       if (errorMessage) {
         dateForm.classList.add('govuk-form-group--error')
         dateErrorMessage.classList.remove('govuk-visually-hidden')
@@ -41,21 +44,18 @@ function init() {
         for (let field of dateFields) {
           field.classList.remove('govuk-input--error')
         }
-
-        return true
       }
     }
 
-    const submitButton = searchForm.querySelector('.ems-search-form__button--submit')
-
-    submitButton.classList.add('test-class')
-
     submitButton.addEventListener('click', event => {
       event.preventDefault()
-      const validation = dateOfBirthIsValid()
 
-      if (validation) {
+      const { error: errorMessage, errorFields } = validateDateOfBirth()
+
+      if (!errorMessage) {
         searchForm.submit()
+      } else {
+        updateDateFields(errorMessage, errorFields)
       }
     })
   }
