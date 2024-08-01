@@ -44,7 +44,7 @@
 
       <tbody class="govuk-table__body">
         {% for record in records %}
-          {% set standardDate = record.created_on.split('-')[2] + record.created_on.split('-')[1] + record.created_on.split('-')[0] %}
+          {% set standardDate = record.createdOn.split('-')[2] + record.createdOn.split('-')[1] + record.createdOn.split('-')[0] %}
           <tr
             class="govuk-table__row govuk-table__data-row hidden"
             data-filter-date="{{ standardDate }}"
@@ -60,7 +60,7 @@
             <td
               class="govuk-table__cell"
               data-sort-value="{{ standardDate }}"
-            >{{ record.created_on }}</td>
+            >{{ record.createdOn }}</td>
 
             <td
               class="govuk-table__cell"
