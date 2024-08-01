@@ -5,11 +5,11 @@ const tablateOrders = (orders: Order[]) => {
     return [
       {
         attributes: {
-          'data-sort-value': order.subject_id,
+          'data-sort-value': order.subjectId,
         },
         html: `
-          <a href="${order.order_details_url}">
-            ${order.subject_id}
+          <a href="${order.orderDetailsUrl}">
+            ${order.subjectId}
           </a>
         `,
       },
@@ -23,19 +23,19 @@ const tablateOrders = (orders: Order[]) => {
         `,
       },
       {
-        text: order.date_of_birth,
+        text: order.dateOfBirth,
         attributes: {
           'data-sort-value':
-            order.date_of_birth.split('-')[2] + order.date_of_birth.split('-')[1] + order.date_of_birth.split('-')[0],
+            order.dateOfBirth.split('-')[2] + order.dateOfBirth.split('-')[1] + order.dateOfBirth.split('-')[0],
         },
       },
       {
-        text: order.order_start_date,
+        text: order.orderStartDate,
         attributes: {
           'data-sort-value':
-            order.order_start_date.split('-')[2] +
-            order.order_start_date.split('-')[1] +
-            order.order_start_date.split('-')[0],
+            order.orderStartDate.split('-')[2] +
+            order.orderStartDate.split('-')[1] +
+            order.orderStartDate.split('-')[0],
         },
         classes: 'govuk-table__cell--numeric',
       },
