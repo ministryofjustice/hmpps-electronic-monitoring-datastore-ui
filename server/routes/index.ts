@@ -2,6 +2,7 @@ import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import getOrders from '../data/getOrders'
+import getOrderDetails from '../data/getOrderDetails'
 import tablateOrders from '../utils/tablateOrders'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
@@ -38,7 +39,12 @@ export default function routes({ auditService }: Services): Router {
   get('/order-details', async (req, res, next) => {
     // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
-    res.render('pages/orderDetails')
+    try {
+      const orderDetails = await getOrderDetails()
+      res.render('pages/orderDetails', { data: orderDetails })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
   })
 
   get('/details-table', async (req, res, next) => {
