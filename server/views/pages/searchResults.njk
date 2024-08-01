@@ -8,7 +8,10 @@
 
 {% set pageTitle = applicationName + " - Search results" %}
 {% set mainClasses = "app-container govuk-body" %}
-{% set tableRows = data %}
+{% set records = data %}
+{% set pageSize = 10 %}
+{% set currentPage = 1 %}
+{% set totalPages = (records.length / pageSize) | round(0, 'ceil') %}
 
 {% block content %}
   {{ emsServiceInformation() }}
@@ -20,78 +23,84 @@
 
   <hr class="govuk-section-break govuk-section-break--m">
 
-{{ govukTable({
-  caption: "Search results",
-  captionClasses: "govuk-table__caption--l",
-  attributes: {
-    'data-module': 'moj-sortable-table'
-  },
-  classes: "search-results-table",
-  head: [
-    {
-      text: "Subject ID",
-      classes: "subject-id-header",
-      attributes: {
-        "aria-sort": "ascending"
-      }
-    },
-    {
-      text: "Name",
-      classes: "name-header",
-      attributes: {
-        "aria-sort": "none"
-      }
-    },
-    {
-      text: "Date of birth",
-      classes: "date-of-birth-header",
-      attributes: {
-        "aria-sort": "none"
-      }
-    },
-    {
-      text: "Order start date",
-      classes: "order-start-date-header",
-      attributes: {
-        "aria-sort": "none"
-      },
-      format: "numeric"
-    }
-  ],
-  rows: tableRows
-}) }}
+  <div
+    class="ems-sortable-table"
+    data-page-size={{ pageSize }}
+    data-current-page={{ currentPage }}
+    >
 
-{{ mojPagination({
-  items: [{
-    text: '1',
-    href: '/page=1'
-  }, {
-    text: '2',
-    href: '/page=2',
-    selected: true
-  }, {
-    text: '3',
-    href: '/page=3'
-  }, {
-    type: 'dots'
-  }, {
-    text: '5',
-    href: '/page=5'
-  }],
-  results: {
-    count: 30,
-    from: 10,
-    to: 20,
-    text: 'pages'
-  },
-  previous: {
-    text: 'Previous',
-    href: ''
-  },
-  next: {
-    text: 'Next',
-    href: ''
-  }
-}) }}
+    {{ govukTable({
+      caption: "Search results",
+      captionClasses: "govuk-table__caption--l",
+      attributes: {
+        'data-module': 'moj-sortable-table'
+      },
+      classes: "search-results-table",
+      head: [
+        {
+          text: "Subject ID",
+          classes: "subject-id-header",
+          attributes: {
+            "aria-sort": "ascending"
+          }
+        },
+        {
+          text: "Name",
+          classes: "name-header",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "Date of birth",
+          classes: "date-of-birth-header",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "Order start date",
+          classes: "order-start-date-header",
+          attributes: {
+            "aria-sort": "none"
+          },
+          format: "numeric"
+        }
+      ],
+      rows: records
+    }) }}
+
+    <p class="ems-sortable-table__no-results hidden">No results to show.</p>
+
+    <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
+
+      <ul class="moj-pagination__list">
+        <li class="moj-pagination__item  moj-pagination__item--prev">
+          <a class="moj-pagination__link" href="">Previous<span class="govuk-visually-hidden"> page</span></a>
+        </li>
+
+        {% for i in range(1, totalPages + 1) %}
+          <li
+            class="moj-pagination__item moj-pagination__item--link"
+            data-button-number="{{ i }}"
+          >
+            <a class="moj-pagination__link" href="#" aria-label="Page {{ i }} of {{ totalPages }}">
+              {{ i }}
+            </a>
+          </li>
+
+          {% if (i == 1) or (i == totalPages - 1) %}
+            <li class="moj-pagination__item moj-pagination__item--dots hidden">…</li>
+          {% endif %}
+        {% endfor %}
+
+        <li class="moj-pagination__item  moj-pagination__item--next">
+          <a class="moj-pagination__link" href="">Next<span class="govuk-visually-hidden"> page</span></a>
+        </li>
+      </ul>
+      <p class="moj-pagination__results">Showing <b></b> to <b></b> of <b></b> results</p>
+    </nav>
+
+  </div>
 
 {% endblock %}

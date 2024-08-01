@@ -2,14 +2,16 @@ function init() {
   const emsSortableTables = document.getElementsByClassName('ems-sortable-table')
 
   for (let table of emsSortableTables) {
-    const pageSize = parseInt(table.dataset.pageSize)
-    let currentPage = parseInt(table.dataset.currentPage)
+    const pageSize = parseInt(table.dataset.pageSize) || 10
+    let currentPage = parseInt(table.dataset.currentPage) || 1
     let rows
     let totalRows
     let totalPages
 
     const setRowsAndPages = () => {
-      const unfilteredRows = Array.from(table.getElementsByClassName('govuk-table__data-row'))
+      const unfilteredRows = Array.from(
+        table.querySelector('.govuk-table__body').getElementsByClassName('govuk-table__row'),
+      )
       rows = unfilteredRows.filter(row => !row.classList.contains('filter-active'))
       totalRows = rows.length
       totalPages = Math.ceil(totalRows / pageSize)
