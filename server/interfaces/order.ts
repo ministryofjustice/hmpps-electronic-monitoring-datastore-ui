@@ -4,5 +4,5 @@ export interface Order {
   alias: string | null
   dateOfBirth: string
   orderStartDate: string
-  orderDetailsUrl: string
+  orderSummaryUrl: string
 }
