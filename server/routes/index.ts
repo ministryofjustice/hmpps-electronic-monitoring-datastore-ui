@@ -1,8 +1,10 @@
 import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
+import createTimeline from '../utils/createTimeline'
 import getCurfewHours from '../data/getCurfewHours'
 import getEquipmentDetails from '../data/getEquipmentDetails'
+import getEventHistory from '../data/getEventHistory'
 import getOrders from '../data/getOrders'
 import getOrderSummary from '../data/getOrderSummary'
 import getOrderDetails from '../data/getOrderDetails'
@@ -95,6 +97,16 @@ export default function routes({ auditService }: Services): Router {
   get('/timeline', async (req, res, next) => {
     // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
     res.render('pages/timeline')
+  })
+
+  get('/event-history', async (req, res, next) => {
+    try {
+      const eventHistory = await getEventHistory()
+      const timeline = createTimeline(eventHistory, 'Event history')
+      res.render('pages/timeline', { data: timeline })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
   })
 
   return router
