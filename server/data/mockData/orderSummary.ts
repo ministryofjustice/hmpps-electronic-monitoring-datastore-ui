@@ -24,7 +24,7 @@ const orderSummary: OrderSummary = {
   reports: {
     orderDetails: '/order-details',
     visitsAndTasks: '/visits-and-tasks',
-    eventHistory: '#',
+    eventHistory: '/event-history',
     equipmentDetails: '/equipment-details',
     curfewHours: '/curfew-hours',
     curfewViolations: '#',

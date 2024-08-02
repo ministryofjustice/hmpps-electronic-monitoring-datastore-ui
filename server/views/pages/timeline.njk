@@ -5,18 +5,9 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 
-{%- set firstRecordHTML %}
-  <p>First record.</p>
-{% endset -%}
-
-{%- set secondRecordHTML %}
-  <p>Second record.</p>
-{% endset -%}
-
-{%- set thirdRecordHTML %}
-  <p>Third record.</p>
-{% endset -%}
-
+{% set heading = data.heading %}
+{% set timeline = data.timeline %}
+{% set backUrl = data.backUrl %}
 
 {% block content %}
 
@@ -24,49 +15,17 @@
 
   {{ govukBackLink({
     text: "back",
-    href: "#"
+    href: backUrl
   }) }}
+
+  <h1 class="govuk-heading-m">
+    {{ heading }}
+  </h1>
 
   <hr class="govuk-section-break govuk-section-break--m">
 
-{{ mojTimeline({
-  items: [
-    {
-      label: {
-        text: "First record"
-      },
-      html: firstRecordHTML,
-      datetime: {
-        timestamp: "2019-06-14T14:01:00.000Z",
-        type: "datetime"
-      }
-    },
-    {
-      label: {
-        text: "Second record"
-      },
-      html: secondRecordHTML,
-      datetime: {
-        timestamp: "2019-06-15T14:01:00.000Z",
-        type: "datetime"
-      }
-    },
-    {
-      label: {
-        text: "Third record"
-      },
-      html: thirdRecordHTML,
-      datetime: {
-        timestamp: "2019-06-16T14:01:00.000Z",
-        type: "datetime"
-      },
-      byline: {
-        text: "Reporting Individual"
-      }
-    }
-  ]
-}) }}
-
-
+  {{ mojTimeline({
+    items: timeline
+  }) }}
 
 {% endblock %}
