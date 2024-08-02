@@ -22,7 +22,7 @@ const orderSummary: OrderSummary = {
     time: '0900',
   },
   reports: {
-    orderDetails: '#',
+    orderDetails: '/order-details',
     visitsAndTasks: '#',
     eventHistory: '#',
     equipmentDetails: '#',
