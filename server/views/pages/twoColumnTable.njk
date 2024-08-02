@@ -4,6 +4,7 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 
+{% set heading = data.heading %}
 {% set records = data.records %}
 {% set backUrl = data.backUrl %}
 
@@ -19,7 +20,7 @@
   <hr class="govuk-section-break govuk-section-break--m">
 
   {{ govukTable({
-    caption: "Details table",
+    caption: heading,
     captionClasses: "govuk-table__caption--m",
     head: [
       {
