@@ -3,9 +3,11 @@ import { type RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import getOrders from '../data/getOrders'
 import getOrderSummary from '../data/getOrderSummary'
+import getOrderDetails from '../data/getOrderDetails'
 import tablateOrders from '../utils/tablateOrders'
+import tablateRecords from '../utils/tablateRecords'
 import type { Services } from '../services'
-import { Page } from '../services/auditService'
+// import { Page } from '../services/auditService'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes({ auditService }: Services): Router {
@@ -47,10 +49,14 @@ export default function routes({ auditService }: Services): Router {
     }
   })
 
-  get('/details-table', async (req, res, next) => {
-    // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
-
-    res.render('pages/detailsTable')
+  get('/order-details', async (req, res, next) => {
+    try {
+      const orderDetails = await getOrderDetails()
+      const tablatedOrderDetails = tablateRecords(orderDetails)
+      res.render('pages/twoColumnTable', { data: tablatedOrderDetails })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
   })
 
   get('/timeline', async (req, res, next) => {
