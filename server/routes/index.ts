@@ -4,6 +4,7 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import getOrders from '../data/getOrders'
 import getOrderSummary from '../data/getOrderSummary'
 import getOrderDetails from '../data/getOrderDetails'
+import getVisitsAndTasks from '../data/getVisitsAndTasks'
 import tablateOrders from '../utils/tablateOrders'
 import tablateRecords from '../utils/tablateRecords'
 import type { Services } from '../services'
@@ -54,6 +55,16 @@ export default function routes({ auditService }: Services): Router {
       const orderDetails = await getOrderDetails()
       const tablatedOrderDetails = tablateRecords(orderDetails)
       res.render('pages/twoColumnTable', { data: tablatedOrderDetails })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
+  })
+
+  get('/visits-and-tasks', async (req, res, next) => {
+    try {
+      const visitsAndTasks = await getVisitsAndTasks()
+      const tablatedVisitsAndTasks = tablateRecords(visitsAndTasks)
+      res.render('pages/twoColumnTable', { data: tablatedVisitsAndTasks })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
