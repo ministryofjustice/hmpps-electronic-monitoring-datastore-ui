@@ -1,6 +1,8 @@
 import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
+import getCurfewHours from '../data/getCurfewHours'
+import getEquipmentDetails from '../data/getEquipmentDetails'
 import getOrders from '../data/getOrders'
 import getOrderSummary from '../data/getOrderSummary'
 import getOrderDetails from '../data/getOrderDetails'
@@ -65,6 +67,26 @@ export default function routes({ auditService }: Services): Router {
       const visitsAndTasks = await getVisitsAndTasks()
       const tablatedVisitsAndTasks = tablateRecords(visitsAndTasks)
       res.render('pages/twoColumnTable', { data: tablatedVisitsAndTasks })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
+  })
+
+  get('/equipment-details', async (req, res, next) => {
+    try {
+      const equipmentDetails = await getEquipmentDetails()
+      const tablatedEquipmentDetails = tablateRecords(equipmentDetails)
+      res.render('pages/twoColumnTable', { data: tablatedEquipmentDetails })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
+  })
+
+  get('/curfew-hours', async (req, res, next) => {
+    try {
+      const curfewHours = await getCurfewHours()
+      const tablatedCurfewHours = tablateRecords(curfewHours)
+      res.render('pages/twoColumnTable', { data: tablatedCurfewHours })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }

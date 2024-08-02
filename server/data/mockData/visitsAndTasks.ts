@@ -13,7 +13,7 @@ const visitsAndTasks: Records = {
     },
     {
       key: 'crewOffDateSID',
-      value: '02.01.2022',
+      value: '01.01.2022',
     },
     {
       key: 'crewOffTimeSID',
