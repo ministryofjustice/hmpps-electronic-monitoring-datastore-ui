@@ -55,7 +55,7 @@ export default function routes({ auditService }: Services): Router {
   get('/order-details', async (req, res, next) => {
     try {
       const orderDetails = await getOrderDetails()
-      const tablatedOrderDetails = tablateRecords(orderDetails)
+      const tablatedOrderDetails = tablateRecords(orderDetails, 'Order details')
       res.render('pages/twoColumnTable', { data: tablatedOrderDetails })
     } catch (error) {
       res.status(500).send('Error fetching data')
@@ -65,7 +65,7 @@ export default function routes({ auditService }: Services): Router {
   get('/visits-and-tasks', async (req, res, next) => {
     try {
       const visitsAndTasks = await getVisitsAndTasks()
-      const tablatedVisitsAndTasks = tablateRecords(visitsAndTasks)
+      const tablatedVisitsAndTasks = tablateRecords(visitsAndTasks, 'Visits and tasks')
       res.render('pages/twoColumnTable', { data: tablatedVisitsAndTasks })
     } catch (error) {
       res.status(500).send('Error fetching data')
@@ -75,7 +75,7 @@ export default function routes({ auditService }: Services): Router {
   get('/equipment-details', async (req, res, next) => {
     try {
       const equipmentDetails = await getEquipmentDetails()
-      const tablatedEquipmentDetails = tablateRecords(equipmentDetails)
+      const tablatedEquipmentDetails = tablateRecords(equipmentDetails, 'Equipment details')
       res.render('pages/twoColumnTable', { data: tablatedEquipmentDetails })
     } catch (error) {
       res.status(500).send('Error fetching data')
@@ -85,7 +85,7 @@ export default function routes({ auditService }: Services): Router {
   get('/curfew-hours', async (req, res, next) => {
     try {
       const curfewHours = await getCurfewHours()
-      const tablatedCurfewHours = tablateRecords(curfewHours)
+      const tablatedCurfewHours = tablateRecords(curfewHours, 'Curfew hours')
       res.render('pages/twoColumnTable', { data: tablatedCurfewHours })
     } catch (error) {
       res.status(500).send('Error fetching data')

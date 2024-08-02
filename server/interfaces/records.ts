@@ -11,4 +11,5 @@ export interface Records {
 export interface TablatedRecords {
   backUrl: string
   records: { text: string }[][]
+  heading?: string
 }
