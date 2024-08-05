@@ -27,9 +27,9 @@ const orderSummary: OrderSummary = {
     eventHistory: '/event-history',
     equipmentDetails: '/equipment-details',
     curfewHours: '/curfew-hours',
-    curfewViolations: '#',
-    contactHistory: '#',
-    suspensions: '#',
+    curfewViolations: '/curfew-violations',
+    contactHistory: '/contact-history',
+    suspensions: '/suspensions',
   },
   documents: {
     pageSize: 5,

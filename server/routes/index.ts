@@ -2,12 +2,15 @@ import { type RequestHandler, Router } from 'express'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import createTimeline from '../utils/createTimeline'
+import getContactHistory from '../data/getContactHistory'
 import getCurfewHours from '../data/getCurfewHours'
+import getCurfewViolations from '../data/getCurfewViolations'
 import getEquipmentDetails from '../data/getEquipmentDetails'
 import getEventHistory from '../data/getEventHistory'
 import getOrders from '../data/getOrders'
 import getOrderSummary from '../data/getOrderSummary'
 import getOrderDetails from '../data/getOrderDetails'
+import getSuspensions from '../data/getSuspensions'
 import getVisitsAndTasks from '../data/getVisitsAndTasks'
 import tablateOrders from '../utils/tablateOrders'
 import tablateRecords from '../utils/tablateRecords'
@@ -94,15 +97,40 @@ export default function routes({ auditService }: Services): Router {
     }
   })
 
-  get('/timeline', async (req, res, next) => {
-    // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
-    res.render('pages/timeline')
-  })
-
   get('/event-history', async (req, res, next) => {
     try {
       const eventHistory = await getEventHistory()
       const timeline = createTimeline(eventHistory, 'Event history')
+      res.render('pages/timeline', { data: timeline })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
+  })
+
+  get('/suspensions', async (req, res, next) => {
+    try {
+      const suspensions = await getSuspensions()
+      const timeline = createTimeline(suspensions, 'Event history')
+      res.render('pages/timeline', { data: timeline })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
+  })
+
+  get('/curfew-violations', async (req, res, next) => {
+    try {
+      const curfewViolations = await getCurfewViolations()
+      const timeline = createTimeline(curfewViolations, 'Event history')
+      res.render('pages/timeline', { data: timeline })
+    } catch (error) {
+      res.status(500).send('Error fetching data')
+    }
+  })
+
+  get('/contact-history', async (req, res, next) => {
+    try {
+      const contactHistory = await getContactHistory()
+      const timeline = createTimeline(contactHistory, 'Event history')
       res.render('pages/timeline', { data: timeline })
     } catch (error) {
       res.status(500).send('Error fetching data')
