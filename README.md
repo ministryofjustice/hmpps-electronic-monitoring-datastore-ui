@@ -1,93 +1,43 @@
 # hmpps-ems-datastore-ui
-[![repo standards badge](https://img.shields.io/badge/endpoint.svg?&style=flat&logo=github&url=https%3A%2F%2Foperations-engineering-reports.cloud-platform.service.justice.gov.uk%2Fapi%2Fv1%2Fcompliant_public_repositories%2Fhmpps-ems-datastore-ui)](https://operations-engineering-reports.cloud-platform.service.justice.gov.uk/public-github-repositories.html#hmpps-ems-datastore-ui "Link to report")
+
+[![repo standards badge](https://img.shields.io/badge/endpoint.svg?&style=flat&logo=github&url=https%3A%2F%2Foperations-engineering-reports.cloud-platform.service.justice.gov.uk%2Fapi%2Fv1%2Fcompliant_public_repositories%2Fhmpps-ems-datastore-ui)](https://operations-engineering-reports.cloud-platform.service.justice.gov.uk/public-github-repositories.html#hmpps-ems-datastore-ui 'Link to report')
 [![CircleCI](https://circleci.com/gh/ministryofjustice/hmpps-ems-datastore-ui/tree/main.svg?style=svg)](https://circleci.com/gh/ministryofjustice/hmpps-ems-datastore-ui)
 
-Template github repo used for new Typescript based projects.
+This frontend service allows CMT to access historical electronic monitoring data.
 
-# Instructions
+## About the project
 
-If this is a HMPPS project then the project will be created as part of bootstrapping - 
-see https://github.com/ministryofjustice/hmpps-project-bootstrap. You are able to specify a template application using the `github_template_repo` attribute to clone without the need to manually do this yourself within GitHub.
+- This repo was build from the boilerplate repo [hmpps-template-typescript](https://github.com/ministryofjustice/hmpps-template-typescript). The template is community managed by the mojdt `#typescript` slack channel.
+- Most of the frontend components are from the [GOV.UK design system](https://design-system.service.gov.uk/) or the [MoJ design system](https://design-patterns.service.justice.gov.uk/). A small number of modified and custom components are also used.
+- Currently the service is not connected to any live data; only mock data is used, which is hardcoded in this repo and is accessed using helper functions in the `data` directory. This data is entirely fictitious. It isn't related to any real case data.
+- Currently the application is not deployed or deployable. HMPPS Auth has been temporarily disabled to permit development. These featues should be reinstated before this version of the application is deployed.
+- The original bootstrap readme stated that this project is dependant on redis for session store and token caching. This should also be set up.
 
-This bootstrap is community managed by the mojdt `#typescript` slack channel. 
-Please raise any questions or queries there. Contributions welcome!
+## Running the application locally
 
-Our security policy is located [here](https://github.com/ministryofjustice/hmpps-ems-datastore-ui/security/policy). 
+### First time setup
 
-More information about the template project including features can be found [here](https://dsdmoj.atlassian.net/wiki/spaces/NDSS/pages/3488677932/Typescript+template+project).
+Ensure you are using `node v20.x` and `npm v10.x` You can check this by running `node -v` & `npm -v`.
 
-## Creating a Cloud Platform namespace
-
-When deploying to a new namespace, you may wish to use this template typescript project namespace as the basis for your new namespace:
-
-<https://github.com/ministryofjustice/cloud-platform-environments/tree/main/namespaces/live.cloud-platform.service.justice.gov.uk/hmpps-ems-datastore-ui>
-
-This template namespace includes an AWS elasticache setup - which is required by this template project.
-
-Copy this folder, update all the existing namespace references, and submit a PR to the Cloud Platform team. Further instructions from the Cloud Platform team can be found here: <https://user-guide.cloud-platform.service.justice.gov.uk/#cloud-platform-user-guide>
-
-## Renaming from HMPPS Template Typescript - github Actions
-
-Once the new repository is deployed. Navigate to the repository in github, and select the `Actions` tab.
-Click the link to `Enable Actions on this repository`.
-
-Find the Action workflow named: `rename-project-create-pr` and click `Run workflow`.  This workflow will
-execute the `rename-project.bash` and create Pull Request for you to review.  Review the PR and merge.
-
-Note: ideally this workflow would run automatically however due to a recent change github Actions are not
-enabled by default on newly created repos. There is no way to enable Actions other then to click the button in the UI.
-If this situation changes we will update this project so that the workflow is triggered during the bootstrap project.
-Further reading: <https://github.community/t/workflow-isnt-enabled-in-repos-generated-from-template/136421>
-
-## Manually branding from template app
-Run the `rename-project.bash` and create a PR.
-
-The rename-project.bash script takes a single argument - the name of the project and calculates from it the project description
-It then performs a search and replace and directory renames so the project is ready to be used.
-
-## Ensuring slack notifications are raised correctly
-
-To ensure notifications are routed to the correct slack channels, update the `alerts-slack-channel` and `releases-slack-channel` parameters in `.circle/config.yml` to an appropriate channel.
-
-## Filling in the `productId`
-
-To allow easy identification of an application, the product Id of the overall product should be set in `values.yaml`. The Service Catalogue contains a list of these IDs and is currently in development here https://developer-portal.hmpps.service.justice.gov.uk/products
-
-## Running the app
-The easiest way to run the app is to use docker compose to create the service and all dependencies. 
-
-`docker compose pull`
-
-`docker compose up`
-
-### Dependencies
-The app requires: 
-* hmpps-auth - for authentication
-* redis - session store and token caching
-
-### Running the app for development
-
-To start the main services excluding the example typescript template app: 
-
-`docker compose up --scale=app=0`
-
-Install dependencies using `npm install`, ensuring you are using `node v18.x` and `npm v9.x`
+Then install dependencies using `npm install`.
 
 Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the CircleCI build config.
 
-And then, to build the assets and start the app with nodemon:
+### Run the application
 
-`npm run start:dev`
+To build the assets & start the application with nodemon, run `npm run start:dev`'
+
+Navigate to `localhost:3000/search` to start.
 
 ### Run linter
 
 `npm run lint`
 
-### Run tests
+### Run tests using Jest
 
 `npm run test`
 
-### Running integration tests
+### Run integration tests using Cypress
 
 For local running, start a test db and wiremock instance by:
 
@@ -100,7 +50,7 @@ Then run the server in test mode by:
 And then either, run tests in headless mode with:
 
 `npm run int-test`
- 
+
 Or run tests with the cypress UI:
 
 `npm run int-test-ui`
@@ -109,8 +59,50 @@ Or run tests with the cypress UI:
 
 A changelog for the service is available [here](./CHANGELOG.md)
 
-
 ## Dependency Checks
 
 The template project has implemented some scheduled checks to ensure that key dependencies are kept up to date.
 If these are not desired in the cloned project, remove references to `check_outdated` job from `.circleci/config.yml`
+
+## Custom Components
+
+A small number of bespoke components were created for this project. They are listed below. Each of these components' names are prefixed with EMS (Electronic Monitoring Service) to help developers distinguish between them and pre-existing GOV.UK / MoJ components.
+
+### EMS Service Information
+
+This is a simple info banner that is shown on every page. It provides information abut the data that can be accesed using this service.
+
+### EMS Sortable Table
+
+The MoJ design system includes a sortable table. Columns can be sorted by clicking on a column heading. However this component was not designed to work with pagination. When records are sorted, only the current page's records are reordered.
+
+The EMS sortable table combines sortable columns and pagination. When records are sorted, all of the pages of records are reorganised.
+
+The EMS sortable table takes an object of records as an argument, and converts these into a paginated sortable table.
+
+### EMS Date Filter
+
+CMT needs to be able to filter some [tables](https://design-system.service.gov.uk/components/table/) and [timelines](https://design-patterns.service.justice.gov.uk/components/timeline/) by date.
+
+The EMS date filter is designed for this.
+
+It is currently designed to work with the EMS Sortable Table. It can be extended to work with a customised version of the MoJ Timeline component.
+
+It includes some client-side date input validation.
+
+### EMS Search Form
+
+Currently this javascript component just adds client-side date input validation to the search page. It could be extended to include additional client-side input validation.
+
+### EMS Button Grid
+
+This is a simple responsive grid of buttons used in the order summary page. It was created by applying some custom styles to a `govuk-button-group` component.
+
+## Mock API
+
+As this repo isn't currently deployed or connected to a live data source, pages are populated using mock data. To facilitate API integration in the future, this data is obtained using mock APIs.
+
+- `/server/data/mockData` contains simple typescript scripts that return objects of mock case data.
+- `/server/data/` contains mock API endpoints that retrieve and return this data.
+- `server/routes/index.ts` access these endpoints when routes are accessed, then route the user to the appropriate page populated with the mock data.
+- In some cases the mock data is processed before being passed into the page template. For example, an array of data objects may be converted into an array of HTML elements that can be used in a page template. The scripts for such transformations are in `/server/utils`. They are imported & used in `server/routes/index.ts`.
