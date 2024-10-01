@@ -1,4 +1,6 @@
 {% extends "govuk/template.njk" %}
+{% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{%- from "govuk/components/button/macro.njk" import govukButton -%}
 
 {% block head %}
   <link href="{{ '/assets/css/app.css' | assetMap }}" rel="stylesheet"/>
@@ -8,6 +10,7 @@
 
 {% block header %}
   {% include "./header.njk" %}
+  {% include "./phaseBanner.njk" %}
 {% endblock %}
 
 {% block bodyStart %}
