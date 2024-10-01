@@ -1,7 +1,7 @@
 {
-  "name": "hmpps-template-typescript",
+  "name": "hmpps-electronic-monitoring-datastore-ui",
   "version": "0.0.1",
-  "description": "HMPPS Typescript Template",
+  "description": "HMPPS Electronic Monitoring Datastore UI",
   "repository": "git@github.com:ministryofjustice/hmpps-template-typescript.git",
   "license": "MIT",
   "scripts": {
