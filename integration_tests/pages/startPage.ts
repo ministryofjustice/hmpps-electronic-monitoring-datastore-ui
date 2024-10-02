@@ -1,6 +1,6 @@
 import Page, { PageElement } from './page'
 
-export default class IndexPage extends Page {
+export default class StartPage extends Page {
   constructor() {
     super('Electronic Monitoring Datastore')
   }

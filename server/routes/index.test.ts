@@ -23,15 +23,15 @@ afterEach(() => {
 })
 
 describe('GET /', () => {
-  it('should render index page', () => {
+  it('should render start page', () => {
     auditService.logPageView.mockResolvedValue(null)
 
     return request(app)
       .get('/')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('This site is under construction...')
-        expect(auditService.logPageView).toHaveBeenCalledWith(Page.EXAMPLE_PAGE, {
+        expect(res.text).toContain('Use this service for CMT users')
+        expect(auditService.logPageView).toHaveBeenCalledWith(Page.START_PAGE, {
           who: user.username,
           correlationId: expect.any(String),
         })

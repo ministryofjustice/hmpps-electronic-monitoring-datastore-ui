@@ -10,9 +10,9 @@ export default function routes({ auditService }: Services): Router {
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   get('/', async (req, res, next) => {
-    await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
-    res.render('pages/index')
+    res.render('pages/startPage')
   })
 
   return router

@@ -1,7 +1,7 @@
-import IndexPage from '../pages/index'
 import AuthSignInPage from '../pages/authSignIn'
 import Page from '../pages/page'
 import AuthManageDetailsPage from '../pages/authManageDetails'
+import StartPage from '../pages/startPage'
 
 context('Sign In', () => {
   beforeEach(() => {
@@ -21,19 +21,19 @@ context('Sign In', () => {
 
   it('User name visible in header', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
-    indexPage.headerUserName().should('contain.text', 'J. Smith')
+    const startPage = Page.verifyOnPage(StartPage)
+    startPage.headerUserName().should('contain.text', 'J. Smith')
   })
 
   it('Phase banner visible in header', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
+    const indexPage = Page.verifyOnPage(StartPage)
     indexPage.headerPhaseBanner().should('contain.text', 'dev')
   })
 
   it('User can sign out', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
+    const indexPage = Page.verifyOnPage(StartPage)
     indexPage.signOut().click()
     Page.verifyOnPage(AuthSignInPage)
   })
@@ -41,7 +41,7 @@ context('Sign In', () => {
   it('User can manage their details', () => {
     cy.signIn()
     cy.task('stubAuthManageDetails')
-    const indexPage = Page.verifyOnPage(IndexPage)
+    const indexPage = Page.verifyOnPage(StartPage)
 
     indexPage.manageDetails().get('a').invoke('removeAttr', 'target')
     indexPage.manageDetails().click()
@@ -50,7 +50,7 @@ context('Sign In', () => {
 
   it('Token verification failure takes user to sign in page', () => {
     cy.signIn()
-    Page.verifyOnPage(IndexPage)
+    Page.verifyOnPage(StartPage)
     cy.task('stubVerifyToken', false)
 
     // can't do a visit here as cypress requires only one domain
@@ -59,7 +59,7 @@ context('Sign In', () => {
 
   it('Token verification failure clears user session', () => {
     cy.signIn()
-    const indexPage = Page.verifyOnPage(IndexPage)
+    const indexPage = Page.verifyOnPage(StartPage)
     cy.task('stubVerifyToken', false)
 
     // can't do a visit here as cypress requires only one domain
