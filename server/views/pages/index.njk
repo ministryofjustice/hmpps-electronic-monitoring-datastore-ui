@@ -2,6 +2,16 @@
 {% set pageTitle = applicationName + " - Home" %}
 {% set mainClasses = "app-container govuk-body" %}
 {% block content %}
-  <h1>This site is under construction... 😉</h1>
-  <p>Please check back later when there is content to view.</p>
+  <h1>This site is under construction... </h1>
+  
+  <div class="govuk-grid-column-two-thirds">
+      <p>
+          Use this service for CMT users to search historial electronic monitoring data.
+      </p>
+      {{ govukButton({
+          text: "Go to search page",
+          href: "/",
+          isStartButton: true
+      }) }}
+  </div>
 {% endblock %}

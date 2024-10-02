@@ -12,7 +12,7 @@ export default function routes({ auditService }: Services): Router {
   get('/', async (req, res, next) => {
     await auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
-    res.render('pages/startPage')
+    res.render('pages/index')
   })
 
   return router
