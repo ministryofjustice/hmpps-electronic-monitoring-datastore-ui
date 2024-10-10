@@ -196,7 +196,7 @@ for the in-memory DB used by Auth
 
 `npm run test`
 
-### Running integration tests
+### Run integration tests using Cypress
 
 For local running, start a wiremock instance by:
 
@@ -217,3 +217,51 @@ Or run tests with the cypress UI:
 ## Change log
 
 A changelog for the service is available [here](./CHANGELOG.md)
+
+## Dependency Checks
+
+The template project has implemented some scheduled checks to ensure that key dependencies are kept up to date.
+If these are not desired in the cloned project, remove references to `check_outdated` job from `.circleci/config.yml`
+
+## Custom Components
+
+A small number of bespoke components were created for this project. They are listed below. Each of these components' names are prefixed with EMS (Electronic Monitoring Service) to help developers distinguish between them and pre-existing GOV.UK / MoJ components.
+
+### EMS Service Information
+
+This is a simple info banner that is shown on every page. It provides information abut the data that can be accesed using this service.
+
+### EMS Sortable Table
+
+The MoJ design system includes a sortable table. Columns can be sorted by clicking on a column heading. However this component was not designed to work with pagination. When records are sorted, only the current page's records are reordered.
+
+The EMS sortable table combines sortable columns and pagination. When records are sorted, all of the pages of records are reorganised.
+
+The EMS sortable table takes an object of records as an argument, and converts these into a paginated sortable table.
+
+### EMS Date Filter
+
+CMT needs to be able to filter some [tables](https://design-system.service.gov.uk/components/table/) and [timelines](https://design-patterns.service.justice.gov.uk/components/timeline/) by date.
+
+The EMS date filter is designed for this.
+
+It is currently designed to work with the EMS Sortable Table. It can be extended to work with a customised version of the MoJ Timeline component.
+
+It includes some client-side date input validation.
+
+### EMS Search Form
+
+Currently this javascript component just adds client-side date input validation to the search page. It could be extended to include additional client-side input validation.
+
+### EMS Button Grid
+
+This is a simple responsive grid of buttons used in the order summary page. It was created by applying some custom styles to a `govuk-button-group` component.
+
+## Mock API
+
+As this repo isn't currently deployed or connected to a live data source, pages are populated using mock data. To facilitate API integration in the future, this data is obtained using mock APIs.
+
+- `/server/data/mockData` contains simple typescript scripts that return objects of mock case data.
+- `/server/data/` contains mock API endpoints that retrieve and return this data.
+- `server/routes/index.ts` access these endpoints when routes are accessed, then route the user to the appropriate page populated with the mock data.
+- In some cases the mock data is processed before being passed into the page template. For example, an array of data objects may be converted into an array of HTML elements that can be used in a page template. The scripts for such transformations are in `/server/utils`. They are imported & used in `server/routes/index.ts`.

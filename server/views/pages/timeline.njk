@@ -1,0 +1,31 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{%- from "moj/components/timeline/macro.njk" import mojTimeline -%}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{% set heading = data.heading %}
+{% set timeline = data.timeline %}
+{% set backUrl = data.backUrl %}
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: backUrl
+  }) }}
+
+  <h1 class="govuk-heading-m">
+    {{ heading }}
+  </h1>
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
+  {{ mojTimeline({
+    items: timeline
+  }) }}
+
+{% endblock %}

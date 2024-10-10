@@ -1,0 +1,36 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{% set heading = data.heading %}
+{% set records = data.records %}
+{% set backUrl = data.backUrl %}
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: backUrl
+  }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
+  {{ govukTable({
+    caption: heading,
+    captionClasses: "govuk-table__caption--m",
+    head: [
+      {
+        text: "Data title"
+      },
+      {
+        text: "Data"
+      }
+    ],
+    rows: records
+  }) }}
+
+{% endblock %}

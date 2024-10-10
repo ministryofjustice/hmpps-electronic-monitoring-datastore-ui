@@ -4,10 +4,10 @@ import AuthManageDetailsPage from '../pages/authManageDetails'
 import StartPage from '../pages/startPage'
 
 context('Sign In', () => {
-  beforeEach(() => {
-    cy.task('reset')
-    cy.task('stubSignIn')
-  })
+  // beforeEach(() => {
+  //   cy.task('reset')
+  //   cy.task('stubSignIn')
+  // })
 
   it('Unauthenticated user directed to auth', () => {
     cy.visit('/')
