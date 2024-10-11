@@ -82,7 +82,10 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/equipment-details', async (req, res, next) => {
-    await auditService.logPageView(Page.EQUIPMENT_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.EQUIPMENT_DETAILS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
 
     try {
       const equipmentDetails = await getEquipmentDetails()
@@ -122,7 +125,7 @@ export default function routes({ auditService }: Services): Router {
 
     try {
       const suspensions = await getSuspensions()
-      const timeline = createTimeline(suspensions, 'Event history')
+      const timeline = createTimeline(suspensions, 'Suspension of visits')
       res.render('pages/timeline', { data: timeline })
     } catch (error) {
       res.status(500).send('Error fetching data')
@@ -130,11 +133,14 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/curfew-violations', async (req, res, next) => {
-    await auditService.logPageView(Page.TODO, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.CURFEW_VIOLATIONS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
 
     try {
       const curfewViolations = await getCurfewViolations()
-      const timeline = createTimeline(curfewViolations, 'Event history')
+      const timeline = createTimeline(curfewViolations, 'Violations')
       res.render('pages/timeline', { data: timeline })
     } catch (error) {
       res.status(500).send('Error fetching data')
@@ -142,11 +148,11 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/contact-history', async (req, res, next) => {
-    await auditService.logPageView(Page.CURFEW_VIOLATIONS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.CONTACT_HISTORY_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
       const contactHistory = await getContactHistory()
-      const timeline = createTimeline(contactHistory, 'Event history')
+      const timeline = createTimeline(contactHistory, 'Contact history')
       res.render('pages/timeline', { data: timeline })
     } catch (error) {
       res.status(500).send('Error fetching data')
