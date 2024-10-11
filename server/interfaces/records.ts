@@ -8,7 +8,7 @@ export interface Records {
   records: Record[]
 }
 
-export interface TablatedRecords {
+export interface TabulatedRecords {
   backUrl: string
   records: { text: string }[][]
   heading?: string

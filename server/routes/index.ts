@@ -12,10 +12,10 @@ import getOrderSummary from '../data/getOrderSummary'
 import getOrderDetails from '../data/getOrderDetails'
 import getSuspensions from '../data/getSuspensions'
 import getVisitsAndTasks from '../data/getVisitsAndTasks'
-import tablateOrders from '../utils/tablateOrders'
-import tablateRecords from '../utils/tablateRecords'
+import tabluateOrders from '../utils/tabulateOrders'
+import tabluateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
-// import { Page } from '../services/auditService'
+import { Page } from '../services/auditService'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes({ auditService }: Services): Router {
@@ -29,25 +29,25 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/search', async (req, res, next) => {
-    // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.SEARCH_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     res.render('pages/search')
   })
 
   get('/search-results', async (req, res, next) => {
-    // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.SEARCH_RESULTS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
       const orders = await getOrders()
-      const tablatedOrders = tablateOrders(orders)
-      res.render('pages/searchResults', { data: tablatedOrders })
+      const tabulatedOrders = tabluateOrders(orders)
+      res.render('pages/searchResults', { data: tabulatedOrders })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
   })
 
   get('/order-summary', async (req, res, next) => {
-    // await auditService.logPageView(Page.EXAMPLE_PAGE, { who: res.locals.user.username, correlationId: req.id })
+    await auditService.logPageView(Page.ORDER_SUMMARY_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
       const orderSummary = await getOrderSummary()
@@ -58,46 +58,56 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/order-details', async (req, res, next) => {
+    await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const orderDetails = await getOrderDetails()
-      const tablatedOrderDetails = tablateRecords(orderDetails, 'Order details')
-      res.render('pages/twoColumnTable', { data: tablatedOrderDetails })
+      const tabulatedOrderDetails = tabluateRecords(orderDetails, 'Order details')
+      res.render('pages/twoColumnTable', { data: tabulatedOrderDetails })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
   })
 
   get('/visits-and-tasks', async (req, res, next) => {
+    await auditService.logPageView(Page.VISITS_AND_TASKS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const visitsAndTasks = await getVisitsAndTasks()
-      const tablatedVisitsAndTasks = tablateRecords(visitsAndTasks, 'Visits and tasks')
-      res.render('pages/twoColumnTable', { data: tablatedVisitsAndTasks })
+      const tabulatedVisitsAndTasks = tabluateRecords(visitsAndTasks, 'Visits and tasks')
+      res.render('pages/twoColumnTable', { data: tabulatedVisitsAndTasks })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
   })
 
   get('/equipment-details', async (req, res, next) => {
+    await auditService.logPageView(Page.EQUIPMENT_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const equipmentDetails = await getEquipmentDetails()
-      const tablatedEquipmentDetails = tablateRecords(equipmentDetails, 'Equipment details')
-      res.render('pages/twoColumnTable', { data: tablatedEquipmentDetails })
+      const tabulatedEquipmentDetails = tabluateRecords(equipmentDetails, 'Equipment details')
+      res.render('pages/twoColumnTable', { data: tabulatedEquipmentDetails })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
   })
 
   get('/curfew-hours', async (req, res, next) => {
+    await auditService.logPageView(Page.CURFEW_HOURS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const curfewHours = await getCurfewHours()
-      const tablatedCurfewHours = tablateRecords(curfewHours, 'Curfew hours')
-      res.render('pages/twoColumnTable', { data: tablatedCurfewHours })
+      const tabulatedCurfewHours = tabluateRecords(curfewHours, 'Curfew hours')
+      res.render('pages/twoColumnTable', { data: tabulatedCurfewHours })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
   })
 
   get('/event-history', async (req, res, next) => {
+    await auditService.logPageView(Page.EVENT_HISTORY_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const eventHistory = await getEventHistory()
       const timeline = createTimeline(eventHistory, 'Event history')
@@ -108,6 +118,8 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/suspensions', async (req, res, next) => {
+    await auditService.logPageView(Page.SUSPENSIONS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const suspensions = await getSuspensions()
       const timeline = createTimeline(suspensions, 'Event history')
@@ -118,6 +130,8 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/curfew-violations', async (req, res, next) => {
+    await auditService.logPageView(Page.TODO, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const curfewViolations = await getCurfewViolations()
       const timeline = createTimeline(curfewViolations, 'Event history')
@@ -128,6 +142,8 @@ export default function routes({ auditService }: Services): Router {
   })
 
   get('/contact-history', async (req, res, next) => {
+    await auditService.logPageView(Page.CURFEW_VIOLATIONS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
     try {
       const contactHistory = await getContactHistory()
       const timeline = createTimeline(contactHistory, 'Event history')

@@ -23,7 +23,7 @@ afterEach(() => {
 })
 
 describe('GET /', () => {
-  xit('should render index page', () => {
+  it('should render index page', () => {
     auditService.logPageView.mockResolvedValue(null)
 
     return request(app)

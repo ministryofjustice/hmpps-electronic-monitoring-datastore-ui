@@ -1,6 +1,6 @@
 import { Order } from '../interfaces/order'
 
-const tablateOrders = (orders: Order[]) => {
+const tabluateOrders = (orders: Order[]) => {
   return orders.map(order => {
     return [
       {
@@ -43,4 +43,4 @@ const tablateOrders = (orders: Order[]) => {
   })
 }
 
-export default tablateOrders
+export default tabluateOrders

@@ -34,17 +34,20 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
 
-  // Commented out to bypass login
-  // app.use(setUpAuthentication())
-  // app.use(authorisationMiddleware())
-
-  app.use(setUpCsrf())
-  // app.use(setUpCurrentUser())
-  // fake user for local development
-  app.use((req, res, next) => {
-    req.user = { authSource: '', username: '', token: 'abc' }
-    next()
-  })
+  const use_auth = true
+  if(use_auth) {
+    app.use(setUpAuthentication())
+    app.use(authorisationMiddleware())
+    app.use(setUpCsrf())
+    app.use(setUpCurrentUser()) //real user
+  } else {
+    app.use(setUpCsrf())
+    // fake user for local development, no Authentication/authorization middleware
+    app.use((req, res, next) => {
+      req.user = { authSource: '', username: '', token: 'abc' }
+      next()
+    })
+  }
 
   app.use(routes(services))
 
