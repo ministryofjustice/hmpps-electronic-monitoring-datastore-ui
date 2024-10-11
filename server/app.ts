@@ -34,12 +34,12 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
 
-  const use_auth = true
-  if(use_auth) {
+  const useAuth = true
+  if (useAuth) {
     app.use(setUpAuthentication())
     app.use(authorisationMiddleware())
     app.use(setUpCsrf())
-    app.use(setUpCurrentUser()) //real user
+    app.use(setUpCurrentUser()) // real user
   } else {
     app.use(setUpCsrf())
     // fake user for local development, no Authentication/authorization middleware

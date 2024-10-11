@@ -5,6 +5,7 @@ context('Search', () => {
   beforeEach(() => {
     // cy.task('reset')
     // cy.task('stubSignIn')
+    // cy.signIn()
     cy.visit('/search')
   })
 
