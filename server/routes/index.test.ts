@@ -2,10 +2,13 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
+import SearchService from '../services/searchService'
 
 jest.mock('../services/auditService')
+jest.mock('../services/searchService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
+const searchService = new SearchService() as jest.Mocked<SearchService>
 
 let app: Express
 
@@ -13,6 +16,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
+      searchService,
     },
     userSupplier: () => user,
   })
@@ -22,6 +26,20 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
+function basicGetTest(pageName: string, route: string, titleText: string, auditType: Page) {
+  auditService.logPageView.mockResolvedValue(null)
+
+  return request(app)
+    .get(route)
+    .expect('Content-Type', /html/)
+    .expect(res => {
+      expect(res.text).toContain(titleText)
+      expect(auditService.logPageView).toHaveBeenCalledWith(auditType, {
+        who: user.username,
+        correlationId: expect.any(String),
+      })
+    })
+}
 type GetRequestFixture = [pageName: string, route: string, titleText: string, auditType: Page]
 
 describe('Core page basic GET requests', () => {
@@ -49,17 +67,13 @@ describe('Order details basic GET requests', () => {
   ])('should render %s', (pageName, route, titleText, auditType) => basicGetTest(pageName, route, titleText, auditType))
 })
 
-function basicGetTest(pageName: string, route: string, titleText: string, auditType: Page) {
-  auditService.logPageView.mockResolvedValue(null)
-
-  return request(app)
-    .get(route)
-    .expect('Content-Type', /html/)
-    .expect(res => {
-      expect(res.text).toContain(titleText)
-      expect(auditService.logPageView).toHaveBeenCalledWith(auditType, {
-        who: user.username,
-        correlationId: expect.any(String),
+describe('Search results page', () => {
+  it('should call the SearchService to return data', () => {
+    return request(app)
+      .get('/search-results')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(searchService.getOrders).toHaveBeenCalledTimes(1)
       })
-    })
-}
+  })
+})

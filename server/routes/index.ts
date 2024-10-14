@@ -18,7 +18,7 @@ import type { Services } from '../services'
 import { Page } from '../services/auditService'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function routes({ auditService }: Services): Router {
+export default function routes({ auditService, searchService }: Services): Router {
   const router = Router()
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
@@ -38,7 +38,7 @@ export default function routes({ auditService }: Services): Router {
     await auditService.logPageView(Page.SEARCH_RESULTS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
-      const orders = await getOrders()
+      const orders = await searchService.getOrders()
       const tabulatedOrders = tabluateOrders(orders)
       res.render('pages/searchResults', { data: tabulatedOrders })
     } catch (error) {
