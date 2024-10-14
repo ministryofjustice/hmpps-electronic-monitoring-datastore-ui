@@ -5,6 +5,10 @@ export default class SearchResultsPage extends Page {
     super('Search results')
   }
 
+  override checkOnPage(): void {
+    cy.get('caption').contains('Search results')
+  }
+
   serviceInformation = (): PageElement => cy.get('.service-information')
 
   serviceInformationText = (): PageElement => cy.get('.service-information').children('.govuk-warning-text__text')

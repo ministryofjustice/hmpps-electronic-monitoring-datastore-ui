@@ -7,7 +7,6 @@ context('Search', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.signIn()
-    cy.visit('/')
     cy.visit('/search')
   })
 
