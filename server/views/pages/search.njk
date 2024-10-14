@@ -145,16 +145,11 @@
           <input class="govuk-input govuk-input--width-20{% if mockValidationData.alias.errorMessage %} govuk-input--error{% endif %}" id="alias" name="alias" type="text">
         </div>
 
-        {# {{ govukButton({
+        {{ govukButton({
           text: "Search",
           classes: "ems-search-form__button--submit"
-        }) }} #}
+        }) }}
       </form>
-      {{ govukButton({
-          text: "Search",
-          href: "/search-results",
-          classes: "ems-search-form__button--submit"
-      }) }}
     </div>
   </div>
 
