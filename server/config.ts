@@ -90,6 +90,15 @@ export default {
       agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
+    // electronicMonitoringDatastore: {
+    //   url: get('EM_DATASTORE_API_URL', 'http://localhost:3100', requiredInProduction),
+    //   timeout: {
+    //     response: Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 30000)),
+    //     deadline: Number(get('EM_DATASTORE_API_TIMEOUT_DEADLINE', 30000)),
+    //   },
+    //   agent: new AgentConfig(Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 5000))),
+    //   enabled: get('EM_DATASTORE_API_ENABLED', 'false') === 'true',
+    // },
   },
   sqs: {
     audit: auditConfig(),
