@@ -3,12 +3,15 @@ import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
 import SearchService from '../services/searchService'
+import OrderService from '../services/orderService'
 
 jest.mock('../services/auditService')
 jest.mock('../services/searchService')
+jest.mock('../services/orderService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
 const searchService = new SearchService() as jest.Mocked<SearchService>
+const orderService = new OrderService() as jest.Mocked<OrderService>
 
 let app: Express
 
@@ -17,6 +20,7 @@ beforeEach(() => {
     services: {
       auditService,
       searchService,
+      orderService,
     },
     userSupplier: () => user,
   })
@@ -74,6 +78,17 @@ describe('Search results page', () => {
       .expect('Content-Type', /html/)
       .expect(res => {
         expect(searchService.getOrders).toHaveBeenCalledTimes(1)
+      })
+  })
+})
+
+describe('Order summary page', () => {
+  it('should call the getOrderSummary to return data', () => {
+    return request(app)
+      .get('/order-summary')
+      .expect('Content-Type', /html/)
+      .expect(res => {
+        expect(orderService.getOrderSummary).toHaveBeenCalledTimes(1)
       })
   })
 })
