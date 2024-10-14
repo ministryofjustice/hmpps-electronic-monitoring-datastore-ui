@@ -1,0 +1,52 @@
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro emsDateFilter() %}
+
+  <div class="ems-date-filter">
+
+    <h3 class="govuk-heading-s">Date filter</h3>
+    <p>For example, 31/3/2023</p>
+    <p class="govuk-error-message hidden"></p>
+
+      {% call govukFieldset({
+        classes: "ems-date-filter__fieldset"
+      }) %}
+
+      <div class="ems-date-filter__input-row">
+        <span class="ems-date-filter__text--small-display"> From: </span>
+
+        {{ govukDateInput({
+          id: "start-date",
+          namePrefix: "start-date",
+          classes: "ems-date-filter__input",
+          name: "startDate"
+        }) }}
+      </div>
+
+        <span class="ems-date-filter__text--large-display"> to </span>
+
+      <div class="ems-date-filter__input-row">
+        <span class="ems-date-filter__text--small-display"> To: </span>
+        {{ govukDateInput({
+          id: "end-date",
+          namePrefix: "end-date",
+          classes: "ems-date-filter__input",
+          name: "endDate"
+        }) }}
+      </div>
+
+      {{ govukButton({
+        text: "Apply",
+        classes: "ems-date-filter__filter-button"
+      }) }}
+
+      {% endcall %}
+
+    <a class="govuk-link govuk-link--no-visited-state ems-date-filter__clear-filter-button hidden" href="">x clear filter</a>
+
+  </div>
+
+{% endmacro %}

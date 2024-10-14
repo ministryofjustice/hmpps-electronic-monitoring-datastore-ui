@@ -1,0 +1,109 @@
+{% macro emsSortableTable(records, pageSize) %}
+
+  {% set totalPages = (records.length / pageSize) | round(0, 'ceil') %}
+  {% set currentPage = 1 %}
+
+  <div
+    class="ems-sortable-table date-filterable"
+    data-page-size={{ pageSize }}
+    data-current-page={{ currentPage }}
+  >
+    <p class="ems-sortable-table__no-results hidden">No documents to show.</p>
+
+    <table
+      class="govuk-table"  data-module="moj-sortable-table"
+    >
+
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+
+          <th
+            scope="col"
+            class="govuk-table__header name-header"
+            aria-sort="none"
+          >Name</th>
+
+          <th
+            scope="col"
+            class="govuk-table__header created-on-header"
+            aria-sort="ascending"
+          >Created on</th>
+
+          <th
+            scope="col"
+            class="govuk-table__header time-header"
+          >Time</th>
+
+          <th
+            scope="col"
+            class="govuk-table__header details-header govuk-!-width-one-half"
+          >Notes</th>
+
+        </tr>
+      </thead>
+
+      <tbody class="govuk-table__body">
+        {% for record in records %}
+          {% set standardDate = record.createdOn.split('-')[2] + record.createdOn.split('-')[1] + record.createdOn.split('-')[0] %}
+          <tr
+            class="govuk-table__row govuk-table__data-row hidden"
+            data-filter-date="{{ standardDate }}"
+          >
+
+            <td
+              class="govuk-table__cell"
+              data-sort-value="{{ record.name }} "
+            >
+              <a href="{{ record.url }}">{{ record.name }}</a>
+            </td>
+
+            <td
+              class="govuk-table__cell"
+              data-sort-value="{{ standardDate }}"
+            >{{ record.createdOn }}</td>
+
+            <td
+              class="govuk-table__cell"
+              data-sort-value="{{ record.time }}"
+            >{{ record.time }}</td>
+
+            <td class="govuk-table__cell">{{ record.notes }}</td>
+            
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+    <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
+
+      <ul class="moj-pagination__list">
+        <li class="moj-pagination__item  moj-pagination__item--prev">
+          <a class="moj-pagination__link" href="">Previous<span class="govuk-visually-hidden"> page</span></a>
+        </li>
+
+        {% for i in range(1, totalPages + 1) %}
+          <li
+            class="moj-pagination__item moj-pagination__item--link"
+            data-button-number="{{ i }}"
+          >
+            <a class="moj-pagination__link" href="#" aria-label="Page {{ i }} of {{ totalPages }}">
+              {{ i }}
+            </a>
+          </li>
+
+          {% if (i == 1) or (i == totalPages - 1) %}
+            <li class="moj-pagination__item moj-pagination__item--dots hidden">…</li>
+          {% endif %}
+        {% endfor %}
+
+        <li class="moj-pagination__item  moj-pagination__item--next">
+          <a class="moj-pagination__link" href="">Next<span class="govuk-visually-hidden"> page</span></a>
+        </li>
+      </ul>
+      <p class="moj-pagination__results">Showing <b></b> to <b></b> of <b></b> results</p>
+    </nav>
+
+  </div>
+
+{% endmacro %}
