@@ -15,12 +15,17 @@ import { Page } from '../services/auditService'
 import OrderController from './orderController'
 
 export default function searchRouter({ auditService, orderService }: Services): Router {
-  const router = Router()
+  const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   const orderController = new OrderController(auditService, orderService)
 
   get('/summary', async (req, res, next) => orderController.getSummary(req, res))
+
+  get('/test-endpoint/:orderId', async (req, res, next) => {
+    const myId = req.params.orderId
+    res.status(200).send(`Success! Your OrderId was ${myId}`)
+  })
 
   get('/details', async (req, res, next) => {
     await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })

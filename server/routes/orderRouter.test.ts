@@ -27,6 +27,18 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
+describe('test endpoint', () => {
+  it('successfully takes a parameter', () => {
+    const expected = 'Success! Your OrderId was 3'
+
+    return request(app)
+      .get('/orders/test-endpoint/3')
+      .expect(res => {
+        expect(res.text).toContain(expected)
+      })
+  })
+})
+
 describe('Order details basic GET requests', () => {
   it.each<GetRequestFixture>([
     ['order summary page', '/orders/summary', 'Key order details', Page.ORDER_SUMMARY_PAGE],
