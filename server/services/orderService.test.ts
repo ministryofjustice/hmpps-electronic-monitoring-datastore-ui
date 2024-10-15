@@ -1,5 +1,4 @@
 import OrderService from './orderService'
-import { OrderSummary } from '../interfaces/orderSummary'
 import orderSummary from '../data/mockData/orderSummary'
 
 describe('Order service', () => {
@@ -13,7 +12,7 @@ describe('Order service', () => {
     it('returns expected order', async () => {
       const expectedData = orderSummary
       const results = await orderService.getOrderSummary()
-      expect(results).toBe(orderSummary)
+      expect(results).toBe(expectedData)
     })
   })
 })

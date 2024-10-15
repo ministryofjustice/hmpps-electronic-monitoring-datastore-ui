@@ -43,7 +43,7 @@ export default function nunjucksSetup(app: express.Express): void {
 
   // Add filters from MOJ Frontend
   const mojFilters = Object.assign(allMojFilters())
-  Object.keys(mojFilters).forEach(function (filterName) {
+  Object.keys(mojFilters).forEach(filterName => {
     njkEnv.addFilter(filterName, mojFilters[filterName])
   })
 }

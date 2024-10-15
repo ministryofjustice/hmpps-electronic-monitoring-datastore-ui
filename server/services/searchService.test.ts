@@ -1,5 +1,4 @@
 import SearchService from './searchService'
-import { Order } from '../interfaces/order'
 import orders from '../data/mockData/orders'
 
 describe('Search service', () => {
@@ -13,7 +12,7 @@ describe('Search service', () => {
     it('returns true', async () => {
       const expectedData = orders
       const results = await searchService.getOrders()
-      expect(results).toBe(orders)
+      expect(results).toBe(expectedData)
     })
   })
 })

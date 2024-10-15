@@ -2,17 +2,11 @@ import SearchResultsPage from '../pages/searchResults'
 import Page from '../pages/page'
 
 context('SearchResults', () => {
-  //   beforeEach(() => {
-  //     // cy.task('reset')
-  //     // cy.task('stubSignIn')
-  //     cy.visit('/search-results')
-  //   })
-
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.signIn()
-    cy.visit('/search-results')
+    cy.visit('/search/results')
   })
 
   it('is reachable', () => {

@@ -1,7 +1,6 @@
 import { OrderSummary } from '../../interfaces/orderSummary'
 
 const orderSummary: OrderSummary = {
-  backUrl: '/search-results',
   keyOrderDetails: {
     legacySubjectId: '1234567',
     name: 'John Smith',
@@ -20,16 +19,6 @@ const orderSummary: OrderSummary = {
     name: '1234567',
     createdOn: '01-02-2020',
     time: '0900',
-  },
-  reports: {
-    orderDetails: '/order-details',
-    visitsAndTasks: '/visits-and-tasks',
-    eventHistory: '/event-history',
-    equipmentDetails: '/equipment-details',
-    curfewHours: '/curfew-hours',
-    curfewViolations: '/curfew-violations',
-    contactHistory: '/contact-history',
-    suspensions: '/suspensions',
   },
   documents: {
     pageSize: 5,

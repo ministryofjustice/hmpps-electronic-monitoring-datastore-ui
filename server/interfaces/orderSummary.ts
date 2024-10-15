@@ -12,17 +12,6 @@ interface KeyOrderDetails {
   endDate: string
 }
 
-interface Reports {
-  orderDetails: string
-  visitsAndTasks: string
-  eventHistory: string
-  equipmentDetails: string
-  curfewHours: string
-  curfewViolations: string
-  contactHistory: string
-  suspensions: string
-}
-
 interface SubjectHistoryReport {
   reportUrl: string
   name: string
@@ -38,11 +27,20 @@ interface OrderDocument {
   notes: string
 }
 
+export interface Reports {
+  orderDetails: boolean
+  visitsAndTasks: boolean
+  eventHistory: boolean
+  equipmentDetails: boolean
+  curfewHours: boolean
+  curfewViolations: boolean
+  contactHistory: boolean
+  suspensions: boolean
+}
+
 export interface OrderSummary {
-  backUrl: string
   keyOrderDetails: KeyOrderDetails
   subjectHistoryReport: SubjectHistoryReport
-  reports: Reports
   documents: {
     pageSize: number
     orderDocuments: OrderDocument[]

@@ -12,21 +12,15 @@ import getVisitsAndTasks from '../data/getVisitsAndTasks'
 import tabluateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
+import OrderController from './orderController'
 
 export default function searchRouter({ auditService, orderService }: Services): Router {
   const router = Router()
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  get('/summary', async (req, res, next) => {
-    await auditService.logPageView(Page.ORDER_SUMMARY_PAGE, { who: res.locals.user.username, correlationId: req.id })
+  const orderController = new OrderController(auditService, orderService)
 
-    try {
-      const orderSummary = await orderService.getOrderSummary()
-      res.render('pages/orderSummary', { data: orderSummary })
-    } catch (error) {
-      res.status(500).send('Error fetching data')
-    }
-  })
+  get('/summary', async (req, res, next) => orderController.getSummary(req, res))
 
   get('/details', async (req, res, next) => {
     await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -34,7 +28,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const orderDetails = await getOrderDetails()
       const tabulatedOrderDetails = tabluateRecords(orderDetails, 'Order details')
-      res.render('pages/twoColumnTable', { data: tabulatedOrderDetails })
+      res.render('pages/twoColumnTable', { data: tabulatedOrderDetails, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -46,7 +40,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const visitsAndTasks = await getVisitsAndTasks()
       const tabulatedVisitsAndTasks = tabluateRecords(visitsAndTasks, 'Visits and tasks')
-      res.render('pages/twoColumnTable', { data: tabulatedVisitsAndTasks })
+      res.render('pages/twoColumnTable', { data: tabulatedVisitsAndTasks, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -61,7 +55,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const equipmentDetails = await getEquipmentDetails()
       const tabulatedEquipmentDetails = tabluateRecords(equipmentDetails, 'Equipment details')
-      res.render('pages/twoColumnTable', { data: tabulatedEquipmentDetails })
+      res.render('pages/twoColumnTable', { data: tabulatedEquipmentDetails, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -73,7 +67,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const curfewHours = await getCurfewHours()
       const tabulatedCurfewHours = tabluateRecords(curfewHours, 'Curfew hours')
-      res.render('pages/twoColumnTable', { data: tabulatedCurfewHours })
+      res.render('pages/twoColumnTable', { data: tabulatedCurfewHours, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -85,7 +79,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const eventHistory = await getEventHistory()
       const timeline = createTimeline(eventHistory, 'Event history')
-      res.render('pages/timeline', { data: timeline })
+      res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -97,7 +91,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const suspensions = await getSuspensions()
       const timeline = createTimeline(suspensions, 'Suspension of visits')
-      res.render('pages/timeline', { data: timeline })
+      res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -112,7 +106,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const curfewViolations = await getCurfewViolations()
       const timeline = createTimeline(curfewViolations, 'Violations')
-      res.render('pages/timeline', { data: timeline })
+      res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -124,7 +118,7 @@ export default function searchRouter({ auditService, orderService }: Services): 
     try {
       const contactHistory = await getContactHistory()
       const timeline = createTimeline(contactHistory, 'Contact history')
-      res.render('pages/timeline', { data: timeline })
+      res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }

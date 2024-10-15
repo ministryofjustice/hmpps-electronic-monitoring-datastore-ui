@@ -1,5 +1,4 @@
 import SearchPage from '../pages/search'
-import StartPage from '../pages/startPage'
 import Page from '../pages/page'
 
 context('Search', () => {

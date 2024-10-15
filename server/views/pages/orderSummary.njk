@@ -12,9 +12,9 @@
 
 {% set pageTitle = applicationName + " - Order details" %}
 {% set mainClasses = "app-container govuk-body" %}
-{% set backUrl = data.backUrl %}
+{% set backUrl = backUrl %}
 {% set orderDetails = data.keyOrderDetails %}
-{% set reports = data.reports %}
+{% set reports = reports %}
 {% set subjectHistory = data.subjectHistoryReport %}
 
 {% set orderDocuments = [] %}
@@ -65,80 +65,45 @@
     firstCellIsHeader: true,
     rows: [
       [
-        {
-          text: "Legacy subject ID"
-        },
-        {
-          text: orderDetails.legacySubjectId
-        }
+        {text: "Legacy subject ID"},
+        {text: orderDetails.legacySubjectId}
       ],
       [
-        {
-          text: "Name"
-        },
-        {
-          text: orderDetails.name
-        }
+        {text: "Name"},
+        {text: orderDetails.name}
       ],
       [
-        {
-          text: "Alias"
-        },
-        {
-          text: orderDetails.alias
-        }
+        {text: "Alias"},
+        {text: orderDetails.alias}
       ],
       [
-        {
-          text: "Date of birth"
-        },
-        {
-          text: orderDetails.dateOfBirth
-        }
+        {text: "Date of birth"},
+        {text: orderDetails.dateOfBirth}
       ],
       [
-        {
-          text: "Postcode"
-        },
-        {
-          text: orderDetails.postcode
-        }
+        {text: "Postcode"},
+        {text: orderDetails.postcode}
       ],
       [
-        {
-          text: "Address"
-        },
-        {
-          html: ' <span>'
-            + orderDetails.address1
-            + (('<br/>' + orderDetails.address2) if orderDetails.address2 else '')
-            + (('<br/>' +  orderDetails.address3) if orderDetails.address3 else '')
+        {text: "Address"},
+        {html: ' <span>'
+          + orderDetails.address1
+          + (('<br/>' + orderDetails.address2) if orderDetails.address2 else '')
+          + (('<br/>' +  orderDetails.address3) if orderDetails.address3 else '')
           + '</span>'
         }
       ],
       [
-        {
-          text: "Tag type"
-        },
-        {
-          text: orderDetails.tagType
-        }
+        {text: "Tag type"},
+        {text: orderDetails.tagType}
       ],
       [
-        {
-          text: "Start date"
-        },
-        {
-          text: orderDetails.startDate
-        }
+        {text: "Start date"},
+        {text: orderDetails.startDate}
       ],
       [
-        {
-          text: "End date"
-        },
-        {
-          text: orderDetails.endDate
-        }
+        {text: "End date"},
+        {text: orderDetails.endDate}
       ]
     ]
   }) }}
@@ -146,53 +111,53 @@
   <hr class="govuk-section-break govuk-section-break--l">
 
   <div class="govuk-button-group ems-button-grid">
-    {{ govukButton({
+    {% if reports.orderDetails %} {{ govukButton({
       text: "Order details",
-      href: reports.orderDetails,
+      href: '/orders/details',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+      }) }} {% endif %}
 
-    {{ govukButton({
+    {% if reports.visitsAndTasks %} {{ govukButton({
       text: "Visits and tasks",
-      href: reports.visitsAndTasks,
+      href: '/orders/visits-and-tasks',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+    }) }} {% endif %}
 
-    {{ govukButton({
+    {% if reports.eventHistory %} {{ govukButton({
       text: "Event history",
-      href: reports.eventHistory,
+      href: '/orders/event-history',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+    }) }} {% endif %}
 
-    {{ govukButton({
+    {% if reports.equipmentDetails %} {{ govukButton({
       text: "Equipment details",
-      href: reports.equipmentDetails,
+      href: '/orders/equipment-details',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+    }) }} {% endif %}
 
-    {{ govukButton({
+    {% if reports.curfewHours %} {{ govukButton({
       text: "Curfew hours",
-      href: reports.curfewHours,
+      href: '/orders/curfew-hours',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+    }) }} {% endif %}
 
-    {{ govukButton({
+    {% if reports.curfewViolations %} {{ govukButton({
       text: "Curfew violations",
-      href: reports.curfewViolations,
+      href: '/orders/curfew-violations',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+    }) }} {% endif %}
 
-    {{ govukButton({
+    {% if reports.contactHistory %} {{ govukButton({
       text: "Contact history",
-      href: reports.contactHistory,
+      href: '/orders/contact-history',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+    }) }} {% endif %}
 
-    {{ govukButton({
+    {% if reports.suspensions %} {{ govukButton({
       text: "Suspensions",
-      href: reports.suspensions,
+      href: '/orders/suspensions',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }}
+    }) }} {% endif %}
   </div>
 
   <hr class="govuk-section-break govuk-section-break--l">
@@ -202,31 +167,18 @@
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: false,
     head: [
-      {
-        text: "Name"
-      },
-      {
-        text: "Created on"
-      },
-      {
-        text: "Time"
-      }
+      {text: "Name"},
+      {text: "Created on"},
+      {text: "Time"}
     ],
     rows: [
       [
-        {
-          html: '
-            <a href="' + subjectHistory.reportUrl + '">
-              '+ subjectHistory.name +'
-            </a>
-          ' 
+        {html: ' <a href="' + subjectHistory.reportUrl + '">'
+          + subjectHistory.name 
+          +'</a>'
         },
-        {
-          text: subjectHistory.createdOn
-        },
-        {
-          text: subjectHistory.time
-        }
+        {text: subjectHistory.createdOn},
+        {text: subjectHistory.time}
       ]
     ]
   }) }}
@@ -245,49 +197,25 @@
   {% set variationsHtml %}
     {{ govukTable({
       head: [
-        {
-          text: "Case manager"
-        },
-        {
-          text: "Cases opened"
-        },
-        {
-          text: "Cases closed"
-        }
+        {text: "Case manager"},
+        {text: "Cases opened"},
+        {text: "Cases closed"}
       ],
       rows: [
         [
-          {
-            text: "David Francis"
-          },
-          {
-            text: "3"
-          },
-          {
-            text: "0"
-          }
+          {text: "David Francis"},
+          {text: "3"},
+          {text: "0"}
         ],
         [
-          {
-            text: "Paul Farmer"
-          },
-          {
-            text: "1"
-          },
-          {
-            text: "0"
-          }
+          {text: "Paul Farmer"},
+          {text: "1"},
+          {text: "0"}
         ],
         [
-          {
-            text: "Rita Patel"
-          },
-          {
-            text: "2"
-          },
-          {
-            text: "0"
-          }
+          {text: "Rita Patel"},
+          {text: "2"},
+          {text: "0"}
         ]
       ]
     }) }}
@@ -296,49 +224,25 @@
   {% set enforcementsHtml %}
     {{ govukTable({
       head: [
-        {
-          text: "Case manager"
-        },
-        {
-          text: "Cases opened"
-        },
-        {
-          text: "Cases closed"
-        }
+        {text: "Case manager"},
+        {text: "Cases opened"},
+        {text: "Cases closed"}
       ],
       rows: [
         [
-          {
-            text: "David Francis"
-          },
-          {
-            text: "98"
-          },
-          {
-            text: "95"
-          }
+          {text: "David Francis"},
+          {text: "98"},
+          {text: "95"}
         ],
         [
-          {
-            text: "Paul Farmer"
-          },
-          {
-            text: "122"
-          },
-          {
-            text: "131"
-          }
+          {text: "Paul Farmer"},
+          {text: "122"},
+          {text: "131"}
         ],
         [
-          {
-            text: "Rita Patel"
-          },
-          {
-            text: "126"
-          },
-          {
-            text: "142"
-          }
+          {text: "Rita Patel"},
+          {text: "126"},
+          {text: "142"}
         ]
       ]
     }) }}
@@ -347,49 +251,25 @@
   {% set visitReportsHtml %}
     {{ govukTable({
       head: [
-        {
-          text: "Case manager"
-        },
-        {
-          text: "Cases opened"
-        },
-        {
-          text: "Cases closed"
-        }
+        {text: "Case manager"},
+        {text: "Cases opened"},
+        {text: "Cases closed"}
       ],
       rows: [
         [
-          {
-            text: "David Francis"
-          },
-          {
-            text: "1380"
-          },
-          {
-            text: "1472"
-          }
+          {text: "David Francis"},
+          {text: "1380"},
+          {text: "1472"}
         ],
         [
-          {
-            text: "Paul Farmer"
-          },
-          {
-            text: "1129"
-          },
-          {
-            text: "1083"
-          }
+          {text: "Paul Farmer"},
+          {text: "1129"},
+          {text: "1083"}
         ],
         [
-          {
-            text: "Rita Patel"
-          },
-          {
-            text: "1539"
-          },
-          {
-            text: "1265"
-          }
+          {text: "Rita Patel"},
+          {text: "1539"},
+          {text: "1265"}
         ]
       ]
     }) }}
