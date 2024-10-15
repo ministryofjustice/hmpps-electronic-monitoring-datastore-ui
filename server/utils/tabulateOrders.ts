@@ -1,6 +1,8 @@
 import { Order } from '../interfaces/order'
 
 const tabluateOrders = (orders: Order[]) => {
+  const orderSummaryUrl: string = '/orders/summary'
+
   return orders.map(order => {
     return [
       {
@@ -8,7 +10,7 @@ const tabluateOrders = (orders: Order[]) => {
           'data-sort-value': order.subjectId,
         },
         html: `
-          <a href="${order.orderSummaryUrl}">
+          <a href="${orderSummaryUrl}">
             ${order.subjectId}
           </a>
         `,
