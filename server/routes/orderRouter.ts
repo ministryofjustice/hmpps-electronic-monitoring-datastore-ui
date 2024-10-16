@@ -22,11 +22,6 @@ export default function searchRouter({ auditService, orderService }: Services): 
 
   get('/summary', async (req, res, next) => orderController.getSummary(req, res))
 
-  get('/test-endpoint/:orderId', async (req, res, next) => {
-    const myId = req.params.orderId
-    res.status(200).send(`Success! Your OrderId was ${myId}`)
-  })
-
   get('/details', async (req, res, next) => {
     await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
