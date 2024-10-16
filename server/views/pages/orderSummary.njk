@@ -113,75 +113,52 @@
   <div class="govuk-button-group ems-button-grid">
     {% if reports.orderDetails %} {{ govukButton({
       text: "Order details",
-      href: '/orders/fakeId/details',
+      href: '/orders/' + orderDetails.legacySubjectId + '/details',
       classes: "govuk-button--secondary ems-button-grid__button"
       }) }} {% endif %}
 
     {% if reports.visitsAndTasks %} {{ govukButton({
       text: "Visits and tasks",
-      href: '/orders/fakeId/visits-and-tasks',
+      href: '/orders/' + orderDetails.legacySubjectId + '/visits-and-tasks',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
     {% if reports.eventHistory %} {{ govukButton({
       text: "Event history",
-      href: '/orders/fakeId/event-history',
+      href: '/orders/' + orderDetails.legacySubjectId + '/event-history',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
     {% if reports.equipmentDetails %} {{ govukButton({
       text: "Equipment details",
-      href: '/orders/fakeId/equipment-details',
+      href: '/orders/' + orderDetails.legacySubjectId + '/equipment-details',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
     {% if reports.curfewHours %} {{ govukButton({
       text: "Curfew hours",
-      href: '/orders/fakeId/curfew-hours',
+      href: '/orders/' + orderDetails.legacySubjectId + '/curfew-hours',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
     {% if reports.curfewViolations %} {{ govukButton({
       text: "Curfew violations",
-      href: '/orders/fakeId/curfew-violations',
+      href: '/orders/' + orderDetails.legacySubjectId + '/curfew-violations',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
     {% if reports.contactHistory %} {{ govukButton({
       text: "Contact history",
-      href: '/orders/fakeId/contact-history',
+      href: '/orders/' + orderDetails.legacySubjectId + '/contact-history',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
     {% if reports.suspensions %} {{ govukButton({
       text: "Suspensions",
-      href: '/orders/fakeId/suspensions',
+      href: '/orders/' + orderDetails.legacySubjectId + '/suspensions',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
   </div>
-
-  <hr class="govuk-section-break govuk-section-break--l">
-
-  {{ govukTable({
-    caption: "Subject history report",
-    captionClasses: "govuk-table__caption--m",
-    firstCellIsHeader: false,
-    head: [
-      {text: "Name"},
-      {text: "Created on"},
-      {text: "Time"}
-    ],
-    rows: [
-      [
-        {html: ' <a href="' + subjectHistory.reportUrl + '">'
-          + subjectHistory.name 
-          +'</a>'
-        },
-        {text: subjectHistory.createdOn},
-        {text: subjectHistory.time}
-      ]
-    ]
-  }) }}
 
   <hr class="govuk-section-break govuk-section-break--l">
 
