@@ -41,12 +41,11 @@ export default function orderRouter({ auditService, orderService }: Services): R
   get('/details', async (req, res, next) => {
     await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
-    const { orderId } = req.params
-
     try {
+      const orderId = req.params.orderId
       const orderDetails = await getOrderDetails()
       const tabulatedOrderDetails = tabluateRecords(orderDetails, 'Order details')
-      res.render('pages/twoColumnTable', { data: tabulatedOrderDetails, backUrl: '/orders/summary' })
+      res.render('pages/twoColumnTable', { data: tabulatedOrderDetails, backUrl: `/orders/${orderId}/summary` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -55,6 +54,8 @@ export default function orderRouter({ auditService, orderService }: Services): R
   get('/visits-and-tasks', async (req, res, next) => {
     await auditService.logPageView(Page.VISITS_AND_TASKS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
+    const orderId = req.params.orderId
+    
     try {
       const visitsAndTasks = await getVisitsAndTasks()
       const tabulatedVisitsAndTasks = tabluateRecords(visitsAndTasks, 'Visits and tasks')
@@ -71,6 +72,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
     })
 
     try {
+      const orderId = req.params.orderId
       const equipmentDetails = await getEquipmentDetails()
       const tabulatedEquipmentDetails = tabluateRecords(equipmentDetails, 'Equipment details')
       res.render('pages/twoColumnTable', { data: tabulatedEquipmentDetails, backUrl: '/orders/summary' })
@@ -83,6 +85,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
     await auditService.logPageView(Page.CURFEW_HOURS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
+      const orderId = req.params.orderId
       const curfewHours = await getCurfewHours()
       const tabulatedCurfewHours = tabluateRecords(curfewHours, 'Curfew hours')
       res.render('pages/twoColumnTable', { data: tabulatedCurfewHours, backUrl: '/orders/summary' })
@@ -95,6 +98,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
     await auditService.logPageView(Page.EVENT_HISTORY_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
+      const orderId = req.params.orderId
       const eventHistory = await getEventHistory()
       const timeline = createTimeline(eventHistory, 'Event history')
       res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
@@ -107,6 +111,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
     await auditService.logPageView(Page.SUSPENSIONS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
+      const orderId = req.params.orderId
       const suspensions = await getSuspensions()
       const timeline = createTimeline(suspensions, 'Suspension of visits')
       res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
@@ -122,6 +127,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
     })
 
     try {
+      const orderId = req.params.orderId
       const curfewViolations = await getCurfewViolations()
       const timeline = createTimeline(curfewViolations, 'Violations')
       res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
@@ -134,6 +140,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
     await auditService.logPageView(Page.CONTACT_HISTORY_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
+      const orderId = req.params.orderId
       const contactHistory = await getContactHistory()
       const timeline = createTimeline(contactHistory, 'Contact history')
       res.render('pages/timeline', { data: timeline, backUrl: '/orders/summary' })
