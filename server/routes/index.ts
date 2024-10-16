@@ -18,7 +18,7 @@ export default function routes(services: Services): Router {
   })
 
   router.use('/search', searchRouter(services))
-  router.use('/orders', orderRouter(services))
+  router.use('/orders/:orderId', orderRouter(services))
 
   return router
 }

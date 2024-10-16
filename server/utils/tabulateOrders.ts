@@ -10,7 +10,7 @@ const tabluateOrders = (orders: Order[]) => {
           'data-sort-value': order.subjectId,
         },
         html: `
-          <a href="${orderSummaryUrl}">
+          <a href="/orders/${order.subjectId}/summary">
             ${order.subjectId}
           </a>
         `,

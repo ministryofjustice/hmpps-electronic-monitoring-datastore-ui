@@ -4,6 +4,8 @@
 
 {% set pageTitle = applicationName + " - Home" %}
 {% set mainClasses = "app-container govuk-body" %}
+{% set searchUrl = "/search" %}
+
 {% block content %}
   <h1>Electronic Monitoring Datastore</h1>
   
@@ -13,7 +15,7 @@
       </p>
       {{ govukButton({
           text: "Go to search page",
-          href: "/search",
+          href: searchUrl,
           isStartButton: true
       }) }}
   </div>

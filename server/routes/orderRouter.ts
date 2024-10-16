@@ -14,16 +14,34 @@ import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import OrderController from './orderController'
 
-export default function searchRouter({ auditService, orderService }: Services): Router {
-  const router = Router()
+export default function orderRouter({ auditService, orderService }: Services): Router {
+  const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   const orderController = new OrderController(auditService, orderService)
 
   get('/summary', async (req, res, next) => orderController.getSummary(req, res))
 
+  // // Possibly better approach for unit testing
+  // get('/summary', async (req, res, next) => {
+  //   await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
+  //   const param1 = req.params.param1WhichIsFake
+  //   const param2 = req.params.param2WhichIsFake
+
+  //   try {
+  //     let myDataObj = orderController.getSummary(param1, param2)
+  //     res.render('page', {data: myDataObj})
+  //   } catch (error) {
+  //     res.status(500).send('Error fetching data')
+  //   }
+
+  // })
+
   get('/details', async (req, res, next) => {
     await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+
+    const { orderId } = req.params
 
     try {
       const orderDetails = await getOrderDetails()
