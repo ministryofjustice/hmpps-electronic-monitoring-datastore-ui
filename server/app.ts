@@ -1,4 +1,5 @@
 import express from 'express'
+import expressSitemapXml from 'express-sitemap-xml'
 
 import createError from 'http-errors'
 
@@ -15,6 +16,7 @@ import setUpStaticResources from './middleware/setUpStaticResources'
 import setUpWebRequestParsing from './middleware/setupRequestParsing'
 import setUpWebSecurity from './middleware/setUpWebSecurity'
 import setUpWebSession from './middleware/setUpWebSession'
+
 
 import routes from './routes'
 import type { Services } from './services'
