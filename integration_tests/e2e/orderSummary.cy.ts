@@ -2,11 +2,13 @@ import OrderSummaryPage from '../pages/orderSummary'
 import Page from '../pages/page'
 
 context('Order Summary', () => {
+  const orderId = '1234567'
+
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.signIn()
-    cy.visit('/orders/summary')
+    cy.visit(`/orders/${orderId}/summary`)
   })
 
   it('is reachable', () => {
@@ -60,56 +62,56 @@ context('Order Summary', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.orderDetailsButton().should('be.visible')
       summaryPage.orderDetailsButton().click()
-      cy.url().should('include', '/orders/details')
+      cy.url().should('include', `/orders/${orderId}/details`)
     })
 
     it('contains button visits and tasks', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.visitsAndTasksButton().should('be.visible')
       summaryPage.visitsAndTasksButton().click()
-      cy.url().should('include', '/orders/visits-and-tasks')
+      cy.url().should('include', `/orders/${orderId}/visits-and-tasks`)
     })
 
     it('contains button event history', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.eventHistoryButton().should('be.visible')
       summaryPage.eventHistoryButton().click()
-      cy.url().should('include', '/orders/event-history')
+      cy.url().should('include', `/orders/${orderId}/event-history`)
     })
 
     it('contains button equipment details', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.equipmentDetailsButton().should('be.visible')
       summaryPage.equipmentDetailsButton().click()
-      cy.url().should('include', '/orders/equipment-details')
+      cy.url().should('include', `/orders/${orderId}/equipment-details`)
     })
 
     it('contains button curfew hours', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.curfewHoursButton().should('be.visible')
       summaryPage.curfewHoursButton().click()
-      cy.url().should('include', '/orders/curfew-hours')
+      cy.url().should('include', `/orders/${orderId}/curfew-hours`)
     })
 
     it('contains button curfew violations', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.curfewViolationsButton().should('be.visible')
       summaryPage.curfewViolationsButton().click()
-      cy.url().should('include', '/orders/curfew-violations')
+      cy.url().should('include', `/orders/${orderId}/curfew-violations`)
     })
 
     it('contains button contact history', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.contactHistoryButton().should('be.visible')
       summaryPage.contactHistoryButton().click()
-      cy.url().should('include', '/orders/contact-history')
+      cy.url().should('include', `/orders/${orderId}/contact-history`)
     })
 
     it('contains button suspensions', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.suspensionsButton().should('be.visible')
       summaryPage.suspensionsButton().click()
-      cy.url().should('include', '/orders/suspensions')
+      cy.url().should('include', `/orders/${orderId}/suspensions`)
     })
   })
 })
