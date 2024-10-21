@@ -9,6 +9,8 @@ export default class OrderSummaryPage extends Page {
     cy.get('caption').contains('Key order details')
   }
 
+  orderDetailsTable = (): PageElement => cy.get('.govuk-table__body')
+
   legacySubjectId = (): PageElement => cy.get('.govuk-table__row').children('th').contains('Legacy subject ID')
 
   name = (): PageElement => cy.get('.govuk-table__row').children('th').contains('Name')
@@ -22,6 +24,8 @@ export default class OrderSummaryPage extends Page {
   address = (): PageElement => cy.get('.govuk-table__row').children('th').contains('Address')
 
   tagType = (): PageElement => cy.get('.govuk-table__row').children('th').contains('Tag type')
+
+  startDate = (): PageElement => cy.get('.govuk-table__row').children('th').contains('Start date')
 
   endDate = (): PageElement => cy.get('.govuk-table__row').children('th').contains('End date')
 
@@ -40,4 +44,28 @@ export default class OrderSummaryPage extends Page {
   contactHistoryButton = (): PageElement => cy.get('.ems-button-grid__button').contains('Contact history')
 
   suspensionsButton = (): PageElement => cy.get('.ems-button-grid__button').contains('Suspensions')
+
+  dateFilter = (): PageElement => cy.get('.ems-date-filter')
+
+  dateFilterRow = (): PageElement => cy.get('.ems-date-filter__input-row')
+
+  clearFilterLink = (): PageElement => cy.get('.ems-date-filter__clear-filter-button')
+
+  applyButton = (): PageElement => cy.get('.ems-date-filter__filter-button')
+
+  clearFilterButton = (): PageElement => cy.get('.ems-date-filter__filter-button')
+
+  tabsList = (): PageElement => cy.get('.govuk-tabs__list')
+
+  orderDocumentsTab = (): PageElement => cy.get('.govuk-tabs__tab').contains('Order documents')
+
+  variationsTab = (): PageElement => cy.get('.govuk-tabs__tab').contains('Variations')
+
+  enforcementsTab = (): PageElement => cy.get('.govuk-tabs__tab').contains('Enforcements')
+
+  visitReportsTab = (): PageElement => cy.get('.govuk-tabs__tab').contains('Visit reports')
+
+  orderDocumentsPanel = (): PageElement => cy.get('#order-documents')
+
+  variationsPanel = (): PageElement => cy.get('#variations')
 }
