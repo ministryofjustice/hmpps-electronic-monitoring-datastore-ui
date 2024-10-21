@@ -51,8 +51,6 @@ export default class OrderSummaryPage extends Page {
 
   clearFilterLink = (): PageElement => cy.get('.ems-date-filter__clear-filter-button')
 
-  // dateFilterRowEndDate = (): PageElement => cy.get('.ems-date-filter__input-row').find('#end-date').type('2023-10-16')
-
   applyButton = (): PageElement => cy.get('.ems-date-filter__filter-button')
 
   clearFilterButton = (): PageElement => cy.get('.ems-date-filter__filter-button')
@@ -70,5 +68,4 @@ export default class OrderSummaryPage extends Page {
   orderDocumentsPanel = (): PageElement => cy.get('#order-documents')
 
   variationsPanel = (): PageElement => cy.get('#variations')
-  // visitReportsTab = (): PageElement => cy.get('.govuk-tabs__list').contains('Visit reports')
 }

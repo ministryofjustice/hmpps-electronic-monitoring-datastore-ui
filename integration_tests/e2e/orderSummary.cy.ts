@@ -92,7 +92,7 @@ context('Order Summary', () => {
   describe('Date filter', () => {
     it('renders the clear filter component after clicking apply', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      // Locate the dateFilter container
+
       summaryPage.dateFilter().within(() => {
         // From date
         summaryPage.dateFilterRow().find('#start-date-day').type('01')
@@ -104,10 +104,7 @@ context('Order Summary', () => {
         summaryPage.dateFilterRow().find('#end-date-month').type('10')
         summaryPage.dateFilterRow().find('#end-date-year').type('2023')
 
-        // Click the apply button
         summaryPage.applyButton().click()
-
-        // Verify that the 'x clear filter' link is rendered after clicking apply
         summaryPage.clearFilterLink().should('be.visible').and('contain.text', 'x clear filter')
       })
     })
