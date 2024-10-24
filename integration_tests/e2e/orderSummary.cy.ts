@@ -16,81 +16,81 @@ context('Order Summary', () => {
   })
 
   describe('Order summary table', () => {
-    it('contains expected rows', () => {
+    it('Includes expected rows', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.orderDetailsTable().each(() => {
-        summaryPage.legacySubjectId().should('be.visible')
-        summaryPage.name().should('be.visible')
-        summaryPage.alias().should('be.visible')
-        summaryPage.dateOfBirth().should('be.visible')
-        summaryPage.postcode().should('be.visible')
-        summaryPage.tagType().should('be.visible')
-        summaryPage.startDate().should('be.visible')
-        summaryPage.endDate().should('be.visible')
+        summaryPage.summaryTableRowHeaders('Legacy subject ID').should('be.visible')
+        summaryPage.summaryTableRowHeaders('Name').should('be.visible')
+        summaryPage.summaryTableRowHeaders('Alias').should('be.visible')
+        summaryPage.summaryTableRowHeaders('Date of birth').should('be.visible')
+        summaryPage.summaryTableRowHeaders('Postcode').should('be.visible')
+        summaryPage.summaryTableRowHeaders('Tag type').should('be.visible')
+        summaryPage.summaryTableRowHeaders('Start date').should('be.visible')
+        summaryPage.summaryTableRowHeaders('End date').should('be.visible')
       })
     })
   })
 
   describe('Grid buttons', () => {
-    it('contains button order details button and navigates to expected page', () => {
+    it('Contains order details button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.orderDetailsButton().should('be.visible')
-      summaryPage.orderDetailsButton().click()
+      summaryPage.gridButton('Order details').should('be.visible')
+      summaryPage.gridButton('Order details').click()
       cy.url().should('include', `/orders/${orderId}/details`)
     })
 
-    it('contains button visits and tasks and navigates to expected page', () => {
+    it('Contains visits and tasks button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.visitsAndTasksButton().should('be.visible')
-      summaryPage.visitsAndTasksButton().click()
+      summaryPage.gridButton('Visits and tasks').should('be.visible')
+      summaryPage.gridButton('Visits and tasks').click()
       cy.url().should('include', `/orders/${orderId}/visits-and-tasks`)
     })
 
-    it('contains button event history and navigates to expected page', () => {
+    it('Contains event history button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.eventHistoryButton().should('be.visible')
-      summaryPage.eventHistoryButton().click()
+      summaryPage.gridButton('Event history').should('be.visible')
+      summaryPage.gridButton('Event history').click()
       cy.url().should('include', `/orders/${orderId}/event-history`)
     })
 
-    it('contains button equipment details and navigates to expected page', () => {
+    it('Contains equipment details button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.equipmentDetailsButton().should('be.visible')
-      summaryPage.equipmentDetailsButton().click()
+      summaryPage.gridButton('Equipment details').should('be.visible')
+      summaryPage.gridButton('Equipment details').click()
       cy.url().should('include', `/orders/${orderId}/equipment-details`)
     })
 
-    it('contains button curfew hours and navigates to expected page', () => {
+    it('Contains curfew hours button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.curfewHoursButton().should('be.visible')
-      summaryPage.curfewHoursButton().click()
+      summaryPage.gridButton('Curfew hours').should('be.visible')
+      summaryPage.gridButton('Curfew hours').click()
       cy.url().should('include', `/orders/${orderId}/curfew-hours`)
     })
 
-    it('contains button curfew violations and navigates to expected page', () => {
+    it('Contains curfew violations button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.curfewViolationsButton().should('be.visible')
-      summaryPage.curfewViolationsButton().click()
+      summaryPage.gridButton('Curfew violations').should('be.visible')
+      summaryPage.gridButton('Curfew violations').click()
       cy.url().should('include', `/orders/${orderId}/curfew-violations`)
     })
 
-    it('contains button contact history and navigates to expected page', () => {
+    it('Contains contact history button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.contactHistoryButton().should('be.visible')
-      summaryPage.contactHistoryButton().click()
+      summaryPage.gridButton('Contact history').should('be.visible')
+      summaryPage.gridButton('Contact history').click()
       cy.url().should('include', `/orders/${orderId}/contact-history`)
     })
 
-    it('contains button suspensions and navigates to expected page', () => {
+    it('Contains suspensions button and navigates to expected page', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
-      summaryPage.suspensionsButton().should('be.visible')
-      summaryPage.suspensionsButton().click()
+      summaryPage.gridButton('Suspensions').should('be.visible')
+      summaryPage.gridButton('Suspensions').click()
       cy.url().should('include', `/orders/${orderId}/suspensions`)
     })
   })
 
   describe('Date filter', () => {
-    it('renders the clear filter component after clicking apply', () => {
+    it('Renders the clear filter component after typing in a date range and clicking apply', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
 
       summaryPage.dateFilter().within(() => {
@@ -105,7 +105,7 @@ context('Order Summary', () => {
         summaryPage.dateFilterRow().find('#end-date-year').type('2023')
 
         summaryPage.applyButton().click()
-        summaryPage.clearFilterLink().should('be.visible').and('contain.text', 'x clear filter')
+        summaryPage.clearFilterLink('x clear filter').should('be.visible')
       })
     })
   })
@@ -114,35 +114,35 @@ context('Order Summary', () => {
     it('Contains expected tabs', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
       summaryPage.tabsList().within(() => {
-        summaryPage.orderDocumentsTab().should('be.visible')
-        summaryPage.variationsTab().should('be.visible')
-        summaryPage.enforcementsTab().should('be.visible')
-        summaryPage.visitReportsTab().should('be.visible')
+        summaryPage.documentsTab('Order documents').should('be.visible')
+        summaryPage.documentsTab('Variations').should('be.visible')
+        summaryPage.documentsTab('Enforcements').should('be.visible')
+        summaryPage.documentsTab('Visit reports').should('be.visible')
       })
     })
   })
 
-  describe('Document tabs display content', () => {
+  describe('Document Panels', () => {
     it('Displays the correct panel when the Order Documents tab is clicked', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
 
       summaryPage.tabsList().within(() => {
-        summaryPage.orderDocumentsTab().click()
+        summaryPage.documentsTab('Order documents').click()
       })
 
-      summaryPage.orderDocumentsPanel().should('be.visible')
-      summaryPage.variationsPanel().should('not.be.visible')
+      summaryPage.tabsPanel('#order-documents').should('be.visible')
+      summaryPage.tabsPanel('#variations').should('not.be.visible')
     })
 
     it('Displays the correct panel when the Variations tab is clicked', () => {
       const summaryPage = Page.verifyOnPage(OrderSummaryPage)
 
       summaryPage.tabsList().within(() => {
-        summaryPage.variationsTab().click()
+        summaryPage.documentsTab('Variations').click()
       })
 
-      summaryPage.variationsPanel().should('be.visible')
-      summaryPage.orderDocumentsPanel().should('not.be.visible')
+      summaryPage.tabsPanel('#variations').should('be.visible')
+      summaryPage.tabsPanel('#order-documents').should('not.be.visible')
     })
   })
 })
