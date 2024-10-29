@@ -80,11 +80,13 @@ The template app is, by default, configured not to use REDIS when running locall
 ## Running the app
 ### Running the app via docker-compose
 
-The easiest way to run the app is to use docker compose to create the service and all dependencies.
+The easiest way to run the app is to use docker compose to create the service and all dependencies:  
+> Run `docker compose pull` then `docker compose up`
 
-`docker compose pull`
-
-`docker compose up`
+If you want to run both the UI and the API locally:  
+> Run `docker-compose -f docker-compose-with-api.yml up`.  
+> This will run all services in the same network so they can talk to one another.  
+> _You may need to change the reference in the docker-compose-with-api.yml file to point to your local API project source if it isn't in a sibling folder to your UI project._
 
 ### Running the app in VS Code for development
 1. Install dependencies using `npm install`, ensuring you are using `node v20`
