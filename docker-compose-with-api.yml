@@ -1,0 +1,77 @@
+version: '3.1'
+services:
+  redis:
+    image: 'bitnami/redis:7.4'
+    networks:
+      - hmpps
+    container_name: redis
+    ports:
+      - '6379:6379'
+    healthcheck:
+      test: ['CMD', 'redis-cli', '--raw', 'incr', 'ping']
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+
+  hmpps-auth:
+    image: quay.io/hmpps/hmpps-auth:latest
+    networks:
+      - hmpps
+    container_name: hmpps-auth
+    ports:
+      - '9090:8080'
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/auth/health']
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
+
+  hmpps-electronic-monitoring-ui:
+    build:
+      context: .
+      args:
+        BUILD_NUMBER: '1.0.0'
+        GIT_REF: 'a1b2c3'
+        GIT_BRANCH: main
+    networks:
+      - hmpps
+    container_name: hmpps-electronic-monitoring-datastore-ui
+    ports:
+      - '3000:3000'
+    environment:
+      - PRODUCT_ID=HMPPS529
+      - REDIS_ENABLED=false
+      - REDIS_HOST=localhost
+      - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
+      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
+      # These will need to match new creds in the seed auth service auth
+      - AUTH_CODE_CLIENT_ID=hmpps-electronic-monitoring-datastore-ui
+      - AUTH_CODE_CLIENT_SECRET=clientsecret
+      - CLIENT_CREDS_CLIENT_ID=hmpps-electronic-monitoring-datastore-api
+      - CLIENT_CREDS_CLIENT_SECRET=clientsecret
+      - SESSION_SECRET=somesecretvalue
+      - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/auth
+      - TOKEN_VERIFICATION_ENABLED=false
+      - INGRESS_URL=http://localhost:3000
+      - NO_HTTPS=true
+
+  hmpps-electronic-monitoring-datastore-api:
+    build:
+      # This must point to your local version of the API code
+      # The below context works if both projects are cloned into the same parent directory with the default name
+      context: ../hmpps-electronic-monitoring-datastore-api
+    networks:
+      - hmpps
+    container_name: hmpps-electronic-monitoring-datastore-api
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health/ping"]
+    environment:
+      - SERVER_PORT=8080
+      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
+      # TODO: Remove this URL and replace with outgoing service URLs
+      - EXAMPLE_URL=http://hmpps-electronic-monitoring-datastore-api:8080
+      - SPRING_PROFILES_ACTIVE=dev
+
+networks:
+  hmpps:
