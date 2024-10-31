@@ -92,6 +92,7 @@ export default {
     },
     electronicMonitoringDatastore: {
       url: get('EM_DATASTORE_API_URL', 'http://localhost:8080', requiredInProduction),
+      // We are passing the client-creds-client-id and -client-secret into this config object on line 81 & 82 above
       timeout: {
         response: Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 30000)),
         deadline: Number(get('EM_DATASTORE_API_TIMEOUT_DEADLINE', 30000)),

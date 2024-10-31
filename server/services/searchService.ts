@@ -5,7 +5,7 @@ import { Order } from '../interfaces/order'
 import RestClient from '../data/restClient'
 
 export default class SearchService {
-  // constructor(private readonly apiClient: RestClient) {}
+  constructor(private readonly apiClient: RestClient) {}
 
   async getOrders(): Promise<Order[]> {
     try {
@@ -14,5 +14,14 @@ export default class SearchService {
       logger.error(getSanitisedError(error), 'Error retrieving search results')
       return error
     }
+  }
+
+  async testEndpoint() {
+    const result = await this.apiClient.get({
+      path: '/api/test-endpoint',
+      token: "3",
+    })
+
+    return result
   }
 }

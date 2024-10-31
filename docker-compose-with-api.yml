@@ -53,6 +53,7 @@ services:
       - TOKEN_VERIFICATION_ENABLED=false
       - INGRESS_URL=http://localhost:3000
       - NO_HTTPS=true
+      - DATASTORE_API_URL=http://localhost:8080
 
   hmpps-electronic-monitoring-datastore-api:
     build:
