@@ -91,7 +91,7 @@ export default {
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
     electronicMonitoringDatastore: {
-      url: get('EM_DATASTORE_API_URL', 'http://localhost:5000', requiredInProduction),
+      url: get('EM_DATASTORE_API_URL', 'http://localhost:8080', requiredInProduction),
       timeout: {
         response: Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 30000)),
         deadline: Number(get('EM_DATASTORE_API_TIMEOUT_DEADLINE', 30000)),
