@@ -2,14 +2,17 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
+import HmppsAuthClient from '../data/hmppsAuthClient'
 import SearchService from '../services/searchService'
 import { basicGetTest, GetRequestFixture } from './index.test'
 
 jest.mock('../services/auditService')
 jest.mock('../services/searchService')
+jest.mock('../data/hmppsAuthClient')
 
+let mockAuthClient: jest.Mocked<HmppsAuthClient>
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const searchService = new SearchService() as jest.Mocked<SearchService>
+const searchService = new SearchService(mockAuthClient) as jest.Mocked<SearchService>
 
 let app: Express
 

@@ -6,15 +6,19 @@ import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
 import type { Services } from '../../services'
+import HmppsAuthClient from '../../data/hmppsAuthClient'
 import AuditService from '../../services/auditService'
 import SearchService from '../../services/searchService'
 import OrderService from '../../services/orderService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
 
+jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../services/auditService')
 jest.mock('../../services/searchService')
 jest.mock('../../services/orderService')
+
+let mockAuthClient: jest.Mocked<HmppsAuthClient>
 
 export const user: HmppsUser = {
   name: 'FIRST LAST',
@@ -59,9 +63,10 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 
 export function appWithAllRoutes({
   production = false,
+
   services = {
     auditService: new AuditService(null) as jest.Mocked<AuditService>,
-    searchService: new SearchService() as jest.Mocked<SearchService>,
+    searchService: new SearchService(mockAuthClient) as jest.Mocked<SearchService>,
     orderService: new OrderService() as jest.Mocked<OrderService>,
   },
   userSupplier = () => user,

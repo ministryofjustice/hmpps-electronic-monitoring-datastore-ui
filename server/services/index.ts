@@ -4,11 +4,11 @@ import SearchService from './searchService'
 import OrderService from './orderService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuditClient } = dataAccess()
+  const { applicationInfo, hmppsAuditClient, hmppsAuthClient } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
 
-  const searchService = new SearchService()
+  const searchService = new SearchService(hmppsAuthClient)
 
   const orderService = new OrderService()
 
