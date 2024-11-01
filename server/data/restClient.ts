@@ -76,6 +76,36 @@ export default class RestClient {
     }
   }
 
+  async unauthorised_get<Response = unknown>({
+    path,
+    query = {},
+    headers = {},
+    responseType = '',
+    raw = false,
+  }: Request): Promise<Response> {
+    logger.info(`${this.name} GET: ${path}`)
+    try {
+      const result = await superagent
+        .get(`${this.apiUrl()}${path}`)
+        .query(query)
+        .agent(this.agent)
+        .retry(2, (err, res) => {
+          if (err) logger.info(`Retry handler found ${this.name} API error with ${err.code} ${err.message}`)
+          return undefined // retry handler only for logging retries, not to influence retry logic
+        })
+        // .auth(this.token, { type: 'bearer' })
+        .set(headers)
+        .responseType(responseType)
+        .timeout(this.timeoutConfig())
+
+      return raw ? result : result.body
+    } catch (error) {
+      const sanitisedError = sanitiseError(error)
+      logger.warn({ ...sanitisedError }, `Error calling ${this.name}, path: '${path}', verb: 'GET'`)
+      throw sanitisedError
+    }
+  }
+
   private async requestWithBody<Response = unknown>(
     method: 'patch' | 'post' | 'put',
     { path, query = {}, headers = {}, responseType = '', data = {}, raw = false, retry = false }: RequestWithBody,
