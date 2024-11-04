@@ -8,15 +8,21 @@ import { HmppsAuthClient } from '../data'
 
 export default class SearchService {
   private readonly apiClient: RestClient
-  public datastoreClientToken: string = 'unset'
 
-  constructor(private readonly authClient: HmppsAuthClient) {
-    this.getSystemClientToken()
+  constructor(
+    private readonly authClient: HmppsAuthClient,
+    private readonly datastoreClient: RestClient
+  ) {
+    // this.apiClient = new RefreshableRestClient(
+    //   'ElectronicMonitoringDatastoreApi',
+    //   config.apis.electronicMonitoringDatastore as ApiConfig,
+    //   authClient
+    // )
 
     this.apiClient = new RestClient(
       'ElectronicMonitoringDatastoreApi',
       config.apis.electronicMonitoringDatastore as ApiConfig,
-      this.datastoreClientToken,
+      'token not set'
     )
   }
   
@@ -32,10 +38,6 @@ export default class SearchService {
 
   Also, need to un-break the tests!
   */
-  async getSystemClientToken() {
-    // this.datastoreClientToken = await this.authClient.getSystemClientToken()
-    this.datastoreClientToken = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6ImRwcy1jbGllbnQta2V5In0.eyJzdWIiOiJobXBwcy1lbGVjdHJvbmljLW1vbml0b3JpbmctZGF0YXN0b3JlLXVpLWNsaWVudCIsImdyYW50X3R5cGUiOiJjbGllbnRfY3JlZGVudGlhbHMiLCJzY29wZSI6WyJyZWFkIl0sImF1dGhfc291cmNlIjoibm9uZSIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6OTA5MC9hdXRoL2lzc3VlciIsImV4cCI6MTczMDQ4MDQ2NCwiYXV0aG9yaXRpZXMiOlsiUk9MRV9FTEVDVFJPTklDX01PTklUT1JJTkdfREFUQVNUT1JFX0FQSV9SRUFEIiwiUk9MRV9FTEVDVFJPTklDX01PTklUT1JJTkdfREFUQVNUT1JFX0FQSV9TRUFSQ0giXSwianRpIjoiTldnUzY0ZnBkZTZ1MU5xOHdncHZvN3ExWnFNIiwiY2xpZW50X2lkIjoiaG1wcHMtZWxlY3Ryb25pYy1tb25pdG9yaW5nLWRhdGFzdG9yZS11aS1jbGllbnQifQ.j_NOPO-btiU4uvM2-JkQM1FqAMP5MDyXAVge4cKLh4b0laMyxE0g_KyEfoQvA8Exo-NrxNeWaM3WbWjNf0-A02X9zYOT3kFLFfWVJUQd1bmSddlMsaspF_7HqNONuY4QoowN21muw9No9B9MRPN7BItEWyQvWnkspyIIyK-KOUuU1-A0IdhN5EgrztWivS4Mlat_qQg4pxro3CvsrmH4Zf465ndtUTpIHnE0sKa4NPPhQvf6bqnkuBczeAWg8jROMK4SO8_ExBxprUScoQpxZNvvTtDQ8OGqwznnLub0O5epp1fJVrjMy2ZjHZ8ZpzKLndnlUx6-RYgBvm1iwr2oVg"
-  }
 
   async getOrders(): Promise<Order[]> {
     try {
@@ -64,6 +66,7 @@ export default class SearchService {
   }
 
   async callApi(caseId: string) {
+    this.apiClient.refreshToken(await this.authClient.getSystemClientToken())
     const result = await this.apiClient.get({
       path: `/search/cases/${caseId}`,
     })
