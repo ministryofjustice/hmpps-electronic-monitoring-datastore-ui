@@ -38,7 +38,7 @@
       classes: "search-results-table",
       head: [
         {
-          text: "Subject ID",
+          text: "Legacy subject ID",
           classes: "subject-id-header",
           attributes: {
             "aria-sort": "ascending"
@@ -47,6 +47,13 @@
         {
           text: "Name",
           classes: "name-header",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "Address",
+          classes: "address-header",
           attributes: {
             "aria-sort": "none"
           }
@@ -65,12 +72,20 @@
             "aria-sort": "none"
           },
           format: "numeric"
+        },
+        {
+          text: "Order end date",
+          classes: "order-end-date-header",
+          attributes: {
+            "aria-sort": "none"
+          },
+          format: "numeric"
         }
       ],
       rows: records
     }) }}
 
-    <p class="ems-sortable-table__no-results hidden">No results to show.</p>
+    <p class="ems-sortable-table__no-results hidden">No results found.</p>
 
     <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
 
