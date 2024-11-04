@@ -8,18 +8,21 @@ jest.mock('../data/datastoreSearchClient')
 
 describe('Search service', () => {
   
-  let datastoreSearchService: DatastoreSearchService
+  let hmppsAuthClient: HmppsAuthClient 
+  let datastoreSearchClient: DatastoreSearchClient
+  const datastoreSearchClientFactory = jest.fn()
+  let token = 'fake-token-value'
   
+  let datastoreSearchService: DatastoreSearchService
+
   beforeEach(() => {
-    let hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
-    // let token: 'fake-token-value'
+    datastoreSearchClient = new DatastoreSearchClient(token) as jest.Mocked<DatastoreSearchClient>
+    datastoreSearchClientFactory.mockReturnValue(datastoreSearchClient)
+
+    hmppsAuthClient = new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
+
     // hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
-
-    let datastoreSearchClient: jest.Mocked<DatastoreSearchClient>
-
-    let datastoreSearchClientFactory = jest.fn()
-      .mockReturnValue(datastoreSearchClient)
-      
+    
     datastoreSearchService = new DatastoreSearchService(datastoreSearchClientFactory, hmppsAuthClient)
   })
 
