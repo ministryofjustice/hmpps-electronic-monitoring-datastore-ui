@@ -7,11 +7,11 @@ const tabluateOrders = (orders: Order[]) => {
     return [
       {
         attributes: {
-          'data-sort-value': order.subjectId,
+          'data-sort-value': order.legacySubjectID,
         },
         html: `
-          <a href="/orders/${order.subjectId}/summary">
-            ${order.subjectId}
+          <a href="/orders/${order.legacySubjectID}/summary">
+            ${order.legacySubjectID}
           </a>
         `,
       },
@@ -22,6 +22,14 @@ const tabluateOrders = (orders: Order[]) => {
         html: `
           <p>${order.name}</p>
           ${order.alias ? `</p>Alias: ${order.alias}</p>` : ''}
+        `,
+      },
+      {
+        attributes: {
+          'data-sort-value': order.address,
+        },
+        html: `
+          <p>${order.address}</p>
         `,
       },
       {
@@ -38,6 +46,14 @@ const tabluateOrders = (orders: Order[]) => {
             order.orderStartDate.split('-')[2] +
             order.orderStartDate.split('-')[1] +
             order.orderStartDate.split('-')[0],
+        },
+        classes: 'govuk-table__cell--numeric',
+      },
+      {
+        text: order.orderEndDate,
+        attributes: {
+          'data-sort-value':
+            order.orderEndDate.split('-')[2] + order.orderEndDate.split('-')[1] + order.orderEndDate.split('-')[0],
         },
         classes: 'govuk-table__cell--numeric',
       },
