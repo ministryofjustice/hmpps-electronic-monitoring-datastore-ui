@@ -1,5 +1,5 @@
 import EquipmentDetailsPage from '../pages/equipmentDetails'
-import Page, { PageElement } from '../pages/page'
+import Page from '../pages/page'
 
 context('Equipment Details', () => {
   const orderId = '1234567'

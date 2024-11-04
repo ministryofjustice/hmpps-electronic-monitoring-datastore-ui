@@ -1,5 +1,5 @@
 import EventHistoryPage from '../pages/eventHistory'
-import Page, { PageElement } from '../pages/page'
+import Page from '../pages/page'
 
 context('Event history', () => {
   const orderId = '1234567'
