@@ -43,6 +43,10 @@ describe('Search service', () => {
       console.log('results', results)
       expect(results).toEqual(expectedData)
     })
+    it('should propogate an error', async () => {
+      datastoreClient.getCases.mockRejectedValue(new Error('some error'))
+      await expect(datastoreOrderService.getCases(searchItem)).rejects.toEqual(new Error('some error'))
+    })
   })
   /**
    * Pass search model to getOrders
