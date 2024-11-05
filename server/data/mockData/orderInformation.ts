@@ -3,15 +3,15 @@ import { OrderInformation } from '../../interfaces/orderInformation'
 const orderInformation: OrderInformation = {
   keyOrderInformation: {
     specials: 'No',
-    legacySubjectID: '1234567',
-    legacyOrderID: '7654321',
+    legacySubjectId: '1234567',
+    legacyOrderId: '7654321',
     name: 'John Smith',
     alias: 'Zeno',
     dateOfBirth: '01-02-1980',
-    postcode: 'ABC 123',
     address1: '1 Primary Street',
     address2: 'Sutton',
     address3: 'London',
+    postcode: 'ABC 123',
     orderStartDate: '01-02-2012',
     orderEndDate: '03-04-2013',
   },
