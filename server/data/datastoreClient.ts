@@ -3,12 +3,12 @@ import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
 import orders from './mockData/orders'
 
-export default class DatastoreSearchClient {
+export default class DatastoreClient {
   private restClient: RestClient
 
   constructor(token: string) {
     this.restClient = new RestClient(
-      'datastoreSearchApiClient',
+      'datastoreApiClient',
       config.apis.electronicMonitoringDatastore as ApiConfig,
       token,
     )

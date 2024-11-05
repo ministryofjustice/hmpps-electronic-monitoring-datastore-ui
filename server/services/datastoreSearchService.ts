@@ -2,12 +2,12 @@ import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 import orders from '../data/mockData/orders'
 import { Order } from '../interfaces/order'
-import DatastoreSearchClient from '../data/datastoreSearchClient'
+import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 export default class DatastoreSearchService {
   constructor(
-    private readonly datastoreSearchClientFactory: RestClientBuilder<DatastoreSearchClient>,
+    private readonly datastoreClientFactory: RestClientBuilder<DatastoreClient>,
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {}
 

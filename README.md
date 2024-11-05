@@ -30,6 +30,7 @@ This is a front end for the [Electronic Monitoring Datastore API](https://github
     - [EMS Search Form](#ems-search-form)
     - [EMS Button Grid](#ems-button-grid)
   - [Mock API](#mock-api)
+  - [Test Utils](#test-utils)
 
 
 ## Oauth2 Credentials
@@ -175,4 +176,4 @@ As this repo isn't currently connected to a live data source, pages are populate
 
 ## Test Utils
 
-Test utilities for `hmppsAuthClient` and `datastoreSearchClient` are found in `./server/data/testUtils/mock.ts`. As paths differ between running the application normally (in `dist`) and where `ts-jest` runs it, `ApplicationInfo` has to be mocked first. Otherwise, `Import from '..' (server/data/index.ts)` fails
+Test utilities for `hmppsAuthClient` and `datastoreClient` are found in `./server/data/testUtils/mock.ts`. As paths differ between running the application normally (in `dist`) and where `ts-jest` runs it, `ApplicationInfo` has to be mocked first. Otherwise, `Import from '..' (server/data/index.ts)` fails

@@ -1,24 +1,24 @@
 import DatastoreSearchService from './datastoreSearchService'
 import orders from '../data/mockData/orders'
-import { createMockHmppsAuthClient, createDatastoreSearchClient } from '../data/testUtils/mocks'
+import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 
 import { Order } from '../interfaces/order'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/datastoreSearchClient')
+jest.mock('../data/datastoreClient')
 
 describe('Search service', () => {
   const token = 'fake-token-value'
   const hmppsAuthClient = createMockHmppsAuthClient()
-  const datastoreSearchClient = createDatastoreSearchClient
+  const datastoreClient = createDatastoreClient
 
-  const datastoreSearchClientFactory = jest.fn()
+  const datastoreClientFactory = jest.fn()
 
   let datastoreSearchService: DatastoreSearchService
 
   beforeEach(() => {
-    datastoreSearchClientFactory.mockReturnValue(datastoreSearchClient)
-    datastoreSearchService = new DatastoreSearchService(datastoreSearchClientFactory, hmppsAuthClient)
+    datastoreClientFactory.mockReturnValue(datastoreClient)
+    datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 

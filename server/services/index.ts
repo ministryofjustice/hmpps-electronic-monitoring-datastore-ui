@@ -5,13 +5,13 @@ import OrderService from './orderService'
 import DatastoreSearchService from './datastoreSearchService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreSearchClientFactory } = dataAccess()
+  const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreClientFactory } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
 
   const searchService = new SearchService()
 
-  const datastoreSearchService = new DatastoreSearchService(datastoreSearchClientFactory, hmppsAuthClient)
+  const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
 
   const orderService = new OrderService()
 

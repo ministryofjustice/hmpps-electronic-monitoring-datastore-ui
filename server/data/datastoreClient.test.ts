@@ -1,14 +1,14 @@
 import nock from 'nock'
-import DatastoreSearchClient from './datastoreSearchClient'
+import DatastoreClient from './datastoreClient'
 import orders from './mockData/orders'
 
 describe('EM Datastore Search Client', () => {
-  let datastoreSearchClient: DatastoreSearchClient
+  let datastoreClient: DatastoreClient
 
   const token = 'token-1'
 
   beforeEach(() => {
-    datastoreSearchClient = new DatastoreSearchClient(token)
+    datastoreClient = new DatastoreClient(token)
   })
 
   afterEach(() => {
@@ -24,7 +24,7 @@ describe('EM Datastore Search Client', () => {
     it('should return data from the api', async () => {
       const expectedResults = orders
 
-      const results = await datastoreSearchClient.getOrders()
+      const results = await datastoreClient.getOrders()
       expect(results.length).toEqual(expectedResults.length)
     })
   })
