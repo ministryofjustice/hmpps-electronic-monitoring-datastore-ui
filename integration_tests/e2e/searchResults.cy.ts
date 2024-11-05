@@ -38,7 +38,7 @@ context('SearchResults', () => {
 
     it('The subject ID column header contains the correct text', () => {
       const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-      searchResultsPage.subjectIdHeader().should('contain', 'Subject ID')
+      searchResultsPage.subjectIdHeader().should('contain', 'Legacy subject ID')
     })
 
     it('The name column header contains the correct text', () => {
