@@ -20,7 +20,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
 
   const orderController = new OrderController(auditService, orderService)
 
-  get('/summary', async (req, res, next) => orderController.getSummary(req, res))
+  get('/information', async (req, res, next) => orderController.getSummary(req, res))
 
   // // Possibly better approach for unit testing
   // get('/summary', async (req, res, next) => {
