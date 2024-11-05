@@ -23,6 +23,10 @@ export default class DatastoreClient {
     return orders
   }
 
+  async getCases(critera: Order): Promise<Order> {
+    const result: Order = orders[0]
+    return result
+  }
   /* OR, we will update the token as part of each call.
      We can't do this until the RestClient is injected, or we use nock */
   // async getOrders(token: string): Promise<Order[]> {

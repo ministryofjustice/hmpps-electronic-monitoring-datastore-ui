@@ -10,7 +10,7 @@ jest.mock('../data/datastoreClient')
 describe('Search service', () => {
   const token = 'fake-token-value'
   const hmppsAuthClient = createMockHmppsAuthClient()
-  const datastoreClient = createDatastoreClient
+  const datastoreClient = createDatastoreClient()
 
   const datastoreClientFactory = jest.fn()
 
@@ -30,20 +30,15 @@ describe('Search service', () => {
     expect(true).toBe(true)
   })
 
-  describe('getOrders', () => {
+  describe('getCases', () => {
     const searchItem: Order = {
       dataType: 'am',
       legacySubjectId: 1,
     }
     it('should return data from the client', async () => {
-      const expectedData: Order = {
-        dataType: 'am',
-        legacySubjectId: 1000000,
-        name: 'Amy Smith',
-        alias: null,
-        dateOfBirth: '01-01-1970',
-        orderStartDate: '08-02-2019',
-      }
+      const expectedData: Order = orders[0]
+      datastoreClient.getCases.mockResolvedValue(expectedData)
+
       const results = await datastoreOrderService.getCases(searchItem)
       console.log('results', results)
       expect(results).toEqual(expectedData)

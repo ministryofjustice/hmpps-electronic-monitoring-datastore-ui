@@ -23,14 +23,10 @@ export default class DatastoreOrderService {
   // place holder to ensure that we're returning something.
   // temporary before we wire up the api endpoints.
   async getCases(criteria: Order): Promise<Order> {
-    const result: Order = {
-      dataType: 'am',
-      legacySubjectId: 1000000,
-      name: 'Amy Smith',
-      alias: null,
-      dateOfBirth: '01-01-1970',
-      orderStartDate: '08-02-2019',
-    }
+    const token = await this.hmppsAuthClient.getSystemClientToken()
+    const datastoreClient = this.datastoreClientFactory(token)
+
+    const result = datastoreClient.getCases(criteria)
     return result
   }
 
