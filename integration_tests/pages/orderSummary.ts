@@ -12,7 +12,8 @@ export default class OrderSummaryPage extends Page {
 
   orderDetailsTable = (): PageElement => cy.get('.govuk-table__body')
 
-  summaryTableRowHeaders = (rowHEaderText: string): PageElement => cy.get('.govuk-table__row').contains(rowHEaderText)
+  summaryTableRowHeaders = (rowHeaderText: string): PageElement =>
+    cy.get('.govuk-table__header').contains(rowHeaderText)
 
   gridButton = (buttonText: string): PageElement => cy.get('.ems-button-grid__button').contains(buttonText)
 
