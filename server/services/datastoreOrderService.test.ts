@@ -14,11 +14,11 @@ describe('Search service', () => {
 
   const datastoreClientFactory = jest.fn()
 
-  let datastoreSearchService: DatastoreOrderService
+  let datastoreOrderService: DatastoreOrderService
 
   beforeEach(() => {
     datastoreClientFactory.mockReturnValue(datastoreClient)
-    datastoreSearchService = new DatastoreOrderService(datastoreClientFactory, hmppsAuthClient)
+    datastoreOrderService = new DatastoreOrderService(datastoreClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -44,7 +44,7 @@ describe('Search service', () => {
         dateOfBirth: '01-01-1970',
         orderStartDate: '08-02-2019',
       }
-      const results = await datastoreSearchService.getCases(searchItem)
+      const results = await datastoreOrderService.getCases(searchItem)
       console.log('results', results)
       expect(results).toEqual(expectedData)
     })
