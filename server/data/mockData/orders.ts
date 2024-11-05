@@ -2,7 +2,7 @@ import { Order } from '../../interfaces/order'
 
 const orders: Order[] = [
   {
-    legacySubjectID: 1000000,
+    legacySubjectId: 1000000,
     name: 'Amy Smith',
     address: 'First line of address',
     alias: null,
@@ -11,7 +11,7 @@ const orders: Order[] = [
     orderEndDate: '08-02-2020',
   },
   {
-    legacySubjectID: 2000000,
+    legacySubjectId: 2000000,
     name: 'Bill Smith',
     address: 'First line of address',
     alias: 'Plato',
@@ -20,7 +20,7 @@ const orders: Order[] = [
     orderEndDate: '03-11-2021',
   },
   {
-    legacySubjectID: 3000000,
+    legacySubjectId: 3000000,
     name: 'Claire Smith',
     address: 'First line of address',
     alias: null,
@@ -29,7 +29,7 @@ const orders: Order[] = [
     orderEndDate: '05-08-2002',
   },
   {
-    legacySubjectID: 8000000,
+    legacySubjectId: 8000000,
     name: 'Daniel Smith',
     address: 'First line of address',
     alias: 'Aristotle',
@@ -38,7 +38,7 @@ const orders: Order[] = [
     orderEndDate: '18-02-2014',
   },
   {
-    legacySubjectID: 30000,
+    legacySubjectId: 30000,
     name: 'Emma Smith',
     address: 'First line of address',
     alias: 'Socrates',
@@ -47,7 +47,7 @@ const orders: Order[] = [
     orderEndDate: '24-01-2020',
   },
   {
-    legacySubjectID: 4000000,
+    legacySubjectId: 4000000,
     name: 'Fred Smith',
     address: 'First line of address',
     alias: null,

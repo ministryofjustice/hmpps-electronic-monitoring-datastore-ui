@@ -1,5 +1,5 @@
 export interface Order {
-  legacySubjectID: number
+  legacySubjectId: number
   name: string
   address: string
   alias: string | null

@@ -1,5 +1,5 @@
 interface KeyOrderDetails {
-  legacySubjectID: string
+  legacySubjectId: string
   name: string
   alias: string | null
   dateOfBirth: string

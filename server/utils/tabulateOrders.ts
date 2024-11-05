@@ -7,11 +7,11 @@ const tabluateOrders = (orders: Order[]) => {
     return [
       {
         attributes: {
-          'data-sort-value': order.legacySubjectID,
+          'data-sort-value': order.legacySubjectId,
         },
         html: `
-          <a href="/orders/${order.legacySubjectID}/summary">
-            ${order.legacySubjectID}
+          <a href="/orders/${order.legacySubjectId}/summary">
+            ${order.legacySubjectId}
           </a>
         `,
       },
