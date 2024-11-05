@@ -1,7 +1,7 @@
 interface KeyOrderInformation {
   specials: string
-  legacySubjectID: string
-  legacyOrderID: string
+  legacySubjectId: string
+  legacyOrderId: string
   name: string
   alias: string | null
   dateOfBirth: string
@@ -29,14 +29,18 @@ interface OrderDocument {
 }
 
 export interface Reports {
-  orderInformation: boolean
-  visitsAndTasks: boolean
-  eventHistory: boolean
+  orderDetails: boolean
+  visitDetails: boolean
+  // visitsAndTasks: boolean
+  // eventHistory: boolean
   equipmentDetails: boolean
-  curfewHours: boolean
-  curfewViolations: boolean
-  contactHistory: boolean
-  suspensions: boolean
+  // curfewHours: boolean
+  // curfewViolations: boolean
+  // contactHistory: boolean
+  // suspensions: boolean
+  suspensionOfVisits: boolean
+  allEventHistory: boolean
+  services: boolean
 }
 
 export interface OrderInformation {
