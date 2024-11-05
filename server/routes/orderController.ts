@@ -18,14 +18,18 @@ export default class OrderController {
       const orderInformation = await this.orderService.getOrderInformation()
       const backUrl: string = '/search/results'
       const reports: Reports = {
-        orderInformation: true,
-        visitsAndTasks: true,
-        eventHistory: true,
+        orderDetails: true,
+        visitDetails: true,
+        // visitsAndTasks: true,
+        // eventHistory: true,
         equipmentDetails: true,
-        curfewHours: true,
-        curfewViolations: true,
-        contactHistory: true,
-        suspensions: true,
+        // curfewHours: true,
+        // curfewViolations: true,
+        // contactHistory: true,
+        // suspensions: true,
+        suspensionOfVisits: true,
+        allEventHistory: true,
+        services: true,
       }
       res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
     } catch (error) {
