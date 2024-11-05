@@ -2,6 +2,8 @@ import DatastoreSearchService from './datastoreSearchService'
 import orders from '../data/mockData/orders'
 import { createMockHmppsAuthClient, createDatastoreSearchClient } from '../data/testUtils/mocks'
 
+import { Order } from '../interfaces/order'
+
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreSearchClient')
 
@@ -29,10 +31,26 @@ describe('Search service', () => {
   })
 
   describe('getOrders', () => {
+    const searchItem: Order = {
+      dataType: 'am',
+      legacySubjectId: 1,
+    }
     it('should return data from the client', async () => {
-      const expectedData = orders
-      const results = await datastoreSearchService.getOrders()
-      expect(results).toBe(expectedData)
+      const expectedData: Order = {
+        dataType: 'am',
+        legacySubjectId: 1000000,
+        name: 'Amy Smith',
+        alias: null,
+        dateOfBirth: '01-01-1970',
+        orderStartDate: '08-02-2019',
+      }
+      const results = await datastoreSearchService.getCases(searchItem)
+      console.log('results', results)
+      expect(results).toEqual(expectedData)
     })
   })
+  /**
+   * Pass search model to getOrders
+   * expect results to be returned.
+   */
 })

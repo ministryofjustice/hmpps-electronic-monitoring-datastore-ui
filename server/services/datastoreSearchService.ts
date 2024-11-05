@@ -11,7 +11,7 @@ export default class DatastoreSearchService {
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {}
 
-  async getOrders(): Promise<Order[]> {
+  async getOrders(criteria: Order): Promise<Order[]> {
     try {
       return orders
     } catch (error) {
@@ -19,4 +19,24 @@ export default class DatastoreSearchService {
       return error
     }
   }
+
+  // place holder to ensure that we're returning something.
+  // temporary before we wire up the api endpoints.
+  async getCases(criteria: Order): Promise<Order> {
+    const result: Order = {
+      dataType: 'am',
+      legacySubjectId: 1000000,
+      name: 'Amy Smith',
+      alias: null,
+      dateOfBirth: '01-01-1970',
+      orderStartDate: '08-02-2019',
+    }
+    return result
+  }
+
+  /**
+   * Change getOrders signature to accept search criteria
+   * Method should get token and pass to searchfactory
+   * await getOrders
+   */
 }
