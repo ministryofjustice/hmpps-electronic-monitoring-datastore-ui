@@ -5,7 +5,7 @@ import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
-export default class DatastoreSearchService {
+export default class DatastoreOrderService {
   constructor(
     private readonly datastoreClientFactory: RestClientBuilder<DatastoreClient>,
     private readonly hmppsAuthClient: HmppsAuthClient,

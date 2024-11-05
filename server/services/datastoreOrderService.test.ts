@@ -1,4 +1,4 @@
-import DatastoreSearchService from './datastoreSearchService'
+import DatastoreOrderService from './datastoreOrderService'
 import orders from '../data/mockData/orders'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 
@@ -14,11 +14,11 @@ describe('Search service', () => {
 
   const datastoreClientFactory = jest.fn()
 
-  let datastoreSearchService: DatastoreSearchService
+  let datastoreSearchService: DatastoreOrderService
 
   beforeEach(() => {
     datastoreClientFactory.mockReturnValue(datastoreClient)
-    datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+    datastoreSearchService = new DatastoreOrderService(datastoreClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
