@@ -27,7 +27,7 @@ export default class DatastoreSearchClient {
      We can't do this until the RestClient is injected, or we use nock */
   // async getOrders(token: string): Promise<Order[]> {
   //   this.restClient.updateToken(token);
-    
+
   //   return await this.restClient.get<Order[]>({
   //     path: `/fake/url/path`,
   //     query: new URLSearchParams({

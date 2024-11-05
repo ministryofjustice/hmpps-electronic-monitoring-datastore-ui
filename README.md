@@ -172,3 +172,7 @@ As this repo isn't currently connected to a live data source, pages are populate
 - `/server/data/` contains mock API endpoints that retrieve and return this data.
 - `server/routes/index.ts` access these endpoints when routes are accessed, then route the user to the appropriate page populated with the mock data.
 - In some cases the mock data is processed before being passed into the page template. For example, an array of data objects may be converted into an array of HTML elements that can be used in a page template. The scripts for such transformations are in `/server/utils`. They are imported & used in `server/routes/index.ts`.
+
+## Test Utils
+
+Test utilities for `hmppsAuthClient` and `datastoreSearchClient` are found in `./server/data/testUtils/mock.ts`. As paths differ between running the application normally (in `dist`) and where `ts-jest` runs it, `ApplicationInfo` has to be mocked first. Otherwise, `Import from '..' (server/data/index.ts)` fails

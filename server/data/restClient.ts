@@ -39,7 +39,7 @@ export default class RestClient {
   }
 
   updateToken(updatedToken: string) {
-    this.token = updatedToken;
+    this.token = updatedToken
   }
 
   private apiUrl() {

@@ -16,6 +16,7 @@ import RedisTokenStore from './tokenStore/redisTokenStore'
 import InMemoryTokenStore from './tokenStore/inMemoryTokenStore'
 import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
+import DatastoreSearchClient from './datastoreSearchClient'
 
 type RestClientBuilder<T> = (token: string) => T
 
@@ -29,4 +30,4 @@ export const dataAccess = () => ({
 
 export type DataAccess = ReturnType<typeof dataAccess>
 
-export { HmppsAuthClient, RestClientBuilder, HmppsAuditClient }
+export { HmppsAuthClient, RestClientBuilder, HmppsAuditClient, DatastoreSearchClient }
