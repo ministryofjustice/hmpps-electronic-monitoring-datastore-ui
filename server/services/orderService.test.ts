@@ -1,5 +1,5 @@
 import OrderService from './orderService'
-import orderSummary from '../data/mockData/orderSummary'
+import orderInformation from '../data/mockData/orderInformation'
 
 describe('Order service', () => {
   let orderService: OrderService
@@ -8,10 +8,10 @@ describe('Order service', () => {
     orderService = new OrderService()
   })
 
-  describe('getOrderSummary', () => {
+  describe('getOrderInformation', () => {
     it('returns expected order', async () => {
-      const expectedData = orderSummary
-      const results = await orderService.getOrderSummary()
+      const expectedData = orderInformation
+      const results = await orderService.getOrderInformation()
       expect(results).toBe(expectedData)
     })
   })

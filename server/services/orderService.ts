@@ -1,12 +1,12 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
-import orderSummary from '../data/mockData/orderSummary'
-import { OrderSummary } from '../interfaces/orderSummary'
+import orderInformation from '../data/mockData/orderInformation'
+import { OrderInformation } from '../interfaces/orderInformation'
 
 export default class OrderService {
-  async getOrderSummary(): Promise<OrderSummary> {
+  async getOrderInformation(): Promise<OrderInformation> {
     try {
-      return orderSummary
+      return orderInformation
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving order')
       return error

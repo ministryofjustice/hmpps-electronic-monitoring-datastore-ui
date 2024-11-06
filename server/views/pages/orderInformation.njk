@@ -13,7 +13,7 @@
 {% set pageTitle = applicationName + " - Order details" %}
 {% set mainClasses = "app-container govuk-body" %}
 {% set backUrl = backUrl %}
-{% set orderDetails = data.keyOrderDetails %}
+{% set orderInformation = data.keyOrderInformation %}
 {% set reports = reports %}
 {% set subjectHistory = data.subjectHistoryReport %}
 
@@ -55,55 +55,56 @@
   {{ emsServiceInformation() }}
 
   {{ govukBackLink({
-    text: "back",
+    text: "Back",
     href: backUrl
   }) }}
 
   {{ govukTable({
-    caption: "Key order details",
+    caption: "Order information",
     captionClasses: "govuk-table__caption--m",
     firstCellIsHeader: true,
     rows: [
       [
-        {text: "Legacy subject ID"},
-        {text: orderDetails.legacySubjectId}
+        {text: "Specials"},
+        {text: orderInformation.specials}
+      ],
+      [
+        {text: "Legacy Subject ID"},
+        {text: orderInformation.legacySubjectId}
+      ],
+      [
+        {text: "Legacy Order ID"},
+        {text: orderInformation.legacyOrderId}
       ],
       [
         {text: "Name"},
-        {text: orderDetails.name}
+        {text: orderInformation.name}
       ],
       [
         {text: "Alias"},
-        {text: orderDetails.alias}
+        {text: orderInformation.alias}
       ],
       [
         {text: "Date of birth"},
-        {text: orderDetails.dateOfBirth}
+        {text: orderInformation.dateOfBirth}
       ],
       [
-        {text: "Postcode"},
-        {text: orderDetails.postcode}
-      ],
-      [
-        {text: "Address"},
+        {text: "Primary address"},
         {html: ' <span>'
-          + orderDetails.address1
-          + (('<br/>' + orderDetails.address2) if orderDetails.address2 else '')
-          + (('<br/>' +  orderDetails.address3) if orderDetails.address3 else '')
+          + orderInformation.address1
+          + (('<br/>' + orderInformation.address2) if orderInformation.address2 else '')
+          + (('<br/>' +  orderInformation.address3) if orderInformation.address3 else '')
+          + (('<br/>' +  orderInformation.postcode) if orderInformation.postcode else '')
           + '</span>'
         }
       ],
       [
-        {text: "Tag type"},
-        {text: orderDetails.tagType}
+        {text: "Order start date"},
+        {text: orderInformation.orderStartDate}
       ],
       [
-        {text: "Start date"},
-        {text: orderDetails.startDate}
-      ],
-      [
-        {text: "End date"},
-        {text: orderDetails.endDate}
+        {text: "Order end date"},
+        {text: orderInformation.orderEndDate}
       ]
     ]
   }) }}
@@ -113,51 +114,71 @@
   <div class="govuk-button-group ems-button-grid">
     {% if reports.orderDetails %} {{ govukButton({
       text: "Order details",
-      href: '/orders/' + orderDetails.legacySubjectId + '/details',
+      href: '/orders/' + orderInformation.legacySubjectId + '/details',
       classes: "govuk-button--secondary ems-button-grid__button"
       }) }} {% endif %}
 
-    {% if reports.visitsAndTasks %} {{ govukButton({
+    {# {% if reports.visitsAndTasks %} {{ govukButton({
       text: "Visits and tasks",
-      href: '/orders/' + orderDetails.legacySubjectId + '/visits-and-tasks',
+      href: '/orders/' + orderInformation.legacySubjectId + '/visits-and-tasks',
+      classes: "govuk-button--secondary ems-button-grid__button"
+    }) }} {% endif %} #}
+
+    {% if reports.visitDetails %} {{ govukButton({
+      text: "Visit details",
+      href: '/orders/' + orderInformation.legacySubjectId + '/visits-and-tasks',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
-    {% if reports.eventHistory %} {{ govukButton({
+    {# {% if reports.eventHistory %} {{ govukButton({
       text: "Event history",
-      href: '/orders/' + orderDetails.legacySubjectId + '/event-history',
+      href: '/orders/' + orderInformation.legacySubjectId + '/event-history',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %}
+    }) }} {% endif %} #}
 
     {% if reports.equipmentDetails %} {{ govukButton({
       text: "Equipment details",
-      href: '/orders/' + orderDetails.legacySubjectId + '/equipment-details',
+      href: '/orders/' + orderInformation.legacySubjectId + '/equipment-details',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
-    {% if reports.curfewHours %} {{ govukButton({
+    {# {% if reports.curfewHours %} {{ govukButton({
       text: "Curfew hours",
-      href: '/orders/' + orderDetails.legacySubjectId + '/curfew-hours',
+      href: '/orders/' + orderInformation.legacySubjectId + '/curfew-hours',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %}
+    }) }} {% endif %} #}
 
-    {% if reports.curfewViolations %} {{ govukButton({
+    {# {% if reports.curfewViolations %} {{ govukButton({
       text: "Curfew violations",
-      href: '/orders/' + orderDetails.legacySubjectId + '/curfew-violations',
+      href: '/orders/' + orderInformation.legacySubjectId + '/curfew-violations',
       classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %}
+    }) }} {% endif %} #}
 
-    {% if reports.contactHistory %} {{ govukButton({
+    {# {% if reports.contactHistory %} {{ govukButton({
       text: "Contact history",
-      href: '/orders/' + orderDetails.legacySubjectId + '/contact-history',
+      href: '/orders/' + orderInformation.legacySubjectId + '/contact-history',
+      classes: "govuk-button--secondary ems-button-grid__button"
+    }) }} {% endif %} #}
+
+    {% if reports.suspensionOfVisits %} {{ govukButton({
+      text: "Suspension of visits",
+      href: '/orders/' + orderInformation.legacySubjectId + '/suspensions',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
-    {% if reports.suspensions %} {{ govukButton({
-      text: "Suspensions",
-      href: '/orders/' + orderDetails.legacySubjectId + '/suspensions',
+    {% if reports.allEventHistory %} {{ govukButton({
+      text: "All event history",
+      href: '/orders/' + orderInformation.legacySubjectId + '/event-history',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
+
+    {# Button added but services page doesnt exist yet #}
+    {% if reports.services %} {{ govukButton({
+      text: "Services",
+      href: '/orders/' + orderInformation.legacySubjectId + '/event-history',
+      classes: "govuk-button--secondary ems-button-grid__button"
+    }) }} {% endif %}
+
   </div>
 
   <hr class="govuk-section-break govuk-section-break--l">

@@ -31,7 +31,7 @@ describe('Order details basic GET requests', () => {
   const orderId = 3
 
   it.each<GetRequestFixture>([
-    ['order summary page', `/orders/${orderId}/summary`, 'Key order details', Page.ORDER_SUMMARY_PAGE],
+    ['order information page', `/orders/${orderId}/information`, 'Order information', Page.ORDER_INFORMATION_PAGE],
     ['order details page', `/orders/${orderId}/details`, 'Order details', Page.ORDER_DETAILS_PAGE],
     ['visits and tasks page', `/orders/${orderId}/visits-and-tasks`, 'Visits and tasks', Page.VISITS_AND_TASKS_PAGE],
     ['event history page', `/orders/${orderId}/event-history`, 'Event history', Page.EVENT_HISTORY_PAGE],
@@ -52,15 +52,15 @@ describe('Order details basic GET requests', () => {
   ])('should render %s', (pageName, route, titleText, auditType) => basicGetTest(pageName, route, titleText, auditType))
 })
 
-describe('Order summary page', () => {
-  it('should call the getOrderSummary to return data', () => {
+describe('Order information page', () => {
+  it('should call the getOrderInformation to return data', () => {
     const orderId = 'testOrderId'
 
     return request(app)
-      .get(`/orders/${orderId}/summary`)
+      .get(`/orders/${orderId}/information`)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(orderService.getOrderSummary).toHaveBeenCalledTimes(1)
+        expect(orderService.getOrderInformation).toHaveBeenCalledTimes(1)
       })
   })
 })
