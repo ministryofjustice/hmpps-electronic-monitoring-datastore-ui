@@ -1,4 +1,3 @@
-import { link } from 'fs'
 import Page, { PageElement } from './page'
 
 export default class OrderInformationPage extends Page {

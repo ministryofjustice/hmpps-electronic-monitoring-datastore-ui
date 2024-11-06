@@ -1,5 +1,5 @@
 import ContactHistoryPage from '../pages/contactHistory'
-import Page, { PageElement } from '../pages/page'
+import Page from '../pages/page'
 
 context('Contact history', () => {
   const orderId = '1234567'

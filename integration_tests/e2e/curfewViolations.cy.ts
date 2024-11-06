@@ -1,5 +1,5 @@
 import CurfewViolationsPage from '../pages/curfewViolations'
-import Page, { PageElement } from '../pages/page'
+import Page from '../pages/page'
 
 context('Curfew violations', () => {
   const orderId = '1234567'

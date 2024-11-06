@@ -3,18 +3,26 @@ import nock from 'nock'
 import { AgentConfig } from '../config'
 import RestClient from './restClient'
 
-const restClient = new RestClient(
-  'api-name',
-  {
-    url: 'http://localhost:8080/api',
-    timeout: {
-      response: 1000,
-      deadline: 1000,
+let restClient: RestClient
+
+beforeEach(() => {
+  restClient = new RestClient(
+    'api-name',
+    {
+      url: 'http://localhost:8080/api',
+      timeout: {
+        response: 1000,
+        deadline: 1000,
+      },
+      agent: new AgentConfig(1000),
     },
-    agent: new AgentConfig(1000),
-  },
-  'token-1',
-)
+    'token-1',
+  )
+})
+
+afterEach(() => {
+  nock.cleanAll()
+})
 
 describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', method => {
   it('should return response body', async () => {
@@ -134,6 +142,27 @@ describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', 
       path: '/test',
       headers: { header1: 'headerValue1' },
       retry: true,
+    })
+
+    expect(result).toStrictEqual({ success: true })
+    expect(nock.isDone()).toBe(true)
+  })
+})
+
+describe('RestClient Token Management', () => {
+  it('should update the authentication token and use it for subsequent requests', async () => {
+    restClient.updateToken('token-2')
+
+    nock('http://localhost:8080', {
+      reqheaders: {
+        authorization: 'Bearer token-2',
+      },
+    })
+      .get('/api/test')
+      .reply(200, { success: true })
+
+    const result = await restClient.get({
+      path: '/test',
     })
 
     expect(result).toStrictEqual({ success: true })

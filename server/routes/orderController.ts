@@ -7,7 +7,7 @@ export default class OrderController {
   constructor(
     private readonly auditService: AuditService,
     private readonly orderService: OrderService,
-  ) {}
+  ) { }
 
   async getSummary(req: Request, res: Response) {
     await this.auditService.logPageView(Page.ORDER_INFORMATION_PAGE, {

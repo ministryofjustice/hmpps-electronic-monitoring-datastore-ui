@@ -21,7 +21,7 @@ export default function searchRouter({ auditService, searchService }: Services):
       const orders = await searchService.getOrders()
       const tabulatedOrders = tabluateOrders(orders)
       res.render('pages/searchResults', { data: tabulatedOrders })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
