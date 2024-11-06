@@ -12,7 +12,7 @@ describe('EM Datastore Search Client', () => {
 
   const searchItem: Order = {
     dataType: 'am',
-    legacySubjectId: 1,
+    legacySubjectId: 123,
   }
 
   beforeEach(() => {
@@ -31,7 +31,12 @@ describe('EM Datastore Search Client', () => {
 
   describe('getCases', () => {
     const expected: Order = orders[0]
+
     it('should return a single order from the api', async () => {
+      fakeClient
+        .get(`/search/cases/${searchItem.legacySubjectId}`)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .reply(200, expected)
       const results = await datastoreClient.getCases(searchItem)
       expect(results).toEqual(expected)
     })

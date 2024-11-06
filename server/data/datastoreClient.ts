@@ -24,7 +24,11 @@ export default class DatastoreClient {
   }
 
   async getCases(critera: Order): Promise<Order> {
-    const result: Order = orders[0]
+    const result: Order = await this.restClient.get({
+      path: `/search/cases/${critera.legacySubjectId}`,
+    })
+
+    console.log('in datastore: ', result)
     return result
   }
   /* OR, we will update the token as part of each call.

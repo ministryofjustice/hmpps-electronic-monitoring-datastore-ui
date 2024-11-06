@@ -40,7 +40,7 @@ describe('Search service', () => {
       datastoreClient.getCases.mockResolvedValue(expectedData)
 
       const results = await datastoreOrderService.getCases(searchItem)
-      console.log('results', results)
+
       expect(results).toEqual(expectedData)
     })
     it('should propogate an error', async () => {
