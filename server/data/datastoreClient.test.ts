@@ -41,4 +41,22 @@ describe('EM Datastore Search Client', () => {
       expect(results).toEqual(expected)
     })
   })
+
+  it('should handle 404 Not Found when the case does not exist', async () => {
+    fakeClient
+      .get(`/search/cases/${searchItem.legacySubjectId}`)
+      .matchHeader('authorization', `Bearer ${token}`)
+      .reply(404)
+
+    await expect(datastoreClient.getCases(searchItem)).rejects.toThrow('Not Found')
+  })
+
+  it('should handle 401 Unauthorized when the token is invalid', async () => {
+    fakeClient
+      .get(`/search/cases/${searchItem.legacySubjectId}`)
+      .matchHeader('authorization', `Bearer ${token}`)
+      .reply(401)
+
+    await expect(datastoreClient.getCases(searchItem)).rejects.toThrow('Unauthorized')
+  })
 })

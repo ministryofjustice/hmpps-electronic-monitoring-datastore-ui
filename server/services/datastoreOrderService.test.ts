@@ -48,8 +48,4 @@ describe('Search service', () => {
       await expect(datastoreOrderService.getCases(searchItem)).rejects.toEqual(new Error('some error'))
     })
   })
-  /**
-   * Pass search model to getOrders
-   * expect results to be returned.
-   */
 })
