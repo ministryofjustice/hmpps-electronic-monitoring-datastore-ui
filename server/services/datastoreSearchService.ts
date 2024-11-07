@@ -14,7 +14,7 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  async getOrders(criteria: Order): Promise<Order[]> {
+  async searchForOrders(criteria: Order): Promise<Order[]> {
     try {
       this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
 

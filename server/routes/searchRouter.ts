@@ -24,7 +24,7 @@ export default function searchRouter({ auditService, datastoreSearchService }: S
     await auditService.logPageView(Page.SEARCH_RESULTS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
-      const orders = await datastoreSearchService.getOrders(searchItem)
+      const orders = await datastoreSearchService.searchForOrders(searchItem)
       const tabulatedOrders = tabluateOrders(orders)
       res.render('pages/searchResults', { data: tabulatedOrders })
     } catch {

@@ -39,7 +39,7 @@ describe('Datastore Search Service', () => {
       const expectedData: Order[] = orders
       datastoreClient.searchForOrders.mockResolvedValue(expectedData)
 
-      const results = await datastoreOrderService.getOrders(searchItem)
+      const results = await datastoreOrderService.searchForOrders(searchItem)
       expect(results).toEqual(expectedData)
     })
   })

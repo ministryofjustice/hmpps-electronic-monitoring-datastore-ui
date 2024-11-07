@@ -40,7 +40,7 @@ describe('Search results page', () => {
       .get('/search/results')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(datastoreSearchService.getOrders).toHaveBeenCalledTimes(1)
+        expect(datastoreSearchService.searchForOrders).toHaveBeenCalledTimes(1)
       })
   })
 })
