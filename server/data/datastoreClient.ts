@@ -35,4 +35,13 @@ export default class DatastoreClient {
 
     return result
   }
+
+  // TODO: DO this when other end points have been fleshed out here
+
+  // // TODO: have a generic get and post in the client, with route-specific logic in the Service?
+  // async get<T>(path: string, token: String): Promise<T>{
+  // updateToken(token)
+  // return this.restClient.get(path)
+  // }
+  //
 }
