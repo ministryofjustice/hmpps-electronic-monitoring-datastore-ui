@@ -2,14 +2,14 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
-import SearchService from '../services/searchService'
+import DatastoreSearchService from '../services/datastoreSearchService'
 import { basicGetTest, GetRequestFixture } from './index.test'
 
 jest.mock('../services/auditService')
-jest.mock('../services/searchService')
+jest.mock('../services/datastoreSearchService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const searchService = new SearchService() as jest.Mocked<SearchService>
+const datastoreSearchService = new DatastoreSearchService(null, null) as jest.Mocked<DatastoreSearchService>
 
 let app: Express
 
@@ -17,7 +17,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
-      searchService,
+      datastoreSearchService,
     },
     userSupplier: () => user,
   })
@@ -35,12 +35,12 @@ describe('Core page basic GET requests', () => {
 })
 
 describe('Search results page', () => {
-  it('should call the SearchService to return data', () => {
+  it('should call the DatastoreSearchService to return data', () => {
     return request(app)
       .get('/search/results')
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(searchService.getOrders).toHaveBeenCalledTimes(1)
+        expect(datastoreSearchService.getOrders).toHaveBeenCalledTimes(1)
       })
   })
 })

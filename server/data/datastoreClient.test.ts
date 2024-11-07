@@ -29,6 +29,14 @@ describe('EM Datastore Search Client', () => {
     nock.cleanAll()
   })
 
+  describe('getOrders', () => {
+    it('should return a list of prders from the api', async () => {
+      const expected: Order[] = orders
+      const results = await datastoreClient.searchForOrders(searchItem)
+      expect(results).toEqual(expected)
+    })
+  })
+
   describe('getCases', () => {
     const expected: Order = orders[0]
 

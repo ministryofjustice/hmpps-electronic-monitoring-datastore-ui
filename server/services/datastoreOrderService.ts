@@ -21,7 +21,10 @@ export default class DatastoreOrderService {
 
   async getOrders(criteria: Order): Promise<Order[]> {
     try {
-      return orders
+      this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
+
+      const results = this.datastoreClient.searchForOrders(criteria)
+      return results
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving search results')
       return error

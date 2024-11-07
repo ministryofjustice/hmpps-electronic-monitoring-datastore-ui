@@ -3,8 +3,9 @@ import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import tabluateOrders from '../utils/tabulateOrders'
+import { Order } from '../interfaces/order'
 
-export default function searchRouter({ auditService, searchService }: Services): Router {
+export default function searchRouter({ auditService, datastoreSearchService }: Services): Router {
   const router = Router()
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
@@ -15,10 +16,15 @@ export default function searchRouter({ auditService, searchService }: Services):
   })
 
   get('/results', async (req, res, next) => {
+    // TODO: replace this with FormData object
+    const searchItem: Order = {
+      dataType: 'am',
+      legacySubjectId: 1,
+    }
     await auditService.logPageView(Page.SEARCH_RESULTS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
-      const orders = await searchService.getOrders()
+      const orders = await datastoreSearchService.getOrders(searchItem)
       const tabulatedOrders = tabluateOrders(orders)
       res.render('pages/searchResults', { data: tabulatedOrders })
     } catch {
