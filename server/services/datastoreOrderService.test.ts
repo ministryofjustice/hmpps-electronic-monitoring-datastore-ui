@@ -7,7 +7,7 @@ import { Order } from '../interfaces/order'
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')
 
-describe('Search service', () => {
+describe('Datastore Order Service', () => {
   const token = 'fake-token-value'
   const hmppsAuthClient = createMockHmppsAuthClient()
   const datastoreClient = createDatastoreClient()
@@ -24,10 +24,6 @@ describe('Search service', () => {
 
   afterEach(() => {
     jest.resetAllMocks()
-  })
-
-  it('should set up and tear down the tests successfully', async () => {
-    expect(true).toBe(true)
   })
 
   describe('getCases', () => {

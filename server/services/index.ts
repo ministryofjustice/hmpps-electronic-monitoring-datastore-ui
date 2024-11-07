@@ -1,16 +1,14 @@
 import { dataAccess } from '../data'
 import AuditService from './auditService'
-import SearchService from './searchService'
 import OrderService from './orderService'
 import DatastoreOrderService from './datastoreOrderService'
+import DatastoreSearchService from './datastoreSearchService'
 
 export const services = () => {
   const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreClientFactory } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
-  // TODO: this is replaced by DatastoreSearchService
-  const searchService = new SearchService()
-  // const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+  const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
 
   // TODO: Deprecate order servive in favour of DataStoreOrderService
   const orderService = new OrderService()
@@ -19,9 +17,9 @@ export const services = () => {
   return {
     applicationInfo,
     auditService,
-    searchService,
     orderService,
     datastoreOrderService,
+    datastoreSearchService,
   }
 }
 

@@ -7,14 +7,21 @@ import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
 import type { Services } from '../../services'
 import AuditService from '../../services/auditService'
-import SearchService from '../../services/searchService'
+import DatastoreSearchService from '../../services/datastoreSearchService'
 import OrderService from '../../services/orderService'
+
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
+import { createMockHmppsAuthClient, createDatastoreClient } from '../../data/testUtils/mocks'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/searchService')
 jest.mock('../../services/orderService')
+
+const hmppsAuthClient = createMockHmppsAuthClient()
+const datastoreClient = createDatastoreClient()
+const datastoreClientFactory = jest.fn()
+datastoreClientFactory.mockReturnValue(datastoreClient)
 
 export const user: HmppsUser = {
   name: 'FIRST LAST',
@@ -61,7 +68,7 @@ export function appWithAllRoutes({
   production = false,
   services = {
     auditService: new AuditService(null) as jest.Mocked<AuditService>,
-    searchService: new SearchService() as jest.Mocked<SearchService>,
+    datastoreSearchService: new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient),
     orderService: new OrderService() as jest.Mocked<OrderService>,
   },
   userSupplier = () => user,

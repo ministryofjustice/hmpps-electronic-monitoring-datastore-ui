@@ -1,6 +1,6 @@
 import RestClient from './restClient'
 import config, { ApiConfig } from '../config'
-import { Order } from '../interfaces/order'
+import { Order, SearchCriteria } from '../interfaces/order'
 import orders from './mockData/orders'
 
 export default class DatastoreClient {
@@ -18,7 +18,13 @@ export default class DatastoreClient {
     this.restClient.updateToken(newTokenValue)
   }
 
-  async getOrders(): Promise<Order[]> {
+  async searchForOrders(critera: SearchCriteria): Promise<Order[]> {
+    // TODO: This method should be a post. criteria will be validated search formdata
+    // const results: Order[] = await this.restClient.get({
+    //   path: `ADD_CORRECT_PATH/criteria-object-here`,
+    // })
+
+    // TODO: return results from commented out API call, once API endpoint has been written
     return orders
   }
 
@@ -29,4 +35,13 @@ export default class DatastoreClient {
 
     return result
   }
+
+  // TODO: DO this when other end points have been fleshed out here
+
+  // // TODO: have a generic get and post in the client, with route-specific logic in the Service?
+  // async get<T>(path: string, token: String): Promise<T>{
+  // updateToken(token)
+  // return this.restClient.get(path)
+  // }
+  //
 }
