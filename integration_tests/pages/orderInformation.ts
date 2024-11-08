@@ -1,19 +1,17 @@
-import { link } from 'fs'
 import Page, { PageElement } from './page'
 
-export default class OrderSummaryPage extends Page {
+export default class OrderInformationPage extends Page {
   constructor() {
     super('Key order details')
   }
 
   override checkOnPage(): void {
-    cy.get('caption').contains('Key order details')
+    cy.get('caption').contains('Order information')
   }
 
-  orderDetailsTable = (): PageElement => cy.get('.govuk-table__body')
+  orderInformationTable = (): PageElement => cy.get('.govuk-table__body')
 
-  summaryTableRowHeaders = (rowHeaderText: string): PageElement =>
-    cy.get('.govuk-table__header').contains(rowHeaderText)
+  tableRowHeaders = (rowHeaderText: string): PageElement => cy.get('.govuk-table__header').contains(rowHeaderText)
 
   gridButton = (buttonText: string): PageElement => cy.get('.ems-button-grid__button').contains(buttonText)
 

@@ -2,6 +2,7 @@ import { Order } from '../../interfaces/order'
 
 const orders: Order[] = [
   {
+    dataType: 'am',
     legacySubjectId: 1000000,
     name: 'Amy Smith',
     address: 'First line of address',
@@ -11,6 +12,7 @@ const orders: Order[] = [
     orderEndDate: '08-02-2020',
   },
   {
+    dataType: 'am',
     legacySubjectId: 2000000,
     name: 'Bill Smith',
     address: 'First line of address',
@@ -20,6 +22,7 @@ const orders: Order[] = [
     orderEndDate: '03-11-2021',
   },
   {
+    dataType: 'am',
     legacySubjectId: 3000000,
     name: 'Claire Smith',
     address: 'First line of address',
@@ -29,6 +32,7 @@ const orders: Order[] = [
     orderEndDate: '05-08-2002',
   },
   {
+    dataType: 'am',
     legacySubjectId: 8000000,
     name: 'Daniel Smith',
     address: 'First line of address',
@@ -38,6 +42,7 @@ const orders: Order[] = [
     orderEndDate: '18-02-2014',
   },
   {
+    dataType: 'am',
     legacySubjectId: 30000,
     name: 'Emma Smith',
     address: 'First line of address',
@@ -47,6 +52,7 @@ const orders: Order[] = [
     orderEndDate: '24-01-2020',
   },
   {
+    dataType: 'am',
     legacySubjectId: 4000000,
     name: 'Fred Smith',
     address: 'First line of address',

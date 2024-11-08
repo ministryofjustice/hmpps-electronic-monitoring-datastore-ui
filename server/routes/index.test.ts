@@ -2,15 +2,15 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
-import SearchService from '../services/searchService'
+import DatastoreSearchService from '../services/datastoreSearchService'
 import OrderService from '../services/orderService'
 
 jest.mock('../services/auditService')
-jest.mock('../services/searchService')
+jest.mock('../services/datastoreSearchService')
 jest.mock('../services/orderService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const searchService = new SearchService() as jest.Mocked<SearchService>
+const datastoreSearchService = new DatastoreSearchService(null, null) as jest.Mocked<DatastoreSearchService>
 const orderService = new OrderService() as jest.Mocked<OrderService>
 
 let app: Express
@@ -19,7 +19,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
-      searchService,
+      datastoreSearchService,
       orderService,
     },
     userSupplier: () => user,
