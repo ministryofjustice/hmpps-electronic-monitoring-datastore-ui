@@ -7,6 +7,7 @@ import getCurfewViolations from '../data/getCurfewViolations'
 import getEquipmentDetails from '../data/getEquipmentDetails'
 import getEventHistory from '../data/getEventHistory'
 import getOrderDetails from '../data/getOrderDetails'
+import getDeviceWearerDetails from '../data/getDeviceWearer'
 import getSuspensions from '../data/getSuspensions'
 import getVisitsAndTasks from '../data/getVisitsAndTasks'
 import tabluateRecords from '../utils/tabulateRecords'
@@ -20,7 +21,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
 
   const orderController = new OrderController(auditService, orderService)
 
-  get('/summary', async (req, res, next) => orderController.getSummary(req, res))
+  get('/information', async (req, res, next) => orderController.getSummary(req, res))
 
   // // Possibly better approach for unit testing
   // get('/summary', async (req, res, next) => {
@@ -43,9 +44,18 @@ export default function orderRouter({ auditService, orderService }: Services): R
 
     try {
       const { orderId } = req.params
+
       const orderDetails = await getOrderDetails()
-      const tabulatedOrderDetails = tabluateRecords(orderDetails, 'Order details')
-      res.render('pages/twoColumnTable', { data: tabulatedOrderDetails, backUrl: `/orders/${orderId}/summary` })
+      const deviceWearerDetails = await getDeviceWearerDetails()
+
+      const tabulatedOrderDetails = tabluateRecords(orderDetails, 'Order Data')
+      const tabulatedDeviceWearerDetails = tabluateRecords(deviceWearerDetails, 'Device Wearer Data')
+
+      res.render('pages/orderDetails', {
+        deviceWearer: tabulatedDeviceWearerDetails,
+        orderDetails: tabulatedOrderDetails,
+        backUrl: `/orders/${orderId}/information`,
+      })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -58,7 +68,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
       const { orderId } = req.params
       const visitsAndTasks = await getVisitsAndTasks()
       const tabulatedVisitsAndTasks = tabluateRecords(visitsAndTasks, 'Visits and tasks')
-      res.render('pages/twoColumnTable', { data: tabulatedVisitsAndTasks, backUrl: `/orders/${orderId}/summary` })
+      res.render('pages/twoColumnTable', { data: tabulatedVisitsAndTasks, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -74,7 +84,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
       const { orderId } = req.params
       const equipmentDetails = await getEquipmentDetails()
       const tabulatedEquipmentDetails = tabluateRecords(equipmentDetails, 'Equipment details')
-      res.render('pages/twoColumnTable', { data: tabulatedEquipmentDetails, backUrl: `/orders/${orderId}/summary` })
+      res.render('pages/twoColumnTable', { data: tabulatedEquipmentDetails, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -87,7 +97,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
       const { orderId } = req.params
       const curfewHours = await getCurfewHours()
       const tabulatedCurfewHours = tabluateRecords(curfewHours, 'Curfew hours')
-      res.render('pages/twoColumnTable', { data: tabulatedCurfewHours, backUrl: `/orders/${orderId}/summary` })
+      res.render('pages/twoColumnTable', { data: tabulatedCurfewHours, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -100,7 +110,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
       const { orderId } = req.params
       const eventHistory = await getEventHistory()
       const timeline = createTimeline(eventHistory, 'Event history')
-      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/summary` })
+      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -113,7 +123,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
       const { orderId } = req.params
       const suspensions = await getSuspensions()
       const timeline = createTimeline(suspensions, 'Suspension of visits')
-      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/summary` })
+      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -129,7 +139,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
       const { orderId } = req.params
       const curfewViolations = await getCurfewViolations()
       const timeline = createTimeline(curfewViolations, 'Violations')
-      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/summary` })
+      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -142,7 +152,7 @@ export default function orderRouter({ auditService, orderService }: Services): R
       const { orderId } = req.params
       const contactHistory = await getContactHistory()
       const timeline = createTimeline(contactHistory, 'Contact history')
-      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/summary` })
+      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
