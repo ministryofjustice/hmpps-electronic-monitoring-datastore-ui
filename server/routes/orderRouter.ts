@@ -7,6 +7,7 @@ import getCurfewViolations from '../data/getCurfewViolations'
 import getEquipmentDetails from '../data/getEquipmentDetails'
 import getEventHistory from '../data/getEventHistory'
 import getOrderDetails from '../data/getOrderDetails'
+import getDeviceWearerDetails from '../data/getDeviceWearer'
 import getSuspensions from '../data/getSuspensions'
 import getVisitsAndTasks from '../data/getVisitsAndTasks'
 import tabluateRecords from '../utils/tabulateRecords'
@@ -43,9 +44,18 @@ export default function orderRouter({ auditService, orderService }: Services): R
 
     try {
       const { orderId } = req.params
+
       const orderDetails = await getOrderDetails()
-      const tabulatedOrderDetails = tabluateRecords(orderDetails, 'Order details')
-      res.render('pages/twoColumnTable', { data: tabulatedOrderDetails, backUrl: `/orders/${orderId}/information` })
+      const deviceWearerDetails = await getDeviceWearerDetails()
+
+      const tabulatedOrderDetails = tabluateRecords(orderDetails, 'Order Data')
+      const tabulatedDeviceWearerDetails = tabluateRecords(deviceWearerDetails, 'Device Wearer Data')
+
+      res.render('pages/orderDetails', {
+        deviceWearer: tabulatedDeviceWearerDetails,
+        orderDetails: tabulatedOrderDetails,
+        backUrl: `/orders/${orderId}/information`,
+      })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }

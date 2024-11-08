@@ -5,13 +5,13 @@ export default class OrderDetailsPage extends Page {
     super('Order details')
   }
 
-  override checkOnPage(): void {
-    cy.get('caption').contains('Order details')
-  }
+  deviceWearerTable = (): PageElement =>
+    cy.contains('.govuk-table__caption', 'Device Wearer Data').closest('.govuk-table').find('.govuk-table__body')
 
-  orderDetailsTable = (): PageElement => cy.get('.govuk-table__body')
+  orderTable = (): PageElement =>
+    cy.contains('.govuk-table__caption', 'Order Data').closest('.govuk-table').find('.govuk-table__body')
 
-  orderDetailsColumnHeaders = (columnHeaderText: string): PageElement =>
+  deviceWearerRowHeaders = (columnHeaderText: string): PageElement =>
     cy.get('.govuk-table__row').contains(columnHeaderText)
 
   orderDetailsRowHeaders = (rowHeaderText: string): PageElement => cy.get('.govuk-table__row').contains(rowHeaderText)
