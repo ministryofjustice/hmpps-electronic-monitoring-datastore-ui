@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import request from 'supertest'
-import { appWithAllRoutes, user } from './testutils/appSetup'
+import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
 import DatastoreSearchService from '../services/datastoreSearchService'
 import OrderService from '../services/orderService'

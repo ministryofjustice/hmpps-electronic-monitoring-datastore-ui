@@ -14,11 +14,11 @@ describe('Datastore Search Service', () => {
 
   const datastoreClientFactory = jest.fn()
 
-  let datastoreOrderService: DatastoreSearchService
+  let datastoreSearchService: DatastoreSearchService
 
   beforeEach(() => {
     datastoreClientFactory.mockReturnValue(datastoreClient)
-    datastoreOrderService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+    datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -39,7 +39,7 @@ describe('Datastore Search Service', () => {
       const expectedData: Order[] = orders
       datastoreClient.searchForOrders.mockResolvedValue(expectedData)
 
-      const results = await datastoreOrderService.searchForOrders(searchItem)
+      const results = await datastoreSearchService.searchForOrders(searchItem)
       expect(results).toEqual(expectedData)
     })
   })

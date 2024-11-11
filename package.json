@@ -16,6 +16,7 @@
     "lint-fix": "eslint . --cache --max-warnings 0 --fix",
     "typecheck": "tsc && tsc -p integration_tests",
     "test": "jest",
+    "test:clearCache": "jest --clearCache",
     "test:watch": "jest --watchAll",
     "test:ci": "jest --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",

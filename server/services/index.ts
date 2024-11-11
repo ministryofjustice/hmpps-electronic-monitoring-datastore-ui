@@ -24,3 +24,4 @@ export const services = () => {
 }
 
 export type Services = ReturnType<typeof services>
+export { AuditService, DatastoreSearchService }
