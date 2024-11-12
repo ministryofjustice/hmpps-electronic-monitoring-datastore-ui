@@ -126,7 +126,7 @@
 
     {% if reports.visitDetails %} {{ govukButton({
       text: "Visit details",
-      href: '/orders/' + orderInformation.legacySubjectId + '/visits-and-tasks',
+      href: '/orders/' + orderInformation.legacySubjectId + '/visits-details',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
@@ -162,7 +162,7 @@
 
     {% if reports.suspensionOfVisits %} {{ govukButton({
       text: "Suspension of visits",
-      href: '/orders/' + orderInformation.legacySubjectId + '/suspensions',
+      href: '/orders/' + orderInformation.legacySubjectId + '/suspension-of-visits',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
