@@ -55,4 +55,11 @@ export default class DatastoreOrderService {
    * Method should get token and pass to searchfactory
    * await getOrders
    */
+
+  async confirmApi(orderParameter: string): Promise<JSON> {
+    this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
+
+    const result = this.datastoreClient.confirmApi(orderParameter)
+    return result
+  }
 }

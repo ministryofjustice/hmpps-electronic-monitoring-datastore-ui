@@ -5,6 +5,8 @@ import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import searchRouter from './searchRouter'
 import orderRouter from './orderRouter'
+import DatastoreSearchService from '../services/datastoreSearchService'
+import { DatastoreClient } from '../data'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes(services: Services): Router {
@@ -15,6 +17,11 @@ export default function routes(services: Services): Router {
     await services.auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     res.render('pages/index')
+  })
+
+  get('/test-api', async (req, res, next) => {
+    const apiResult: JSON = await services.datastoreOrderService.confirmApi('4')
+    res.render('pages/apiTest', { data: JSON.stringify(apiResult) })
   })
 
   router.use('/search', searchRouter(services))

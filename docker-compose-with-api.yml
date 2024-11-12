@@ -46,7 +46,7 @@ services:
       # These will need to match new creds in the seed auth service auth
       - AUTH_CODE_CLIENT_ID=hmpps-electronic-monitoring-datastore-ui
       - AUTH_CODE_CLIENT_SECRET=clientsecret
-      - CLIENT_CREDS_CLIENT_ID=hmpps-electronic-monitoring-datastore-api
+      - CLIENT_CREDS_CLIENT_ID=hmpps-electronic-monitoring-datastore-ui-client
       - CLIENT_CREDS_CLIENT_SECRET=clientsecret
       - SESSION_SECRET=somesecretvalue
       - TOKEN_VERIFICATION_API_URL=http://hmpps-auth:8080/auth
