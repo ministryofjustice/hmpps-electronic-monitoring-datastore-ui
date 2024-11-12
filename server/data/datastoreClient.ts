@@ -36,6 +36,14 @@ export default class DatastoreClient {
     return result
   }
 
+  async confirmApi(orderParameter: string): Promise<JSON> {
+    const result: JSON = await this.restClient.get({
+      path: `/search/cases/${orderParameter}`,
+    })
+
+    return result
+  }
+
   // TODO: DO this when other end points have been fleshed out here
 
   // // TODO: have a generic get and post in the client, with route-specific logic in the Service?
