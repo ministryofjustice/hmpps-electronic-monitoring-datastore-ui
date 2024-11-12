@@ -50,7 +50,7 @@
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Search for case details</h1>
       <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
-      <form method="post" novalidate>
+      <form method="post" novalidate id="case-search-form">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 {# TODO: commented out for show & tell
         {{ govukRadios({
@@ -89,7 +89,7 @@
 
         {{ govukInput({
           label: {
-            text: "First Name"
+            text: "First name"
           },
           classes: "govuk-!-width-two-thirds",
           id: "first-name",
@@ -98,7 +98,7 @@
 
         {{ govukInput({
           label: {
-            text: "Last Name"
+            text: "Last name"
           },
           classes: "govuk-!-width-two-thirds",
           id: "last-name",
@@ -115,9 +115,26 @@
             }
           },
           hint: {
-            text: "For example, 31 3 2023"
-          }
-        }) }}
+            text: "For example, 01 02 1990"
+          },
+          items: [
+            {
+              name: "day",
+              classes: "govuk-input--width-2",
+              autocomplete: "bday-day"
+            },
+            {
+              name: "month",
+              classes: "govuk-input--width-2",
+              autocomplete: "bday-month"
+            },
+            {
+              name: "year",
+              classes: "govuk-input--width-4",
+              autocomplete: "bday-year"
+            }
+          ]
+          }) }}
         
         {{ govukInput({
           label: {

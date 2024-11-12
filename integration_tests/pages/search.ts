@@ -21,19 +21,19 @@ export default class SearchPage extends Page {
 
   lastNameLabel = (): PageElement => cy.get('#last-name').siblings('label')
 
-  dateOfBirthLegend = (): PageElement => cy.get('#date-of-birth').siblings('legend')
+  dateOfBirthLegend = (): PageElement => cy.get('#dob').siblings('legend')
 
-  dayOfBirthField = (): PageElement => cy.get('#date-of-birth-day')
+  dayOfBirthField = (): PageElement => cy.get('#dob-day')
 
-  dayOfBirthLabel = (): PageElement => cy.get('#date-of-birth-day').siblings('label')
+  dayOfBirthLabel = (): PageElement => cy.get('#dob-day').siblings('label')
 
-  monthOfBirthField = (): PageElement => cy.get('#date-of-birth-month')
+  monthOfBirthField = (): PageElement => cy.get('#dob-month')
 
-  monthOfBirthLabel = (): PageElement => cy.get('#date-of-birth-month').siblings('label')
+  monthOfBirthLabel = (): PageElement => cy.get('#dob-month').siblings('label')
 
-  yearOfBirthField = (): PageElement => cy.get('#date-of-birth-year')
+  yearOfBirthField = (): PageElement => cy.get('#dob-year')
 
-  yearOfBirthLabel = (): PageElement => cy.get('#date-of-birth-year').siblings('label')
+  yearOfBirthLabel = (): PageElement => cy.get('#dob-year').siblings('label')
 
   aliasField = (): PageElement => cy.get('#alias')
 

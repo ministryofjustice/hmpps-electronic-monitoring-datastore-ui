@@ -23,10 +23,7 @@ context('Search', () => {
       const searchPage = Page.verifyOnPage(SearchPage)
       searchPage
         .serviceInformation()
-        .should(
-          'contain',
-          'This service gives you access to all case data that was held by Capita and G4S from [date] to [date]',
-        )
+        .should('contain', 'This service gives you access to all case data that was held by Capita and G4S.')
     })
   })
 
@@ -97,11 +94,6 @@ context('Search', () => {
       searchPage.dayOfBirthLabel().should('contain', 'Day')
       searchPage.monthOfBirthLabel().should('contain', 'Month')
       searchPage.yearOfBirthLabel().should('contain', 'Year')
-    })
-
-    it('Date of birth legend renders', () => {
-      const searchPage = Page.verifyOnPage(SearchPage)
-      searchPage.dateOfBirthLegend().should('be.visible')
     })
 
     it('Date of birth legend text is correct', () => {
