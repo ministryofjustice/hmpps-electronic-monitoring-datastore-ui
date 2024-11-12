@@ -8,7 +8,7 @@ context('Suspensions', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.signIn()
-    cy.visit(`/orders/${orderId}/suspensions`)
+    cy.visit(`/orders/${orderId}/suspension-of-visits`)
   })
 
   it('is reachable', () => {
@@ -28,8 +28,8 @@ context('Suspensions', () => {
 
       suspensions.timelineItems().each($item => {
         cy.wrap($item).within(() => {
-          suspensions.suspensionsTableColumnHeaders('Data title').should('be.visible')
-          suspensions.suspensionsTableColumnHeaders('Data').should('be.visible')
+          suspensions.suspensionsTableColumnHeaders('Type').should('be.visible')
+          suspensions.suspensionsTableColumnHeaders('Details').should('be.visible')
         })
       })
     })
@@ -38,8 +38,8 @@ context('Suspensions', () => {
       const suspensions = Page.verifyOnPage(SuspensionsPage)
       suspensions.timelineItems().each($item => {
         cy.wrap($item).within(() => {
-          suspensions.suspensionsTableRowHeaders('StartDate').should('be.visible')
-          suspensions.suspensionsTableRowHeaders('StartTime').should('be.visible')
+          suspensions.suspensionsTableRowHeaders('Suspension of Visits').should('be.visible')
+          suspensions.suspensionsTableRowHeaders('Suspension of Visits Requested Date').should('be.visible')
           // Add row headers here when finalised.
         })
       })

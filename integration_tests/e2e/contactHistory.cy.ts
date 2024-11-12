@@ -28,8 +28,8 @@ context('Contact history', () => {
 
       contactHistory.timelineItems().each($item => {
         cy.wrap($item).within(() => {
-          contactHistory.contactHistoryTableColumnHeaders('Data title').should('be.visible')
-          contactHistory.contactHistoryTableColumnHeaders('Data').should('be.visible')
+          contactHistory.contactHistoryTableColumnHeaders('Type').should('be.visible')
+          contactHistory.contactHistoryTableColumnHeaders('Details').should('be.visible')
         })
       })
     })
