@@ -1,19 +1,22 @@
 import { type RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import createTimeline from '../utils/createTimeline'
+import createTimelineWithTwoTables from '../utils/createTimelineWithTwoTables'
 import getContactHistory from '../data/getContactHistory'
 import getCurfewHours from '../data/getCurfewHours'
 import getCurfewViolations from '../data/getCurfewViolations'
-import getEquipmentDetails from '../data/getEquipmentDetails'
+import getHmuEquipmentDetails from '../data/getHmuEquipmentDetails'
+import getDeviceEquipmentDetails from '../data/getDeviceEquipmentDetails'
 import getEventHistory from '../data/getEventHistory'
 import getOrderDetails from '../data/getOrderDetails'
 import getDeviceWearerDetails from '../data/getDeviceWearer'
-import getSuspensions from '../data/getSuspensions'
+import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
 import getVisitsAndTasks from '../data/getVisitsAndTasks'
 import tabluateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import OrderController from './orderController'
+import getVisitDetails from '../data/getVisitDetails'
 
 export default function orderRouter({ auditService, orderService }: Services): Router {
   const router = Router({ mergeParams: true })
@@ -61,14 +64,17 @@ export default function orderRouter({ auditService, orderService }: Services): R
     }
   })
 
-  get('/visits-and-tasks', async (req, res, next) => {
-    await auditService.logPageView(Page.VISITS_AND_TASKS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+  get('/visits-details', async (req, res, next) => {
+    await auditService.logPageView(Page.VISITS_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
       const { orderId } = req.params
-      const visitsAndTasks = await getVisitsAndTasks()
-      const tabulatedVisitsAndTasks = tabluateRecords(visitsAndTasks, 'Visits and tasks')
-      res.render('pages/twoColumnTable', { data: tabulatedVisitsAndTasks, backUrl: `/orders/${orderId}/information` })
+
+      const visitDetails = await getVisitDetails()
+
+      const timeline = createTimelineWithTwoTables(visitDetails, 'Visit details')
+
+      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -82,9 +88,19 @@ export default function orderRouter({ auditService, orderService }: Services): R
 
     try {
       const { orderId } = req.params
-      const equipmentDetails = await getEquipmentDetails()
-      const tabulatedEquipmentDetails = tabluateRecords(equipmentDetails, 'Equipment details')
-      res.render('pages/twoColumnTable', { data: tabulatedEquipmentDetails, backUrl: `/orders/${orderId}/information` })
+
+      // These records come from the same table on the real data but I've separated them out in the mock data for now.
+      const hmuEquipmentDetails = await getHmuEquipmentDetails()
+      const deviceEquipmentDetails = await getDeviceEquipmentDetails()
+
+      const tabulatedHmuEquipmentDetails = tabluateRecords(hmuEquipmentDetails, 'Equipment details')
+      const tabulatedDeviceEquipmentDetails = tabluateRecords(deviceEquipmentDetails, 'Equipment details')
+
+      res.render('pages/equipmentDetails', {
+        hmuEquipmentDetails: tabulatedHmuEquipmentDetails,
+        deviceEquipmentDetails: tabulatedDeviceEquipmentDetails,
+        backUrl: `/orders/${orderId}/information`,
+      })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
@@ -116,12 +132,15 @@ export default function orderRouter({ auditService, orderService }: Services): R
     }
   })
 
-  get('/suspensions', async (req, res, next) => {
-    await auditService.logPageView(Page.SUSPENSIONS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+  get('/suspension-of-visits', async (req, res, next) => {
+    await auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
 
     try {
       const { orderId } = req.params
-      const suspensions = await getSuspensions()
+      const suspensions = await getSuspensionOfVisits()
       const timeline = createTimeline(suspensions, 'Suspension of visits')
       res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
     } catch (error) {

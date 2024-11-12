@@ -1,6 +1,6 @@
-import { Events } from '../interfaces/events'
+import { VisitDetails } from '../interfaces/events'
 
-const createTimeline = (events: Events, heading: string) => {
+const createTimeline = (events: VisitDetails, heading: string) => {
   const timeline = events.events.map(event => {
     const recordsAsHtml: string = event.records
       .map(
@@ -19,15 +19,11 @@ const createTimeline = (events: Events, heading: string) => {
 
     return {
       label: {
-        text: event.name,
+        text: `Visit address: ${event.address}`,
       },
       html: `
             <details class="govuk-details govuk-!-margin-bottom-0">
               <summary class="govuk-details__summary">
-                <!-- <span class="govuk-details__summary-text">
-                ${event.date}
-                </span>
-                -->
               </summary>
               <table class="govuk-table">
                 <thead class="govuk-table__head">
@@ -40,10 +36,34 @@ const createTimeline = (events: Events, heading: string) => {
                   ${recordsAsHtml}
                 </tbody>
               </table>
+              <table class="govuk-table"> 
+                <thead class="govuk-table__head">
+                  <tr class="govuk-table__row">
+                    <th scope="col" class="govuk-table__header">Visit Type</th>
+                    <th scope="col" class="govuk-table__header">Visit Outcome</th>
+                  </tr>
+                </thead>
+                <tbody class="govuk-table__body">
+                  <tr class="govuk-table__row">
+                    <td scope="row" class="govuk-table__cell govuk-!-width-one-third">
+                        RAM1
+                    </td>
+                    <td class="govuk-table__cell">
+                    Success - Negative RAM - Subject present
+                  <tr class="govuk-table__row">
+                    <td scope="row" class="govuk-table__cell">
+                        Strap Tamper
+                    </td>
+                    <td class="govuk-table__cell">
+                        Success
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </details>
         `,
       datetime: {
-        timestamp: '2019-01-01T14:01:00.000Z',
+        timestamp: `${event.date}`,
         type: 'datetime',
       },
     }
