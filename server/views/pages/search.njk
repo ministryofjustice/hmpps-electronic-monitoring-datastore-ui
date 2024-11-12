@@ -52,7 +52,7 @@
       <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
       <form method="post" novalidate>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-
+{# TODO: commented out for show & tell
         {{ govukRadios({
           classes: "govuk-radios--small",
           name: "searchType",
@@ -76,7 +76,7 @@
           errorMessage: {
             text: "Select the type of data to search for"
           }
-        }) }}
+        }) }} #}
 
         {{ govukInput({
           label: {
