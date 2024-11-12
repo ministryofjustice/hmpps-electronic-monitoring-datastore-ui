@@ -1,0 +1,45 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{# {% set deviceWearerHeading = deviceWearer.heading %} #}
+{# {% set orderDetailsHeading = orderDetails.heading %} #}
+{# {% set equipmentDetailsRecords = hmuDetails.records %} #}
+{% set hmuRecords = hmuEquipmentDetails.records %}
+{% set deviceRecords = deviceEquipmentDetails.records %}
+{# {% set deviceRecords = equipmentDetail.records | slice(3, 5) %} #}
+{# {% set deviceWearerRecords = deviceWearer.records %} #}
+{% set backUrl = backUrl %}
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: backUrl
+  }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
+  <h1 class="govuk-heading-m">Equipment details</h1>
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
+  {{ govukTable({
+    caption: 'HMU',
+    captionClasses: "govuk-table__caption--s",
+    rows: hmuRecords
+  }) }}
+
+  <hr class="govuk-section-break govuk-section-break--m">
+  
+  {{ govukTable({
+    caption: 'Device',
+    captionClasses: "govuk-table__caption--s",
+    rows: deviceRecords
+  }) }}
+  
+{% endblock %}

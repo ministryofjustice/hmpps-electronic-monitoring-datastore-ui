@@ -1,12 +1,12 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
-import equipmentDetails from './mockData/equipmentDetails'
+import hmuEquipmentDetails from './mockData/hmuEquipmentDetails'
 
 const getEquipmentDetails = async () => {
   try {
-    return equipmentDetails
+    return hmuEquipmentDetails
   } catch (error) {
-    logger.error(getSanitisedError(error), 'Error retrieving equipment details')
+    logger.error(getSanitisedError(error), 'Error retrieving hmu equipment details')
     return error
   }
 }
