@@ -28,7 +28,7 @@ afterEach(() => {
 })
 
 describe('Core page basic GET requests', () => {
-  it.each<GetRequestFixture>([['search page', '/search', 'Search for case details', Page.SEARCH_PAGE]])(
+  it.each<GetRequestFixture>([['search page', '/search', 'Search for order details', Page.SEARCH_PAGE]])(
     'should render %s',
     (pageName, route, titleText, auditType) => basicGetTest(pageName, route, titleText, auditType),
   )

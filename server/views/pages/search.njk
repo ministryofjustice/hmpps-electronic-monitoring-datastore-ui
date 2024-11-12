@@ -1,7 +1,7 @@
 {% extends "../partials/layout.njk" %}
 
 
-{% set pageTitle = applicationName + " - Search for case details" %}
+{% set pageTitle = applicationName + " - Search for order details" %}
 {% set mainClasses = "app-container govuk-body" %}
 
 {% set mockValidationData = {
@@ -41,18 +41,14 @@
 {% block content %}
 
   {{ emsServiceInformation() }}
-{# 
-  <h1>Search for case details</h1>
-  
-  <p>You can search by subject ID, name, date of birth and alias</p> #}
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Search for case details</h1>
+      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Search for order details</h1>
       <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
-      <form method="post" novalidate id="case-search-form">
+      <form method="post" novalidate id="order-search-form">
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-{# TODO: commented out for show & tell
+
         {{ govukRadios({
           classes: "govuk-radios--small",
           name: "searchType",
@@ -76,7 +72,7 @@
           errorMessage: {
             text: "Select the type of data to search for"
           }
-        }) }} #}
+        }) }}
 
         {{ govukInput({
           label: {

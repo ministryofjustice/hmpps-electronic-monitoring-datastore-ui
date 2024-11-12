@@ -2,7 +2,7 @@ import Page, { PageElement } from './page'
 
 export default class SearchPage extends Page {
   constructor() {
-    super('Search for case details')
+    super('Search for order details')
   }
 
   serviceInformation = (): PageElement => cy.get('.service-information')
@@ -39,5 +39,5 @@ export default class SearchPage extends Page {
 
   aliasLabel = (): PageElement => cy.get('#alias').siblings('label')
 
-  searchButton = (): PageElement => cy.get('#case-search-form').children('button')
+  searchButton = (): PageElement => cy.get('#order-search-form').children('button')
 }
