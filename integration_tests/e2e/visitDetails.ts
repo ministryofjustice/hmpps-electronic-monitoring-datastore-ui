@@ -1,4 +1,4 @@
-import VisitsAndTasksPage from '../pages/visitsAndTasks'
+import VisitDetailsPage from '../pages/visitDetails'
 import Page from '../pages/page'
 
 context('Visits ans tasks', () => {

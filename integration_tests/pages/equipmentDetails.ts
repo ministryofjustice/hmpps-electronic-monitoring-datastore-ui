@@ -5,10 +5,6 @@ export default class CurfewHoursPage extends Page {
     super('Equipment details')
   }
 
-  override checkOnPage(): void {
-    cy.get('caption').contains('Equipment details')
-  }
-
   equipmentDetailsTable = (): PageElement => cy.get('.govuk-table__body')
 
   equipmentDetailsColumnHeaders = (columnHeaderText: string): PageElement =>

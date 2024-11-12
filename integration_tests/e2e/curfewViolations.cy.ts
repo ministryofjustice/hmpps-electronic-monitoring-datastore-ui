@@ -14,35 +14,35 @@ context('Curfew violations', () => {
   it('is reachable', () => {
     Page.verifyOnPage(CurfewViolationsPage)
   })
+  // Commenting out as this page will now be part of 'All event history'.
+  // describe('Timeline component', () => {
+  //   it('Renders an event timeline', () => {
+  //     const curfewViolations = Page.verifyOnPage(CurfewViolationsPage)
+  //     curfewViolations.timeline().should('be.visible')
+  //   })
+  // })
 
-  describe('Timeline component', () => {
-    it('Renders an event timeline', () => {
-      const curfewViolations = Page.verifyOnPage(CurfewViolationsPage)
-      curfewViolations.timeline().should('be.visible')
-    })
-  })
+  // describe('Violations timeline item', () => {
+  //   it('Includes expected column headers', () => {
+  //     const curfewViolations = Page.verifyOnPage(CurfewViolationsPage)
 
-  describe('Violations timeline item', () => {
-    it('Includes expected column headers', () => {
-      const curfewViolations = Page.verifyOnPage(CurfewViolationsPage)
+  //     curfewViolations.timelineItems().each($item => {
+  //       cy.wrap($item).within(() => {
+  //         curfewViolations.violationsTableColumnHeaders('Data title').should('be.visible')
+  //         curfewViolations.violationsTableColumnHeaders('Data').should('be.visible')
+  //       })
+  //     })
+  //   })
 
-      curfewViolations.timelineItems().each($item => {
-        cy.wrap($item).within(() => {
-          curfewViolations.violationsTableColumnHeaders('Data title').should('be.visible')
-          curfewViolations.violationsTableColumnHeaders('Data').should('be.visible')
-        })
-      })
-    })
-
-    it('Includes expected row headers', () => {
-      const curfewViolations = Page.verifyOnPage(CurfewViolationsPage)
-      curfewViolations.timelineItems().each($item => {
-        cy.wrap($item).within(() => {
-          curfewViolations.violationsTableRowHeaders('EnforcementReason').should('be.visible')
-          curfewViolations.violationsTableRowHeaders('InvestigationOutcomeReason').should('be.visible')
-          // Add row headers here when finalised.
-        })
-      })
-    })
-  })
+  //   it('Includes expected row headers', () => {
+  //     const curfewViolations = Page.verifyOnPage(CurfewViolationsPage)
+  //     curfewViolations.timelineItems().each($item => {
+  //       cy.wrap($item).within(() => {
+  //         curfewViolations.violationsTableRowHeaders('EnforcementReason').should('be.visible')
+  //         curfewViolations.violationsTableRowHeaders('InvestigationOutcomeReason').should('be.visible')
+  //         // Add row headers here when finalised.
+  //       })
+  //     })
+  //   })
+  // })
 })

@@ -1,12 +1,12 @@
 import Page, { PageElement } from './page'
 
-export default class VisitsAndTasksPage extends Page {
+export default class VisitDetailsPage extends Page {
   constructor() {
-    super('Visits and tasks')
+    super('Visit details')
   }
 
   override checkOnPage(): void {
-    cy.get('caption').contains('Visits and tasks')
+    cy.get('caption').contains('Visit details')
   }
 
   visitsAndTasksTable = (): PageElement => cy.get('.govuk-table')

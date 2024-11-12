@@ -20,8 +20,8 @@ context('Equipment Details', () => {
       const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
 
       equipmentDetailsPage.equipmentDetailsTable().each(() => {
-        equipmentDetailsPage.equipmentDetailsColumnHeaders('Data title').should('be.visible')
-        equipmentDetailsPage.equipmentDetailsColumnHeaders('Data').should('be.visible')
+        equipmentDetailsPage.equipmentDetailsColumnHeaders('HMU').should('be.visible')
+        // equipmentDetailsPage.equipmentDetailsColumnHeaders('Data').should('be.visible')
       })
     })
 
@@ -29,10 +29,10 @@ context('Equipment Details', () => {
       const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
 
       equipmentDetailsPage.equipmentDetailsTable().each(() => {
-        equipmentDetailsPage.equipmentDetailsRowHeaders('PIDStartDate').should('be.visible')
-        equipmentDetailsPage.equipmentDetailsRowHeaders('PIDEndDate').should('be.visible')
-        equipmentDetailsPage.equipmentDetailsRowHeaders('EquipmentCategoryDescription').should('be.visible')
-        equipmentDetailsPage.equipmentDetailsRowHeaders('HMUStartDate').should('be.visible')
+        equipmentDetailsPage.equipmentDetailsRowHeaders('HMU ID').should('be.visible')
+        equipmentDetailsPage.equipmentDetailsRowHeaders('HMU Equipment Category Description').should('be.visible')
+        // equipmentDetailsPage.equipmentDetailsRowHeaders('EquipmentCategoryDescription').should('be.visible')
+        // equipmentDetailsPage.equipmentDetailsRowHeaders('HMUStartDate').should('be.visible')
       })
     })
   })

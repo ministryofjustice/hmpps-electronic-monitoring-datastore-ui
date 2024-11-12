@@ -8,7 +8,7 @@ const hmuEquipmentDetails: Records = {
       value: '3216876X',
     },
     {
-      key: 'HMU Equipment Category DEscription',
+      key: 'HMU Equipment Category Description',
       value: 'GSM',
     },
     {
