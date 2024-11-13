@@ -2,7 +2,7 @@ import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 import deviceEquipmentDetails from './mockData/deviceEquipmentDetails'
 
-const getEquipmentDetails = async () => {
+const getDeviceEquipmentDetails = async () => {
   try {
     return deviceEquipmentDetails
   } catch (error) {
@@ -11,4 +11,4 @@ const getEquipmentDetails = async () => {
   }
 }
 
-export default getEquipmentDetails
+export default getDeviceEquipmentDetails

@@ -2,7 +2,7 @@ import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 import hmuEquipmentDetails from './mockData/hmuEquipmentDetails'
 
-const getEquipmentDetails = async () => {
+const getHmuEquipmentDetails = async () => {
   try {
     return hmuEquipmentDetails
   } catch (error) {
@@ -11,4 +11,4 @@ const getEquipmentDetails = async () => {
   }
 }
 
-export default getEquipmentDetails
+export default getHmuEquipmentDetails
