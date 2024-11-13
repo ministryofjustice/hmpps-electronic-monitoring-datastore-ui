@@ -5,11 +5,20 @@ export default class CurfewHoursPage extends Page {
     super('Equipment details')
   }
 
-  equipmentDetailsTable = (): PageElement => cy.get('.govuk-table__body')
+  hmuTable = (): PageElement => cy.get('.govuk-table').contains('.govuk-table__caption', 'HMU').parents('.govuk-table')
 
-  equipmentDetailsColumnHeaders = (columnHeaderText: string): PageElement =>
-    cy.get('.govuk-table__row').contains(columnHeaderText)
+  deviceTable = (): PageElement =>
+    cy.get('.govuk-table').contains('.govuk-table__caption', 'Device').parents('.govuk-table')
 
-  equipmentDetailsRowHeaders = (rowHeaderText: string): PageElement =>
-    cy.get('.govuk-table__row').contains(rowHeaderText)
+  hmuTableCaption = (columnHeaderText: string): PageElement =>
+    cy.get('.govuk-table__caption').contains(columnHeaderText)
+
+  deviceTableCaption = (columnHeaderText: string): PageElement =>
+    cy.get('.govuk-table__caption').contains(columnHeaderText)
+
+  hmuRowHeaders = (rowHeaderText: string): PageElement =>
+    cy.get('.govuk-table__row').children('.govuk-table__cell').contains(rowHeaderText)
+
+  deviceRowHeaders = (rowHeaderText: string): PageElement =>
+    cy.get('.govuk-table__row').children('.govuk-table__cell').contains(rowHeaderText)
 }

@@ -8,7 +8,7 @@ const deviceEquipmentDetails: Records = {
       value: '00018233',
     },
     {
-      key: 'PID Equipment Category DEscription',
+      key: 'PID Equipment Category Description',
       value: 'GSM',
     },
     {
