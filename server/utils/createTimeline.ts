@@ -6,7 +6,7 @@ const createTimeline = (events: Events, heading: string) => {
       .map(
         record => `
         <tr class="govuk-table__row">
-          <td scope="row" class="govuk-table__header">
+          <td scope="row" class="govuk-table__cell govuk-!-width-one-third">
             ${record.key}
           </td>
           <td class="govuk-table__cell">

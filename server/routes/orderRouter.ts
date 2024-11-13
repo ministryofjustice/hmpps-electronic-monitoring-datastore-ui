@@ -64,8 +64,8 @@ export default function orderRouter({ auditService, orderService }: Services): R
     }
   })
 
-  get('/visits-details', async (req, res, next) => {
-    await auditService.logPageView(Page.VISITS_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
+  get('/visit-details', async (req, res, next) => {
+    await auditService.logPageView(Page.VISIT_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     try {
       const { orderId } = req.params

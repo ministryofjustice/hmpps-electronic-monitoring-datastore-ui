@@ -25,25 +25,25 @@ const createTimeline = (events: VisitDetails, heading: string) => {
             <details class="govuk-details govuk-!-margin-bottom-0">
               <summary class="govuk-details__summary">
               </summary>
-              <table class="govuk-table">
+              <table class="govuk-table table" id="first-table">
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header">Type</th>
                     <th scope="col" class="govuk-table__header">Details</th>
                   </tr>
                 </thead>
-                <tbody class="govuk-table__body">
+                <tbody class="govuk-table__body" id="first-table-body">
                   ${recordsAsHtml}
                 </tbody>
               </table>
-              <table class="govuk-table"> 
+              <table class="govuk-table" id="second-table"> 
                 <thead class="govuk-table__head">
                   <tr class="govuk-table__row">
                     <th scope="col" class="govuk-table__header">Visit Type</th>
                     <th scope="col" class="govuk-table__header">Visit Outcome</th>
                   </tr>
                 </thead>
-                <tbody class="govuk-table__body">
+                <tbody class="govuk-table__body" id="second-table-body">
                   <tr class="govuk-table__row">
                     <td scope="row" class="govuk-table__cell govuk-!-width-one-third">
                         RAM1

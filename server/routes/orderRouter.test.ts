@@ -33,7 +33,7 @@ describe('Order details basic GET requests', () => {
   it.each<GetRequestFixture>([
     ['order information page', `/orders/${orderId}/information`, 'Order information', Page.ORDER_INFORMATION_PAGE],
     ['order details page', `/orders/${orderId}/details`, 'Order details', Page.ORDER_DETAILS_PAGE],
-    ['visits and tasks page', `/orders/${orderId}/visits-details`, 'Visit details', Page.VISITS_DETAILS_PAGE],
+    ['visits and tasks page', `/orders/${orderId}/visit-details`, 'Visit details', Page.VISIT_DETAILS_PAGE],
     ['event history page', `/orders/${orderId}/event-history`, 'Event history', Page.EVENT_HISTORY_PAGE],
     [
       'equipment details page',

@@ -44,7 +44,7 @@ context('Order Information', () => {
       const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
       orderInformationPage.gridButton('Visit details').should('be.visible')
       orderInformationPage.gridButton('Visit details').click()
-      cy.url().should('include', `/orders/${orderId}/visits-and-tasks`)
+      cy.url().should('include', `/orders/${orderId}/visit-details`)
     })
 
     it('Contains equipment details button and navigates to expected page', () => {
@@ -58,7 +58,7 @@ context('Order Information', () => {
       const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
       orderInformationPage.gridButton('Suspension of visits').should('be.visible')
       orderInformationPage.gridButton('Suspension of visits').click()
-      cy.url().should('include', `/orders/${orderId}/suspensions`)
+      cy.url().should('include', `/orders/${orderId}/suspension-of-visits`)
     })
     it('Contains all event history button and navigates to expected page', () => {
       const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
