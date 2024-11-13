@@ -29,7 +29,6 @@ context('Visit details', () => {
       visitDetails.timelineItems().each($item => {
         cy.wrap($item).within(() => {
           visitDetails.details().within(() => {
-            // force:true added here to avoid cypress error: is not visible because it has an effective width and height of: 25 x 0 pixels
             visitDetails.detailsSummary().click({ force: true })
           })
           visitDetails.firstTable().within(() => {
@@ -45,7 +44,6 @@ context('Visit details', () => {
       visitDetails.timelineItems().each($item => {
         cy.wrap($item).within(() => {
           visitDetails.details().within(() => {
-            // force:true added here to avoid cypress error: 'is not visible because it has an effective width and height of: 25 x 0 pixels'
             visitDetails.detailsSummary().click({ force: true })
           })
           visitDetails.secondTable().within(() => {
@@ -60,7 +58,6 @@ context('Visit details', () => {
       visitDetails.timelineItems().each($item => {
         cy.wrap($item).within(() => {
           visitDetails.details().within(() => {
-            // force:true added here to avoid cypress error: 'is not visible because it has an effective width and height of: 25 x 0 pixels'
             visitDetails.detailsSummary().click({ force: true })
           })
           visitDetails.firstTableBody().within(() => {
@@ -78,7 +75,6 @@ context('Visit details', () => {
       visitDetails.timelineItems().each($item => {
         cy.wrap($item).within(() => {
           visitDetails.details().within(() => {
-            // force:true added here to avoid cypress error: 'is not visible because it has an effective width and height of: 25 x 0 pixels'
             visitDetails.detailsSummary().click({ force: true })
           })
           visitDetails.secondTableBody().within(() => {

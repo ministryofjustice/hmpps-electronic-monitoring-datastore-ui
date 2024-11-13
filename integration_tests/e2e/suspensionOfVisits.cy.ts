@@ -29,7 +29,6 @@ context('Suspensions', () => {
       suspensions.timelineItems().each($item => {
         cy.wrap($item).within(() => {
           suspensions.details().within(() => {
-            // force:true added here to avoid cypress error: 'is not visible because it has an effective width and height of: 25 x 0 pixels'
             suspensions.detailsSummary().click({ force: true })
           })
           suspensions.table().within(() => {
@@ -45,7 +44,6 @@ context('Suspensions', () => {
       suspensions.timelineItems().each($item => {
         cy.wrap($item).within(() => {
           suspensions.details().within(() => {
-            // force:true added here to avoid cypress error: 'is not visible because it has an effective width and height of: 25 x 0 pixels'
             suspensions.detailsSummary().click({ force: true })
           })
           suspensions.tableBody().within(() => {
