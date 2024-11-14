@@ -1,3 +1,6 @@
+import { DatePartsParsed } from '../interfaces/dates'
+import config from '../config'
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -21,3 +24,39 @@ export const initialiseName = (fullName?: string): string | null => {
   const array = fullName.split(' ')
   return `${array[0][0]}. ${array.reverse()[0]}`
 }
+
+export const dateParts = (fieldName: string, values: DatePartsParsed) => {
+  const items = [
+    {
+      name: 'day',
+      label: 'Day',
+      classes: 'govuk-input--width-2',
+      attributes: {
+        maxlength: 2,
+      },
+      value: values[`${fieldName}-day`] || '',
+    },
+    {
+      name: 'month',
+      label: 'Month',
+      classes: 'govuk-input--width-2',
+      attributes: {
+        maxlength: 2,
+      },
+      value: values[`${fieldName}-month`] || '',
+    },
+    {
+      name: 'year',
+      label: 'Year',
+      classes: 'govuk-input--width-4',
+      attributes: {
+        maxlength: 4,
+      },
+      value: values[`${fieldName}-year`] || '',
+    },
+  ]
+  return items
+}
+
+export const makePageTitle = ({ pageHeading, hasErrors }: { pageHeading: string; hasErrors: boolean }) =>
+  `${hasErrors ? 'Error: ' : ''}${pageHeading} - ${config.applicationName}`

@@ -1,42 +1,7 @@
 {% extends "../partials/layout.njk" %}
 
 
-{% set pageTitle = applicationName + " - Search for order details" %}
-{% set mainClasses = "app-container govuk-body" %}
-
-{% set mockValidationData = {
-  subjectId: {
-    value: "123456",
-    errorMessage: null
-  },
-  firstName: {
-    value: null,
-    errorMessage: null
-  },
-  lastName: {
-    value: null,
-    errorMessage: null
-  },
-  dateOfBirth: {
-    errorMessage: "Enter a day.",
-    day: {
-      value: null,
-      error: true
-    },
-    month: {
-      value: "12",
-      error: false
-    },
-    year: {
-      value: "3000",
-      error: false
-    }
-  },
-  alias: {
-    value: null,
-    errorMessage: null
-  }
-} %}
+{% set pageTitle = makePageTitle({ pageHeading: page.title, hasErrors: errors }) %}
 
 {% block content %}
 
@@ -44,9 +9,9 @@
 
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l govuk-!-margin-bottom-1">Search for order details</h1>
-      <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
       <form method="post" novalidate id="order-search-form">
+        <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ page.title }}</h1>
+        <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
 
         {{ govukRadios({
@@ -80,7 +45,8 @@
             classes: "govuk-label--m"
           },
           id: "subject-id",
-          name: "subjectId"
+          name: "subjectId",
+          value: "form-data.subjectId"
         }) }}
 
         {{ govukInput({
@@ -89,7 +55,8 @@
           },
           classes: "govuk-!-width-two-thirds",
           id: "first-name",
-          name: "firstName"
+          name: "firstName",
+          value: "form-data.firstName"
         }) }}
 
         {{ govukInput({
@@ -98,7 +65,8 @@
           },
           classes: "govuk-!-width-two-thirds",
           id: "last-name",
-          name: "lastName"
+          name: "lastName",
+          value: "form-data.lastName"
         }) }}
 
         {{ govukDateInput({
@@ -113,23 +81,7 @@
           hint: {
             text: "For example, 01 02 1990"
           },
-          items: [
-            {
-              name: "day",
-              classes: "govuk-input--width-2",
-              autocomplete: "bday-day"
-            },
-            {
-              name: "month",
-              classes: "govuk-input--width-2",
-              autocomplete: "bday-month"
-            },
-            {
-              name: "year",
-              classes: "govuk-input--width-4",
-              autocomplete: "bday-year"
-            }
-          ]
+          items: dateTimeItems("dob", formData)
           }) }}
         
         {{ govukInput({
@@ -138,98 +90,9 @@
           },
           classes: "govuk-!-width-two-thirds",
           id: "alias",
-          name: "alias"
+          name: "alias",
+          value: "form-data.alias"
         }) }}
-{# 
-        <div class="govuk-form-group {% if mockValidationData.subjectId.errorMessage %} govuk-form-group--error{% endif %}">
-          <label class="govuk-label govuk-label--s" for="subject-id">
-            Subject ID
-          </label>
-          <p id="subject-id-error" class="govuk-error-message hidden">
-            <span class="govuk-visually-hidden">Error:</span> {{
-              mockValidationData.subjectId.errorMessage
-            }}
-          </p>
-          <input class="govuk-input govuk-input--width-20{% if mockValidationData.subjectId.errorMessage %} govuk-input--error{% endif %}" id="subject-id" name="subjectId" type="text">
-        </div>
-
-        <div class="govuk-form-group {% if mockValidationData.firstName.errorMessage %} govuk-form-group--error{% endif %}">
-          <label class="govuk-label govuk-label--s" for="first-name">
-            First name
-          </label>
-          <p id="first-name-error" class="govuk-error-message hidden">
-            <span class="govuk-visually-hidden">Error:</span> {{
-              mockValidationData.firstName.errorMessage
-            }}
-          </p>
-          <input class="govuk-input govuk-input--width-20{% if mockValidationData.firstName.errorMessage %} govuk-input--error{% endif %}" id="first-name" name="firstName" type="text">
-        </div>
-
-        <div class="govuk-form-group {% if mockValidationData.lastName.errorMessage %} govuk-form-group--error{% endif %}">
-          <label class="govuk-label govuk-label--s" for="last-name">
-            Last name
-          </label>
-          <p id="last-name-error" class="govuk-error-message hidden">
-            <span class="govuk-visually-hidden">Error:</span> {{
-              mockValidationData.lastName.errorMessage
-            }}
-          </p>
-          <input class="govuk-input govuk-input--width-20{% if mockValidationData.lastName.errorMessage %} govuk-input--error{% endif %}" id="last-name" name="lastName" type="text">
-        </div>
-
-        <div class="govuk-form-group{% if mockValidationData.dateOfBirth.errorMessage %} govuk-form-group--error{% endif %} ems-form-group__date">
-          <fieldset class="govuk-fieldset" role="group" aria-describedby="date-of-birth-hint">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-              Date of birth
-            </legend>
-            <p id="date-of-birth-error" class="govuk-error-message hidden">
-            <span class="govuk-visually-hidden">Error:</span> {{
-              mockValidationData.dateOfBirth.errorMessage
-            }}
-          </p>
-            <div id="date-of-birth-hint" class="govuk-hint">
-              For example, 31 3 2023
-            </div>
-            <div class="govuk-date-input" id="date-of-birth">
-              <div class="govuk-date-input__item">
-                <div class="govuk-form-group">
-                  <label class="govuk-label govuk-date-input__label" for="date-of-birth-day">
-                    Day
-                  </label>
-                  <input class="govuk-input govuk-date-input__input govuk-input--width-2{% if mockValidationData.dateOfBirth.day.error %} govuk-input--error{% endif %}" id="date-of-birth-day" name="date-of-birth-day" type="text" inputmode="numeric"{% if mockValidationData.dateOfBirth.day.value%} value="{{ mockValidationData.dateOfBirth.day.value }}"{% endif %}>
-                </div>
-              </div>
-              <div class="govuk-date-input__item">
-                <div class="govuk-form-group">
-                  <label class="govuk-label govuk-date-input__label" for="date-of-birth-month">
-                    Month
-                  </label>
-                  <input class="govuk-input govuk-date-input__input govuk-input--width-2{% if mockValidationData.dateOfBirth.month.error %} govuk-input--error{% endif %}" id="date-of-birth-month" name="date-of-birth-month" type="text" inputmode="numeric"{% if mockValidationData.dateOfBirth.month.value%} value="{{ mockValidationData.dateOfBirth.month.value }}" {% endif %}>
-                </div>
-              </div>
-              <div class="govuk-date-input__item">
-                <div class="govuk-form-group">
-                  <label class="govuk-label govuk-date-input__label" for="date-of-birth-year">
-                    Year
-                  </label>
-                  <input class="govuk-input govuk-date-input__input govuk-input--width-4{% if mockValidationData.dateOfBirth.year.error %} govuk-input--error{% endif %}" id="date-of-birth-year" name="date-of-birth-year" type="text" inputmode="numeric"{% if mockValidationData.dateOfBirth.year.value %} value="{{ mockValidationData.dateOfBirth.year.value }}" {% endif %}>
-                </div>
-              </div>
-            </div>
-          </fieldset>
-        </div>
-
-        <div class="govuk-form-group {% if mockValidationData.alias.errorMessage %} govuk-form-group--error{% endif %}">
-          <label class="govuk-label govuk-label--s" for="alias">
-            Alias
-          </label>
-          <p id="alias-error" class="govuk-error-message hidden">
-            <span class="govuk-visually-hidden">Error:</span> {{
-              mockValidationData.alias.errorMessage
-            }}
-          </p>
-          <input class="govuk-input govuk-input--width-20{% if mockValidationData.alias.errorMessage %} govuk-input--error{% endif %}" id="alias" name="alias" type="text">
-        </div> #}
 
         {{ govukButton({
           text: "Search",
