@@ -4,6 +4,7 @@
 {%- from "moj/components/timeline/macro.njk" import mojTimeline -%}
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from  "../components/emsDateFilter.njk" import emsDateFilter %}
 
 {% set heading = data.heading %}
 {% set timeline = data.timeline %}
@@ -21,6 +22,8 @@
   <h1 class="govuk-heading-m">
     {{ heading }}
   </h1>
+
+  {{ emsDateFilter() }}
 
   <hr class="govuk-section-break govuk-section-break--m">
 

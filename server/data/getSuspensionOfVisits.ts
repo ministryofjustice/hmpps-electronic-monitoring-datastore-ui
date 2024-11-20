@@ -1,14 +1,14 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
-import suspensions from './mockData/suspensions'
+import suspensionOfVisits from './mockData/suspensionOfVisits'
 
-const getSuspensions = async () => {
+const getSuspensionOfVisits = async () => {
   try {
-    return suspensions
+    return suspensionOfVisits
   } catch (error) {
     logger.error(getSanitisedError(error), 'Error retrieving search results')
     return error
   }
 }
 
-export default getSuspensions
+export default getSuspensionOfVisits
