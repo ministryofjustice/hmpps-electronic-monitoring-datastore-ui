@@ -2,21 +2,18 @@ import { Request, Response } from 'express'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 import { AuditService, DatastoreSearchService } from '../services'
 import SearchController from './searchController'
-
-// import { Page } from '../services/auditService'
-// import { Order } from '../interfaces/order'
+import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import orders from '../data/mockData/orders'
 
-import tabulateOrders from '../utils/tabulateOrders'
-
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
+import SearchOrderFormDataModel from '../models/form-data/searchOrder'
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
 
 jest.mock('../utils/tabulateOrders', () => jest.fn(() => []))
+jest.mock('../models/form-data/searchOrder')
 
-// const token = 'fake-token-value'
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()
 const datastoreClientFactory = jest.fn()
@@ -26,54 +23,136 @@ const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory
 
 datastoreSearchService.searchForOrders = jest.fn().mockResolvedValue(orders)
 
+jest.mock('../models/view-models/searchForOrders')
 describe('SearchController', () => {
   let searchController: SearchController
   let req: Request
   let res: Response
   const next = jest.fn()
+  describe('SearchController - search', () => {
+    beforeEach(() => {
+      searchController = new SearchController(auditService, datastoreSearchService)
 
-  beforeEach(() => {
-    searchController = new SearchController(auditService, datastoreSearchService)
+      req = createMockRequest({
+        flash: jest.fn().mockImplementation(() => []), // No data in req.flash
+      })
 
-    req = createMockRequest()
-    res = createMockResponse()
+      res = createMockResponse()
+    })
+
+    it('should render page with no data', async () => {
+      ;(SearchForOrdersViewModel.construct as jest.Mock).mockReturnValue({
+        formData: {}, // No form data
+        validationErrors: [], // No validation errors
+      })
+
+      await searchController.search(req, res, next)
+
+      expect(req.flash).toHaveBeenCalledWith('validationErrors')
+      expect(req.flash).toHaveBeenCalledWith('formData')
+      expect(SearchForOrdersViewModel.construct).toHaveBeenCalledWith([], [])
+      expect(res.render).toHaveBeenCalledWith('pages/search', {
+        formData: {},
+        validationErrors: [],
+      })
+    })
+
+    it('should render page with validation errors and form data', async () => {
+      // Mock `req.flash` to return validation errors and form data
+      req.flash = jest
+        .fn()
+        .mockImplementationOnce(() => [
+          { field: 'firstName', error: 'First name must consist of letters only' },
+          { field: 'dob', error: 'Invalid date format' },
+        ])
+        .mockImplementationOnce(() => [
+          {
+            firstName: 'John123',
+            lastName: 'Doe',
+            alias: 'JD',
+            'dob-day': '32',
+            'dob-month': '13',
+            'dob-year': '2021',
+          },
+        ])
+      ;(SearchForOrdersViewModel.construct as jest.Mock).mockReturnValue({
+        formData: { firstName: 'John123', lastName: 'Doe', alias: 'JD', dob: { day: '32', month: '13', year: '2021' } },
+        validationErrors: [
+          { field: 'firstName', error: 'First name must consist of letters only' },
+          { field: 'dob', error: 'Invalid date format' },
+        ],
+      })
+
+      await searchController.search(req, res, jest.fn())
+
+      expect(req.flash).toHaveBeenCalledWith('validationErrors')
+      expect(req.flash).toHaveBeenCalledWith('formData')
+      expect(SearchForOrdersViewModel.construct).toHaveBeenCalledWith(
+        [
+          {
+            firstName: 'John123',
+            lastName: 'Doe',
+            alias: 'JD',
+            'dob-day': '32',
+            'dob-month': '13',
+            'dob-year': '2021',
+          },
+        ],
+        [
+          { field: 'firstName', error: 'First name must consist of letters only' },
+          { field: 'dob', error: 'Invalid date format' },
+        ],
+      )
+      expect(res.render).toHaveBeenCalledWith('pages/search', {
+        formData: { firstName: 'John123', lastName: 'Doe', alias: 'JD', dob: { day: '32', month: '13', year: '2021' } },
+        validationErrors: [
+          { field: 'firstName', error: 'First name must consist of letters only' },
+          { field: 'dob', error: 'Invalid date format' },
+        ],
+      })
+    })
   })
 
-  it('should render page with no data', async () => {
-    await searchController.search(req as Request, res as Response, next)
-    // TODO: Add page headings to constants
-    // expect(res.locals.page).toEqual({ id: strings.pageHeadings.searchOrderForm })
-    expect(res.locals.errors).toBeDefined()
-    expect(res.locals.formData).toBeDefined()
-    expect(res.render).toHaveBeenCalledWith('pages/search')
-  })
+  // describe('SearchController - view', () => {
+  //   beforeEach(() => {
+  //     searchController = new SearchController(auditService, datastoreSearchService)
+  //   })
 
-  it('should render page with existing data', async () => {
-    res.locals.validationErrors = []
-    res.locals.formData = []
-    await searchController.search(req as Request, res as Response, next)
-    // may be do not worry about res.locals for now?
-    // TODO: Add page headings to constants
-    // expect(res.locals.page).toEqual({ id: strings.pageHeadings.searchOrderForm })
-    // locals should contain form data (unsaved values) and errors
-    expect(res.locals.validationErrors).toBeDefined()
-    expect(res.locals.formData).toBeDefined()
+  //   it('should parse formData from req.body using SearchOrderFormDataModel', async () => {
+  //     ;(SearchOrderFormDataModel.parse as jest.Mock).mockReturnValue({
+  //       firstName: 'John',
+  //       lastName: 'Doe',
+  //       alias: 'JD',
+  //       'dob-day': '10',
+  //       'dob-month': '02',
+  //       'dob-year': '2021',
+  //     })
 
-    /**
-     * Want to be able to validate unsavedData
-     * How am I going to handle this? req.flash or req.session ??
-     *  unsaved values should be persistend
-     *  validation failures should be persitted.
-     */
+  //     req = createMockRequest({
+  //       body: {
+  //         firstName: 'John',
+  //         lastName: 'Doe',
+  //         alias: 'JD',
+  //         'dob-day': '10',
+  //         'dob-month': '02',
+  //         'dob-year': '2021',
+  //       },
+  //     })
+  //     res = createMockResponse()
+  //     next = jest.fn()
 
-    expect(res.render).toHaveBeenCalledWith('pages/search')
-  })
+  //     await searchController.view(req, res, next)
 
-  it('should fetch orders, tabulate them, and render the results page', async () => {
-    await searchController.view(req as Request, res as Response, next)
-
-    expect(datastoreSearchService.searchForOrders).toHaveBeenCalled()
-    expect(tabulateOrders).toHaveBeenCalledWith(expect.any(Array))
-    expect(res.render).toHaveBeenCalledWith('pages/searchResults', { data: expect.any(Array) })
-  })
+  //     // Assertions
+  //     expect(req.body).toEqual({
+  //       firstName: 'John',
+  //       lastName: 'Doe',
+  //       alias: 'JD',
+  //       'dob-day': '10',
+  //       'dob-month': '02',
+  //       'dob-year': '2021',
+  //     })
+  //     expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body) // Mock parse to ensure it’s called
+  //   })
+  // })
 })

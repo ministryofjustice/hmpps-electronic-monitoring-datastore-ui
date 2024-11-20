@@ -1,6 +1,8 @@
 import type { Request, Response } from 'express'
 
-export const createMockRequest = (): Request => {
+export const createMockRequest = (
+  overrideProperties: Partial<Request> = { params: { orderId: '123456789' } },
+): Request => {
   return {
     // @ts-expect-error stubbing session
     session: {},
@@ -11,6 +13,7 @@ export const createMockRequest = (): Request => {
       token: '',
       authSource: '',
     },
+    ...overrideProperties,
   }
 }
 

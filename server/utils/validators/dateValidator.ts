@@ -15,7 +15,7 @@ export type DateValidationResponse = {
   result: boolean
   error?: {
     field: string
-    message: string
+    error: string
   }
 }
 
@@ -30,7 +30,7 @@ export class DateValidator {
         result: false,
         error: {
           field,
-          message: strings.errors.incompleteDate,
+          error: strings.errors.incompleteDate,
         },
       }
     }
@@ -44,14 +44,14 @@ export class DateValidator {
       const currentDate = new Date()
       const inputDate = new Date(year, month, day)
       if (inputDate > currentDate) {
-        return { result: false, error: { field, message: strings.errors.futureDateNotAllowed } }
+        return { result: false, error: { field, error: strings.errors.futureDateNotAllowed } }
       }
       return { result: true }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return {
         result: false,
-        error: { field, message: strings.errors.incorrectDateFormat },
+        error: { field, error: strings.errors.incorrectDateFormat },
       }
     }
   }

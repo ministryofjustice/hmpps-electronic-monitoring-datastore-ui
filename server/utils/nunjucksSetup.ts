@@ -43,7 +43,7 @@ export default function nunjucksSetup(app: express.Express): void {
 
   // globals
   njkEnv.addGlobal('makePageTitle', makePageTitle)
-  njkEnv.addGlobal('dateTimeItems', dateParts)
+  njkEnv.addGlobal('dateItems', dateParts)
 
   // Add filters from MOJ Frontend
   const mojFilters = Object.assign(allMojFilters())

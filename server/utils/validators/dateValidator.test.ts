@@ -21,24 +21,24 @@ describe('DateValidator', () => {
 
   describe('validateDate for invalid dates with specific error messages', () => {
     const tests = [
-      { date: ['32', '10', '2024'], message: strings.errors.incorrectDateFormat, description: 'Invalid day' },
-      { date: ['1', '13', '1965'], message: strings.errors.incorrectDateFormat, description: 'Invalid month' },
-      { date: ['01', '7', '1000'], message: strings.errors.incorrectDateFormat, description: 'Year out of range' },
-      { date: ['q', 'q', 'q'], message: strings.errors.incorrectDateFormat, description: 'Non-numeric input' },
-      { date: ['1', '', ''], message: strings.errors.incompleteDate, description: 'Missing month and year' },
+      { date: ['32', '10', '2024'], error: strings.errors.incorrectDateFormat, description: 'Invalid day' },
+      { date: ['1', '13', '1965'], error: strings.errors.incorrectDateFormat, description: 'Invalid month' },
+      { date: ['01', '7', '1000'], error: strings.errors.incorrectDateFormat, description: 'Year out of range' },
+      { date: ['q', 'q', 'q'], error: strings.errors.incorrectDateFormat, description: 'Non-numeric input' },
+      { date: ['1', '', ''], error: strings.errors.incompleteDate, description: 'Missing month and year' },
       {
         date: ['q', '', ''],
-        message: strings.errors.incompleteDate,
+        error: strings.errors.incompleteDate,
         description: 'Non-numeric day and missing month and year',
       },
     ]
 
-    tests.forEach(({ date: [day, month, year], message, description }) => {
+    tests.forEach(({ date: [day, month, year], error, description }) => {
       it(`returns false and appropriate error message for ${description}: ${day}/${month}/${year}`, () => {
         const response = DateValidator.validateDate(day, month, year, 'dateField')
         expect(response.result).toBeFalsy()
         expect(response.error).toBeDefined()
-        expect(response.error?.message).toBe(message)
+        expect(response.error?.error).toBe(error)
       })
     })
   })

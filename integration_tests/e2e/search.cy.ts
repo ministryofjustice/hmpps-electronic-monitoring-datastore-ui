@@ -41,7 +41,7 @@ context('Search', () => {
 
     it('Subject ID label text is correct', () => {
       const searchPage = Page.verifyOnPage(SearchPage)
-      searchPage.subjectIdLabel().should('contain', 'Subject ID')
+      searchPage.subjectIdLabel().should('contain', 'Subject Id')
     })
   })
 

@@ -13,8 +13,8 @@
         <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ page.title }}</h1>
         <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-
-        {{ govukRadios({
+        {# TODO: Not enabled until we have alcohol monitoring #}
+        {# {{ govukRadios({
           classes: "govuk-radios--small",
           name: "searchType",
           fieldset: {
@@ -37,16 +37,16 @@
           errorMessage: {
             text: "Select the type of data to search for"
           }
-        }) }}
+        }) }} #}
 
         {{ govukInput({
           label: {
-            text: "Subject ID",
+            text: "Legacy Subject Id",
             classes: "govuk-label--m"
           },
           id: "subject-id",
           name: "subjectId",
-          value: "form-data.subjectId"
+          value: legacySubjectId
         }) }}
 
         {{ govukInput({
@@ -56,7 +56,7 @@
           classes: "govuk-!-width-two-thirds",
           id: "first-name",
           name: "firstName",
-          value: "form-data.firstName"
+          value: firstName
         }) }}
 
         {{ govukInput({
@@ -66,7 +66,7 @@
           classes: "govuk-!-width-two-thirds",
           id: "last-name",
           name: "lastName",
-          value: "form-data.lastName"
+          value: lastName
         }) }}
 
         {{ govukDateInput({
@@ -81,7 +81,28 @@
           hint: {
             text: "For example, 01 02 1990"
           },
-          items: dateTimeItems("dob", formData)
+          
+          items: [
+            {
+              name: "day",
+              classes: "govuk-input--width-2",
+              value: dob.value.day,
+              attributes: disabled
+            },
+            {
+              name: "month",
+              classes: "govuk-input--width-2",
+              value: dob.value.month,
+              attributes: disabled
+            },
+            {
+              name: "year",
+              classes: "govuk-input--width-4",
+              value: dob.value.year,
+              attributes: disabled
+            }
+          ],
+          errorMessage: startDate.error
           }) }}
         
         {{ govukInput({
@@ -91,7 +112,7 @@
           classes: "govuk-!-width-two-thirds",
           id: "alias",
           name: "alias",
-          value: "form-data.alias"
+          value: alias
         }) }}
 
         {{ govukButton({
