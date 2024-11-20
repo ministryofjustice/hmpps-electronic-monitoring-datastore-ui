@@ -4,7 +4,7 @@ import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import allMojFilters from '@ministryofjustice/frontend/moj/filters/all'
-import { dateParts, initialiseName, makePageTitle } from './utils'
+import { initialiseName, makePageTitle } from './utils'
 import config from '../config'
 import logger from '../../logger'
 
@@ -43,7 +43,6 @@ export default function nunjucksSetup(app: express.Express): void {
 
   // globals
   njkEnv.addGlobal('makePageTitle', makePageTitle)
-  njkEnv.addGlobal('dateItems', dateParts)
 
   // Add filters from MOJ Frontend
   const mojFilters = Object.assign(allMojFilters())

@@ -1,4 +1,4 @@
-import { convertToTitleCase, dateParts, initialiseName, makePageTitle } from './utils'
+import { convertToTitleCase, initialiseName, makePageTitle } from './utils'
 
 describe('convert to title case', () => {
   it.each([
@@ -26,62 +26,6 @@ describe('initialise name', () => {
     ['Double barrelled', 'Robert-John Smith-Jones-Wilson', 'R. Smith-Jones-Wilson'],
   ])('%s initialiseName(%s, %s)', (_: string, a: string, expected: string) => {
     expect(initialiseName(a)).toEqual(expected)
-  })
-})
-
-describe('dateParts', () => {
-  it('should create correctly structured input definitions for date with given values', () => {
-    const formData = {
-      'dob-day': '10',
-      'dob-month': '02',
-      'dob-year': '2024',
-    }
-
-    const items = dateParts('dob', formData)
-
-    expect(items).toHaveLength(3) // Checks if three items are returned
-
-    // Check details for each input
-    expect(items[0]).toEqual({
-      name: 'day',
-      label: 'Day',
-      classes: 'govuk-input--width-2',
-      attributes: {
-        maxlength: 2,
-      },
-      value: '10',
-    })
-
-    expect(items[1]).toEqual({
-      name: 'month',
-      label: 'Month',
-      classes: 'govuk-input--width-2',
-      attributes: {
-        maxlength: 2,
-      },
-      value: '02',
-    })
-
-    expect(items[2]).toEqual({
-      name: 'year',
-      label: 'Year',
-      classes: 'govuk-input--width-4',
-      attributes: {
-        maxlength: 4,
-      },
-      value: '2024',
-    })
-  })
-
-  it('should handle missing values correctly', () => {
-    const formData = {}
-
-    const items = dateParts('dob', formData)
-
-    expect(items).toHaveLength(3) // Ensure three items are still returned
-    expect(items[0].value).toBe('') // Checks that missing values default to an empty string
-    expect(items[1].value).toBe('')
-    expect(items[2].value).toBe('')
   })
 })
 
