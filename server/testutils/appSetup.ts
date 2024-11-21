@@ -15,7 +15,7 @@ import setUpWebSession from '../middleware/setUpWebSession'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 
 jest.mock('../services/auditService')
-jest.mock('../services/searchService')
+jest.mock('../services/datastoreSearchService')
 jest.mock('../services/orderService')
 
 const hmppsAuthClient = createMockHmppsAuthClient()
