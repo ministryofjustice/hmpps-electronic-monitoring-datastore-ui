@@ -1,6 +1,6 @@
 import { Order } from '../interfaces/order'
 
-const tabluateOrders = (orders: Order[]) => {
+const tabulateOrders = (orders: Order[]) => {
   const orderInformationUrl: string = '/orders/information'
 
   return orders.map(order => {
@@ -61,4 +61,4 @@ const tabluateOrders = (orders: Order[]) => {
   })
 }
 
-export default tabluateOrders
+export default tabulateOrders

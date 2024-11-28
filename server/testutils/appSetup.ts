@@ -2,21 +2,21 @@ import express, { Express } from 'express'
 import { NotFound } from 'http-errors'
 import { v4 as uuidv4 } from 'uuid'
 
-import routes from '../index'
-import nunjucksSetup from '../../utils/nunjucksSetup'
-import errorHandler from '../../errorHandler'
-import type { Services } from '../../services'
-import AuditService from '../../services/auditService'
-import DatastoreSearchService from '../../services/datastoreSearchService'
-import OrderService from '../../services/orderService'
+import routes from '../routes/index'
+import nunjucksSetup from '../utils/nunjucksSetup'
+import errorHandler from '../errorHandler'
+import type { Services } from '../services'
+import AuditService from '../services/auditService'
+import DatastoreSearchService from '../services/datastoreSearchService'
+import OrderService from '../services/orderService'
 
-import { HmppsUser } from '../../interfaces/hmppsUser'
-import setUpWebSession from '../../middleware/setUpWebSession'
-import { createMockHmppsAuthClient, createDatastoreClient } from '../../data/testUtils/mocks'
+import { HmppsUser } from '../interfaces/hmppsUser'
+import setUpWebSession from '../middleware/setUpWebSession'
+import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 
-jest.mock('../../services/auditService')
-jest.mock('../../services/searchService')
-jest.mock('../../services/orderService')
+jest.mock('../services/auditService')
+jest.mock('../services/datastoreSearchService')
+jest.mock('../services/orderService')
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()

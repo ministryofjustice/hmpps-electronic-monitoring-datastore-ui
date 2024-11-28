@@ -3,6 +3,7 @@ import DatastoreClient from './datastoreClient'
 import orders from './mockData/orders'
 import config from '../config'
 import { Order } from '../interfaces/order'
+import { SearchFormInput } from '../types/SearchFormInput'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -13,6 +14,20 @@ describe('EM Datastore Search Client', () => {
   const searchItem: Order = {
     dataType: 'am',
     legacySubjectId: 123,
+  }
+
+  const searchOrder: SearchFormInput = {
+    userToken: 'mockUserToken',
+    data: {
+      searchType: 'am',
+      legacySubjectId: '123',
+      firstName: 'John',
+      lastName: 'Doe',
+      alias: 'JD',
+      'dob-day': '01',
+      'dob-month': '01',
+      'dob-year': '1990',
+    },
   }
 
   beforeEach(() => {
@@ -29,11 +44,29 @@ describe('EM Datastore Search Client', () => {
     nock.cleanAll()
   })
 
-  describe('getOrders', () => {
-    it('should return a list of prders from the api', async () => {
+  describe('searchOrders', () => {
+    it('should return a list of orders from the API', async () => {
+      fakeClient
+        .post('/search/orders', searchOrder.data)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .matchHeader('X-User-Token', searchOrder.userToken)
+        .reply(200, orders)
+
       const expected: Order[] = orders
-      const results = await datastoreClient.searchForOrders(searchItem)
+
+      const results = await datastoreClient.searchOrders(searchOrder)
+
       expect(results).toEqual(expected)
+    })
+
+    it('should handle 401 Unauthorized when the user token is invalid', async () => {
+      fakeClient
+        .post('/search/orders', searchOrder.data)
+        .matchHeader('authorization', `Bearer ${token}`)
+        .matchHeader('X-User-Token', searchOrder.userToken)
+        .reply(401)
+
+      await expect(datastoreClient.searchOrders(searchOrder)).rejects.toThrow('Unauthorized')
     })
   })
 

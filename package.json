@@ -16,6 +16,7 @@
     "lint-fix": "eslint . --cache --max-warnings 0 --fix",
     "typecheck": "tsc && tsc -p integration_tests",
     "test": "jest",
+    "test:clearCache": "jest --clearCache",
     "test:watch": "jest --watchAll",
     "test:ci": "jest --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",
@@ -101,7 +102,8 @@
     "passport-oauth2": "^1.8.0",
     "redis": "^4.7.0",
     "superagent": "^10.1.1",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^4.0.2",
