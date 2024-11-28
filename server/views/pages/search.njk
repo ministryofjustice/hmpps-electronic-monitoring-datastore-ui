@@ -46,7 +46,8 @@
           },
           id: "subject-id",
           name: "subjectId",
-          value: legacySubjectId
+          value: legacySubjectId.value,
+          errorMessage: legacySubjectId.error
         }) }}
 
         {{ govukInput({
@@ -56,7 +57,8 @@
           classes: "govuk-!-width-two-thirds",
           id: "first-name",
           name: "firstName",
-          value: firstName
+          value: firstName.value,
+          errorMessage: firstName.error
         }) }}
 
         {{ govukInput({
@@ -66,7 +68,8 @@
           classes: "govuk-!-width-two-thirds",
           id: "last-name",
           name: "lastName",
-          value: lastName
+          value: lastName.value,
+          errorMessage: lastName.error
         }) }}
 
         {{ govukDateInput({
@@ -102,7 +105,7 @@
               attributes: disabled
             }
           ],
-          errorMessage: startDate.error
+          errorMessage: dob.error
           }) }}
         
         {{ govukInput({
@@ -112,7 +115,8 @@
           classes: "govuk-!-width-two-thirds",
           id: "alias",
           name: "alias",
-          value: alias
+          value: alias.value,
+          errorMessage: alias.error
         }) }}
 
         {{ govukButton({

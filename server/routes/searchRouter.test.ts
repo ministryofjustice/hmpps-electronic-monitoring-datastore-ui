@@ -26,11 +26,18 @@ beforeEach(() => {
 afterEach(() => {
   jest.resetAllMocks()
 })
-
 describe('Core page basic GET requests', () => {
   it.each<GetRequestFixture>([['search page', '/search', 'Search for order details', Page.SEARCH_PAGE]])(
     'should render %s',
-    (pageName, route, titleText, auditType) => basicGetTest(pageName, route, titleText, auditType),
+    async (pageName, route, titleText, auditType) => {
+      const res = await request(app).get(route).expect(200) // Expect a 200 OK response
+      console.log(res.text) // Debug the response to verify rendered content
+      expect(res.text).toContain(titleText) // Check for expected title text
+      expect(auditService.logPageView).toHaveBeenCalledWith(auditType, {
+        who: user.username,
+        correlationId: expect.any(String),
+      })
+    },
   )
 })
 

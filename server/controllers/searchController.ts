@@ -20,8 +20,9 @@ export default class SearchController {
       correlationId: req.id,
     })
 
-    const errors = req.flash('validationErrors')
-    const formData = req.flash('formData')
+    const errors = JSON.parse(req.flash('validationErrors')?.[0] || '[]')
+    const formData = JSON.parse(req.flash('formData')?.[0] || '[{}]')
+
     const viewModel = SearchForOrdersViewModel.construct(formData as never, errors as never)
 
     res.locals = {
@@ -35,14 +36,22 @@ export default class SearchController {
   }
 
   view: RequestHandler = async (req: Request, res: Response) => {
-    // const formData = SearchOrderFormDataModel.parse(req.body)
-    const formData: Order = {
-      dataType: 'am',
-      legacySubjectId: 1,
-    }
-    const results: Order[] = await this.datastoreSearchService.searchForOrders(formData)
+    const formData = SearchOrderFormDataModel.parse(req.body)
 
-    // const results: Order[] = await this.datastoreSearchService.searchForOrders(formData)
-    res.render('pages/searchResults', { data: tabulateOrders(results) })
+    const results = await this.datastoreSearchService.search({
+      userToken: res.locals.user.token,
+      data: formData,
+    })
+
+    // Check if results is ValidationResult (indicates form input errors)
+    if (Array.isArray(results) && results.some(result => 'field' in result && 'error' in result)) {
+      req.flash('formData', JSON.stringify(formData))
+      req.flash('validationErrors', JSON.stringify(results))
+      res.redirect('search')
+      return
+    }
+
+    // If results is Order[], proceed to results view
+    res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
   }
 }

@@ -5,16 +5,11 @@ import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
-import { SearchOrderFormData } from '../models/form-data/searchOrder'
 import { ValidationResult } from '../models/Validation'
 import { DateValidator } from '../utils/validators/dateValidator'
 import Validator from '../utils/validators/formFieldValidator'
-import orders from '../data/mockData/orders'
+import { SearchFormInput } from '../types/SearchFormInput'
 
-type SearchFormInput = {
-  token: string
-  data: SearchOrderFormData
-}
 export default class DatastoreSearchService {
   private readonly datastoreClient: DatastoreClient
 
@@ -68,6 +63,15 @@ export default class DatastoreSearchService {
     if (validationErrors.length > 0) {
       return validationErrors
     }
-    return orders
+
+    try {
+      this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
+
+      const results = this.datastoreClient.searchOrders(input)
+      return results
+    } catch (error) {
+      logger.error(getSanitisedError(error), 'Error retrieving search results')
+      return error
+    }
   }
 }

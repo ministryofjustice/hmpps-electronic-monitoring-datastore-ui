@@ -6,6 +6,7 @@ import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUt
 import { Order } from '../interfaces/order'
 import { DateValidator } from '../utils/validators/dateValidator'
 import Validator from '../utils/validators/formFieldValidator'
+import { SearchFormInput } from '../types/SearchFormInput'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')
@@ -34,7 +35,7 @@ describe('Datastore Search Service', () => {
   })
 
   describe('getOrders', () => {
-    it('should return daata from the client', async () => {
+    it('should return data from the client - `searchForOrders`', async () => {
       const searchItem: Order = {
         dataType: 'am',
         legacySubjectId: 1,
@@ -43,6 +44,27 @@ describe('Datastore Search Service', () => {
       datastoreClient.searchForOrders.mockResolvedValue(expectedData)
 
       const results = await datastoreSearchService.searchForOrders(searchItem)
+      expect(results).toEqual(expectedData)
+    })
+
+    it('should return data from the client - `searchOrders`', async () => {
+      const searchOrder: SearchFormInput = {
+        userToken: 'mockUserToken',
+        data: {
+          searchType: 'am',
+          legacySubjectId: '123',
+          firstName: 'John',
+          lastName: 'Doe',
+          alias: 'JD',
+          'dob-day': '01',
+          'dob-month': '01',
+          'dob-year': '1990',
+        },
+      }
+      const expectedData: Order[] = orders
+      datastoreClient.searchOrders.mockResolvedValue(expectedData)
+
+      const results = await datastoreSearchService.search(searchOrder)
       expect(results).toEqual(expectedData)
     })
   })
@@ -68,7 +90,7 @@ describe('Datastore Search Service', () => {
           'dob-year': '2021',
         },
       }
-
+      datastoreClient.searchOrders.mockResolvedValue(orders)
       const result = await datastoreSearchService.search(validInput)
 
       expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John')

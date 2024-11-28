@@ -2,6 +2,7 @@ import RestClient from './restClient'
 import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
 import orders from './mockData/orders'
+import { SearchFormInput } from '../types/SearchFormInput'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -16,6 +17,23 @@ export default class DatastoreClient {
 
   updateToken(newTokenValue: string): void {
     this.restClient.updateToken(newTokenValue)
+  }
+
+  // TODO: This should replace SearchForOrders
+  async searchOrders(input: SearchFormInput): Promise<Order[]> {
+    const { userToken, data } = input
+
+    const headers = {
+      'X-User-Token': userToken ?? null,
+    }
+
+    const results: Order[] = await this.restClient.post<Order[]>({
+      path: `/search/orders`,
+      headers,
+      data,
+    })
+
+    return results
   }
 
   async searchForOrders(critera: Order): Promise<Order[]> {

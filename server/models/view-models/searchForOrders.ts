@@ -44,22 +44,11 @@ const construct = (
   formData: [SearchOrderFormData] | [] = [],
   validationErrors: ValidationResult = [],
 ): SearchForOrdersViewModel => {
-  const defaultFormData: SearchOrderFormData = {
-    searchType: '',
-    legacySubjectId: '',
-    firstName: '',
-    lastName: '',
-    alias: '',
-    'dob-day': '',
-    'dob-month': '',
-    'dob-year': '',
-  }
-
   if (validationErrors.length > 0 && formData.length > 0) {
     return createViewModelFromFormData(formData[0], validationErrors)
   }
 
-  return createViewModelFromFormData(defaultFormData, [])
+  return createViewModelFromFormData(formData[0], validationErrors)
 }
 
 export default {
