@@ -31,8 +31,8 @@ describe('Core page basic GET requests', () => {
     'should render %s',
     async (pageName, route, titleText, auditType) => {
       const res = await request(app).get(route).expect(200) // Expect a 200 OK response
-      console.log(res.text) // Debug the response to verify rendered content
-      expect(res.text).toContain(titleText) // Check for expected title text
+
+      expect(res.text).toContain(titleText)
       expect(auditService.logPageView).toHaveBeenCalledWith(auditType, {
         who: user.username,
         correlationId: expect.any(String),

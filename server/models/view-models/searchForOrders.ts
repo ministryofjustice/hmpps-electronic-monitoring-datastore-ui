@@ -41,14 +41,10 @@ const createViewModelFromFormData = (
 }
 
 const construct = (
-  formData: [SearchOrderFormData] | [] = [],
+  formData: SearchOrderFormData = {} as SearchOrderFormData,
   validationErrors: ValidationResult = [],
 ): SearchForOrdersViewModel => {
-  if (validationErrors.length > 0 && formData.length > 0) {
-    return createViewModelFromFormData(formData[0], validationErrors)
-  }
-
-  return createViewModelFromFormData(formData[0], validationErrors)
+  return createViewModelFromFormData(formData, validationErrors)
 }
 
 export default {
