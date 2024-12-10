@@ -31,7 +31,7 @@ export default class DatastoreClient {
     }
 
     const results: Order[] = await this.restClient.post<Order[]>({
-      path: `/search/orders`,
+      path: `/search/orders-temp`, // TODO: Replace with `/search/orders` once endpoint renamed
       headers,
       data,
     })
