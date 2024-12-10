@@ -10,7 +10,7 @@ const tabulateOrders = (orders: Order[]) => {
           'data-sort-value': order.legacySubjectId,
         },
         html: `
-          <a href="/orders/${order.legacySubjectId}/information">
+          <a href="/orders/${order.legacySubjectId}/summary">
             ${order.legacySubjectId}
           </a>
         `,

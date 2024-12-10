@@ -3,6 +3,9 @@ import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
 import orders from './mockData/orders'
 import { SearchFormInput } from '../types/SearchFormInput'
+import OrderService from '../services/orderService'
+import { OrderRequest } from '../types/OrderRequest'
+import { OrderInformation } from '../interfaces/orderInformation'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -70,4 +73,19 @@ export default class DatastoreClient {
   // return this.restClient.get(path)
   // }
   //
+
+  async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
+    const { userToken, orderId } = input
+
+    const headers = {
+      'X-User-Token': userToken ?? null,
+    }
+
+    const result: OrderInformation = await this.restClient.get({
+      path: `/orders/getMockOrderSummary/${orderId}`,
+      headers,
+    })
+
+    return result
+  }
 }

@@ -4,6 +4,8 @@ import orders from './mockData/orders'
 import config from '../config'
 import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
+import { OrderRequest } from '../types/OrderRequest'
+import mockOrderInformation from './mockData/orderInformation'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -28,6 +30,11 @@ describe('EM Datastore Search Client', () => {
       'dob-month': '01',
       'dob-year': '1990',
     },
+  }
+
+  const orderInfo: OrderRequest = {
+    userToken: 'user-token',
+    orderId: '7654321',
   }
 
   beforeEach(() => {
@@ -99,5 +106,36 @@ describe('EM Datastore Search Client', () => {
       .reply(401)
 
     await expect(datastoreClient.getCases(searchItem)).rejects.toThrow('Unauthorized')
+  })
+
+  describe('getOrderSummary', () => {
+    it('should fetch order summary with correct parameters', async () => {
+      const expectedResult = mockOrderInformation
+
+      fakeClient
+        .get(`/orders/getMockOrderSummary/${orderInfo.orderId}`)
+        .matchHeader('X-User-Token', orderInfo.userToken ?? null)
+        .reply(200, expectedResult)
+
+      const result = await datastoreClient.getOrderSummary(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`/orders/getMockOrderSummary/${orderInfoWithNullToken.orderId}`)
+        .matchHeader('X-User-Token', val => val === null)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getOrderSummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
   })
 })

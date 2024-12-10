@@ -1,21 +1,28 @@
-import type { Request, Response } from 'express'
-import AuditService, { Page } from '../services/auditService'
-import OrderService from '../services/orderService'
+import type { Request, RequestHandler, Response } from 'express'
+import { Page } from '../services/auditService'
+import { AuditService, DatastoreOrderService } from '../services'
+
 import { Reports } from '../interfaces/orderInformation'
 
 export default class OrderController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly orderService: OrderService,
+    private readonly datastoreOrderService: DatastoreOrderService,
   ) {}
 
-  async getSummary(req: Request, res: Response) {
+  orderSummary: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.ORDER_INFORMATION_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })
+
+    const { orderId } = req.params
+
     try {
-      const orderInformation = await this.orderService.getOrderInformation()
+      const orderInformation = await this.datastoreOrderService.getOrderSummary({
+        userToken: res.locals.user.token,
+        orderId,
+      })
       const backUrl: string = '/search/results'
       const reports: Reports = {
         orderDetails: true,

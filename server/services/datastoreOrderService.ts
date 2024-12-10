@@ -1,13 +1,13 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
-import orders from '../data/mockData/orders'
+
 import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 // TODO: bubble this down
-import orderSummary from '../data/mockData/orderSummary'
-import { OrderSummary } from '../interfaces/orderSummary'
+import { OrderInformation } from '../interfaces/orderInformation'
+import { OrderRequest } from '../types/OrderRequest'
 
 export default class DatastoreOrderService {
   private readonly datastoreClient: DatastoreClient
@@ -42,9 +42,13 @@ export default class DatastoreOrderService {
   }
 
   // TODO: remember to add updatetoken here
-  async getOrderSummary(): Promise<OrderSummary> {
+  async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     try {
-      return orderSummary
+      this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
+
+      const result = await this.datastoreClient.getOrderSummary(input)
+
+      return result
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving order')
       return error
