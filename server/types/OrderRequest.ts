@@ -1,5 +1,5 @@
 import { Token } from '../interfaces/token'
 
-export type OrderInformation = Token & {
+export type OrderRequest = Token & {
   orderId: string
 }

@@ -14,16 +14,21 @@ import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
 import tabluateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
-import OrderController from './orderController'
+import OldOrderController from './orderController'
+import OrderController from '../controllers/orderController'
 import getVisitDetails from '../data/getVisitDetails'
 
-export default function orderRouter({ auditService, orderService }: Services): Router {
+export default function orderRouter({ auditService, orderService, datastoreOrderService }: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  const orderController = new OrderController(auditService, orderService)
+  const oldOrderController = new OldOrderController(auditService, orderService)
+  const orderController = new OrderController(auditService, datastoreOrderService)
 
-  get('/information', async (req, res, next) => orderController.getSummary(req, res))
+  // TODO: Deprecate in favour of /summary
+  get('/information', async (req, res, next) => oldOrderController.getSummary(req, res))
+
+  get('/summary', orderController.orderSummary)
 
   // // Possibly better approach for unit testing
   // get('/summary', async (req, res, next) => {

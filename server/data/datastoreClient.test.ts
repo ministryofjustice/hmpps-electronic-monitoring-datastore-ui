@@ -4,7 +4,7 @@ import orders from './mockData/orders'
 import config from '../config'
 import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
-import { OrderInformation } from '../types/OrderInformation'
+import { OrderRequest } from '../types/OrderRequest'
 import mockOrderInformation from './mockData/orderInformation'
 
 describe('EM Datastore Search Client', () => {
@@ -32,7 +32,7 @@ describe('EM Datastore Search Client', () => {
     },
   }
 
-  const orderInfo: OrderInformation = {
+  const orderInfo: OrderRequest = {
     userToken: 'user-token',
     orderId: '7654321',
   }
@@ -124,7 +124,7 @@ describe('EM Datastore Search Client', () => {
 
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
-      const orderInfoWithNullToken: OrderInformation = {
+      const orderInfoWithNullToken: OrderRequest = {
         orderId: '123',
         userToken: null,
       }

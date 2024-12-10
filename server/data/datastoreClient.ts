@@ -4,7 +4,8 @@ import { Order } from '../interfaces/order'
 import orders from './mockData/orders'
 import { SearchFormInput } from '../types/SearchFormInput'
 import OrderService from '../services/orderService'
-import { OrderInformation } from '../types/OrderInformation'
+import { OrderRequest } from '../types/OrderRequest'
+import { OrderInformation } from '../interfaces/orderInformation'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -73,14 +74,14 @@ export default class DatastoreClient {
   // }
   //
 
-  async getOrderSummary(input: OrderInformation): Promise<JSON> {
+  async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     const { userToken, orderId } = input
 
     const headers = {
       'X-User-Token': userToken ?? null,
     }
 
-    const result: JSON = await this.restClient.get({
+    const result: OrderInformation = await this.restClient.get({
       path: `/orders/getMockOrderSummary/${orderId}`,
       headers,
     })
