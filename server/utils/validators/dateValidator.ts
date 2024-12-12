@@ -40,12 +40,12 @@ export class DateValidator {
     const year = this.parseNumber(yearStr)
 
     try {
-      dateModel.parse({ day, month, year })
       const currentDate = new Date()
       const inputDate = new Date(year, month, day)
       if (inputDate > currentDate) {
         return { result: false, error: { field, error: strings.errors.futureDateNotAllowed } }
       }
+      dateModel.parse({ day, month, year })
       return { result: true }
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
