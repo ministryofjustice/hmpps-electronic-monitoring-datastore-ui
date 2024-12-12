@@ -54,7 +54,7 @@ describe('EM Datastore Search Client', () => {
   describe('searchOrders', () => {
     it('should return a list of orders from the API', async () => {
       fakeClient
-        .post('/search/orders-temp', searchOrder.data)
+        .post('/search/orders', searchOrder.data)
         .matchHeader('authorization', `Bearer ${token}`)
         .matchHeader('X-User-Token', searchOrder.userToken)
         .reply(200, orders)
@@ -68,7 +68,7 @@ describe('EM Datastore Search Client', () => {
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
       fakeClient
-        .post('/search/orders-temp', searchOrder.data)
+        .post('/search/orders', searchOrder.data)
         .matchHeader('authorization', `Bearer ${token}`)
         .matchHeader('X-User-Token', searchOrder.userToken)
         .reply(401)
