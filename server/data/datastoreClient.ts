@@ -82,7 +82,7 @@ export default class DatastoreClient {
     }
 
     const result: OrderInformation = await this.restClient.get({
-      path: `/orders/getMockOrderSummary-temp/${orderId}`,
+      path: `/orders/getOrderSummary/${orderId}`,
       headers,
     })
 

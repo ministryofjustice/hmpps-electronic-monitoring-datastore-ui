@@ -113,7 +113,7 @@ describe('EM Datastore Search Client', () => {
       const expectedResult = mockOrderInformation
 
       fakeClient
-        .get(`/orders/getMockOrderSummary-temp/${orderInfo.orderId}`)
+        .get(`/orders/getOrderSummary/${orderInfo.orderId}`)
         .matchHeader('X-User-Token', orderInfo.userToken ?? null)
         .reply(200, expectedResult)
 
@@ -130,7 +130,7 @@ describe('EM Datastore Search Client', () => {
       }
 
       nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`/orders/getMockOrderSummary-temp/${orderInfoWithNullToken.orderId}`)
+        .get(`/orders/getOrderSummary/${orderInfoWithNullToken.orderId}`)
         .matchHeader('X-User-Token', val => val === null)
         .reply(401)
 
