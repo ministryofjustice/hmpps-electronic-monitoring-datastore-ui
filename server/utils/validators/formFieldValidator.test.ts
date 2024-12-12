@@ -67,6 +67,12 @@ describe('Validator Class', () => {
       expect(result.success).toBeTruthy()
       expect(result.data).toBe(validAlias)
     })
+    it('should allow valid aliases with spaces', () => {
+      const validAlias = 'Nickname with spaces'
+      const result = Validator.alias.safeParse(validAlias)
+      expect(result.success).toBeTruthy()
+      expect(result.data).toBe(validAlias)
+    })
 
     it('should reject invalid aliases with numbers', () => {
       const invalidAlias = 'Nickname123'
