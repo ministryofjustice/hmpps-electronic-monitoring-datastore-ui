@@ -24,15 +24,10 @@ export default class DatastoreClient {
 
   // TODO: This should replace SearchForOrders
   async searchOrders(input: SearchFormInput): Promise<Order[]> {
-    const { userToken, data } = input
-
-    const headers = {
-      Authorization: `Bearer ${userToken}`,
-    }
+    const { data } = input
 
     const results: Order[] = await this.restClient.post<Order[]>({
-      path: `/search/orders-old`,
-      headers,
+      path: `/search/orders`,
       data,
     })
 

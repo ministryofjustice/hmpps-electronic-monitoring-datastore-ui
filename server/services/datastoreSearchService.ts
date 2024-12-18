@@ -65,7 +65,7 @@ export default class DatastoreSearchService {
     }
 
     try {
-      //this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
+      this.datastoreClient.updateToken(input.userToken)
 
       const results = this.datastoreClient.searchOrders(input)
       return results
