@@ -35,6 +35,18 @@ describe('Datastore Search Service', () => {
   })
 
   describe('getOrders', () => {
+    it('should return data from the client - `searchForOrders`', async () => {
+      const searchItem: Order = {
+        dataType: 'am',
+        legacySubjectId: 1,
+      }
+      const expectedData: Order[] = orders
+      datastoreClient.searchForOrders.mockResolvedValue(expectedData)
+
+      const results = await datastoreSearchService.searchForOrders(searchItem)
+      expect(results).toEqual(expectedData)
+    })
+
     it('should return data from the client - `searchOrders`', async () => {
       const searchOrder: SearchFormInput = {
         userToken: 'mockUserToken',
