@@ -61,15 +61,10 @@ export default class DatastoreClient {
   }
 
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
-    const { userToken, orderId } = input
-
-    const headers = {
-      'X-User-Token': userToken ?? null,
-    }
+    const { orderId } = input
 
     const result: OrderInformation = await this.restClient.get({
       path: `/orders/getOrderSummary/${orderId}`,
-      headers,
     })
 
     return result

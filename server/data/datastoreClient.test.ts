@@ -52,9 +52,7 @@ describe('EM Datastore Search Client', () => {
   })
   describe('searchOrders', () => {
     it('should return a list of orders from the API', async () => {
-      fakeClient
-        .post('/search/orders', searchOrder.data)
-        .reply(200, orders)
+      fakeClient.post('/search/orders', searchOrder.data).reply(200, orders)
 
       const expected: Order[] = orders
 
@@ -64,9 +62,7 @@ describe('EM Datastore Search Client', () => {
     })
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
-      fakeClient
-        .post('/search/orders', searchOrder.data)
-        .reply(401)
+      fakeClient.post('/search/orders', searchOrder.data).reply(401)
 
       await expect(datastoreClient.searchOrders(searchOrder)).rejects.toThrow('Unauthorized')
     })
@@ -107,10 +103,7 @@ describe('EM Datastore Search Client', () => {
     it('should fetch order summary with correct parameters', async () => {
       const expectedResult = mockOrderInformation
 
-      fakeClient
-        .get(`/orders/getOrderSummary/${orderInfo.orderId}`)
-        .matchHeader('X-User-Token', orderInfo.userToken ?? null)
-        .reply(200, expectedResult)
+      fakeClient.get(`/orders/getOrderSummary/${orderInfo.orderId}`).reply(200, expectedResult)
 
       const result = await datastoreClient.getOrderSummary(orderInfo)
 
@@ -126,7 +119,6 @@ describe('EM Datastore Search Client', () => {
 
       nock(config.apis.electronicMonitoringDatastore.url)
         .get(`/orders/getOrderSummary/${orderInfoWithNullToken.orderId}`)
-        .matchHeader('X-User-Token', val => val === null)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
