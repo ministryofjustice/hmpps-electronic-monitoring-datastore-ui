@@ -1,9 +1,7 @@
 import RestClient from './restClient'
 import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
-import orders from './mockData/orders'
 import { SearchFormInput } from '../types/SearchFormInput'
-import OrderService from '../services/orderService'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderInformation } from '../interfaces/orderInformation'
 
@@ -22,7 +20,6 @@ export default class DatastoreClient {
     this.restClient.updateToken(newTokenValue)
   }
 
-  // TODO: This should replace SearchForOrders
   async searchOrders(input: SearchFormInput): Promise<Order[]> {
     const { data } = input
 
@@ -32,16 +29,6 @@ export default class DatastoreClient {
     })
 
     return results
-  }
-
-  async searchForOrders(critera: Order): Promise<Order[]> {
-    // TODO: This method should be a post. criteria will be validated search formdata
-    // const results: Order[] = await this.restClient.get({
-    //   path: `ADD_CORRECT_PATH/criteria-object-here`,
-    // })
-
-    // TODO: return results from commented out API call, once API endpoint has been written
-    return orders
   }
 
   async getCases(critera: Order): Promise<Order> {
