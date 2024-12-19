@@ -44,7 +44,7 @@ export default class DatastoreOrderService {
   // TODO: remember to add updatetoken here
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     try {
-      this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
+      this.datastoreClient.updateToken(input.userToken)
 
       const result = await this.datastoreClient.getOrderSummary(input)
 

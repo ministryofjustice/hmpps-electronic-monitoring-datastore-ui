@@ -24,15 +24,10 @@ export default class DatastoreClient {
 
   // TODO: This should replace SearchForOrders
   async searchOrders(input: SearchFormInput): Promise<Order[]> {
-    const { userToken, data } = input
-
-    const headers = {
-      'X-User-Token': userToken ?? null,
-    }
+    const { data } = input
 
     const results: Order[] = await this.restClient.post<Order[]>({
       path: `/search/orders`,
-      headers,
       data,
     })
 
@@ -65,25 +60,11 @@ export default class DatastoreClient {
     return result
   }
 
-  // TODO: DO this when other end points have been fleshed out here
-
-  // // TODO: have a generic get and post in the client, with route-specific logic in the Service?
-  // async get<T>(path: string, token: String): Promise<T>{
-  // updateToken(token)
-  // return this.restClient.get(path)
-  // }
-  //
-
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
-    const { userToken, orderId } = input
-
-    const headers = {
-      'X-User-Token': userToken ?? null,
-    }
+    const { orderId } = input
 
     const result: OrderInformation = await this.restClient.get({
       path: `/orders/getOrderSummary/${orderId}`,
-      headers,
     })
 
     return result
