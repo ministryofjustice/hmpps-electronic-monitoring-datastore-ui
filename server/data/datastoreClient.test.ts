@@ -52,7 +52,10 @@ describe('EM Datastore Search Client', () => {
   })
   describe('searchOrders', () => {
     it('should return a list of orders from the API', async () => {
-      fakeClient.post('/search/orders', searchOrder.data).reply(200, orders)
+      fakeClient
+        .post('/search/orders', searchOrder.data)
+        .matchHeader('Authorization', `Bearer ${token}`)
+        .reply(200, orders)
 
       const expected: Order[] = orders
 
@@ -62,7 +65,7 @@ describe('EM Datastore Search Client', () => {
     })
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
-      fakeClient.post('/search/orders', searchOrder.data).reply(401)
+      fakeClient.post('/search/orders', searchOrder.data).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
       await expect(datastoreClient.searchOrders(searchOrder)).rejects.toThrow('Unauthorized')
     })
@@ -74,7 +77,7 @@ describe('EM Datastore Search Client', () => {
     it('should return a single order from the api', async () => {
       fakeClient
         .get(`/search/cases/${searchItem.legacySubjectId}`)
-        .matchHeader('authorization', `Bearer ${token}`)
+        .matchHeader('Authorization', `Bearer ${token}`)
         .reply(200, expected)
       const results = await datastoreClient.getCases(searchItem)
       expect(results).toEqual(expected)
@@ -84,7 +87,7 @@ describe('EM Datastore Search Client', () => {
   it('should handle 404 Not Found when the case does not exist', async () => {
     fakeClient
       .get(`/search/cases/${searchItem.legacySubjectId}`)
-      .matchHeader('authorization', `Bearer ${token}`)
+      .matchHeader('Authorization', `Bearer ${token}`)
       .reply(404)
 
     await expect(datastoreClient.getCases(searchItem)).rejects.toThrow('Not Found')
@@ -93,7 +96,7 @@ describe('EM Datastore Search Client', () => {
   it('should handle 401 Unauthorized when the token is invalid', async () => {
     fakeClient
       .get(`/search/cases/${searchItem.legacySubjectId}`)
-      .matchHeader('authorization', `Bearer ${token}`)
+      .matchHeader('Authorization', `Bearer ${token}`)
       .reply(401)
 
     await expect(datastoreClient.getCases(searchItem)).rejects.toThrow('Unauthorized')
