@@ -1,5 +1,5 @@
 import RestClient from './restClient'
-import config, { ApiConfig } from '../config'
+import config, { ApiConfig, featureFlags } from '../config'
 import { Order } from '../interfaces/order'
 import orders from './mockData/orders'
 import { SearchFormInput } from '../types/SearchFormInput'
@@ -26,8 +26,10 @@ export default class DatastoreClient {
   async searchOrders(input: SearchFormInput): Promise<Order[]> {
     const { data } = input
 
+    const endpoint: string = featureFlags.fakeApi ? 'orders-old' : 'orders'
+
     const results: Order[] = await this.restClient.post<Order[]>({
-      path: `/search/orders`,
+      path: `/search/${endpoint}`,
       data,
     })
 
@@ -63,8 +65,10 @@ export default class DatastoreClient {
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     const { orderId } = input
 
+    const endpoint: string = featureFlags.fakeApi ? 'getMockOrderSummary' : 'getOrderSummary'
+
     const result: OrderInformation = await this.restClient.get({
-      path: `/orders/getOrderSummary/${orderId}`,
+      path: `/orders/${endpoint}/${orderId}`,
     })
 
     return result

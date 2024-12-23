@@ -49,7 +49,8 @@ const auditConfig = () => {
 }
 
 export const featureFlags = {
-  showDocuments: true,
+  showDocuments: get('FLAG_SHOWDOCUMENTS', true, requiredInProduction),
+  fakeApi: get('FLAG_FAKEAPIDATA', false, requiredInProduction),
 }
 
 export default {

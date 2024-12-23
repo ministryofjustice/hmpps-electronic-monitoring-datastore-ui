@@ -152,13 +152,14 @@
 
   </div>
   
-  <hr class="govuk-section-break govuk-section-break--l">
-  
-  <h2 class="govuk-heading-m"> All documents </h2>
-  
-  {{ emsDateFilter() }}
-  
   {% if showDocumentsFlag %}
+    <hr class="govuk-section-break govuk-section-break--l">
+  
+    <h2 class="govuk-heading-m"> All documents </h2>
+  
+    {{ emsDateFilter() }}
+  
+
 
     {% set orderDocumentsHtml %}
       {{ emsSortableTable(data.documents.orderDocuments, data.documents.pageSize) }}
