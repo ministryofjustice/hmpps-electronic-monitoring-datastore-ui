@@ -23,10 +23,7 @@ export default class SearchController {
     const errors = req.session.validationErrors || []
     const formData = req.session.formData || {}
 
-    // Clear session data after it's been used
-    req.session.validationErrors = undefined
-    req.session.formData = undefined
-
+    //
     const viewModel = SearchForOrdersViewModel.construct(formData as never, errors as never)
 
     res.locals = {
@@ -54,6 +51,10 @@ export default class SearchController {
       res.redirect('search')
       return
     }
+
+    // Clear session data after it's been used
+    req.session.validationErrors = undefined
+    req.session.formData = undefined
 
     // If results is Order[], proceed to results view
     res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
