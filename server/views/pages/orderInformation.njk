@@ -16,6 +16,7 @@
 {% set orderInformation = data.keyOrderInformation %}
 {% set reports = reports %}
 {% set subjectHistory = data.subjectHistoryReport %}
+{% set showDocumentsFlag = featureFlags.showDocuments %}
 
 {% set orderDocuments = [] %}
 {% for document in data.documents.orderDocuments %}
@@ -118,47 +119,17 @@
       classes: "govuk-button--secondary ems-button-grid__button"
       }) }} {% endif %}
 
-    {# {% if reports.visitsAndTasks %} {{ govukButton({
-      text: "Visits and tasks",
-      href: '/orders/' + orderInformation.legacySubjectId + '/visits-and-tasks',
-      classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %} #}
-
     {% if reports.visitDetails %} {{ govukButton({
       text: "Visit details",
       href: '/orders/' + orderInformation.legacySubjectId + '/visit-details',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 
-    {# {% if reports.eventHistory %} {{ govukButton({
-      text: "Event history",
-      href: '/orders/' + orderInformation.legacySubjectId + '/event-history',
-      classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %} #}
-
     {% if reports.equipmentDetails %} {{ govukButton({
       text: "Equipment details",
       href: '/orders/' + orderInformation.legacySubjectId + '/equipment-details',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
-
-    {# {% if reports.curfewHours %} {{ govukButton({
-      text: "Curfew hours",
-      href: '/orders/' + orderInformation.legacySubjectId + '/curfew-hours',
-      classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %} #}
-
-    {# {% if reports.curfewViolations %} {{ govukButton({
-      text: "Curfew violations",
-      href: '/orders/' + orderInformation.legacySubjectId + '/curfew-violations',
-      classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %} #}
-
-    {# {% if reports.contactHistory %} {{ govukButton({
-      text: "Contact history",
-      href: '/orders/' + orderInformation.legacySubjectId + '/contact-history',
-      classes: "govuk-button--secondary ems-button-grid__button"
-    }) }} {% endif %} #}
 
     {% if reports.suspensionOfVisits %} {{ govukButton({
       text: "Suspension of visits",
@@ -180,130 +151,53 @@
     }) }} {% endif %}
 
   </div>
-
+  
   <hr class="govuk-section-break govuk-section-break--l">
-
+  
   <h2 class="govuk-heading-m"> All documents </h2>
-
+  
   {{ emsDateFilter() }}
+  
+  {% if showDocumentsFlag %}
 
+    {% set orderDocumentsHtml %}
+      {{ emsSortableTable(data.documents.orderDocuments, data.documents.pageSize) }}
+    {% endset %}
 
-  {% set orderDocumentsHtml %}
-    {{ emsSortableTable(data.documents.orderDocuments, data.documents.pageSize) }}
-  {% endset %}
-
-  {% set variationsHtml %}
-    {{ govukTable({
-      head: [
-        {text: "Case manager"},
-        {text: "Cases opened"},
-        {text: "Cases closed"}
-      ],
-      rows: [
-        [
-          {text: "David Francis"},
-          {text: "3"},
-          {text: "0"}
-        ],
-        [
-          {text: "Paul Farmer"},
-          {text: "1"},
-          {text: "0"}
-        ],
-        [
-          {text: "Rita Patel"},
-          {text: "2"},
-          {text: "0"}
-        ]
+    {% include "../components/defaultReportsHtml.njk" %}
+  
+    {{ govukTabs({
+      items: [
+        {
+          label: "Order documents",
+          id: "order-documents",
+          panel: {
+            html: orderDocumentsHtml
+          }
+        },
+        {
+          label: "Variations",
+          id: "variations",
+          panel: {
+            html: variationsHtml
+          }
+        },
+        {
+          label: "Enforcements",
+          id: "enforcements",
+          panel: {
+            html: enforcementsHtml
+          }
+        },
+        {
+          label: "Visit reports",
+          id: "visit-reports",
+          panel: {
+            html: visitReportsHtml
+          }
+        }
       ]
     }) }}
-  {% endset -%}
-
-  {% set enforcementsHtml %}
-    {{ govukTable({
-      head: [
-        {text: "Case manager"},
-        {text: "Cases opened"},
-        {text: "Cases closed"}
-      ],
-      rows: [
-        [
-          {text: "David Francis"},
-          {text: "98"},
-          {text: "95"}
-        ],
-        [
-          {text: "Paul Farmer"},
-          {text: "122"},
-          {text: "131"}
-        ],
-        [
-          {text: "Rita Patel"},
-          {text: "126"},
-          {text: "142"}
-        ]
-      ]
-    }) }}
-  {% endset -%}
-
-  {% set visitReportsHtml %}
-    {{ govukTable({
-      head: [
-        {text: "Case manager"},
-        {text: "Cases opened"},
-        {text: "Cases closed"}
-      ],
-      rows: [
-        [
-          {text: "David Francis"},
-          {text: "1380"},
-          {text: "1472"}
-        ],
-        [
-          {text: "Paul Farmer"},
-          {text: "1129"},
-          {text: "1083"}
-        ],
-        [
-          {text: "Rita Patel"},
-          {text: "1539"},
-          {text: "1265"}
-        ]
-      ]
-    }) }}
-  {% endset -%}
-
-  {{ govukTabs({
-    items: [
-      {
-        label: "Order documents",
-        id: "order-documents",
-        panel: {
-          html: orderDocumentsHtml
-        }
-      },
-      {
-        label: "Variations",
-        id: "variations",
-        panel: {
-          html: variationsHtml
-        }
-      },
-      {
-        label: "Enforcements",
-        id: "enforcements",
-        panel: {
-          html: enforcementsHtml
-        }
-      },
-      {
-        label: "Visit reports",
-        id: "visit-reports",
-        panel: {
-          html: visitReportsHtml
-        }
-      }
-    ]
-  }) }}
+  {% endif%}
 
 {% endblock %}
