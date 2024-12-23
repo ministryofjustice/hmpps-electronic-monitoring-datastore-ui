@@ -72,7 +72,7 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
 
   local-stack-aws:
-    image: localstack/localstack:3.0
+    image: localstack/localstack:3.8
     container_name: local-stack-aws
     networks:
       - hmpps
