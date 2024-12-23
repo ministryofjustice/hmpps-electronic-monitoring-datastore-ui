@@ -6,8 +6,18 @@
 UI application to access historical data from the Electronic Monitoring Datastore.  
 This is a front end for the [Electronic Monitoring Datastore API](https://github.com/ministryofjustice/hmpps-electronic-monitoring-datastore-api).
 
+### Quickstart: running locally
+1. `npm install`
+2. `docker-compose -f docker-compose-with-api.yml up`  
+
+*or*, to run without docker
+1. `docker-compose -f docker-compose-with-api.yml up --scale=hmpps-electronic-monitoring-ui=0 --scale=hmpps-electronic-monitoring-datastore-api=0`
+2. `SPRING_PROFILES_ACTIVE=local ./gradlew bootRun` in the API directory
+3. `npm run start:dev` in the UI directory
+
 ## Contents
 - [hmpps-electronic-monitoring-datastore-ui](#hmpps-electronic-monitoring-datastore-ui)
+    - [Quickstart: running locally](#quickstart-running-locally)
   - [Contents](#contents)
   - [Oauth2 Credentials](#oauth2-credentials)
     - [Auth Code flow](#auth-code-flow)
@@ -18,6 +28,7 @@ This is a front end for the [Electronic Monitoring Datastore API](https://github
   - [Running the app](#running-the-app)
     - [Running the app via docker-compose](#running-the-app-via-docker-compose)
     - [Running the app in VS Code for development](#running-the-app-in-vs-code-for-development)
+    - [Running both UI and API locally](#running-both-ui-and-api-locally)
     - [Logging in with a test user](#logging-in-with-a-test-user)
   - [Linting and testing](#linting-and-testing)
     - [Run linter](#run-linter)
@@ -101,11 +112,16 @@ If you want to run both the UI and the API locally:
     > 
     > Environment variables set in here will be available when running `start:dev`
 
+### Running both UI and API locally 
+As for the VS Code method above, but instead run  
+`docker-compose -f docker-compose-with-api.yml up --scale=hmpps-electronic-monitoring-ui=0 --scale=hmpps-electronic-monitoring-datastore-api=0`  
+and also start the API following the readme instructions in that project.
+
 ### Logging in with a test user
 
 Once the application is running you should then be able to login with:
 
-username: AUTH_USER
+username: EM_DATASTORE_GENERAL_USER
 password: password123456
 
 To request specific users and roles then raise a PR
