@@ -20,9 +20,10 @@ export default class SearchController {
       correlationId: req.id,
     })
 
-    const errors = JSON.parse(req.flash('validationErrors')?.[0] || '[]')
-    const formData = JSON.parse(req.flash('formData')?.[0] || '[{}]')
+    const errors = req.session.validationErrors || []
+    const formData = req.session.formData || {}
 
+    //
     const viewModel = SearchForOrdersViewModel.construct(formData as never, errors as never)
 
     res.locals = {
@@ -45,11 +46,15 @@ export default class SearchController {
 
     // Check if results is ValidationResult (indicates form input errors)
     if (Array.isArray(results) && results.some(result => 'field' in result && 'error' in result)) {
-      req.flash('formData', JSON.stringify(formData))
-      req.flash('validationErrors', JSON.stringify(results))
+      req.session.formData = formData
+      req.session.validationErrors = results
       res.redirect('search')
       return
     }
+
+    // Clear session data after it's been used
+    req.session.validationErrors = undefined
+    req.session.formData = undefined
 
     // If results is Order[], proceed to results view
     res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
