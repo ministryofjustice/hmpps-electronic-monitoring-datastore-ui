@@ -63,7 +63,7 @@ export default class SearchController {
       return
     }
 
-    // Clear session data as it is no londer required
+    // Clear session data as it is no longer required
     req.session.validationErrors = undefined
     req.session.formData = undefined
 
