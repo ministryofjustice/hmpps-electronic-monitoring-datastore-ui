@@ -2,6 +2,7 @@ import type { Request, Response } from 'express'
 import AuditService, { Page } from '../services/auditService'
 import OrderService from '../services/orderService'
 import { Reports } from '../interfaces/orderInformation'
+import { featureFlags } from '../config'
 
 export default class OrderController {
   constructor(
@@ -31,7 +32,7 @@ export default class OrderController {
         allEventHistory: true,
         services: true,
       }
-      res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
+      res.render('pages/orderInformation', { data: orderInformation, backUrl, reports, featureFlags })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }
