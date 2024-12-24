@@ -46,17 +46,37 @@ export default class SearchController {
 
     // Check if results is ValidationResult (indicates form input errors)
     if (Array.isArray(results) && results.some(result => 'field' in result && 'error' in result)) {
+      // TODO: Consider rendering search form with validation errors here
+      // TODO: *** IF it is decided NOT to use sessions ***
+      // e.g. comment out
+      // req.session.formData = formData
+      // req.session.validationErrors = results
+      // and have
+      // const viewModel = SearchForOrdersViewModel.construct(formData as never, errors as never)
+      // res.render('pages/search', viewModel)
+      // finally remove line 60 (redirect)
+
       req.session.formData = formData
       req.session.validationErrors = results
+
       res.redirect('search')
       return
     }
 
-    // Clear session data after it's been used
+    // Clear session data as it is no londer required
     req.session.validationErrors = undefined
     req.session.formData = undefined
 
+    await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
+
     // If results is Order[], proceed to results view
-    res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
+    if (results.length > 0) {
+      res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
+    } else {
+      res.render('pages/noResults')
+    }
   }
 }

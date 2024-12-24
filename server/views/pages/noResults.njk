@@ -1,0 +1,22 @@
+{% extends "../partials/layout.njk" %}
+
+{% set searchUrl = "/search" %}
+
+{% block content %}
+  {{ emsServiceInformation() }}
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds-from-desktop">
+            <h1 class="govuk-heading-l">No results found</h1>
+        </div>
+        <div class="govuk-grid-column-two-thirds">
+            <p>
+                Sorry, no results were found for this search.
+            </p>
+            {{ govukButton({
+                text: "Return to search page",
+                href: searchUrl
+            }) }}
+        </div>
+    </div>
+
+{% endblock %}

@@ -183,5 +183,23 @@ describe('SearchController', () => {
         data: [], // Based on mocked `tabulateOrders`
       })
     })
+
+    it('should render no search results view when no orders are returned', async () => {
+      ;(SearchOrderFormDataModel.parse as jest.Mock).mockReturnValue({
+        firstName: 'John',
+        lastName: 'Doe',
+        alias: 'JD',
+        'dob-day': '10',
+        'dob-month': '02',
+        'dob-year': '2021',
+      })
+
+      datastoreSearchService.search = jest.fn().mockResolvedValue([])
+
+      await searchController.view(req, res, next)
+
+      expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
+      expect(res.render).toHaveBeenCalledWith('pages/noResults')
+    })
   })
 })
