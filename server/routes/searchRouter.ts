@@ -1,9 +1,6 @@
 import { type RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
-import { Page } from '../services/auditService'
-import tabulateOrders from '../utils/tabulateOrders'
-import { Order } from '../interfaces/order'
 import SearchController from '../controllers/searchController'
 
 export default function searchRouter({ auditService, datastoreSearchService }: Services): Router {
