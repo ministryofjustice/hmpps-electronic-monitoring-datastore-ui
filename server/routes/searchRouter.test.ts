@@ -40,14 +40,3 @@ describe('Core page basic GET requests', () => {
     },
   )
 })
-
-describe('Search results page', () => {
-  it('should call the DatastoreSearchService to return data', () => {
-    return request(app)
-      .get('/search/results')
-      .expect('Content-Type', /html/)
-      .expect(res => {
-        expect(datastoreSearchService.searchForOrders).toHaveBeenCalledTimes(1)
-      })
-  })
-})

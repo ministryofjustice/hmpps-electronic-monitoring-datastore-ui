@@ -13,31 +13,8 @@ export default function searchRouter({ auditService, datastoreSearchService }: S
 
   const searchController = new SearchController(auditService, datastoreSearchService)
 
-  // get('/', async (req, res, next) => {
-  //   await auditService.logPageView(Page.SEARCH_PAGE, { who: res.locals.user.username, correlationId: req.id })
-
-  //   res.render('pages/search')
-  // })
-
   get('/', searchController.search)
   post('/', searchController.view)
-
-  get('/results', async (req, res, next) => {
-    // TODO: replace this with FormData object
-    const searchItem: Order = {
-      dataType: 'am',
-      legacySubjectId: 1,
-    }
-    await auditService.logPageView(Page.SEARCH_RESULTS_PAGE, { who: res.locals.user.username, correlationId: req.id })
-
-    try {
-      const orders = await datastoreSearchService.searchForOrders(searchItem)
-      const tabulatedOrders = tabulateOrders(orders)
-      res.render('pages/searchResults', { data: tabulatedOrders })
-    } catch {
-      res.status(500).send('Error fetching data')
-    }
-  })
 
   return router
 }
