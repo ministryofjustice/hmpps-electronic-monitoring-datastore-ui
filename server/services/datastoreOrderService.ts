@@ -19,18 +19,6 @@ export default class DatastoreOrderService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  async getOrders(criteria: Order): Promise<Order[]> {
-    try {
-      this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
-
-      const results = this.datastoreClient.searchForOrders(criteria)
-      return results
-    } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving search results')
-      return error
-    }
-  }
-
   // place holder to ensure that we're returning something.
   // temporary before we wire up the api endpoints.
   // TODO: Add try ... catch here instead of bubbling all the way up to top level handler
