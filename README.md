@@ -7,17 +7,20 @@ UI application to access historical data from the Electronic Monitoring Datastor
 This is a front end for the [Electronic Monitoring Datastore API](https://github.com/ministryofjustice/hmpps-electronic-monitoring-datastore-api).
 
 ### Quickstart: running locally
-1. `npm install`
-2. `docker-compose -f docker-compose-with-api.yml up`  
 
-*or*, to run without docker
+1. `npm install`
+2. `docker-compose -f docker-compose-with-api.yml up`
+
+_or_, to run without docker
+
 1. `docker-compose -f docker-compose-with-api.yml up --scale=hmpps-electronic-monitoring-ui=0 --scale=hmpps-electronic-monitoring-datastore-api=0`
 2. `SPRING_PROFILES_ACTIVE=local ./gradlew bootRun` in the API directory
 3. `npm run start:dev` in the UI directory
 
 ## Contents
+
 - [hmpps-electronic-monitoring-datastore-ui](#hmpps-electronic-monitoring-datastore-ui)
-    - [Quickstart: running locally](#quickstart-running-locally)
+  - [Quickstart: running locally](#quickstart-running-locally)
   - [Contents](#contents)
   - [Oauth2 Credentials](#oauth2-credentials)
     - [Auth Code flow](#auth-code-flow)
@@ -34,6 +37,7 @@ This is a front end for the [Electronic Monitoring Datastore API](https://github
     - [Run linter](#run-linter)
     - [Run unit tests](#run-unit-tests)
     - [Run integration tests using Cypress](#run-integration-tests-using-cypress)
+  - [Feature flags](#feature-flags)
   - [Custom Component details](#custom-component-details)
     - [EMS Service Information](#ems-service-information)
     - [EMS Sortable Table](#ems-sortable-table)
@@ -42,7 +46,6 @@ This is a front end for the [Electronic Monitoring Datastore API](https://github
     - [EMS Button Grid](#ems-button-grid)
   - [Mock API](#mock-api)
   - [Test Utils](#test-utils)
-
 
 ## Oauth2 Credentials
 
@@ -89,30 +92,35 @@ a distributed cache of sessions.
 The template app is, by default, configured not to use REDIS when running locally.
 
 ## Running the app
+
 ### Running the app via docker-compose
 
-The easiest way to run the app is to use docker compose to create the service and all dependencies:  
+The easiest way to run the app is to use docker compose to create the service and all dependencies:
+
 > Run `docker compose pull` then `docker compose up`
 
-If you want to run both the UI and the API locally:  
+If you want to run both the UI and the API locally:
+
 > Run `docker-compose -f docker-compose-with-api.yml up`.  
 > This will run all services in the same network so they can talk to one another.  
 > _You may need to change the reference in the docker-compose-with-api.yml file to point to your local API project source if it isn't in a sibling folder to your UI project._
 
 ### Running the app in VS Code for development
+
 1. Install dependencies using `npm install`, ensuring you are using `node v20`
 
-    > Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the CircleCI build config.
+   > Note: Using `nvm` (or [fnm](https://github.com/Schniz/fnm)), run `nvm install --latest-npm` within the repository folder to use the correct version of node, and the latest version of npm. This matches the `engines` config in `package.json` and the CircleCI build config.
 
 2. Start the services required for the UI app using:  
-`docker compose up --scale=hmpps-electronic-monitoring-ui=0`  
+   `docker compose up --scale=hmpps-electronic-monitoring-ui=0`
 
-3. Build the assets and start the app with esbuild: `npm run start:dev`  
-    > This uses an .env file replicating the environment variables in docker-compose.yml (which themselves replicate/simulate the values in the .helm folders). Rename `.env.example` -> `.env` to use these values.  
-    > 
-    > Environment variables set in here will be available when running `start:dev`
+3. Build the assets and start the app with esbuild: `npm run start:dev`
+   > This uses an .env file replicating the environment variables in docker-compose.yml (which themselves replicate/simulate the values in the .helm folders). Rename `.env.example` -> `.env` to use these values.
+   >
+   > Environment variables set in here will be available when running `start:dev`
 
-### Running both UI and API locally 
+### Running both UI and API locally
+
 As for the VS Code method above, but instead run  
 `docker-compose -f docker-compose-with-api.yml up --scale=hmpps-electronic-monitoring-ui=0 --scale=hmpps-electronic-monitoring-datastore-api=0`  
 and also start the API following the readme instructions in that project.
@@ -132,8 +140,8 @@ for the in-memory DB used by Auth
 
 ### Run linter
 
-* `npm run lint` runs `eslint`.
-* `npm run typecheck` runs the TypeScript compiler `tsc`.
+- `npm run lint` runs `eslint`.
+- `npm run typecheck` runs the TypeScript compiler `tsc`.
 
 ### Run unit tests
 
@@ -141,13 +149,25 @@ for the in-memory DB used by Auth
 
 ### Run integration tests using Cypress
 
-1. For local running, start a wiremock instance: `docker compose -f docker-compose-test.yml up`  
+1. For local running, start a wiremock instance: `docker compose -f docker-compose-test.yml up`
 
 2. Ensure you have built the app by running `npm run build`
-   
 3. Then, run the server in test mode: `npm run start-feature` (or `npm run start-feature:dev` to run with auto-restart on changes)
 
 4. Either, run tests in headless mode with `npm run int-test` or run tests with the cypress UI with `npm run int-test-ui`.
+
+## Feature flags
+
+To add feature flags, ensure these are added to both `.env` and `config.ts` as illustrated:
+
+```ts
+export const featureFlags = {
+  showDocuments: get('FLAG_SHOWDOCUMENTS', true, requiredInProduction),
+  fakeApi: get('FLAG_FAKEAPIDATA', false, requiredInProduction),
+}
+```
+
+> **NOTE:** Presently these are not injected into integration tests and hence will break the pipeline
 
 ## Custom Component details
 

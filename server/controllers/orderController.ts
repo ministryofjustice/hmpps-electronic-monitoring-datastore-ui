@@ -3,6 +3,7 @@ import { Page } from '../services/auditService'
 import { AuditService, DatastoreOrderService } from '../services'
 
 import { Reports } from '../interfaces/orderInformation'
+import { featureFlags } from '../config'
 
 export default class OrderController {
   constructor(
@@ -27,18 +28,12 @@ export default class OrderController {
       const reports: Reports = {
         orderDetails: true,
         visitDetails: true,
-        // visitsAndTasks: true,
-        // eventHistory: true,
         equipmentDetails: true,
-        // curfewHours: true,
-        // curfewViolations: true,
-        // contactHistory: true,
-        // suspensions: true,
         suspensionOfVisits: true,
         allEventHistory: true,
         services: true,
       }
-      res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
+      res.render('pages/orderInformation', { data: orderInformation, backUrl, reports, featureFlags })
     } catch (error) {
       res.status(500).send('Error fetching data')
     }

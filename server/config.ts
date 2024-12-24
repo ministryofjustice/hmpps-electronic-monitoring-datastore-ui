@@ -48,6 +48,11 @@ const auditConfig = () => {
   }
 }
 
+export const featureFlags = {
+  showDocuments: get('FLAG_SHOWDOCUMENTS', true, requiredInProduction),
+  fakeApi: get('FLAG_FAKEAPIDATA', false, requiredInProduction),
+}
+
 export default {
   applicationName: 'Electronic Monitoring Datastore',
   buildNumber: get('BUILD_NUMBER', '1_0_0', requiredInProduction),
@@ -64,6 +69,7 @@ export default {
     password: process.env.REDIS_AUTH_TOKEN,
     tls_enabled: get('REDIS_TLS_ENABLED', 'false'),
   },
+  featureFlags,
   session: {
     secret: get('SESSION_SECRET', 'app-insecure-default-session', requiredInProduction),
     expiryMinutes: Number(get('WEB_SESSION_TIMEOUT_IN_MINUTES', 120)),
