@@ -36,16 +36,6 @@ export default class DatastoreClient {
     return results
   }
 
-  async searchForOrders(critera: Order): Promise<Order[]> {
-    // TODO: This method should be a post. criteria will be validated search formdata
-    // const results: Order[] = await this.restClient.get({
-    //   path: `ADD_CORRECT_PATH/criteria-object-here`,
-    // })
-
-    // TODO: return results from commented out API call, once API endpoint has been written
-    return orders
-  }
-
   async getCases(critera: Order): Promise<Order> {
     const result: Order = await this.restClient.get({
       path: `/search/cases/${critera.legacySubjectId}`,

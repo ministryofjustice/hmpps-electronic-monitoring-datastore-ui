@@ -12,17 +12,18 @@ import SearchOrderFormDataModel from '../models/form-data/searchOrder'
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
 
-jest.mock('../utils/tabulateOrders', () => jest.fn(() => []))
+jest.mock('../utils/tabulateOrders', () => jest.fn((): unknown[] => []))
 jest.mock('../models/form-data/searchOrder')
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()
 const datastoreClientFactory = jest.fn()
 datastoreClientFactory.mockResolvedValue(datastoreClient)
-const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+const auditService = {
+  logPageView: jest.fn(),
+} as unknown as AuditService
 
-datastoreSearchService.searchForOrders = jest.fn().mockResolvedValue(orders)
+const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
 
 jest.mock('../models/view-models/searchForOrders')
 describe('SearchController', () => {
