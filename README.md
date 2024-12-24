@@ -158,7 +158,7 @@ for the in-memory DB used by Auth
 
 ## Feature flags
 
-Feature flags are added using environment variables and adding to `config.ts` as illustrated:
+To add feature flags, ensure these are added to both `.env` and `config.ts` as illustrated:
 
 ```ts
 export const featureFlags = {
