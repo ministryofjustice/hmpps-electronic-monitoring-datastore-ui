@@ -3,7 +3,7 @@ import request from 'supertest'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
 import DatastoreSearchService from '../services/datastoreSearchService'
-import { basicGetTest, GetRequestFixture } from './index.test'
+import { GetRequestFixture } from './index.test'
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
