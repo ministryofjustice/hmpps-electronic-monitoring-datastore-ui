@@ -43,9 +43,9 @@ jobs:
       - run:
           command: |
             npm run build
-      # - run: # Run linter after build because the integration test code depend on compiled typescript...
-      #     name: Linter check
-      #     command: npm run lint
+      - run: # Run linter after build because the integration test code depend on compiled typescript...
+          name: Linter check
+          command: npm run lint
       - persist_to_workspace:
           root: .
           paths:
@@ -120,8 +120,8 @@ workflows:
       - integration_test:
           requires:
             - build
-      # - hmpps/helm_lint:
-      #     name: helm_lint
+      - hmpps/helm_lint:
+          name: helm_lint
       - hmpps/build_docker:
           name: build_docker
           filters:
@@ -139,14 +139,19 @@ workflows:
             branches:
               only:
                 - main
+                - deploy-dev
           requires:
-            # - helm_lint
+            - helm_lint
             - unit_test
             - integration_test
             - build_docker
           helm_timeout: 5m
       - request-preprod-approval:
           type: approval
+          filters:
+            branches:
+              only:
+                - main
           requires:
             - deploy_dev
       - hmpps/deploy_env:
