@@ -1,7 +1,6 @@
 import RestClient from './restClient'
 import config, { ApiConfig, featureFlags } from '../config'
 import { Order } from '../interfaces/order'
-import orders from './mockData/orders'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderInformation } from '../interfaces/orderInformation'
