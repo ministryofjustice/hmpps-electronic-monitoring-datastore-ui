@@ -63,7 +63,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
         orderDetails: tabulatedOrderDetails,
         backUrl: `/orders/${orderId}/information`,
       })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
@@ -79,7 +79,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
       const timeline = createTimelineWithTwoTables(visitDetails, 'Visit details')
 
       res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
@@ -105,7 +105,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
         deviceEquipmentDetails: tabulatedDeviceEquipmentDetails,
         backUrl: `/orders/${orderId}/information`,
       })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
@@ -118,7 +118,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
       const curfewHours = await getCurfewHours()
       const tabulatedCurfewHours = tabluateRecords(curfewHours, 'Curfew hours')
       res.render('pages/twoColumnTable', { data: tabulatedCurfewHours, backUrl: `/orders/${orderId}/information` })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
@@ -131,7 +131,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
       const eventHistory = await getEventHistory()
       const timeline = createTimeline(eventHistory, 'Event history')
       res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
@@ -147,7 +147,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
       const suspensions = await getSuspensionOfVisits()
       const timeline = createTimeline(suspensions, 'Suspension of visits')
       res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
@@ -163,7 +163,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
       const curfewViolations = await getCurfewViolations()
       const timeline = createTimeline(curfewViolations, 'Violations')
       res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })
@@ -176,7 +176,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
       const contactHistory = await getContactHistory()
       const timeline = createTimeline(contactHistory, 'Contact history')
       res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   })

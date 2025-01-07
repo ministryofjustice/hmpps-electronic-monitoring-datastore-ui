@@ -1,8 +1,6 @@
 import { Order } from '../interfaces/order'
 
 const tabulateOrders = (orders: Order[]) => {
-  const orderInformationUrl: string = '/orders/information'
-
   return orders.map(order => {
     return [
       {

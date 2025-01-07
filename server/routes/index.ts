@@ -5,8 +5,6 @@ import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import searchRouter from './searchRouter'
 import orderRouter from './orderRouter'
-import DatastoreSearchService from '../services/datastoreSearchService'
-import { DatastoreClient } from '../data'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes(services: Services): Router {

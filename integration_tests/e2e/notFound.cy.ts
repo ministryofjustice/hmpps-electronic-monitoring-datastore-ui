@@ -1,5 +1,5 @@
 import NotFoundPage from '../pages/notFound'
-import Page, { PageElement } from '../pages/page'
+import Page from '../pages/page'
 
 context('Not found', () => {
   const orderId = '1234567'
