@@ -135,39 +135,79 @@ describe('Datastore Search Service', () => {
         },
       ])
     })
-  })
-  it('returns validation errors when dob is invalid', async () => {
-    jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
-      result: false,
-      error: {
-        field: 'dob',
-        error: 'Invalid date format',
-      },
+
+    it('returns validation errors when dob is invalid', async () => {
+      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
+        result: false,
+        error: {
+          field: 'dob',
+          error: 'Invalid date format',
+        },
+      })
+
+      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+        return { success: true, data: '' }
+      })
+
+      const invalidInput = {
+        token: 'mockToken',
+        data: {
+          firstName: '',
+          'dob-day': '32',
+          'dob-month': '13',
+          'dob-year': '2021',
+        },
+      }
+
+      const result = await datastoreSearchService.search(invalidInput)
+
+      // Assertions
+      expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
+      expect(result).toEqual([
+        {
+          field: 'dob',
+          error: 'Invalid date format',
+        },
+      ])
     })
 
-    jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
-      return { success: true, data: '' }
-    })
+    // it('returns a validation error when no data is supplied', async () => {
+    //   jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
 
-    const invalidInput = {
-      token: 'mockToken',
-      data: {
-        firstName: '',
-        'dob-day': '32',
-        'dob-month': '13',
-        'dob-year': '2021',
-      },
-    }
+    //   jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+    //     return {
+    //       success: false,
+    //       error: new ZodError([
+    //         {
+    //           code: 'custom',
+    //           path: ['firstName'],
+    //           message: 'First name can only consist of letters',
+    //         },
+    //       ]),
+    //     }
+    //   })
 
-    const result = await datastoreSearchService.search(invalidInput)
+    //   const invalidInput = {
+    //     token: 'mockToken',
+    //     data: {
+    //       firstName: 'John123',
+    //       lastName: 'Doe',
+    //       alias: 'JD',
+    //       'dob-day': '10',
+    //       'dob-month': '02',
+    //       'dob-year': '2021',
+    //     },
+    //   }
 
-    // Assertions
-    expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
-    expect(result).toEqual([
-      {
-        field: 'dob',
-        error: 'Invalid date format',
-      },
-    ])
+    //   const result = await datastoreSearchService.search(invalidInput)
+
+    //   expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John123')
+    //   expect(result).toEqual([
+    //     {
+    //       field: 'firstName',
+    //       error: 'First name can only consist of letters',
+    //     },
+    //   ])
+    // })
   })
 })
