@@ -5,6 +5,7 @@ import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import searchRouter from './searchRouter'
 import orderRouter from './orderRouter'
+import { featureFlags } from '../config'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes(services: Services): Router {
@@ -24,6 +25,14 @@ export default function routes(services: Services): Router {
     await services.auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
 
     res.render('pages/index')
+  })
+
+  get('/admin', async (req, res, next) => {
+    const fakeDataFlag = featureFlags.fakeApi
+    const showDocumentsFlag = featureFlags.showDocuments
+    res.send(`Current feature flag values:
+      Use fake API data: ${fakeDataFlag}
+      Show documents: ${showDocumentsFlag}`)
   })
 
   get('/test-api', async (req, res, next) => {
