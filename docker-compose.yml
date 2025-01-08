@@ -52,6 +52,9 @@ services:
       - TOKEN_VERIFICATION_ENABLED=false
       - INGRESS_URL=http://localhost:3000
       - NO_HTTPS=true
+      # Feature flags
+      - FLAG_FAKEAPIDATA=false
+      - FLAG_SHOWDOCUMENTS=false
 
 networks:
   hmpps:
