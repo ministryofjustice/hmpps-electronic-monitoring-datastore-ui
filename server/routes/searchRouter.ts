@@ -19,8 +19,8 @@ export default function searchRouter({ auditService, datastoreSearchService }: S
   //   res.render('pages/search')
   // })
 
-  get('/', searchController.search)
-  post('/', searchController.view)
+  get('/', searchController.searchPage)
+  post('/', searchController.searchResultsPage)
 
   get('/results', async (req, res, next) => {
     // TODO: replace this with FormData object

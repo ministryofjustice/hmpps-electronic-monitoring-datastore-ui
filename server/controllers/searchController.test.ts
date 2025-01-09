@@ -61,7 +61,7 @@ describe('SearchController', () => {
         validationErrors: [], // No validation errors
       })
 
-      await searchController.search(req, res, next)
+      await searchController.searchPage(req, res, next)
 
       expect(SearchForOrdersViewModel.construct).toHaveBeenCalledWith({}, [])
       expect(res.render).toHaveBeenCalledWith('pages/search', {
@@ -91,7 +91,7 @@ describe('SearchController', () => {
         ],
       })
 
-      await searchController.search(req, res, jest.fn())
+      await searchController.searchPage(req, res, jest.fn())
 
       expect(SearchForOrdersViewModel.construct).toHaveBeenCalledWith(
         {
@@ -156,7 +156,7 @@ describe('SearchController', () => {
 
       datastoreSearchService.search = jest.fn().mockResolvedValue([{ field: 'firstName', error: 'Invalid first name' }])
 
-      await searchController.view(req, res, next)
+      await searchController.searchResultsPage(req, res, next)
 
       expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(req.body)
@@ -176,7 +176,7 @@ describe('SearchController', () => {
 
       datastoreSearchService.search = jest.fn().mockResolvedValue(orders)
 
-      await searchController.view(req, res, next)
+      await searchController.searchResultsPage(req, res, next)
 
       expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(res.render).toHaveBeenCalledWith('pages/searchResults', {

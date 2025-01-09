@@ -4,7 +4,7 @@ import { AuditService, DatastoreSearchService } from '../services'
 
 import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
-import SearchOrderFormDataModel from '../models/form-data/searchOrder'
+import SearchOrderFormDataModel, { SearchOrderFormData } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
 import tabulateOrders from '../utils/tabulateOrders'
 
@@ -14,7 +14,7 @@ export default class SearchController {
     private readonly datastoreSearchService: DatastoreSearchService,
   ) {}
 
-  search: RequestHandler = async (req: Request, res: Response) => {
+  searchPage: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.SEARCH_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
@@ -36,8 +36,14 @@ export default class SearchController {
     res.render('pages/search', viewModel)
   }
 
-  view: RequestHandler = async (req: Request, res: Response) => {
-    const formData = SearchOrderFormDataModel.parse(req.body)
+  searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
+    try {
+      const formDataA: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
+    } catch (error) {
+      const x = 1
+    }
+
+    const formData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
 
     const results = await this.datastoreSearchService.search({
       userToken: res.locals.user.token,

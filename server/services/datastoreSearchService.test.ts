@@ -7,6 +7,7 @@ import { Order } from '../interfaces/order'
 import { DateValidator } from '../utils/validators/dateValidator'
 import Validator from '../utils/validators/formFieldValidator'
 import { SearchFormInput } from '../types/SearchFormInput'
+import { ValidationResult } from '../models/Validation'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')
@@ -67,6 +68,126 @@ describe('Datastore Search Service', () => {
       const results = await datastoreSearchService.search(searchOrder)
       expect(results).toEqual(expectedData)
     })
+  })
+
+  describe('validateInput', () => {
+    it('returns validation errors when firstName is invalid', async () => {
+      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
+
+      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+        return {
+          success: false,
+          error: new ZodError([
+            {
+              code: 'custom',
+              path: ['firstName'],
+              message: 'First name can only consist of letters',
+            },
+          ]),
+        }
+      })
+
+      const invalidInput = {
+        token: 'mockToken',
+        data: {
+          firstName: 'John123',
+          lastName: 'Doe',
+          alias: 'JD',
+          'dob-day': '10',
+          'dob-month': '02',
+          'dob-year': '2021',
+        },
+      }
+
+      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+
+      expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John123')
+      expect(result).toEqual([
+        {
+          field: 'firstName',
+          error: 'First name can only consist of letters',
+        },
+      ])
+    })
+
+    it('returns validation errors when firstName is invalid', async () => {
+      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
+
+      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+        return {
+          success: false,
+          error: new ZodError([
+            {
+              code: 'custom',
+              path: ['firstName'],
+              message: 'First name can only consist of letters',
+            },
+          ]),
+        }
+      })
+
+      const invalidInput = {
+        token: 'mockToken',
+        data: {
+          firstName: 'John123',
+          lastName: 'Doe',
+          alias: 'JD',
+          'dob-day': '10',
+          'dob-month': '02',
+          'dob-year': '2021',
+        },
+      }
+
+      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+
+      expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John123')
+      expect(result).toEqual([
+        {
+          field: 'firstName',
+          error: 'First name can only consist of letters',
+        },
+      ])
+    })
+
+    it('returns validation errors when dob is invalid', async () => {
+      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
+        result: false,
+        error: {
+          field: 'dob',
+          error: 'Invalid date format',
+        },
+      })
+
+      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+        return { success: true, data: '' }
+      })
+
+      const invalidInput = {
+        token: 'mockToken',
+        data: {
+          firstName: '',
+          'dob-day': '32',
+          'dob-month': '13',
+          'dob-year': '2021',
+        },
+      }
+
+      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+
+      // Assertions
+      expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
+      expect(result).toEqual([
+        {
+          field: 'dob',
+          error: 'Invalid date format',
+        },
+      ])
+    })
+
+    // TODO: Add three additional tests:
+    // 1. If there are multiple errors, result contains them
+    // 2. Generates input error if the input is empty
+    // 3. If the input is valid, returns an empty validationResult
   })
 
   describe('search', () => {
