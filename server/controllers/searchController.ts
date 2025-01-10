@@ -37,12 +37,6 @@ export default class SearchController {
   }
 
   searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
-    try {
-      const formDataA: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
-    } catch (error) {
-      const x = 1
-    }
-
     const formData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
 
     const results = await this.datastoreSearchService.search({
