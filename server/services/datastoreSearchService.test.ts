@@ -8,6 +8,7 @@ import { DateValidator } from '../utils/validators/dateValidator'
 import Validator from '../utils/validators/formFieldValidator'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { ValidationResult } from '../models/Validation'
+import getSanitisedError from '../sanitisedError'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')
@@ -219,21 +220,26 @@ describe('Datastore Search Service', () => {
       expect(DateValidator.validateDate).toHaveBeenCalledWith('10', '02', '2021', 'dob')
       expect(result).toEqual([])
     })
+
     // TODO: Additional tests:
     // Generates input error if the input is empty
-    it('returns an error when the input is empty', async () => {})
+    it('throws an error when form data contains no values', async () => {
+      // const emptyInput = {
+      //   token: 'mockToken',
+      //   data: {},
+      // }
+      // const result: ValidationResult = datastoreSearchService.validateInput(emptyInput)
+      // expect(result).toEqual([
+      //   {
+      //     field: 'form',
+      //     error: 'Search must contain at least one value',
+      //   },
+      // ])
+    })
   })
 
   describe('search', () => {
-    it('returns orders when firstName is valid', async () => {
-      // Mock dependencies
-      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
-
-      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation((input: string) => ({
-        success: true,
-        data: input,
-      }))
-
+    it('searches for orders & returns the results', async () => {
       const validInput = {
         token: 'mockToken',
         data: {
@@ -245,124 +251,25 @@ describe('Datastore Search Service', () => {
           'dob-year': '2021',
         },
       }
-      datastoreClient.searchOrders.mockResolvedValue(orders)
+      jest.spyOn(datastoreClient, 'searchOrders').mockResolvedValue(orders)
+
       const result = await datastoreSearchService.search(validInput)
 
-      expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John')
+      expect(datastoreClient.searchOrders).toHaveBeenCalledWith(validInput)
       expect(result).toEqual(orders)
     })
 
-    it('returns validation errors when firstName is invalid', async () => {
-      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
-
-      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
-        return {
-          success: false,
-          error: new ZodError([
-            {
-              code: 'custom',
-              path: ['firstName'],
-              message: 'First name can only consist of letters',
-            },
-          ]),
-        }
+    it('handles errors from the datastore client', async () => {
+      jest.spyOn(datastoreClient, 'searchOrders').mockImplementationOnce(() => {
+        throw getSanitisedError(new Error('Client error'))
       })
 
-      const invalidInput = {
+      const input = {
         token: 'mockToken',
-        data: {
-          firstName: 'John123',
-          lastName: 'Doe',
-          alias: 'JD',
-          'dob-day': '10',
-          'dob-month': '02',
-          'dob-year': '2021',
-        },
+        data: {},
       }
 
-      const result = await datastoreSearchService.search(invalidInput)
-
-      expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John123')
-      expect(result).toEqual([
-        {
-          field: 'firstName',
-          error: 'First name can only consist of letters',
-        },
-      ])
+      expect(datastoreSearchService.search(input)).rejects.toThrow('Error retrieving search results')
     })
-
-    it('returns validation errors when dob is invalid', async () => {
-      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
-        result: false,
-        error: {
-          field: 'dob',
-          error: 'Invalid date format',
-        },
-      })
-
-      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
-        return { success: true, data: '' }
-      })
-
-      const invalidInput = {
-        token: 'mockToken',
-        data: {
-          firstName: '',
-          'dob-day': '32',
-          'dob-month': '13',
-          'dob-year': '2021',
-        },
-      }
-
-      const result = await datastoreSearchService.search(invalidInput)
-
-      // Assertions
-      expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
-      expect(result).toEqual([
-        {
-          field: 'dob',
-          error: 'Invalid date format',
-        },
-      ])
-    })
-
-    // it('returns a validation error when no data is supplied', async () => {
-    //   jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
-
-    //   jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
-    //     return {
-    //       success: false,
-    //       error: new ZodError([
-    //         {
-    //           code: 'custom',
-    //           path: ['firstName'],
-    //           message: 'First name can only consist of letters',
-    //         },
-    //       ]),
-    //     }
-    //   })
-
-    //   const invalidInput = {
-    //     token: 'mockToken',
-    //     data: {
-    //       firstName: 'John123',
-    //       lastName: 'Doe',
-    //       alias: 'JD',
-    //       'dob-day': '10',
-    //       'dob-month': '02',
-    //       'dob-year': '2021',
-    //     },
-    //   }
-
-    //   const result = await datastoreSearchService.search(invalidInput)
-
-    //   expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John123')
-    //   expect(result).toEqual([
-    //     {
-    //       field: 'firstName',
-    //       error: 'First name can only consist of letters',
-    //     },
-    //   ])
-    // })
   })
 })

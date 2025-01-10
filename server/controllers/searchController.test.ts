@@ -154,7 +154,9 @@ describe('SearchController', () => {
     it('should redirect to search when validation errors exist', async () => {
       ;(SearchOrderFormDataModel.parse as jest.Mock).mockReturnValue(req.body)
 
-      datastoreSearchService.search = jest.fn().mockResolvedValue([{ field: 'firstName', error: 'Invalid first name' }])
+      datastoreSearchService.validateInput = jest
+        .fn()
+        .mockReturnValueOnce([{ field: 'firstName', error: 'Invalid first name' }])
 
       await searchController.searchResultsPage(req, res, next)
 
@@ -173,7 +175,7 @@ describe('SearchController', () => {
         'dob-month': '02',
         'dob-year': '2021',
       })
-
+      datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
       datastoreSearchService.search = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)

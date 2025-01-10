@@ -1,4 +1,5 @@
 import type { Request, RequestHandler, Response } from 'express'
+import { ZodTypeAny } from 'zod'
 import { Page } from '../services/auditService'
 import { AuditService, DatastoreSearchService } from '../services'
 
@@ -7,6 +8,10 @@ import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchOrderFormDataModel, { SearchOrderFormData } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
 import tabulateOrders from '../utils/tabulateOrders'
+import { ValidationResult } from '../models/Validation'
+import { SearchFormInput } from '../types/SearchFormInput'
+import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
+import Validator from '../utils/validators/formFieldValidator'
 
 export default class SearchController {
   constructor(
@@ -39,24 +44,30 @@ export default class SearchController {
   searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
     const formData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
 
-    const results = await this.datastoreSearchService.search({
+    // Validate input
+    const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({
       userToken: res.locals.user.token,
       data: formData,
     })
 
-    // Check if results is ValidationResult (indicates form input errors)
-    if (Array.isArray(results) && results.some(result => 'field' in result && 'error' in result)) {
+    // If input validation fails, redirect to search view with errors
+    if (validationErrors.length > 0) {
       req.session.formData = formData
-      req.session.validationErrors = results
+      req.session.validationErrors = validationErrors
       res.redirect('search')
-      return
+    } else {
+      // If input validation succeeds, execute the search
+      const results = await this.datastoreSearchService.search({
+        userToken: res.locals.user.token,
+        data: formData,
+      })
+
+      // Clear session data after it's been used
+      req.session.validationErrors = undefined
+      req.session.formData = undefined
+
+      // Proceed to results view
+      res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
     }
-
-    // Clear session data after it's been used
-    req.session.validationErrors = undefined
-    req.session.formData = undefined
-
-    // If results is Order[], proceed to results view
-    res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
   }
 }
