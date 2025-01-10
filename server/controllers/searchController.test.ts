@@ -22,7 +22,7 @@ datastoreClientFactory.mockResolvedValue(datastoreClient)
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
 const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
 
-datastoreSearchService.searchForOrders = jest.fn().mockResolvedValue(orders)
+// datastoreSearchService.searchForOrders = jest.fn().mockResolvedValue(orders)
 
 jest.mock('../models/view-models/searchForOrders')
 describe('SearchController', () => {

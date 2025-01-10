@@ -20,17 +20,17 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  async searchForOrders(criteria: Order): Promise<Order[]> {
-    try {
-      this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
+  // async searchForOrders(criteria: Order): Promise<Order[]> {
+  //   try {
+  //     this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
 
-      const results = this.datastoreClient.searchForOrders(criteria)
-      return results
-    } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving search results')
-      return error
-    }
-  }
+  //     const results = this.datastoreClient.searchForOrders(criteria)
+  //     return results
+  //   } catch (error) {
+  //     logger.error(getSanitisedError(error), 'Error retrieving search results')
+  //     return error
+  //   }
+  // }
 
   validateInput(input: SearchFormInput): ValidationResult {
     const validationErrors: ValidationResult = []

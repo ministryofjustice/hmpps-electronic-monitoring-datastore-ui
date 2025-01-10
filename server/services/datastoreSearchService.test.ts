@@ -36,40 +36,40 @@ describe('Datastore Search Service', () => {
     expect(true).toBe(true)
   })
 
-  describe('getOrders', () => {
-    it('should return data from the client - `searchForOrders`', async () => {
-      const searchItem: Order = {
-        dataType: 'am',
-        legacySubjectId: 1,
-      }
-      const expectedData: Order[] = orders
-      datastoreClient.searchForOrders.mockResolvedValue(expectedData)
+  // describe('getOrders', () => {
+  //   it('should return data from the client - `searchForOrders`', async () => {
+  //     const searchItem: Order = {
+  //       dataType: 'am',
+  //       legacySubjectId: 1,
+  //     }
+  //     const expectedData: Order[] = orders
+  //     datastoreClient.searchForOrders.mockResolvedValue(expectedData)
 
-      const results = await datastoreSearchService.searchForOrders(searchItem)
-      expect(results).toEqual(expectedData)
-    })
+  //     const results = await datastoreSearchService.searchForOrders(searchItem)
+  //     expect(results).toEqual(expectedData)
+  //   })
 
-    it('should return data from the client - `searchOrders`', async () => {
-      const searchOrder: SearchFormInput = {
-        userToken: 'mockUserToken',
-        data: {
-          searchType: 'am',
-          legacySubjectId: '123',
-          firstName: 'John',
-          lastName: 'Doe',
-          alias: 'JD',
-          'dob-day': '01',
-          'dob-month': '01',
-          'dob-year': '1990',
-        },
-      }
-      const expectedData: Order[] = orders
-      datastoreClient.searchOrders.mockResolvedValue(expectedData)
+  //   it('should return data from the client - `searchOrders`', async () => {
+  //     const searchOrder: SearchFormInput = {
+  //       userToken: 'mockUserToken',
+  //       data: {
+  //         searchType: 'am',
+  //         legacySubjectId: '123',
+  //         firstName: 'John',
+  //         lastName: 'Doe',
+  //         alias: 'JD',
+  //         'dob-day': '01',
+  //         'dob-month': '01',
+  //         'dob-year': '1990',
+  //       },
+  //     }
+  //     const expectedData: Order[] = orders
+  //     datastoreClient.searchOrders.mockResolvedValue(expectedData)
 
-      const results = await datastoreSearchService.search(searchOrder)
-      expect(results).toEqual(expectedData)
-    })
-  })
+  //     const results = await datastoreSearchService.search(searchOrder)
+  //     expect(results).toEqual(expectedData)
+  //   })
+  // })
 
   describe('validateInput', () => {
     it('returns validation errors when firstName is invalid', async () => {

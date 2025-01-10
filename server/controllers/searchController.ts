@@ -42,6 +42,11 @@ export default class SearchController {
   }
 
   searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
+    await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
+
     const formData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
 
     // Validate input
