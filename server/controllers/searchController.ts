@@ -1,5 +1,5 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { ZodTypeAny } from 'zod'
+import { ZodError } from 'zod'
 import { Page } from '../services/auditService'
 import { AuditService, DatastoreSearchService } from '../services'
 
@@ -46,8 +46,18 @@ export default class SearchController {
       who: res.locals.user.username,
       correlationId: req.id,
     })
-
     const formData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
+    try {
+    } catch (zodError) {
+      req.session.formData = []
+      req.session.validationErrors = [
+        {
+          field: zodError.path.toString(),
+          error: zodError.message,
+        },
+      ]
+      res.redirect('search')
+    }
 
     // Validate input
     const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({

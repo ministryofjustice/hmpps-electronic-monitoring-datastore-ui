@@ -31,7 +31,7 @@ describe('SearchController', () => {
   let res: Response
   let next = jest.fn()
 
-  describe('SearchController - search', () => {
+  describe('SearchPage', () => {
     beforeEach(() => {
       searchController = new SearchController(auditService, datastoreSearchService)
 
@@ -117,7 +117,7 @@ describe('SearchController', () => {
     })
   })
 
-  describe('SearchController - view', () => {
+  describe('SearchResultsPage', () => {
     beforeEach(() => {
       searchController = new SearchController(auditService, datastoreSearchService)
 
@@ -151,7 +151,7 @@ describe('SearchController', () => {
       jest.clearAllMocks() // Clear previous mocks to avoid interference
     })
 
-    it('should redirect to search when validation errors exist', async () => {
+    it('should redirect to search with appropriate error when validation errors exist', async () => {
       ;(SearchOrderFormDataModel.parse as jest.Mock).mockReturnValue(req.body)
 
       datastoreSearchService.validateInput = jest
@@ -165,6 +165,48 @@ describe('SearchController', () => {
       expect(req.session.validationErrors).toEqual([{ field: 'firstName', error: 'Invalid first name' }])
       expect(res.redirect).toHaveBeenCalledWith('search')
     })
+
+    // it('should redirect to search with appropriate error when no search data supplied', async () => {
+    //   req = createMockRequest({
+    //     body: {
+    //       firstName: '',
+    //       lastName: '',
+    //       alias: '',
+    //       'dob-day': '',
+    //       'dob-month': '',
+    //       'dob-year': '',
+    //     },
+    //     session: {
+    //       id: 'mock-session-id',
+    //       cookie: { originalMaxAge: 3600000 } as session.Cookie,
+    //       regenerate: jest.fn(),
+    //       destroy: jest.fn(),
+    //       reload: jest.fn(),
+    //       save: jest.fn(),
+    //       touch: jest.fn(),
+    //       resetMaxAge: jest.fn(),
+    //       returnTo: '/return',
+    //       nowInMinutes: 12345,
+    //       validationErrors: [],
+    //       formData: {},
+    //     } as session.Session & Partial<SessionData>,
+    //   })
+    //   ;(SearchOrderFormDataModel.parse as jest.Mock).mockReturnValue({
+    //     firstName: '',
+    //     lastName: '',
+    //     alias: '',
+    //     'dob-day': '',
+    //     'dob-month': '',
+    //     'dob-year': '',
+    //   })
+
+    //   await searchController.searchResultsPage(req, res, next)
+
+    //   // expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
+    //   expect(req.session.formData).toEqual(req.body)
+    //   // expect(req.session.validationErrors).toEqual([{ field: 'firstName', error: 'Invalid first name' }])
+    //   expect(res.redirect).toHaveBeenCalledWith('search')
+    // })
 
     it('should render search results view when valid orders are returned', async () => {
       ;(SearchOrderFormDataModel.parse as jest.Mock).mockReturnValue({
