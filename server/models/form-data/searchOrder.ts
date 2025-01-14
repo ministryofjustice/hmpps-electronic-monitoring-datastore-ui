@@ -11,10 +11,10 @@ const SearchOrderFormDataModel = z
     'dob-month': z.string().optional(),
     'dob-year': z.string().optional(),
   })
-  .refine(data => Object.values(data).some(value => value.trim() !== ''), {
-    message: 'You must enter a value into at least one search field',
-    path: [],
-  })
+// .refine(data => Object.values(data).some(value => value.trim() !== ''), {
+//   message: 'You must enter a value into at least one search field',
+//   path: [],
+// })
 // ).refine((data) => false,
 //   {
 //     message: 'Test message',
