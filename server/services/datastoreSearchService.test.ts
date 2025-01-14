@@ -72,6 +72,10 @@ describe('Datastore Search Service', () => {
   // })
 
   describe('validateInput', () => {
+    it('returns a validation error when the form is empty', async () => {
+      // TODO: Test empty form validation
+    })
+
     it('returns validation errors when firstName is invalid', async () => {
       jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
 
