@@ -12,10 +12,7 @@ import { ZodError } from 'zod'
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
-jest.mock('../utils/tabulateOrders')
-
 jest.mock('../utils/tabulateOrders', () => jest.fn(() => ['mockOrders']))
-// jest.mock('../models/form-data/searchOrder')
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()
@@ -23,8 +20,6 @@ const datastoreClientFactory = jest.fn()
 datastoreClientFactory.mockResolvedValue(datastoreClient)
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
 const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
-
-// datastoreSearchService.searchForOrders = jest.fn().mockResolvedValue(orders)
 
 jest.spyOn(SearchForOrdersViewModel, "construct")
 jest.spyOn(SearchOrderFormDataModel, "parse")
@@ -179,7 +174,7 @@ describe('SearchController', () => {
         body: {
           // _csrf: 'fake',
           // subjectId: '',
-          firstName: 'Steve',
+          firstName: '',
           lastName: '',
           alias: '',
           'dob-day': '',
@@ -201,10 +196,6 @@ describe('SearchController', () => {
           formData: {},
         } as session.Session & Partial<SessionData>,
       })
-
-      // ; (SearchOrderFormDataModel.parse as jest.Mock).mockImplementation(() => {
-      //   throw new Error("test")
-      // })
 
       await searchController.searchResultsPage(req, res, next)
 

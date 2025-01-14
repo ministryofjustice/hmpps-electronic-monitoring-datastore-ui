@@ -9,6 +9,7 @@ import { ValidationResult } from '../models/Validation'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
 import Validator from '../utils/validators/formFieldValidator'
+import { SearchOrderFormData } from '../models/form-data/searchOrder'
 
 export default class DatastoreSearchService {
   private readonly datastoreClient: DatastoreClient
@@ -20,20 +21,20 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  // async searchForOrders(criteria: Order): Promise<Order[]> {
-  //   try {
-  //     this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
-
-  //     const results = this.datastoreClient.searchForOrders(criteria)
-  //     return results
-  //   } catch (error) {
-  //     logger.error(getSanitisedError(error), 'Error retrieving search results')
-  //     return error
-  //   }
-  // }
+  isEmptySearch(searchData: SearchOrderFormData): Boolean {
+    return Object.values(searchData).every(value => value === '')
+  }
 
   validateInput(input: SearchFormInput): ValidationResult {
     const validationErrors: ValidationResult = []
+
+    if (this.isEmptySearch(input.data)) {
+      validationErrors.push({
+        field: 'form',
+        error: 'You must enter a value into at least one search field',
+      })
+      return validationErrors
+    }
 
     const isDobValid: DateValidationResponse = DateValidator.validateDate(
       input.data['dob-day'],

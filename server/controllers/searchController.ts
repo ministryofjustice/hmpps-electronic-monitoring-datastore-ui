@@ -49,11 +49,6 @@ export default class SearchController {
 
     const validatedFormData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
 
-    // if (true) {
-    // req.session.formData = validatedFormData
-    // res.redirect('search')
-    // }
-
     // Validate input
     const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({
       userToken: res.locals.user.token,
