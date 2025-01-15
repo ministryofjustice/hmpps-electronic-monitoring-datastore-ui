@@ -1,3 +1,4 @@
+import SearchPage from '../pages/search'
 import SearchResultsPage from '../pages/searchResults'
 import Page from '../pages/page'
 
@@ -6,7 +7,15 @@ context('SearchResults', () => {
     cy.task('reset')
     cy.task('stubSignIn')
     cy.signIn()
-    cy.visit('/search/results')
+    cy.visit('/search')
+    const searchPage = Page.verifyOnPage(SearchPage)
+    searchPage.firstNameField().type('firstName')
+    searchPage.lastNameField().type('lastName')
+    searchPage.aliasField().type('alias')
+    searchPage.dayOfBirthField().type('01')
+    searchPage.monthOfBirthField().type('02')
+    searchPage.yearOfBirthField().type('1990')
+    searchPage.searchButton().click()
   })
 
   it('is reachable', () => {
