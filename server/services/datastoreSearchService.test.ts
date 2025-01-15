@@ -84,7 +84,7 @@ describe('Datastore Search Service', () => {
       }
       const expectedResult = [
         {
-          field: 'form',
+          field: 'emptyForm',
           error: 'You must enter a value into at least one search field',
         },
       ]

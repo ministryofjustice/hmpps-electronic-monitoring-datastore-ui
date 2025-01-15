@@ -12,6 +12,12 @@
       <form method="post" novalidate id="order-search-form">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ page.title }}</h1>
         <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
+
+        {% if emptyFormError %}
+        <div class="govuk-form-group--error">
+          <p class="govuk-error-message">{{ emptyFormError.text }}</p>
+        {% endif %}
+
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {# TODO: Not enabled until we have alcohol monitoring #}
         {# {{ govukRadios({
@@ -123,6 +129,10 @@
           value: alias.value,
           errorMessage: alias.error
         }) }}
+        
+        {% if emptyFormError %}
+          </div>
+        {% endif %}
 
         {{ govukButton({
           text: "Search",
