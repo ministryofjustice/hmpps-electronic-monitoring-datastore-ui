@@ -73,10 +73,33 @@ describe('Datastore Search Service', () => {
 
   describe('validateInput', () => {
     it('returns a validation error when the form is empty', async () => {
-      // TODO: Test empty form validation
+      jest.spyOn(datastoreSearchService, 'isEmptySearch')
+      jest.spyOn(datastoreSearchService, 'validateInput')
+
+      const invalidInput = {
+        token: 'mockToken',
+        data: {
+          firstName: '',
+          'dob-day': '',
+          'dob-month': '',
+          'dob-year': '',
+        },
+      }
+      const expectedResult = [
+        {
+          field: 'form',
+          error: 'You must enter a value into at least one search field',
+        },
+      ]
+
+      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+
+      expect(datastoreSearchService.validateInput).toHaveBeenCalledWith(invalidInput)
+      expect(datastoreSearchService.isEmptySearch).toHaveBeenCalledWith(invalidInput.data)
+      expect(result).toEqual(expectedResult)
     })
 
-    it('returns validation errors when firstName is invalid', async () => {
+    it('returns a validation error when firstName is invalid', async () => {
       jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
 
       jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
@@ -113,7 +136,7 @@ describe('Datastore Search Service', () => {
       ])
     })
 
-    it('returns validation errors when dob is invalid', async () => {
+    it('returns a validation error when dob is invalid', async () => {
       jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
         result: false,
         error: {
