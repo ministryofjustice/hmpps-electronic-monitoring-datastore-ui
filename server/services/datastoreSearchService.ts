@@ -8,7 +8,7 @@ import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { ValidationResult } from '../models/Validation'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
-import Validator from '../utils/validators/formFieldValidator'
+import NameValidator from '../utils/validators/nameValidator'
 import { SearchOrderFormData } from '../models/form-data/searchOrder'
 
 export default class DatastoreSearchService {
@@ -21,7 +21,7 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  isEmptySearch(searchData: SearchOrderFormData): Boolean {
+  isEmptySearch(searchData: SearchOrderFormData): boolean {
     return Object.values(searchData).every(value => value === '')
   }
 
@@ -49,7 +49,7 @@ export default class DatastoreSearchService {
 
     ;['firstName', 'lastName', 'alias'].forEach(field => {
       const fieldValue = input.data[field as keyof SearchFormInput['data']]
-      const validator = Validator[field as keyof typeof Validator] as ZodTypeAny
+      const validator = NameValidator[field as keyof typeof NameValidator] as ZodTypeAny
 
       const validationResult = validator.safeParse(fieldValue)
 

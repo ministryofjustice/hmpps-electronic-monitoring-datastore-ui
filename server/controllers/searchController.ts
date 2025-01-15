@@ -11,13 +11,13 @@ import tabulateOrders from '../utils/tabulateOrders'
 import { ValidationResult } from '../models/Validation'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
-import Validator from '../utils/validators/formFieldValidator'
+import NameValidator from '../utils/validators/nameValidator'
 
 export default class SearchController {
   constructor(
     private readonly auditService: AuditService,
     private readonly datastoreSearchService: DatastoreSearchService,
-  ) { }
+  ) {}
 
   searchPage: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.SEARCH_PAGE, {
