@@ -1,17 +1,12 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { z, ZodError } from 'zod'
 import { Page } from '../services/auditService'
 import { AuditService, DatastoreSearchService } from '../services'
-
 import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchOrderFormDataModel, { SearchOrderFormData } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
 import tabulateOrders from '../utils/tabulateOrders'
 import { ValidationResult } from '../models/Validation'
-import { SearchFormInput } from '../types/SearchFormInput'
-import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
-import NameValidator from '../utils/validators/nameValidator'
 
 export default class SearchController {
   constructor(

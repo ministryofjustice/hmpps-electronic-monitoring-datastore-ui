@@ -1,12 +1,10 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import { ZodError } from 'zod'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 import { AuditService, DatastoreSearchService } from '../services'
 import SearchController from './searchController'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import orders from '../data/mockData/orders'
-
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import SearchOrderFormDataModel from '../models/form-data/searchOrder'
 
