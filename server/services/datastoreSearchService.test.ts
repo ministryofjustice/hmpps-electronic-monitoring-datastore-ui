@@ -29,45 +29,6 @@ describe('Datastore Search Service', () => {
     jest.resetAllMocks()
   })
 
-  it('should set up and tear down the tests successfully', async () => {
-    expect(true).toBe(true)
-  })
-
-  // describe('getOrders', () => {
-  //   it('should return data from the client - `searchForOrders`', async () => {
-  //     const searchItem: Order = {
-  //       dataType: 'am',
-  //       legacySubjectId: 1,
-  //     }
-  //     const expectedData: Order[] = orders
-  //     datastoreClient.searchForOrders.mockResolvedValue(expectedData)
-
-  //     const results = await datastoreSearchService.searchForOrders(searchItem)
-  //     expect(results).toEqual(expectedData)
-  //   })
-
-  //   it('should return data from the client - `searchOrders`', async () => {
-  //     const searchOrder: SearchFormInput = {
-  //       userToken: 'mockUserToken',
-  //       data: {
-  //         searchType: 'am',
-  //         legacySubjectId: '123',
-  //         firstName: 'John',
-  //         lastName: 'Doe',
-  //         alias: 'JD',
-  //         'dob-day': '01',
-  //         'dob-month': '01',
-  //         'dob-year': '1990',
-  //       },
-  //     }
-  //     const expectedData: Order[] = orders
-  //     datastoreClient.searchOrders.mockResolvedValue(expectedData)
-
-  //     const results = await datastoreSearchService.search(searchOrder)
-  //     expect(results).toEqual(expectedData)
-  //   })
-  // })
-
   describe('validateInput', () => {
     it('returns a validation error when the form is empty', async () => {
       jest.spyOn(datastoreSearchService, 'isEmptySearch')
@@ -243,22 +204,6 @@ describe('Datastore Search Service', () => {
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('10', '02', '2021', 'dob')
       expect(result).toEqual([])
-    })
-
-    // TODO: Additional tests:
-    // Generates input error if the input is empty
-    it('throws an error when form data contains no values', async () => {
-      // const emptyInput = {
-      //   token: 'mockToken',
-      //   data: {},
-      // }
-      // const result: ValidationResult = datastoreSearchService.validateInput(emptyInput)
-      // expect(result).toEqual([
-      //   {
-      //     field: 'form',
-      //     error: 'Search must contain at least one value',
-      //   },
-      // ])
     })
   })
 
