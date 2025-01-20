@@ -49,7 +49,7 @@ describe('Datastore Search Service', () => {
       }
       const expectedResult = [
         {
-          field: 'form',
+          field: 'emptyForm',
           error: 'You must enter a value into at least one search field',
         },
       ]
@@ -208,22 +208,6 @@ describe('Datastore Search Service', () => {
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('10', '02', '2021', 'dob')
       expect(result).toEqual([])
-    })
-
-    // TODO: Additional tests:
-    // Generates input error if the input is empty
-    it('throws an error when form data contains no values', async () => {
-      // const emptyInput = {
-      //   token: 'mockToken',
-      //   data: {},
-      // }
-      // const result: ValidationResult = datastoreSearchService.validateInput(emptyInput)
-      // expect(result).toEqual([
-      //   {
-      //     field: 'form',
-      //     error: 'Search must contain at least one value',
-      //   },
-      // ])
     })
   })
 

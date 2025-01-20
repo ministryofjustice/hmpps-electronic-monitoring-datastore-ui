@@ -29,7 +29,7 @@ export default class DatastoreSearchService {
 
     if (this.isEmptySearch(input.data)) {
       validationErrors.push({
-        field: 'form',
+        field: 'emptyForm',
         error: 'You must enter a value into at least one search field',
       })
       return validationErrors
