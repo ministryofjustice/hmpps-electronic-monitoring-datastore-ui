@@ -27,7 +27,8 @@ export default function routes(services: Services): Router {
   })
 
   get('/test-api', async (req, res, next) => {
-    const apiResult: JSON = await services.datastoreOrderService.confirmApi('4')
+    const { token } = res.locals.user
+    const apiResult: JSON = await services.datastoreOrderService.confirmApi(token)
     res.render('pages/apiTest', { data: JSON.stringify(apiResult) })
   })
 

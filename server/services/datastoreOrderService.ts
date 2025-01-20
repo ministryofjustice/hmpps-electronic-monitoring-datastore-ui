@@ -48,10 +48,9 @@ export default class DatastoreOrderService {
    * await getOrders
    */
 
-  async confirmApi(orderParameter: string): Promise<JSON> {
-    this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
-
-    const result = this.datastoreClient.confirmApi(orderParameter)
+  async confirmApi(token: string): Promise<JSON> {
+    this.datastoreClient.updateToken(token)
+    const result = this.datastoreClient.confirmApi('4')
     return result
   }
 }
