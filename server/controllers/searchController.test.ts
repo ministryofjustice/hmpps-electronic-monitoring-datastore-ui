@@ -241,9 +241,10 @@ describe('SearchController', () => {
         'dob-year': '2021',
       })
 
+      datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
       datastoreSearchService.search = jest.fn().mockResolvedValue([])
 
-      await searchController.view(req, res, next)
+      await searchController.searchResultsPage(req, res, next)
 
       expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(res.render).toHaveBeenCalledWith('pages/noResults')
