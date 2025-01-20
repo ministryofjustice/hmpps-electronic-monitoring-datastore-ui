@@ -1,14 +1,14 @@
 import { ZodTypeAny } from 'zod'
 import logger from '../../logger'
-import getSanitisedError from '../sanitisedError'
+import getSanitisedError, { SanitisedError } from '../sanitisedError'
 import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 import { ValidationResult } from '../models/Validation'
-import { DateValidator } from '../utils/validators/dateValidator'
-import Validator from '../utils/validators/formFieldValidator'
 import { SearchFormInput } from '../types/SearchFormInput'
+import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
+import Validator from '../utils/validators/formFieldValidator'
 
 export default class DatastoreSearchService {
   private readonly datastoreClient: DatastoreClient
@@ -20,10 +20,10 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  async search(input: SearchFormInput): Promise<Order[] | ValidationResult> {
+  validateInput(input: SearchFormInput): ValidationResult {
     const validationErrors: ValidationResult = []
 
-    const isDobValid = DateValidator.validateDate(
+    const isDobValid: DateValidationResponse = DateValidator.validateDate(
       input.data['dob-day'],
       input.data['dob-month'],
       input.data['dob-year'],
@@ -47,19 +47,21 @@ export default class DatastoreSearchService {
         })
       }
     })
-    // Return validation errors if any exist
-    if (validationErrors.length > 0) {
-      return validationErrors
-    }
 
+    return validationErrors
+  }
+
+  async search(input: SearchFormInput): Promise<Order[]> {
     try {
       this.datastoreClient.updateToken(input.userToken)
 
       const results = this.datastoreClient.searchOrders(input)
       return results
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving search results')
-      return error
+      const sanitisedError: SanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, 'Error retrieving search results')
+      sanitisedError.message = 'Error retrieving search results'
+      throw sanitisedError
     }
   }
 }
