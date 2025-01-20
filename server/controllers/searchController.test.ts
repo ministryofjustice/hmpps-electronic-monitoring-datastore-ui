@@ -5,17 +5,12 @@ import { AuditService, DatastoreSearchService } from '../services'
 import SearchController from './searchController'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import orders from '../data/mockData/orders'
-
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import SearchOrderFormDataModel from '../models/form-data/searchOrder'
-import { ZodError } from 'zod'
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
-jest.mock('../utils/tabulateOrders')
-
 jest.mock('../utils/tabulateOrders', () => jest.fn((): unknown[] => ['mockOrders']))
-// jest.mock('../models/form-data/searchOrder')
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()
@@ -27,10 +22,8 @@ const auditService = {
 
 const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
 
-// datastoreSearchService.searchForOrders = jest.fn().mockResolvedValue(orders)
-
-jest.spyOn(SearchForOrdersViewModel, "construct")
-jest.spyOn(SearchOrderFormDataModel, "parse")
+jest.spyOn(SearchForOrdersViewModel, 'construct')
+jest.spyOn(SearchOrderFormDataModel, 'parse')
 
 describe('SearchController', () => {
   let searchController: SearchController
@@ -69,8 +62,8 @@ describe('SearchController', () => {
             day: '',
             month: '',
             year: '',
-          }
-        }
+          },
+        },
       }
 
       await searchController.searchPage(req, res, next)
@@ -98,7 +91,7 @@ describe('SearchController', () => {
         firstName: {
           value: 'John123',
           error: {
-            text: 'First name must consist of letters only'
+            text: 'First name must consist of letters only',
           },
         },
         lastName: {
@@ -178,11 +171,18 @@ describe('SearchController', () => {
     })
 
     it('should redirect to search with appropriate error when no search data supplied', async () => {
+      const validationErrors = [
+        {
+          field: 'form',
+          error: 'You must enter a value into at least one search field',
+        },
+      ]
+
+      datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce(validationErrors)
+
       req = createMockRequest({
         body: {
-          // _csrf: 'fake',
-          // subjectId: '',
-          firstName: 'Steve',
+          firstName: '',
           lastName: '',
           alias: '',
           'dob-day': '',
@@ -205,22 +205,18 @@ describe('SearchController', () => {
         } as session.Session & Partial<SessionData>,
       })
 
-      // ; (SearchOrderFormDataModel.parse as jest.Mock).mockImplementation(() => {
-      //   throw new Error("test")
-      // })
-
       await searchController.searchResultsPage(req, res, next)
 
-      // expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
+      expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(req.body)
-      // expect(req.session.validationErrors).toEqual([{ field: 'firstName', error: 'Invalid first name' }])
+      expect(req.session.validationErrors).toEqual(validationErrors)
       expect(res.redirect).toHaveBeenCalledWith('search')
     })
 
     it('should render search results view when valid orders are returned', async () => {
       datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
       datastoreSearchService.search = jest.fn().mockResolvedValue(orders)
-      //mockOrders matches tabulateOrders mocked return
+      // mockOrders matches tabulateOrders mocked return
       const mockOrders = ['mockOrders'] as string[]
 
       await searchController.searchResultsPage(req, res, next)

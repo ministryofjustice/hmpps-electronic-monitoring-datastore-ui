@@ -2,11 +2,8 @@ import { ZodError } from 'zod'
 import DatastoreSearchService from './datastoreSearchService'
 import orders from '../data/mockData/orders'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
-
-import { Order } from '../interfaces/order'
 import { DateValidator } from '../utils/validators/dateValidator'
-import Validator from '../utils/validators/formFieldValidator'
-import { SearchFormInput } from '../types/SearchFormInput'
+import NameValidator from '../utils/validators/nameValidator'
 import { ValidationResult } from '../models/Validation'
 import getSanitisedError from '../sanitisedError'
 
@@ -37,10 +34,37 @@ describe('Datastore Search Service', () => {
   })
 
   describe('validateInput', () => {
-    it('returns validation errors when firstName is invalid', async () => {
+    it('returns a validation error when the form is empty', async () => {
+      jest.spyOn(datastoreSearchService, 'isEmptySearch')
+      jest.spyOn(datastoreSearchService, 'validateInput')
+
+      const invalidInput = {
+        token: 'mockToken',
+        data: {
+          firstName: '',
+          'dob-day': '',
+          'dob-month': '',
+          'dob-year': '',
+        },
+      }
+      const expectedResult = [
+        {
+          field: 'form',
+          error: 'You must enter a value into at least one search field',
+        },
+      ]
+
+      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+
+      expect(datastoreSearchService.validateInput).toHaveBeenCalledWith(invalidInput)
+      expect(datastoreSearchService.isEmptySearch).toHaveBeenCalledWith(invalidInput.data)
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('returns a validation error when firstName is invalid', async () => {
       jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
 
-      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+      jest.spyOn(NameValidator.firstName, 'safeParse').mockImplementation(() => {
         return {
           success: false,
           error: new ZodError([
@@ -65,7 +89,7 @@ describe('Datastore Search Service', () => {
 
       const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
 
-      expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John123')
+      expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John123')
       expect(result).toEqual([
         {
           field: 'firstName',
@@ -74,7 +98,7 @@ describe('Datastore Search Service', () => {
       ])
     })
 
-    it('returns validation errors when dob is invalid', async () => {
+    it('returns a validation error when dob is invalid', async () => {
       jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
         result: false,
         error: {
@@ -84,7 +108,7 @@ describe('Datastore Search Service', () => {
         },
       })
 
-      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+      jest.spyOn(NameValidator.firstName, 'safeParse').mockImplementation(() => {
         return { success: true, data: '' }
       })
 
@@ -121,7 +145,7 @@ describe('Datastore Search Service', () => {
         },
       })
 
-      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+      jest.spyOn(NameValidator.firstName, 'safeParse').mockImplementation(() => {
         return {
           success: false,
           error: new ZodError([
@@ -147,7 +171,7 @@ describe('Datastore Search Service', () => {
       const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
 
       // Assertions
-      expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John123')
+      expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John123')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
       expect(result).toEqual([
         {
@@ -164,7 +188,7 @@ describe('Datastore Search Service', () => {
 
     it('returns no errors when form data is valid', async () => {
       jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
-      jest.spyOn(Validator.firstName, 'safeParse').mockImplementation(() => {
+      jest.spyOn(NameValidator.firstName, 'safeParse').mockImplementation(() => {
         return { success: true, data: '' }
       })
 
@@ -181,7 +205,7 @@ describe('Datastore Search Service', () => {
       const result: ValidationResult = datastoreSearchService.validateInput(validInput)
 
       // Assertions
-      expect(Validator.firstName.safeParse).toHaveBeenCalledWith('John')
+      expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('10', '02', '2021', 'dob')
       expect(result).toEqual([])
     })

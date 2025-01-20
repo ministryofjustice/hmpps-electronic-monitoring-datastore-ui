@@ -1,23 +1,18 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { z, ZodError } from 'zod'
 import { Page } from '../services/auditService'
 import { AuditService, DatastoreSearchService } from '../services'
-
 import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchOrderFormDataModel, { SearchOrderFormData } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
 import tabulateOrders from '../utils/tabulateOrders'
 import { ValidationResult } from '../models/Validation'
-import { SearchFormInput } from '../types/SearchFormInput'
-import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
-import Validator from '../utils/validators/formFieldValidator'
 
 export default class SearchController {
   constructor(
     private readonly auditService: AuditService,
     private readonly datastoreSearchService: DatastoreSearchService,
-  ) { }
+  ) {}
 
   searchPage: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.SEARCH_PAGE, {
@@ -48,11 +43,6 @@ export default class SearchController {
     })
 
     const validatedFormData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
-
-    // if (true) {
-    // req.session.formData = validatedFormData
-    // res.redirect('search')
-    // }
 
     // Validate input
     const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({

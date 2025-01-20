@@ -42,8 +42,9 @@
         {{ govukInput({
           label: {
             text: "Legacy Subject Id",
-            classes: "govuk-label--m"
+            classes: "govuk-label--s"
           },
+          classes: "govuk-!-width-two-thirds",
           id: "subject-id",
           name: "subjectId",
           value: legacySubjectId.value,
@@ -52,7 +53,8 @@
 
         {{ govukInput({
           label: {
-            text: "First name"
+            text: "First name",
+            classes: "govuk-label--s"
           },
           classes: "govuk-!-width-two-thirds",
           id: "first-name",
@@ -63,7 +65,8 @@
 
         {{ govukInput({
           label: {
-            text: "Last name"
+            text: "Last name",
+            classes: "govuk-label--s"
           },
           classes: "govuk-!-width-two-thirds",
           id: "last-name",
@@ -78,7 +81,8 @@
           fieldset: {
             legend: {
               text: "Date of birth",
-              isPageHeading: false
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--s"
             }
           },
           hint: {
@@ -110,7 +114,8 @@
         
         {{ govukInput({
           label: {
-            text: "Alias"
+            text: "Alias",
+            classes: "govuk-label--s"
           },
           classes: "govuk-!-width-two-thirds",
           id: "alias",

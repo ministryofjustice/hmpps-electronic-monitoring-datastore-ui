@@ -4,11 +4,11 @@ import getSanitisedError, { SanitisedError } from '../sanitisedError'
 import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
-
 import { ValidationResult } from '../models/Validation'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
-import Validator from '../utils/validators/formFieldValidator'
+import NameValidator from '../utils/validators/nameValidator'
+import { SearchOrderFormData } from '../models/form-data/searchOrder'
 
 export default class DatastoreSearchService {
   private readonly datastoreClient: DatastoreClient
@@ -20,8 +20,20 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
+  isEmptySearch(searchData: SearchOrderFormData): boolean {
+    return Object.values(searchData).every(value => value === '')
+  }
+
   validateInput(input: SearchFormInput): ValidationResult {
     const validationErrors: ValidationResult = []
+
+    if (this.isEmptySearch(input.data)) {
+      validationErrors.push({
+        field: 'form',
+        error: 'You must enter a value into at least one search field',
+      })
+      return validationErrors
+    }
 
     const isDobValid: DateValidationResponse = DateValidator.validateDate(
       input.data['dob-day'],
@@ -36,7 +48,7 @@ export default class DatastoreSearchService {
 
     ;['firstName', 'lastName', 'alias'].forEach(field => {
       const fieldValue = input.data[field as keyof SearchFormInput['data']]
-      const validator = Validator[field as keyof typeof Validator] as ZodTypeAny
+      const validator = NameValidator[field as keyof typeof NameValidator] as ZodTypeAny
 
       const validationResult = validator.safeParse(fieldValue)
 
