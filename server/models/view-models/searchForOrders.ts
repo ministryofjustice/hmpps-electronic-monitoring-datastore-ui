@@ -1,5 +1,5 @@
 import { SearchOrderFormData } from '../form-data/searchOrder'
-import { DateField, getError, TextField } from '../utils'
+import { DateField, ErrorMessage, getError, TextField } from '../utils'
 import { ValidationResult } from '../Validation'
 
 type SearchForOrdersViewModel = {
@@ -9,6 +9,7 @@ type SearchForOrdersViewModel = {
   lastName?: TextField
   alias?: TextField
   dob: DateField
+  emptyFormError?: ErrorMessage
 }
 
 const createViewModelFromFormData = (
@@ -37,6 +38,7 @@ const createViewModelFromFormData = (
       },
       error: getError(validationErrors, 'dob'),
     },
+    emptyFormError: getError(validationErrors, 'emptyForm') || undefined,
   }
 }
 

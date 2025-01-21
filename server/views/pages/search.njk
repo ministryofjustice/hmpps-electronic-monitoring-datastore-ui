@@ -12,6 +12,12 @@
       <form method="post" novalidate id="order-search-form">
         <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ page.title }}</h1>
         <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
+
+        {% if emptyFormError %}
+        <div class="govuk-form-group--error">
+          <p class="govuk-error-message">{{ emptyFormError.text }}</p>
+        {% endif %}
+
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         {# TODO: Not enabled until we have alcohol monitoring #}
         {# {{ govukRadios({
@@ -42,8 +48,9 @@
         {{ govukInput({
           label: {
             text: "Legacy Subject Id",
-            classes: "govuk-label--m"
+            classes: "govuk-label--s"
           },
+          classes: "govuk-!-width-two-thirds",
           id: "subject-id",
           name: "subjectId",
           value: legacySubjectId.value,
@@ -52,7 +59,8 @@
 
         {{ govukInput({
           label: {
-            text: "First name"
+            text: "First name",
+            classes: "govuk-label--s"
           },
           classes: "govuk-!-width-two-thirds",
           id: "first-name",
@@ -63,7 +71,8 @@
 
         {{ govukInput({
           label: {
-            text: "Last name"
+            text: "Last name",
+            classes: "govuk-label--s"
           },
           classes: "govuk-!-width-two-thirds",
           id: "last-name",
@@ -78,7 +87,8 @@
           fieldset: {
             legend: {
               text: "Date of birth",
-              isPageHeading: false
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--s"
             }
           },
           hint: {
@@ -110,7 +120,8 @@
         
         {{ govukInput({
           label: {
-            text: "Alias"
+            text: "Alias",
+            classes: "govuk-label--s"
           },
           classes: "govuk-!-width-two-thirds",
           id: "alias",
@@ -118,6 +129,10 @@
           value: alias.value,
           errorMessage: alias.error
         }) }}
+        
+        {% if emptyFormError %}
+          </div>
+        {% endif %}
 
         {{ govukButton({
           text: "Search",

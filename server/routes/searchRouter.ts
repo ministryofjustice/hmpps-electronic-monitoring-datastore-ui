@@ -1,6 +1,7 @@
 import { type RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
 import type { Services } from '../services'
+
 import SearchController from '../controllers/searchController'
 
 export default function searchRouter({ auditService, datastoreSearchService }: Services): Router {
@@ -10,8 +11,8 @@ export default function searchRouter({ auditService, datastoreSearchService }: S
 
   const searchController = new SearchController(auditService, datastoreSearchService)
 
-  get('/', searchController.search)
-  post('/', searchController.view)
+  get('/', searchController.searchPage)
+  post('/', searchController.searchResultsPage)
 
   return router
 }

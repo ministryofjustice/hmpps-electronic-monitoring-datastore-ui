@@ -42,9 +42,9 @@ export default class DatastoreClient {
     return result
   }
 
-  async confirmApi(orderParameter: string): Promise<JSON> {
+  async confirmApi(): Promise<JSON> {
     const result: JSON = await this.restClient.get({
-      path: `/search/cases/${orderParameter}`,
+      path: `/search/confirmConnection`,
     })
 
     return result

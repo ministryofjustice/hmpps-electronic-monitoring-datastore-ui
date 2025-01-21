@@ -1,14 +1,14 @@
 import { ZodTypeAny } from 'zod'
 import logger from '../../logger'
-import getSanitisedError from '../sanitisedError'
+import getSanitisedError, { SanitisedError } from '../sanitisedError'
 import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
-
 import { ValidationResult } from '../models/Validation'
-import { DateValidator } from '../utils/validators/dateValidator'
-import Validator from '../utils/validators/formFieldValidator'
 import { SearchFormInput } from '../types/SearchFormInput'
+import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
+import NameValidator from '../utils/validators/nameValidator'
+import { SearchOrderFormData } from '../models/form-data/searchOrder'
 
 export default class DatastoreSearchService {
   private readonly datastoreClient: DatastoreClient
@@ -20,10 +20,22 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  async search(input: SearchFormInput): Promise<Order[] | ValidationResult> {
+  isEmptySearch(searchData: SearchOrderFormData): boolean {
+    return Object.values(searchData).every(value => value === '')
+  }
+
+  validateInput(input: SearchFormInput): ValidationResult {
     const validationErrors: ValidationResult = []
 
-    const isDobValid = DateValidator.validateDate(
+    if (this.isEmptySearch(input.data)) {
+      validationErrors.push({
+        field: 'emptyForm',
+        error: 'You must enter a value into at least one search field',
+      })
+      return validationErrors
+    }
+
+    const isDobValid: DateValidationResponse = DateValidator.validateDate(
       input.data['dob-day'],
       input.data['dob-month'],
       input.data['dob-year'],
@@ -36,7 +48,7 @@ export default class DatastoreSearchService {
 
     ;['firstName', 'lastName', 'alias'].forEach(field => {
       const fieldValue = input.data[field as keyof SearchFormInput['data']]
-      const validator = Validator[field as keyof typeof Validator] as ZodTypeAny
+      const validator = NameValidator[field as keyof typeof NameValidator] as ZodTypeAny
 
       const validationResult = validator.safeParse(fieldValue)
 
@@ -47,19 +59,21 @@ export default class DatastoreSearchService {
         })
       }
     })
-    // Return validation errors if any exist
-    if (validationErrors.length > 0) {
-      return validationErrors
-    }
 
+    return validationErrors
+  }
+
+  async search(input: SearchFormInput): Promise<Order[]> {
     try {
       this.datastoreClient.updateToken(input.userToken)
 
       const results = this.datastoreClient.searchOrders(input)
       return results
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving search results')
-      return error
+      const sanitisedError: SanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, 'Error retrieving search results')
+      sanitisedError.message = 'Error retrieving search results'
+      throw sanitisedError
     }
   }
 }

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import strings from '../../constants/strings'
 
-export default class Validator {
+export default class NameValidator {
   static firstName = z
     .string()
     .regex(/^[a-zA-Z]*$/, { message: strings.errors.invalidFirstName })
