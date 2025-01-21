@@ -3,7 +3,6 @@ import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
 import orders from './mockData/orders'
 import { SearchFormInput } from '../types/SearchFormInput'
-import OrderService from '../services/orderService'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderInformation } from '../interfaces/orderInformation'
 
@@ -34,6 +33,7 @@ export default class DatastoreClient {
     return results
   }
 
+  // eslint-disable-next-line  @typescript-eslint/no-unused-vars
   async searchForOrders(critera: Order): Promise<Order[]> {
     // TODO: This method should be a post. criteria will be validated search formdata
     // const results: Order[] = await this.restClient.get({
@@ -52,6 +52,7 @@ export default class DatastoreClient {
     return result
   }
 
+  // eslint-disable-next-line  @typescript-eslint/no-unused-vars
   async confirmApi(orderParameter: string): Promise<JSON> {
     const result: JSON = await this.restClient.get({
       path: `/search/confirmConnection`,

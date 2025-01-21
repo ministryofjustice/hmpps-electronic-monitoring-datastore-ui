@@ -32,7 +32,7 @@ export default class OrderController {
         services: true,
       }
       res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
-    } catch (error) {
+    } catch {
       res.status(500).send('Error fetching data')
     }
   }

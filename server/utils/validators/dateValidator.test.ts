@@ -1,4 +1,4 @@
-import { DateValidator, MIN_YEAR, LAST_HISTORICAL_DATE } from './dateValidator'
+import { DateValidator } from './dateValidator'
 import strings from '../../constants/strings'
 
 describe('DateValidator', () => {
