@@ -62,21 +62,21 @@ export default class SearchController {
         data: validatedFormData,
       })
 
-    // Clear session data as it is no longer required
-    req.session.validationErrors = undefined
-    req.session.formData = undefined
+      // Clear session data as it is no longer required
+      req.session.validationErrors = undefined
+      req.session.formData = undefined
 
-    await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
-      who: res.locals.user.username,
-      correlationId: req.id,
-    })
+      await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
+        who: res.locals.user.username,
+        correlationId: req.id,
+      })
 
-    // If results is Order[], proceed to results view
-    if (results.length > 0) {
-      res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
-    } else {
-      res.render('pages/noResults')
+      // If results is Order[], proceed to results view
+      if (results.length > 0) {
+        res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
+      } else {
+        res.render('pages/noResults')
+      }
     }
   }
-}
 }

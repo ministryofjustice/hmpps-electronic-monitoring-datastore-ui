@@ -40,7 +40,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
   //   try {
   //     let myDataObj = orderController.getSummary(param1, param2)
   //     res.render('page', {data: myDataObj})
-  //   } catch (error) {
+  //   } catch {
   //     res.status(500).send('Error fetching data')
   //   }
 
