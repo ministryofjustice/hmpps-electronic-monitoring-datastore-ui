@@ -50,7 +50,13 @@ const auditConfig = () => {
 
 export const featureFlags = {
   showDocuments: get('FLAG_SHOWDOCUMENTS', true, requiredInProduction),
-  fakeApi: get('FLAG_FAKEAPIDATA', false, requiredInProduction),
+}
+
+const apiEndpoints = {
+  searchOrders: '/search/orders',
+  getCases: '/search/cases',
+  confirmAPI: '/search/confirmConnection',
+  getOrderSummary: '/orders/getOrderSummary',
 }
 
 export default {
@@ -70,6 +76,7 @@ export default {
     tls_enabled: get('REDIS_TLS_ENABLED', 'false'),
   },
   featureFlags,
+  apiEndpoints,
   session: {
     secret: get('SESSION_SECRET', 'app-insecure-default-session', requiredInProduction),
     expiryMinutes: Number(get('WEB_SESSION_TIMEOUT_IN_MINUTES', 120)),

@@ -50,12 +50,12 @@ describe('EM Datastore Search Client', () => {
     nock.abortPendingRequests()
     nock.cleanAll()
   })
+
   describe('searchOrders', () => {
+    const endpoint = '/search/orders'
+
     it('should return a list of orders from the API', async () => {
-      fakeClient
-        .post('/search/orders', searchOrder.data)
-        .matchHeader('Authorization', `Bearer ${token}`)
-        .reply(200, orders)
+      fakeClient.post(endpoint, searchOrder.data).matchHeader('Authorization', `Bearer ${token}`).reply(200, orders)
 
       const expected: Order[] = orders
 
@@ -65,7 +65,7 @@ describe('EM Datastore Search Client', () => {
     })
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
-      fakeClient.post('/search/orders', searchOrder.data).matchHeader('Authorization', `Bearer ${token}`).reply(401)
+      fakeClient.post(endpoint, searchOrder.data).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
       await expect(datastoreClient.searchOrders(searchOrder)).rejects.toThrow('Unauthorized')
     })
@@ -73,10 +73,11 @@ describe('EM Datastore Search Client', () => {
 
   describe('getCases', () => {
     const expected: Order = orders[0]
+    const endpoint = '/search/cases'
 
     it('should return a single order from the api', async () => {
       fakeClient
-        .get(`/search/cases/${searchItem.legacySubjectId}`)
+        .get(`${endpoint}/${searchItem.legacySubjectId}`)
         .matchHeader('Authorization', `Bearer ${token}`)
         .reply(200, expected)
       const results = await datastoreClient.getCases(searchItem)
@@ -85,7 +86,7 @@ describe('EM Datastore Search Client', () => {
 
     it('should handle 404 Not Found when the case does not exist', async () => {
       fakeClient
-        .get(`/search/cases/${searchItem.legacySubjectId}`)
+        .get(`${endpoint}/${searchItem.legacySubjectId}`)
         .matchHeader('Authorization', `Bearer ${token}`)
         .reply(404)
 
@@ -94,7 +95,7 @@ describe('EM Datastore Search Client', () => {
 
     it('should handle 401 Unauthorized when the token is invalid', async () => {
       fakeClient
-        .get(`/search/cases/${searchItem.legacySubjectId}`)
+        .get(`${endpoint}/${searchItem.legacySubjectId}`)
         .matchHeader('Authorization', `Bearer ${token}`)
         .reply(401)
 
@@ -103,10 +104,12 @@ describe('EM Datastore Search Client', () => {
   })
 
   describe('getOrderSummary', () => {
+    const endpoint = '/orders/getOrderSummary'
+
     it('should fetch order summary with correct parameters', async () => {
       const expectedResult = mockOrderInformation
 
-      fakeClient.get(`/orders/getOrderSummary/${orderInfo.orderId}`).reply(200, expectedResult)
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
       const result = await datastoreClient.getOrderSummary(orderInfo)
 
@@ -121,7 +124,7 @@ describe('EM Datastore Search Client', () => {
       }
 
       nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`/orders/getOrderSummary/${orderInfoWithNullToken.orderId}`)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access

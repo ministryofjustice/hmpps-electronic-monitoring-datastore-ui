@@ -1,5 +1,5 @@
 import RestClient from './restClient'
-import config, { ApiConfig, featureFlags } from '../config'
+import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
@@ -24,10 +24,8 @@ export default class DatastoreClient {
   async searchOrders(input: SearchFormInput): Promise<Order[]> {
     const { data } = input
 
-    const endpoint: string = featureFlags.fakeApi ? 'orders-old' : 'orders'
-
     const results: Order[] = await this.restClient.post<Order[]>({
-      path: `/search/${endpoint}`,
+      path: config.apiEndpoints.searchOrders,
       data,
     })
 
@@ -36,7 +34,7 @@ export default class DatastoreClient {
 
   async getCases(critera: Order): Promise<Order> {
     const result: Order = await this.restClient.get({
-      path: `/search/cases/${critera.legacySubjectId}`,
+      path: `${config.apiEndpoints.getCases}/${critera.legacySubjectId}`,
     })
 
     return result
@@ -44,7 +42,7 @@ export default class DatastoreClient {
 
   async confirmApi(): Promise<JSON> {
     const result: JSON = await this.restClient.get({
-      path: `/search/confirmConnection`,
+      path: config.apiEndpoints.confirmAPI,
     })
 
     return result
@@ -53,10 +51,8 @@ export default class DatastoreClient {
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     const { orderId } = input
 
-    const endpoint: string = featureFlags.fakeApi ? 'getMockOrderSummary' : 'getOrderSummary'
-
     const result: OrderInformation = await this.restClient.get({
-      path: `/orders/${endpoint}/${orderId}`,
+      path: `${config.apiEndpoints.getOrderSummary}/${orderId}`,
     })
 
     return result
