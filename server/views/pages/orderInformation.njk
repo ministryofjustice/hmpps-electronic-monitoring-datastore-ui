@@ -151,54 +151,5 @@
     }) }} {% endif %}
 
   </div>
-  
-  {% if showDocumentsFlag %}
-    <hr class="govuk-section-break govuk-section-break--l">
-  
-    <h2 class="govuk-heading-m"> All documents </h2>
-  
-    {{ emsDateFilter() }}
-  
-
-
-    {% set orderDocumentsHtml %}
-      {{ emsSortableTable(data.documents.orderDocuments, data.documents.pageSize) }}
-    {% endset %}
-
-    {% include "../components/defaultReportsHtml.njk" %}
-  
-    {{ govukTabs({
-      items: [
-        {
-          label: "Order documents",
-          id: "order-documents",
-          panel: {
-            html: orderDocumentsHtml
-          }
-        },
-        {
-          label: "Variations",
-          id: "variations",
-          panel: {
-            html: variationsHtml
-          }
-        },
-        {
-          label: "Enforcements",
-          id: "enforcements",
-          panel: {
-            html: enforcementsHtml
-          }
-        },
-        {
-          label: "Visit reports",
-          id: "visit-reports",
-          panel: {
-            html: visitReportsHtml
-          }
-        }
-      ]
-    }) }}
-  {% endif%}
 
 {% endblock %}

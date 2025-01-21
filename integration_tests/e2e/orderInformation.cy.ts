@@ -75,60 +75,63 @@ context('Order Information', () => {
     })
   })
 
-  // describe('Date filter', () => {
-  //   it('Renders the clear filter component after typing in a date range and clicking apply', () => {
-  //     const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
+  // TODO: Document tests disabled for now, as documents not in current build
+  xdescribe('Date filter', () => {
+    it('Renders the clear filter component after typing in a date range and clicking apply', () => {
+      const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
 
-  //     orderInformationPage.dateFilter().within(() => {
-  //       // From date
-  //       orderInformationPage.dateFilterRow().find('#start-date-day').type('01')
-  //       orderInformationPage.dateFilterRow().find('#start-date-month').type('10')
-  //       orderInformationPage.dateFilterRow().find('#start-date-year').type('2023')
+      orderInformationPage.dateFilter().within(() => {
+        // From date
+        orderInformationPage.dateFilterRow().find('#start-date-day').type('01')
+        orderInformationPage.dateFilterRow().find('#start-date-month').type('10')
+        orderInformationPage.dateFilterRow().find('#start-date-year').type('2023')
 
-  //       // To date
-  //       orderInformationPage.dateFilterRow().find('#end-date-day').type('15')
-  //       orderInformationPage.dateFilterRow().find('#end-date-month').type('10')
-  //       orderInformationPage.dateFilterRow().find('#end-date-year').type('2023')
+        // To date
+        orderInformationPage.dateFilterRow().find('#end-date-day').type('15')
+        orderInformationPage.dateFilterRow().find('#end-date-month').type('10')
+        orderInformationPage.dateFilterRow().find('#end-date-year').type('2023')
 
-  //       orderInformationPage.applyButton().click()
-  //       orderInformationPage.clearFilterLink('x clear filter').should('be.visible')
-  //     })
-  //   })
-  // })
+        orderInformationPage.applyButton().click()
+        orderInformationPage.clearFilterLink('x clear filter').should('be.visible')
+      })
+    })
+  })
 
-  // describe('Document tabs', () => {
-  //   it('Contains expected tabs', () => {
-  //     const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
-  //     orderInformationPage.tabsList().within(() => {
-  //       orderInformationPage.documentsTab('Order documents').should('be.visible')
-  //       orderInformationPage.documentsTab('Variations').should('be.visible')
-  //       orderInformationPage.documentsTab('Enforcements').should('be.visible')
-  //       orderInformationPage.documentsTab('Visit reports').should('be.visible')
-  //     })
-  //   })
-  // })
+  // TODO: Document tests commented out for now, as documents not in current build
+  xdescribe('Document tabs', () => {
+    it('Contains expected tabs', () => {
+      const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
+      orderInformationPage.tabsList().within(() => {
+        orderInformationPage.documentsTab('Order documents').should('be.visible')
+        orderInformationPage.documentsTab('Variations').should('be.visible')
+        orderInformationPage.documentsTab('Enforcements').should('be.visible')
+        orderInformationPage.documentsTab('Visit reports').should('be.visible')
+      })
+    })
+  })
 
-  // describe('Document Panels', () => {
-  //   it('Displays the correct panel when the Order Documents tab is clicked', () => {
-  //     const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
+  // TODO: Document tests commented out for now, as documents not in current build
+  xdescribe('Document Panels', () => {
+    it('Displays the correct panel when the Order Documents tab is clicked', () => {
+      const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
 
-  //     orderInformationPage.tabsList().within(() => {
-  //       orderInformationPage.documentsTab('Order documents').click()
-  //     })
+      orderInformationPage.tabsList().within(() => {
+        orderInformationPage.documentsTab('Order documents').click()
+      })
 
-  //     orderInformationPage.tabsPanel('#order-documents').should('be.visible')
-  //     orderInformationPage.tabsPanel('#variations').should('not.be.visible')
-  //   })
+      orderInformationPage.tabsPanel('#order-documents').should('be.visible')
+      orderInformationPage.tabsPanel('#variations').should('not.be.visible')
+    })
 
-  //   it('Displays the correct panel when the Variations tab is clicked', () => {
-  //     const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
+    it('Displays the correct panel when the Variations tab is clicked', () => {
+      const orderInformationPage = Page.verifyOnPage(OrderInformationPage)
 
-  //     orderInformationPage.tabsList().within(() => {
-  //       orderInformationPage.documentsTab('Variations').click()
-  //     })
+      orderInformationPage.tabsList().within(() => {
+        orderInformationPage.documentsTab('Variations').click()
+      })
 
-  //     orderInformationPage.tabsPanel('#variations').should('be.visible')
-  //     orderInformationPage.tabsPanel('#order-documents').should('not.be.visible')
-  //   })
-  // })
+      orderInformationPage.tabsPanel('#variations').should('be.visible')
+      orderInformationPage.tabsPanel('#order-documents').should('not.be.visible')
+    })
+  })
 })

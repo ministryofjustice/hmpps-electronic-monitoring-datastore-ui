@@ -48,10 +48,6 @@ const auditConfig = () => {
   }
 }
 
-export const featureFlags = {
-  showDocuments: get('FLAG_SHOWDOCUMENTS', true, requiredInProduction),
-}
-
 const apiEndpoints = {
   searchOrders: '/search/orders',
   getCases: '/search/cases',
@@ -75,7 +71,6 @@ export default {
     password: process.env.REDIS_AUTH_TOKEN,
     tls_enabled: get('REDIS_TLS_ENABLED', 'false'),
   },
-  featureFlags,
   apiEndpoints,
   session: {
     secret: get('SESSION_SECRET', 'app-insecure-default-session', requiredInProduction),
