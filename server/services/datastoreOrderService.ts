@@ -50,7 +50,7 @@ export default class DatastoreOrderService {
 
   async confirmApi(token: string): Promise<JSON> {
     this.datastoreClient.updateToken(token)
-    const result = this.datastoreClient.confirmApi('4')
+    const result = this.datastoreClient.confirmApi()
     return result
   }
 }

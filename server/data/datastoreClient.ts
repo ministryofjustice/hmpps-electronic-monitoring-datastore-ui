@@ -42,8 +42,7 @@ export default class DatastoreClient {
     return result
   }
 
-  // eslint-disable-next-line  @typescript-eslint/no-unused-vars
-  async confirmApi(orderParameter: string): Promise<JSON> {
+  async confirmApi(): Promise<JSON> {
     const result: JSON = await this.restClient.get({
       path: `/search/confirmConnection`,
     })
