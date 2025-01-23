@@ -4,6 +4,9 @@ import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderInformation } from '../interfaces/orderInformation'
+import { ContactEventModel, ContactEvents, ContactEvent } from '../models/contactEvents'
+import { IncidentEventModel, IncidentEvents, IncidentEvent } from '../models/incidentEvents'
+import { MonitoringEventModel, MonitoringEvents, MonitoringEvent } from '../models/monitoringEvents'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -56,5 +59,41 @@ export default class DatastoreClient {
     })
 
     return result
+  }
+
+  async getMonitoringEvents(input: OrderRequest): Promise<MonitoringEvent[]> {
+    const { orderId } = input
+
+    const result: MonitoringEvents = await this.restClient.get({
+      path: `/orders/${orderId}/monitoring-events`,
+    })
+
+    const events = result.events.map(event => MonitoringEventModel.parse(event))
+
+    return events
+  }
+
+  async getIncidentEvents(input: OrderRequest): Promise<IncidentEvent[]> {
+    const { orderId } = input
+
+    const result: IncidentEvents = await this.restClient.get({
+      path: `/orders/${orderId}/incident-events`,
+    })
+
+    const events = result.events.map(event => IncidentEventModel.parse(event))
+
+    return events
+  }
+
+  async getContactHistory(input: OrderRequest): Promise<ContactEvent[]> {
+    const { orderId } = input
+
+    const result: ContactEvents = await this.restClient.get({
+      path: `/orders/${orderId}/contact-events`,
+    })
+
+    const events = result.events.map(event => ContactEventModel.parse(event))
+
+    return events
   }
 }
