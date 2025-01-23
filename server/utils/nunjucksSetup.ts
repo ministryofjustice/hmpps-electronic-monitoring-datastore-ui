@@ -4,6 +4,7 @@ import nunjucks from 'nunjucks'
 import express from 'express'
 import fs from 'fs'
 import allMojFilters from '@ministryofjustice/frontend/moj/filters/all'
+import govUKFilters from '@x-govuk/govuk-prototype-filters'
 import { initialiseName, makePageTitle } from './utils'
 import config from '../config'
 import logger from '../../logger'
@@ -48,5 +49,8 @@ export default function nunjucksSetup(app: express.Express): void {
   const mojFilters = Object.assign(allMojFilters())
   Object.keys(mojFilters).forEach(filterName => {
     njkEnv.addFilter(filterName, mojFilters[filterName])
+  })
+  Object.keys(govUKFilters).forEach(filterName => {
+    njkEnv.addFilter(filterName, govUKFilters[filterName])
   })
 }

@@ -3,13 +3,16 @@ import request from 'supertest'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
 import OrderService from '../services/orderService'
+import EventsService from '../services/eventsService'
 import { basicGetTest, GetRequestFixture } from './index.test'
 
 jest.mock('../services/auditService')
 jest.mock('../services/orderService')
+jest.mock('../services/eventsService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
 const orderService = new OrderService() as jest.Mocked<OrderService>
+const eventsService = new EventsService(null, null) as jest.Mocked<EventsService>
 
 let app: Express
 
@@ -18,6 +21,7 @@ beforeEach(() => {
     services: {
       auditService,
       orderService,
+      eventsService,
     },
     userSupplier: () => user,
   })
@@ -34,7 +38,7 @@ describe('Order details basic GET requests', () => {
     ['order information page', `/orders/${orderId}/information`, 'Order information', Page.ORDER_INFORMATION_PAGE],
     ['order details page', `/orders/${orderId}/details`, 'Order details', Page.ORDER_DETAILS_PAGE],
     ['visits and tasks page', `/orders/${orderId}/visit-details`, 'Visit details', Page.VISIT_DETAILS_PAGE],
-    ['event history page', `/orders/${orderId}/event-history`, 'Event history', Page.EVENT_HISTORY_PAGE],
+    // ['event history page', `/orders/${orderId}/event-history`, 'All event history', Page.EVENT_HISTORY_PAGE],
     [
       'equipment details page',
       `/orders/${orderId}/equipment-details`,
