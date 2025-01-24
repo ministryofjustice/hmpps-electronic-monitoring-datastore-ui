@@ -1,18 +1,9 @@
-import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 import { AuditService, DatastoreOrderService } from '../services'
 import { Page } from '../services/auditService'
 import OrderController from './orderController'
-
-import { Records, TabulatedRecords } from '../interfaces/records'
-
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
-
-import getDeviceWearerDetails from '../data/getDeviceWearer'
-import orderSummary from '../data/mockData/orderSummary'
-import { OrderSummary } from '../interfaces/orderSummary'
-
 import { OrderRequest } from '../types/OrderRequest'
 
 jest.mock('../services/auditService')
@@ -45,72 +36,69 @@ describe('OrderController', () => {
       orderController = new OrderController(auditService, datastoreOrderService)
 
       req = createMockRequest({
-        id: 'fake-id',
-        session: {
-          id: 'mock-session-id',
-          cookie: { originalMaxAge: 3600000 } as session.Cookie,
-          // regenerate: jest.fn(),
-          // destroy: jest.fn(),
-          // reload: jest.fn(),
-          // save: jest.fn(),
-          // touch: jest.fn(),
-          // resetMaxAge: jest.fn(),
-          // returnTo: '/return',
-          // nowInMinutes: 12345,
-          // // validationErrors: [],
-          // // formData: {},
-        } as session.Session & Partial<SessionData>,
+        id: 'fakeId',
       })
 
       res = createMockResponse()
+      res.status = jest.fn().mockReturnValue(res)
     })
 
     it(`logs hitting the page`, async () => {
-      const expectedLogData = { who: 'fakeUserName', correlationId: 'fake-id' }
+      const expectedLogData = { who: 'fakeUserName', correlationId: 'fakeId' }
 
       orderController.orderSummary(req, res, next)
 
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_INFORMATION_PAGE, expectedLogData)
     })
 
-    it(`picks up appropriate orderID parameter from the request`, async () => {
-      const expectedOrderId = 'test-id'
+    it(`calls the DatastoreOrderService for data using the correct orderId parameter`, async () => {
+      const expectedOrderId = 'testId'
       const expectedOrderServiceParams: OrderRequest = {
         userToken: 'fakeUserToken',
         orderId: expectedOrderId,
       }
-
       req = createMockRequest({
         params: {
           orderId: expectedOrderId,
         },
       })
 
-      // datastoreOrderService.getOrderSummary = jest.fn()
-      // .mockReturnValueOnce(null)
-
       await orderController.orderSummary(req, res, next)
 
       expect(datastoreOrderService.getOrderSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
-    xit(`calls the DatastoreOrderService for data`, () => {
-      // let expectedOrderInformation: OrderSummary = orderSummary
-      // datastoreOrderService.getOrderSummary = jest.fn()
-      // .mockReturnValueOnce(null)
+    it(`returns correct error when orderService fails`, async () => {
+      datastoreOrderService.getOrderSummary = jest.fn().mockImplementation(() => {
+        throw new Error('Error message')
+      })
+
+      await orderController.orderSummary(req, res, next)
+
+      expect(res.status).toHaveBeenCalledWith(500)
+      expect(res.send).toHaveBeenCalledWith('Error fetching data')
     })
 
-    xit(`returns correct error when orderService fails`, () => {})
+    it(`renders the page with appropriate data`, async () => {
+      const expectedOrderDetails = 'expectedOrderDetails'
+      const expectedPageData = {
+        data: expectedOrderDetails,
+        backUrl: '/search/results',
+        reports: {
+          orderDetails: true,
+          visitDetails: true,
+          equipmentDetails: true,
+          suspensionOfVisits: true,
+          allEventHistory: true,
+          services: true,
+        },
+      }
 
-    xit(`renders the page with appropriate data`, () => {})
+      datastoreOrderService.getOrderSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
-    xit(`renders the page with appropriate backURL`, () => {})
+      await orderController.orderSummary(req, res, next)
 
-    xit(`renders the page with appropriate reports array`, () => {})
+      expect(res.render).toHaveBeenCalledWith('pages/orderInformation', expectedPageData)
+    })
   })
-
-  // const orderDetails: Records = await this.datastoreOrderService.getOrderDetails({
-  //     userToken: res.locals.user.token,
-  //     orderId,
-  //   })
 })
