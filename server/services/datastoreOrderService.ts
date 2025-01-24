@@ -7,6 +7,7 @@ import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 // TODO: bubble this down
 import { OrderInformation } from '../interfaces/orderInformation'
+import { Records } from '../interfaces/records'
 import { OrderRequest } from '../types/OrderRequest'
 
 export default class DatastoreOrderService {
@@ -47,6 +48,20 @@ export default class DatastoreOrderService {
    * Method should get token and pass to searchfactory
    * await getOrders
    */
+
+  async getOrderDetails(input: OrderRequest): Promise<Records> {
+    return {
+      backUrl: "",
+      records: []
+    }
+  }
+
+  async getDeviceWearerDetails(input: OrderRequest): Promise<Records> {
+    return {
+      backUrl: "",
+      records: []
+    }
+  }
 
   async confirmApi(token: string): Promise<JSON> {
     this.datastoreClient.updateToken(token)

@@ -7,8 +7,6 @@ import getCurfewHours from '../data/getCurfewHours'
 import getCurfewViolations from '../data/getCurfewViolations'
 import getHmuEquipmentDetails from '../data/getHmuEquipmentDetails'
 import getDeviceEquipmentDetails from '../data/getDeviceEquipmentDetails'
-import getOrderDetails from '../data/getOrderDetails'
-import getDeviceWearerDetails from '../data/getDeviceWearer'
 import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
 import tabulateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
@@ -36,43 +34,7 @@ export default function orderRouter({
 
   get('/summary', orderController.orderSummary)
 
-  // // Possibly better approach for unit testing
-  // get('/summary', async (req, res, next) => {
-  //   await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
-
-  //   const param1 = req.params.param1WhichIsFake
-  //   const param2 = req.params.param2WhichIsFake
-
-  //   try {
-  //     let myDataObj = orderController.getSummary(param1, param2)
-  //     res.render('page', {data: myDataObj})
-  //   } catch {
-  //     res.status(500).send('Error fetching data')
-  //   }
-
-  // })
-
-  get('/details', async (req, res, next) => {
-    await auditService.logPageView(Page.ORDER_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
-
-    try {
-      const { orderId } = req.params
-
-      const orderDetails = await getOrderDetails()
-      const deviceWearerDetails = await getDeviceWearerDetails()
-
-      const tabulatedOrderDetails = tabulateRecords(orderDetails, 'Order Data')
-      const tabulatedDeviceWearerDetails = tabulateRecords(deviceWearerDetails, 'Device Wearer Data')
-
-      res.render('pages/orderDetails', {
-        deviceWearer: tabulatedDeviceWearerDetails,
-        orderDetails: tabulatedOrderDetails,
-        backUrl: `/orders/${orderId}/information`,
-      })
-    } catch {
-      res.status(500).send('Error fetching data')
-    }
-  })
+  get('/details', orderController.orderDetails)
 
   get('/visit-details', async (req, res, next) => {
     await auditService.logPageView(Page.VISIT_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
