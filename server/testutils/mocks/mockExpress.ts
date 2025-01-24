@@ -36,5 +36,6 @@ export const createMockResponse = (): Response => {
     render: jest.fn(),
     set: jest.fn(),
     send: jest.fn(),
+    status: jest.fn(),
   }
 }
