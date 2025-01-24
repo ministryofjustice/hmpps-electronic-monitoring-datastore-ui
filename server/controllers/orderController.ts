@@ -44,11 +44,11 @@ export default class OrderController {
   }
 
   orderDetails: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.ORDER_DETAILS_PAGE, { 
-      who: res.locals.user.username, 
-      correlationId: req.id 
+    await this.auditService.logPageView(Page.ORDER_DETAILS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
     })
-    
+
     const { orderId } = req.params
 
     try {

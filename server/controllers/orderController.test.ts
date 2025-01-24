@@ -73,8 +73,7 @@ describe('OrderController', () => {
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_INFORMATION_PAGE, expectedLogData)
     })
 
-    // TODO: The mock is not picking up that the service was called with the right parameter, even though it was...
-    xit(`picks up appropriate orderID parameter from the request`, () => {
+    it(`picks up appropriate orderID parameter from the request`, async () => {
       const expectedOrderId = 'test-id'
       const expectedOrderServiceParams: OrderRequest = {
         userToken: 'fakeUserToken',
@@ -90,7 +89,7 @@ describe('OrderController', () => {
       // datastoreOrderService.getOrderSummary = jest.fn()
       // .mockReturnValueOnce(null)
 
-      orderController.orderSummary(req, res, next)
+      await orderController.orderSummary(req, res, next)
 
       expect(datastoreOrderService.getOrderSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
