@@ -3,6 +3,12 @@ import { Page } from '../services/auditService'
 import { AuditService, DatastoreOrderService } from '../services'
 import { Reports } from '../interfaces/orderInformation'
 
+import getOrderDetails from '../data/getOrderDetails'
+import getDeviceWearerDetails from '../data/getDeviceWearer'
+import tabluateRecords from '../utils/tabulateRecords'
+
+import { Records, TabulatedRecords } from '../interfaces/records'
+
 export default class OrderController {
   constructor(
     private readonly auditService: AuditService,
@@ -32,6 +38,40 @@ export default class OrderController {
         services: true,
       }
       res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
+    } catch {
+      res.status(500).send('Error fetching data')
+    }
+  }
+
+  orderDetails: RequestHandler = async (req: Request, res: Response) => {
+    await this.auditService.logPageView(Page.ORDER_DETAILS_PAGE, { 
+      who: res.locals.user.username, 
+      correlationId: req.id 
+    })
+    
+    const { orderId } = req.params
+
+    try {
+      // Call service
+      const orderDetails: Records = await this.datastoreOrderService.getOrderDetails({
+        userToken: res.locals.user.token,
+        orderId,
+      })
+      const deviceWearerDetails: Records = await this.datastoreOrderService.getDeviceWearerDetails({
+        userToken: res.locals.user.token,
+        orderId,
+      })
+
+      // Do some formatting?
+      const tabulatedOrderDetails: TabulatedRecords = tabluateRecords(orderDetails, 'Order Data')
+      const tabulatedDeviceWearerDetails: TabulatedRecords = tabluateRecords(deviceWearerDetails, 'Device Wearer Data')
+
+      // Do some rendering
+      res.render('pages/orderDetails', {
+        deviceWearer: tabulatedDeviceWearerDetails,
+        orderDetails: tabulatedOrderDetails,
+        backUrl: `/orders/${orderId}/information`,
+      })
     } catch {
       res.status(500).send('Error fetching data')
     }
