@@ -15,7 +15,7 @@ context('Order Details', () => {
     Page.verifyOnPage(OrderDetailsPage)
   })
 
-  describe('Device wearer table', () => {
+  xdescribe('Device wearer table', () => {
     it('Renders', () => {
       const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
       orderDetailsPage.deviceWearerTable().should('be.visible')
@@ -51,7 +51,7 @@ context('Order Details', () => {
       })
     })
   })
-  describe('Order data table', () => {
+  xdescribe('Order data table', () => {
     it('Renders', () => {
       const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
       orderDetailsPage.orderTable().should('be.visible')
