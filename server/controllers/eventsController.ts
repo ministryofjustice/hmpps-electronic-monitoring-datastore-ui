@@ -1,6 +1,7 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
 import { AuditService, EventsService } from '../services'
+// eslint-disable-next-line import/no-named-as-default
 import EventsViewModel from '../models/view-models/events'
 
 export default class EventsController {
