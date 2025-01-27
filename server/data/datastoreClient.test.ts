@@ -6,6 +6,9 @@ import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import mockOrderInformation from './mockData/orderInformation'
+import { MonitoringEvent } from '../models/monitoringEvents'
+import { ContactEvent } from '../models/contactEvents'
+import { IncidentEvent } from '../models/incidentEvents'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -129,6 +132,102 @@ describe('EM Datastore Search Client', () => {
 
       // Expect the method call to throw due to unauthorized access
       await expect(datastoreClient.getOrderSummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getMonitoringEvents', () => {
+    it('should fetch monitoring events with correct parameters', async () => {
+      const fakeResponse = {
+        pageSize: 0,
+        events: [] as MonitoringEvent[],
+      }
+
+      const expectedResult = [] as MonitoringEvent[]
+
+      fakeClient.get(`/orders/${orderInfo.orderId}/monitoring-events`).reply(200, fakeResponse)
+
+      const result = await datastoreClient.getMonitoringEvents(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`/orders/${orderInfoWithNullToken.orderId}/monitoring-events`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getMonitoringEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getContactHistory', () => {
+    it('should fetch contact history with correct parameters', async () => {
+      const fakeResponse = {
+        pageSize: 0,
+        events: [] as ContactEvent[],
+      }
+
+      const expectedResult = [] as ContactEvent[]
+
+      fakeClient.get(`/orders/${orderInfo.orderId}/contact-events`).reply(200, fakeResponse)
+
+      const result = await datastoreClient.getContactHistory(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`/orders/${orderInfoWithNullToken.orderId}/contact-events`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getContactHistory(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getIncidentEvents', () => {
+    it('should fetch incident events with correct parameters', async () => {
+      const fakeResponse = {
+        pageSize: 0,
+        events: [] as IncidentEvent[],
+      }
+
+      const expectedResult = [] as IncidentEvent[]
+
+      fakeClient.get(`/orders/${orderInfo.orderId}/incident-events`).reply(200, fakeResponse)
+
+      const result = await datastoreClient.getIncidentEvents(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`/orders/${orderInfoWithNullToken.orderId}/incident-events`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getIncidentEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })
