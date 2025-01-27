@@ -1,7 +1,7 @@
 import { Records, TabulatedRecords } from '../interfaces/records'
 
-const tabluateRecords = (records: Records, heading: string): TabulatedRecords => {
-  const tabluatedRecords = records.records.map(record => [
+const tabulateRecords = (records: Records, heading: string): TabulatedRecords => {
+  const tabulatedRecords = records.records.map(record => [
     {
       text: record.key,
       classes: 'govuk-!-width-one-third',
@@ -13,9 +13,9 @@ const tabluateRecords = (records: Records, heading: string): TabulatedRecords =>
 
   return {
     backUrl: records.backUrl,
-    records: tabluatedRecords,
+    records: tabulatedRecords,
     heading,
   }
 }
 
-export default tabluateRecords
+export default tabulateRecords
