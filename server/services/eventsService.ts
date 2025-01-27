@@ -31,7 +31,7 @@ export default class EventsService {
       ])
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving list of events')
-      return error
+      throw error
     }
 
     return events.flat()
