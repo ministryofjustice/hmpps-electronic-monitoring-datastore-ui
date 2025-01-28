@@ -3,7 +3,7 @@ import { Page } from '../services/auditService'
 import { AuditService, DatastoreOrderService } from '../services'
 import { Reports } from '../interfaces/orderInformation'
 import tabluateRecords from '../utils/tabulateRecords'
-import { Records, TabulatedRecords } from '../interfaces/records'
+import { formatOrderDetails } from '../models/orderDetails'
 
 export default class OrderController {
   constructor(
@@ -48,27 +48,27 @@ export default class OrderController {
     const { orderId } = req.params
 
     try {
-      // Call service
       const orderDetails = await this.datastoreOrderService.getOrderDetails({
         userToken: res.locals.user.token,
         orderId,
       })
-      console.log('Retrieved order details:')
-      console.log(orderDetails)
-      const deviceWearerDetails: Records = await this.datastoreOrderService.getDeviceWearerDetails({
-        userToken: res.locals.user.token,
-        orderId,
-      })
 
-      // Do some formatting?
-      // const tabulatedOrderDetails: TabulatedRecords = tabluateRecords(orderDetails, 'Order Data')
-      const tabulatedDeviceWearerDetails: TabulatedRecords = tabluateRecords(deviceWearerDetails, 'Device Wearer Data')
+      const { deviceWearerData, orderData } = formatOrderDetails.parse(orderDetails)
 
-      // Do some rendering
+      const tabulatedDeviceWearerData = tabluateRecords({
+        backUrl: `/orders/${orderId}/summary`,
+        records: deviceWearerData,
+      }, 'Device wearer data')
+
+      const tabulatedOrderData = tabluateRecords({
+        backUrl: `/orders/${orderId}/summary`,
+        records: orderData,
+      }, 'Order data')
+
       res.render('pages/orderDetails', {
-        deviceWearer: tabulatedDeviceWearerDetails,
-        // orderDetails: tabulatedOrderDetails,
-        backUrl: `/orders/${orderId}/information`,
+        deviceWearer: tabulatedDeviceWearerData,
+        orderDetails: tabulatedOrderData,
+        backUrl: `/orders/${orderId}/summary`,
       })
     } catch {
       res.status(500).send('Error fetching data')
