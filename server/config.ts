@@ -53,6 +53,7 @@ const apiEndpoints = {
   getCases: '/search/cases',
   confirmAPI: '/search/confirmConnection',
   getOrderSummary: '/orders/getOrderSummary',
+  getOrderDetails: '/orders/getOrderDetails',
 }
 
 export default {
