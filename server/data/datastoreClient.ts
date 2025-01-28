@@ -3,6 +3,7 @@ import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
+import { OrderDetails } from '../interfaces/orderDetails'
 import { OrderInformation } from '../interfaces/orderInformation'
 
 export default class DatastoreClient {
@@ -53,6 +54,16 @@ export default class DatastoreClient {
 
     const result: OrderInformation = await this.restClient.get({
       path: `${config.apiEndpoints.getOrderSummary}/${orderId}`,
+    })
+
+    return result
+  }
+
+  async getOrderDetails(input: OrderRequest): Promise<OrderDetails> {
+    const { orderId } = input
+
+    const result: OrderDetails = await this.restClient.get({
+      path: `${config.apiEndpoints.getOrderDetails}/${orderId}`,
     })
 
     return result

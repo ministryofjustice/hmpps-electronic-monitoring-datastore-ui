@@ -6,6 +6,7 @@ import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 // TODO: bubble this down
+import { OrderDetails } from '../interfaces/orderDetails'
 import { OrderInformation } from '../interfaces/orderInformation'
 import { Records } from '../interfaces/records'
 import { OrderRequest } from '../types/OrderRequest'
@@ -49,17 +50,22 @@ export default class DatastoreOrderService {
    * await getOrders
    */
 
-  async getOrderDetails(input: OrderRequest): Promise<Records> {
-    return {
-      backUrl: "",
-      records: []
+  async getOrderDetails(input: OrderRequest): Promise<OrderDetails> {
+    try {
+      this.datastoreClient.updateToken(input.userToken)
+      const result = await this.datastoreClient.getOrderDetails(input)
+
+      return result
+    } catch (error) {
+      logger.error(getSanitisedError(error), 'Error retrieving order details')
+      return error
     }
   }
 
   async getDeviceWearerDetails(input: OrderRequest): Promise<Records> {
     return {
-      backUrl: "",
-      records: []
+      backUrl: '',
+      records: [],
     }
   }
 
