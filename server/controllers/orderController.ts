@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
 import { AuditService, DatastoreOrderService } from '../services'
 import { Reports } from '../interfaces/orderInformation'
-import tabluateRecords from '../utils/tabulateRecords'
+import tabulateRecords from '../utils/tabulateRecords'
 import { formatOrderDetails } from '../models/orderDetails'
 
 export default class OrderController {
@@ -55,15 +55,21 @@ export default class OrderController {
 
       const { deviceWearerData, orderData } = formatOrderDetails.parse(orderDetails)
 
-      const tabulatedDeviceWearerData = tabluateRecords({
-        backUrl: `/orders/${orderId}/summary`,
-        records: deviceWearerData,
-      }, 'Device wearer data')
+      const tabulatedDeviceWearerData = tabulateRecords(
+        {
+          backUrl: `/orders/${orderId}/summary`,
+          records: deviceWearerData,
+        },
+        'Device wearer data',
+      )
 
-      const tabulatedOrderData = tabluateRecords({
-        backUrl: `/orders/${orderId}/summary`,
-        records: orderData,
-      }, 'Order data')
+      const tabulatedOrderData = tabulateRecords(
+        {
+          backUrl: `/orders/${orderId}/summary`,
+          records: orderData,
+        },
+        'Order data',
+      )
 
       res.render('pages/orderDetails', {
         deviceWearer: tabulatedDeviceWearerData,
