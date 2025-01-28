@@ -49,23 +49,25 @@ export default class OrderController {
 
     try {
       // Call service
-      const orderDetails: Records = await this.datastoreOrderService.getOrderDetails({
+      const orderDetails = await this.datastoreOrderService.getOrderDetails({
         userToken: res.locals.user.token,
         orderId,
       })
+      console.log('Retrieved order details:')
+      console.log(orderDetails)
       const deviceWearerDetails: Records = await this.datastoreOrderService.getDeviceWearerDetails({
         userToken: res.locals.user.token,
         orderId,
       })
 
       // Do some formatting?
-      const tabulatedOrderDetails: TabulatedRecords = tabluateRecords(orderDetails, 'Order Data')
+      // const tabulatedOrderDetails: TabulatedRecords = tabluateRecords(orderDetails, 'Order Data')
       const tabulatedDeviceWearerDetails: TabulatedRecords = tabluateRecords(deviceWearerDetails, 'Device Wearer Data')
 
       // Do some rendering
       res.render('pages/orderDetails', {
         deviceWearer: tabulatedDeviceWearerDetails,
-        orderDetails: tabulatedOrderDetails,
+        // orderDetails: tabulatedOrderDetails,
         backUrl: `/orders/${orderId}/information`,
       })
     } catch {
