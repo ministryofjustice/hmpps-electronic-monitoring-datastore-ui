@@ -6,10 +6,14 @@ import OrderController from './orderController'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { OrderRequest } from '../types/OrderRequest'
 import tabluateRecords from '../utils/tabulateRecords'
+import { formatOrderDetails } from '../models/orderDetails'
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreOrderService')
-jest.mock('../utils/tabulateRecords', () => jest.fn((): unknown[] => ['mock-tabulated-data']))
+jest.mock('../utils/tabulateRecords', () => jest.fn(() => 'mock-tabulated-data'))
+jest.mock('../models/orderDetails', () => ({
+  formatOrderDetails: { parse: jest.fn() },
+}))
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()
@@ -34,6 +38,7 @@ describe('OrderController', () => {
 
   describe('OrderSummary', () => {
     beforeEach(() => {
+      jest.clearAllMocks()
       orderController = new OrderController(auditService, datastoreOrderService)
 
       req = createMockRequest({
@@ -58,6 +63,7 @@ describe('OrderController', () => {
         userToken: 'fakeUserToken',
         orderId: expectedOrderId,
       }
+
       req = createMockRequest({
         params: {
           orderId: expectedOrderId,
@@ -105,6 +111,7 @@ describe('OrderController', () => {
 
   describe('OrderDetails', () => {
     beforeEach(() => {
+      jest.clearAllMocks()
       orderController = new OrderController(auditService, datastoreOrderService)
 
       req = createMockRequest({
@@ -138,20 +145,52 @@ describe('OrderController', () => {
       await orderController.orderDetails(req, res, next)
 
       expect(datastoreOrderService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
-      expect(datastoreOrderService.getDeviceWearerDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
-    it(`calls tabulateRecords with the expected data`, async () => {
+    it(`calls formatOrderDetails with the expected data`, async () => {
       const expectedOrderDetails = ['expectedOrderDetails']
-      const expectedDeviceWearerDetails = ['expectedDeviceWearerDetails']
 
       datastoreOrderService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
-      datastoreOrderService.getDeviceWearerDetails = jest.fn().mockResolvedValueOnce(expectedDeviceWearerDetails)
 
       await orderController.orderDetails(req, res, next)
 
-      expect(tabluateRecords).toHaveBeenCalledWith(expectedOrderDetails, 'Order Data')
-      expect(tabluateRecords).toHaveBeenCalledWith(expectedDeviceWearerDetails, 'Device Wearer Data')
+      expect(formatOrderDetails.parse).toHaveBeenCalledTimes(1)
+      expect(formatOrderDetails.parse).toHaveBeenCalledWith(expectedOrderDetails)
+    })
+
+    it(`calls tabulateRecords with device wearer data and order data`, async () => {
+      const expectedOrderId = 'testId'
+      const expectedDeviceWearerData = 'expectedDeviceWearerData'
+      const expectedOrderData = 'expectedOrderData'
+      const mockParsedData = {
+        deviceWearerData: expectedDeviceWearerData,
+        orderData: expectedOrderData,
+      }
+      req = createMockRequest({
+        params: {
+          orderId: expectedOrderId,
+        },
+      })
+
+      formatOrderDetails.parse = jest.fn().mockReturnValue(mockParsedData)
+
+      await orderController.orderDetails(req, res, next)
+
+      expect(tabluateRecords).toHaveBeenCalledTimes(2)
+      expect(tabluateRecords).toHaveBeenCalledWith(
+        {
+          backUrl: `/orders/${expectedOrderId}/summary`,
+          records: expectedDeviceWearerData,
+        },
+        'Device wearer data',
+      )
+      expect(tabluateRecords).toHaveBeenCalledWith(
+        {
+          backUrl: `/orders/${expectedOrderId}/summary`,
+          records: expectedOrderData,
+        },
+        'Order data',
+      )
     })
 
     it(`returns correct error when getOrderDetails fails`, async () => {
@@ -177,9 +216,8 @@ describe('OrderController', () => {
     })
 
     it(`renders the page with appropriate data`, async () => {
-      const expectedOrderId = '1234'
-      const expectedOrderDetails = ['expectedOrderDetails']
-      const expectedDeviceWearerDetails = ['expectedDeviceWearerDetails']
+      const expectedOrderId = 'testId'
+      const expectedOrderDetails = 'expectedOrderDetails'
 
       req = createMockRequest({
         params: {
@@ -188,19 +226,16 @@ describe('OrderController', () => {
       })
 
       const expectedPageData = {
-        deviceWearer: ['mock-tabulated-data'],
-        orderDetails: ['mock-tabulated-data'],
-        backUrl: `/orders/${expectedOrderId}/information`,
+        deviceWearer: 'mock-tabulated-data',
+        orderDetails: 'mock-tabulated-data',
+        backUrl: `/orders/${expectedOrderId}/summary`,
       }
 
       datastoreOrderService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
-      datastoreOrderService.getDeviceWearerDetails = jest.fn().mockResolvedValueOnce(expectedDeviceWearerDetails)
 
       await orderController.orderDetails(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/orderDetails', expectedPageData)
-      // expect(tabluateRecords).toHaveBeenCalledWith(expectedOrderDetails, 'Order Data')
-      // expect(tabluateRecords).toHaveBeenCalledWith(expectedDeviceWearerDetails, 'Order Data')
     })
   })
 })

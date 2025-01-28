@@ -11,7 +11,7 @@ import getEventHistory from '../data/getEventHistory'
 import getOrderDetails from '../data/getOrderDetails'
 import getDeviceWearerDetails from '../data/getDeviceWearer'
 import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
-import tabluateRecords from '../utils/tabulateRecords'
+import tabulateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import OldOrderController from './orderController'
@@ -27,7 +27,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
 
   // TODO: Deprecate in favour of /summary
   get('/information', async (req, res, next) => oldOrderController.getSummary(req, res))
-  
+
   get('/summary', orderController.orderSummary)
   get('/details', orderController.orderDetails)
 
@@ -60,8 +60,8 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
       const hmuEquipmentDetails = await getHmuEquipmentDetails()
       const deviceEquipmentDetails = await getDeviceEquipmentDetails()
 
-      const tabulatedHmuEquipmentDetails = tabluateRecords(hmuEquipmentDetails, 'Equipment details')
-      const tabulatedDeviceEquipmentDetails = tabluateRecords(deviceEquipmentDetails, 'Equipment details')
+      const tabulatedHmuEquipmentDetails = tabulateRecords(hmuEquipmentDetails, 'Equipment details')
+      const tabulatedDeviceEquipmentDetails = tabulateRecords(deviceEquipmentDetails, 'Equipment details')
 
       res.render('pages/equipmentDetails', {
         hmuEquipmentDetails: tabulatedHmuEquipmentDetails,
@@ -79,7 +79,7 @@ export default function orderRouter({ auditService, orderService, datastoreOrder
     try {
       const { orderId } = req.params
       const curfewHours = await getCurfewHours()
-      const tabulatedCurfewHours = tabluateRecords(curfewHours, 'Curfew hours')
+      const tabulatedCurfewHours = tabulateRecords(curfewHours, 'Curfew hours')
       res.render('pages/twoColumnTable', { data: tabulatedCurfewHours, backUrl: `/orders/${orderId}/information` })
     } catch {
       res.status(500).send('Error fetching data')
