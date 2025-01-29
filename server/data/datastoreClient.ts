@@ -76,7 +76,7 @@ export default class DatastoreClient {
     const { orderId } = input
 
     const result: MonitoringEvents = await this.restClient.get({
-      path: `/orders/${orderId}/monitoring-events`,
+      path: config.apiEndpoints.getMonitoringEvents.replace('_ID_', orderId),
     })
 
     const events = result.events.map(event => MonitoringEventModel.parse(event))
@@ -88,7 +88,7 @@ export default class DatastoreClient {
     const { orderId } = input
 
     const result: IncidentEvents = await this.restClient.get({
-      path: `/orders/${orderId}/incident-events`,
+      path: config.apiEndpoints.getIncidentEvents.replace('_ID_', orderId),
     })
 
     const events = result.events.map(event => IncidentEventModel.parse(event))
@@ -100,7 +100,7 @@ export default class DatastoreClient {
     const { orderId } = input
 
     const result: ContactEvents = await this.restClient.get({
-      path: `/orders/${orderId}/contact-events`,
+      path: config.apiEndpoints.getContactEvents.replace('_ID_', orderId),
     })
 
     const events = result.events.map(event => ContactEventModel.parse(event))

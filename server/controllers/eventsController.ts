@@ -11,6 +11,11 @@ export default class EventsController {
   ) {}
 
   showHistory: RequestHandler = async (req: Request, res: Response) => {
+    await this.auditService.logPageView(Page.EVENT_HISTORY_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
+
     const { orderId } = req.params
 
     const events = await this.eventsService.getEvents({
@@ -19,11 +24,6 @@ export default class EventsController {
     })
 
     const viewModel = EventsViewModel.construct(parseInt(orderId, 10), events)
-
-    await this.auditService.logPageView(Page.EVENT_HISTORY_PAGE, {
-      who: res.locals.user.username,
-      correlationId: req.id,
-    })
 
     res.render('pages/order/event-history', viewModel)
   }
