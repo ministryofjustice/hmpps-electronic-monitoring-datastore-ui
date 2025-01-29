@@ -31,11 +31,12 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
+// TODO: These are essentially integration tests - they will all be removed
 describe('Order details basic GET requests', () => {
   const orderId = 3
 
   xit.each<GetRequestFixture>([
-    ['order information page', `/orders/${orderId}/information`, 'Order information', Page.ORDER_INFORMATION_PAGE],
+    ['order information page', `/orders/${orderId}/summary`, 'Order information', Page.ORDER_INFORMATION_PAGE],
     ['order details page', `/orders/${orderId}/details`, 'Order details', Page.ORDER_DETAILS_PAGE],
     ['visits and tasks page', `/orders/${orderId}/visit-details`, 'Visit details', Page.VISIT_DETAILS_PAGE],
     // ['event history page', `/orders/${orderId}/event-history`, 'All event history', Page.EVENT_HISTORY_PAGE],
@@ -61,7 +62,7 @@ describe('Order details basic GET requests', () => {
   ])('should render %s', (pageName, route, titleText, auditType) => basicGetTest(pageName, route, titleText, auditType))
 })
 
-describe('Order information page', () => {
+xdescribe('Order information page', () => {
   it('should call the getOrderInformation to return data', () => {
     const orderId = 'testOrderId'
 

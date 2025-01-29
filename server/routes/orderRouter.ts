@@ -11,30 +11,21 @@ import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
 import tabulateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
-import OldOrderController from './orderController'
 import OrderController from '../controllers/orderController'
 import EventsController from '../controllers/eventsController'
 import getVisitDetails from '../data/getVisitDetails'
 
-export default function orderRouter({
-  auditService,
-  orderService,
-  datastoreOrderService,
-  eventsService,
-}: Services): Router {
+export default function orderRouter({ auditService, datastoreOrderService, eventsService }: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  const oldOrderController = new OldOrderController(auditService, orderService)
   const orderController = new OrderController(auditService, datastoreOrderService)
   const eventsController = new EventsController(auditService, eventsService)
-
-  // TODO: Deprecate in favour of /summary
-  get('/information', async (req, res, next) => oldOrderController.getSummary(req, res))
 
   get('/summary', orderController.orderSummary)
 
   get('/details', orderController.orderDetails)
+  get('/event-history', eventsController.showHistory)
 
   get('/visit-details', async (req, res, next) => {
     await auditService.logPageView(Page.VISIT_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -90,8 +81,6 @@ export default function orderRouter({
       res.status(500).send('Error fetching data')
     }
   })
-
-  get('/event-history', eventsController.showHistory)
 
   get('/suspension-of-visits', async (req, res, next) => {
     await auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
