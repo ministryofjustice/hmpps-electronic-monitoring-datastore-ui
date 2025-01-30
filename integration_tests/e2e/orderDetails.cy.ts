@@ -2,20 +2,62 @@ import OrderDetailsPage from '../pages/orderDetails'
 import Page from '../pages/page'
 
 context('Order Details', () => {
-  const orderId = '1234567'
+  const orderId = '1232123'
 
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
+
+    cy.task('stubDatastoreGetOrderDetails', {
+      httpStatus: 200,
+      orderId,
+      details: {
+        specials: 'no',
+        legacySubjectId: orderId,
+        legacyOrderId: orderId,
+        firstName: null,
+        lastName: null,
+        alias: null,
+        dateOfBirth: null,
+        adultOrChild: null,
+        sex: null,
+        contact: null,
+        primaryAddressLine1: null,
+        primaryAddressLine2: null,
+        primaryAddressLine3: null,
+        primaryAddressPostCode: null,
+        phoneOrMobileNumber: null,
+        ppo: null,
+        mappa: null,
+        technicalBail: null,
+        manualRisk: null,
+        offenceRisk: false,
+        postCodeRisk: null,
+        falseLimbRisk: null,
+        migratedRisk: null,
+        rangeRisk: null,
+        reportRisk: null,
+        orderStartDate: null,
+        orderEndDate: null,
+        orderType: null,
+        orderTypeDescription: null,
+        orderTypeDetail: null,
+        wearingWristPid: null,
+        notifyingOrganisationDetailsName: null,
+        responsibleOrganisation: null,
+        responsibleOrganisationDetailsRegion: null,
+      },
+    })
+
     cy.signIn()
-    cy.visit(`/orders/${orderId}/details`)
   })
 
   it('is reachable', () => {
+    cy.visit(`/orders/${orderId}/details`)
     Page.verifyOnPage(OrderDetailsPage)
   })
 
-  xdescribe('Device wearer table', () => {
+  describe('Device wearer table', () => {
     it('Renders', () => {
       const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
       orderDetailsPage.deviceWearerTable().should('be.visible')
