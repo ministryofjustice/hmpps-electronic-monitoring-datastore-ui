@@ -8,7 +8,6 @@ import { HmppsAuthClient, RestClientBuilder } from '../data'
 // TODO: bubble this down
 import { OrderDetails } from '../interfaces/orderDetails'
 import { OrderInformation } from '../interfaces/orderInformation'
-import { Records } from '../interfaces/records'
 import { OrderRequest } from '../types/OrderRequest'
 
 export default class DatastoreOrderService {
@@ -59,13 +58,6 @@ export default class DatastoreOrderService {
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving order details')
       return error
-    }
-  }
-
-  async getDeviceWearerDetails(input: OrderRequest): Promise<Records> {
-    return {
-      backUrl: '',
-      records: [],
     }
   }
 

@@ -204,17 +204,6 @@ describe('OrderController', () => {
       expect(res.send).toHaveBeenCalledWith('Error fetching data')
     })
 
-    it(`returns correct error when getDeviceWearerDetails fails`, async () => {
-      datastoreOrderService.getDeviceWearerDetails = jest.fn().mockImplementation(() => {
-        throw new Error('Error message')
-      })
-
-      await orderController.orderDetails(req, res, next)
-
-      expect(res.status).toHaveBeenCalledWith(500)
-      expect(res.send).toHaveBeenCalledWith('Error fetching data')
-    })
-
     it(`renders the page with appropriate data`, async () => {
       const expectedOrderId = 'testId'
       const expectedOrderDetails = 'expectedOrderDetails'
