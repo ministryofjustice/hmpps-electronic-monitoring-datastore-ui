@@ -176,7 +176,7 @@ const formatOrderDetails = orderDetails.transform(data => {
         value: data.responsibleOrganisation,
       },
       {
-        key: 'Responsible organsiation region',
+        key: 'Responsible organisation region',
         value: data.responsibleOrganisationDetailsRegion,
       },
     ],
