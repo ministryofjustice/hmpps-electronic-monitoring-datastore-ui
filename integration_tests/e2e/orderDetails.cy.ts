@@ -22,10 +22,10 @@ context('Order Details', () => {
         adultOrChild: null,
         sex: null,
         contact: null,
-        primaryAddressLine1: null,
-        primaryAddressLine2: null,
-        primaryAddressLine3: null,
-        primaryAddressPostCode: null,
+        primaryAddressLine1: 'Address line 1',
+        primaryAddressLine2: 'Address line 2',
+        primaryAddressLine3: 'Address line 3',
+        primaryAddressPostCode: 'Postcode',
         phoneOrMobileNumber: null,
         ppo: null,
         mappa: null,
@@ -79,8 +79,7 @@ context('Order Details', () => {
         orderDetailsPage.deviceWearerRowHeaders('Adult/child').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('Legacy sex').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('Contact').should('be.visible')
-        // TODO: Currently four address fields are in different rows. Concatenate these into one row.
-        // orderDetailsPage.deviceWearerRowHeaders('Primary address').should('be.visible')
+        orderDetailsPage.deviceWearerRowHeaders('Primary address').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('Phone/mobile number').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('PPO').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('MAPPA').should('be.visible')
@@ -93,6 +92,16 @@ context('Order Details', () => {
         orderDetailsPage.deviceWearerRowHeaders('Range risk').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('Report risk').should('be.visible')
       })
+    })
+
+    it('Displays the address in a single cell as a multiline value', () => {
+      const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
+      const primaryAddressCell = orderDetailsPage.tableCell('Primary address').next()
+
+      primaryAddressCell.should(
+        'contain',
+        'Address line 1\n        Address line 2\n        Address line 3\n        Postcode',
+      )
     })
   })
 

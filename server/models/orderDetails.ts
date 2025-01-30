@@ -82,20 +82,11 @@ const formatOrderDetails = orderDetails.transform(data => {
         value: data.contact,
       },
       {
-        key: 'Primary address line 1',
-        value: data.primaryAddressLine1,
-      },
-      {
-        key: 'Primary address line 2',
-        value: data.primaryAddressLine2,
-      },
-      {
-        key: 'Primary address line 3',
-        value: data.primaryAddressLine3,
-      },
-      {
-        key: 'Primary address line 4',
-        value: data.primaryAddressPostCode,
+        key: 'Primary address',
+        html: `${data.primaryAddressLine1 ? `${data.primaryAddressLine1}<br>` : ''}
+        ${data.primaryAddressLine2 ? `${data.primaryAddressLine2}<br>` : ''}
+        ${data.primaryAddressLine3 ? `${data.primaryAddressLine3}<br>` : ''}
+        ${data.primaryAddressPostCode || ''}`,
       },
       {
         key: 'Phone/mobile number',
