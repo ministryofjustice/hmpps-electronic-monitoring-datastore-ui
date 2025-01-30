@@ -94,7 +94,7 @@ context('Order Details', () => {
       })
     })
 
-    it('Displays the address in a single cell as a multiline value', () => {
+    it('Displays primary address values in a single cell', () => {
       const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
       const primaryAddressCell = orderDetailsPage.tableCell('Primary address').next()
 
