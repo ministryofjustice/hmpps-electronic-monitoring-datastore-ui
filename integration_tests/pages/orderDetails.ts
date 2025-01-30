@@ -6,10 +6,10 @@ export default class OrderDetailsPage extends Page {
   }
 
   deviceWearerTable = (): PageElement =>
-    cy.contains('.govuk-table__caption', 'Device Wearer Data').closest('.govuk-table').find('.govuk-table__body')
+    cy.contains('.govuk-table__caption', 'Device wearer data').closest('.govuk-table').find('.govuk-table__body')
 
   orderTable = (): PageElement =>
-    cy.contains('.govuk-table__caption', 'Order Data').closest('.govuk-table').find('.govuk-table__body')
+    cy.contains('.govuk-table__caption', 'Order data').closest('.govuk-table').find('.govuk-table__body')
 
   deviceWearerRowHeaders = (columnHeaderText: string): PageElement =>
     cy.get('.govuk-table__row').contains(columnHeaderText)
