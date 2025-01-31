@@ -77,13 +77,10 @@ describe('OrderController', () => {
 
     it(`returns correct error when orderService fails`, async () => {
       datastoreOrderService.getOrderSummary = jest.fn().mockImplementation(() => {
-        throw new Error('Error message')
+        throw new Error('Expected error message')
       })
 
-      await orderController.orderSummary(req, res, next)
-
-      expect(res.status).toHaveBeenCalledWith(500)
-      expect(res.send).toHaveBeenCalledWith('Error fetching data')
+      await expect(orderController.orderSummary(req, res, next)).rejects.toThrow('Expected error message')
     })
 
     it(`renders the page with appropriate data`, async () => {
