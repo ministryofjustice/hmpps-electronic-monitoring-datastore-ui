@@ -14,9 +14,6 @@ generic-service:
     EM_DATASTORE_API_URL: "https://electronic-monitoring-datastore-api-preprod.hmpps.service.justice.gov.uk"
     ENVIRONMENT_NAME: PRE-PRODUCTION
     AUDIT_ENABLED: "false"
-    # Feature flags
-    FLAG_SHOWDOCUMENTS: "false"
-    FLAG_FAKEAPIDATA: "false"
 
 generic-prometheus-alerts:
   alertSeverity: digital-prison-service-dev
