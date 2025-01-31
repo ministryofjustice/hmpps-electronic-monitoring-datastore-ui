@@ -2,6 +2,8 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 import config from '../../server/config'
 
+// GetOrderDetails
+
 const defaultGetOrderDetailsOptions = {
   httpStatus: 200,
   orderId: '1234567',
@@ -62,6 +64,8 @@ const getOrderDetails = (options: GetOrderDetailsStubOptions = defaultGetOrderDe
     },
   })
 
+// GetMonitoringEvents
+
 const defaultGetMonitoringEventsOptions = {
   httpStatus: 200,
   orderId: '123456789',
@@ -94,6 +98,8 @@ const getMonitoringEvents = (
           : null,
     },
   })
+
+// GetIncidentEvents
 
 const defaultGetIncidentEventsOptions = {
   httpStatus: 200,
@@ -128,6 +134,8 @@ const getIncidentEvents = (
     },
   })
 
+// GetContactEvents
+
 const defaultGetContactEventsOptions = {
   httpStatus: 200,
   orderId: '123456789',
@@ -159,9 +167,71 @@ const getContactEvents = (options: GetContactEventsStubOptions = defaultGetConta
     },
   })
 
+// GetOrderSummary
+
+const defaultGetOrderSummaryOptions = {
+  httpStatus: 200,
+  orderId: '123456789',
+  events: [] as unknown[],
+  keyOrderInformation: {
+    specials: 'no',
+    legacySubjectId: '1234567',
+    legacyOrderId: '123456789',
+    name: 'Testopher Fakesmith',
+    alias: 'an old tv show',
+    dateOfBirth: '1950-01-01',
+    postcode: '7AB 8CD',
+    address1: '123 Fourth Street',
+    address2: 'Fiveton',
+    address3: 'Sixbury',
+    orderStartDate: '2010-01-01',
+    orderEndDate: '2030-01-01',
+  },
+  subjectHistoryReport: {
+    reportUrl: '',
+    name: '',
+    createdOn: '',
+    time: '',
+  },
+  documents: {
+    pageSize: 1,
+    orderDocuments: [],
+  },
+} as GetOrderSummaryStubOptions
+
+type GetOrderSummaryStubOptions = {
+  httpStatus: number
+  orderId?: string
+  events?: unknown[]
+  keyOrderInformation?: object
+  subjectHistoryReport?: object
+  documents?: object
+}
+
+const getOrderSummary = (options: GetOrderSummaryStubOptions = defaultGetOrderSummaryOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getOrderSummary}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody:
+        options.httpStatus === 200
+          ? {
+              keyOrderInformation: options.keyOrderInformation,
+              subjectHistoryReport: options.subjectHistoryReport,
+              documents: options.documents,
+            }
+          : null,
+    },
+  })
+
 export default {
   stubDatastoreGetOrderDetails: getOrderDetails,
   stubDatastoreGetMonitoringEvents: getMonitoringEvents,
   stubDatastoreGetIncidentEvents: getIncidentEvents,
   stubDatastoreGetContactEvents: getContactEvents,
+  stubDatastoreGetOrderSummary: getOrderSummary,
 }
