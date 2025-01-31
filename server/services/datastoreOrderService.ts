@@ -19,7 +19,6 @@ export default class DatastoreOrderService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  // TODO: remember to add updatetoken here
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     try {
       this.datastoreClient.updateToken(input.userToken)
@@ -28,8 +27,10 @@ export default class DatastoreOrderService {
 
       return result
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving order')
-      return error
+      const sanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, 'Error retrieving order')
+      sanitisedError.message = `Error retrieving order: ${sanitisedError.message}`
+      throw sanitisedError
     }
   }
   /**
