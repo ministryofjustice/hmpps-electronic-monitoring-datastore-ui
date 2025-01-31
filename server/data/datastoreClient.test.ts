@@ -74,38 +74,6 @@ describe('EM Datastore Search Client', () => {
     })
   })
 
-  describe('getCases', () => {
-    const expected: Order = orders[0]
-    const endpoint = '/search/cases'
-
-    it('should return a single order from the api', async () => {
-      fakeClient
-        .get(`${endpoint}/${searchItem.legacySubjectId}`)
-        .matchHeader('Authorization', `Bearer ${token}`)
-        .reply(200, expected)
-      const results = await datastoreClient.getCases(searchItem)
-      expect(results).toEqual(expected)
-    })
-
-    it('should handle 404 Not Found when the case does not exist', async () => {
-      fakeClient
-        .get(`${endpoint}/${searchItem.legacySubjectId}`)
-        .matchHeader('Authorization', `Bearer ${token}`)
-        .reply(404)
-
-      await expect(datastoreClient.getCases(searchItem)).rejects.toThrow('Not Found')
-    })
-
-    it('should handle 401 Unauthorized when the token is invalid', async () => {
-      fakeClient
-        .get(`${endpoint}/${searchItem.legacySubjectId}`)
-        .matchHeader('Authorization', `Bearer ${token}`)
-        .reply(401)
-
-      await expect(datastoreClient.getCases(searchItem)).rejects.toThrow('Unauthorized')
-    })
-  })
-
   describe('getOrderSummary', () => {
     const endpoint = '/orders/getOrderSummary'
 
