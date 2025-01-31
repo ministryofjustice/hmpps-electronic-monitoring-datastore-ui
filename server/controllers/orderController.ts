@@ -19,24 +19,20 @@ export default class OrderController {
 
     const { orderId } = req.params
 
-    try {
-      const orderInformation = await this.datastoreOrderService.getOrderSummary({
-        userToken: res.locals.user.token,
-        orderId,
-      })
-      const backUrl: string = '/search/results'
-      const reports: Reports = {
-        orderDetails: true,
-        visitDetails: true,
-        equipmentDetails: true,
-        suspensionOfVisits: true,
-        allEventHistory: true,
-        services: true,
-      }
-      res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
-    } catch {
-      res.status(500).send('Error fetching data')
+    const orderInformation = await this.datastoreOrderService.getOrderSummary({
+      userToken: res.locals.user.token,
+      orderId,
+    })
+    const backUrl: string = '/search/results'
+    const reports: Reports = {
+      orderDetails: true,
+      visitDetails: true,
+      equipmentDetails: true,
+      suspensionOfVisits: true,
+      allEventHistory: true,
+      services: true,
     }
+    res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
   }
 
   orderDetails: RequestHandler = async (req: Request, res: Response) => {
