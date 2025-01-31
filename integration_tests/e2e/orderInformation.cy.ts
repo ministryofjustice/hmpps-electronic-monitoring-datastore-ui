@@ -7,8 +7,39 @@ context('Order Information', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn')
+
+    cy.task('stubDatastoreGetOrderSummary', {
+      httpStatus: 200,
+      orderId,
+      events: [],
+      keyOrderInformation: {
+        specials: 'no',
+        legacySubjectId: '1234567',
+        legacyOrderId: orderId,
+        name: 'Testopher Fakesmith',
+        alias: 'an old tv show',
+        dateOfBirth: '1950-01-01',
+        postcode: '7AB 8CD',
+        address1: '123 Fourth Street',
+        address2: 'Fiveton',
+        address3: 'Sixbury',
+        orderStartDate: '2010-01-01',
+        orderEndDate: '2030-01-01',
+      },
+      subjectHistoryReport: {
+        reportUrl: '',
+        name: '',
+        createdOn: '',
+        time: '',
+      },
+      documents: {
+        pageSize: 1,
+        orderDocuments: [],
+      },
+    })
+
     cy.signIn()
-    cy.visit(`/orders/${orderId}/information`)
+    cy.visit(`/orders/${orderId}/summary`)
   })
 
   it('is reachable', () => {

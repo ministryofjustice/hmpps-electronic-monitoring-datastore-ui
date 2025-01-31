@@ -16,11 +16,6 @@ describe('EM Datastore Search Client', () => {
 
   const token = 'token-1'
 
-  const searchItem: Order = {
-    dataType: 'am',
-    legacySubjectId: 123,
-  }
-
   const searchOrder: SearchFormInput = {
     userToken: 'mockUserToken',
     data: {

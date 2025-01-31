@@ -1,4 +1,4 @@
-interface KeyOrderInformation {
+export interface KeyOrderInformation {
   specials: string
   legacySubjectId: string
   legacyOrderId: string
@@ -13,14 +13,14 @@ interface KeyOrderInformation {
   orderEndDate: string
 }
 
-interface SubjectHistoryReport {
+export interface SubjectHistoryReport {
   reportUrl: string
   name: string
   createdOn: string
   time: string
 }
 
-interface OrderDocument {
+export interface OrderDocument {
   name: string
   url: string
   createdOn: string
