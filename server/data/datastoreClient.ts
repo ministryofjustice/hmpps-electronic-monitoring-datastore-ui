@@ -36,14 +36,6 @@ export default class DatastoreClient {
     return results
   }
 
-  async getCases(critera: Order): Promise<Order> {
-    const result: Order = await this.restClient.get({
-      path: `${config.apiEndpoints.getCases}/${critera.legacySubjectId}`,
-    })
-
-    return result
-  }
-
   async confirmApi(): Promise<JSON> {
     const result: JSON = await this.restClient.get({
       path: config.apiEndpoints.confirmAPI,

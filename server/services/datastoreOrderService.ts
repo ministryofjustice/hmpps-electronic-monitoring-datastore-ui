@@ -1,7 +1,6 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 
-import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
@@ -18,16 +17,6 @@ export default class DatastoreOrderService {
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
-  }
-
-  // place holder to ensure that we're returning something.
-  // temporary before we wire up the api endpoints.
-  // TODO: Add try ... catch here instead of bubbling all the way up to top level handler
-  async getCases(criteria: Order): Promise<Order> {
-    this.datastoreClient.updateToken(await this.hmppsAuthClient.getSystemClientToken())
-
-    const result = this.datastoreClient.getCases(criteria)
-    return result
   }
 
   // TODO: remember to add updatetoken here
