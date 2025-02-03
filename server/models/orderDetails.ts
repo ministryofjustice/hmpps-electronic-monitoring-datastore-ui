@@ -83,9 +83,9 @@ const formatOrderDetails = orderDetails.transform(data => {
       },
       {
         key: 'Primary address',
-        value: `${data.primaryAddressLine1 ? `${data.primaryAddressLine1},` : ''}
-        ${data.primaryAddressLine2 ? `${data.primaryAddressLine2},` : ''}
-        ${data.primaryAddressLine3 ? `${data.primaryAddressLine3},` : ''}
+        value: `${data.primaryAddressLine1 ? `${data.primaryAddressLine1}, ` : ''}
+        ${data.primaryAddressLine2 ? `${data.primaryAddressLine2}, ` : ''}
+        ${data.primaryAddressLine3 ? `${data.primaryAddressLine3}, ` : ''}
         ${data.primaryAddressPostCode || ''}`,
         html: `${data.primaryAddressLine1 ? `${data.primaryAddressLine1}<br>` : ''}
         ${data.primaryAddressLine2 ? `${data.primaryAddressLine2}<br>` : ''}
