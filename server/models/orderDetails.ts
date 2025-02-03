@@ -40,6 +40,13 @@ const orderDetails = z.object({
 })
 
 const formatOrderDetails = orderDetails.transform(data => {
+  const { value: primaryAddressValue, html: primaryAddressHtml } = joinAddress(
+    data.primaryAddressLine1,
+    data.primaryAddressLine2,
+    data.primaryAddressLine3,
+    data.primaryAddressPostCode,
+  )
+
   return {
     deviceWearerData: [
       {
@@ -84,19 +91,8 @@ const formatOrderDetails = orderDetails.transform(data => {
       },
       {
         key: 'Primary address',
-        value: joinAddress(
-          data.primaryAddressLine1,
-          data.primaryAddressLine2,
-          data.primaryAddressLine3,
-          data.primaryAddressPostCode,
-        ),
-        html: joinAddress(
-          data.primaryAddressLine1,
-          data.primaryAddressLine2,
-          data.primaryAddressLine3,
-          data.primaryAddressPostCode,
-          true,
-        ),
+        value: primaryAddressValue,
+        html: primaryAddressHtml,
       },
       {
         key: 'Phone/mobile number',
