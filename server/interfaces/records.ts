@@ -1,6 +1,8 @@
 export type Record = {
   key: string
-} & ({ value: string; html?: string } | { html: string; value?: string })
+  value: string
+  html?: string
+}
 
 export interface Records {
   backUrl: string

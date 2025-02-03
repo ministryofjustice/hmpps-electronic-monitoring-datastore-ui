@@ -8,7 +8,7 @@ const tabulateRecords = (records: Records, heading: string): TabulatedRecords =>
     },
     {
       text: record.value,
-      html: record.html || false,
+      ...(record.html !== undefined && { html: record.html }),
     },
   ])
 
