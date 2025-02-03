@@ -98,10 +98,11 @@ context('Order Details', () => {
       const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
       const primaryAddressCell = orderDetailsPage.tableCell('Primary address').next()
 
-      primaryAddressCell.should(
-        'contain',
-        'Address line 1\n        Address line 2\n        Address line 3\n        Postcode',
-      )
+      primaryAddressCell
+        .should('contain', 'Address line 1')
+        .and('contain', 'Address line 2')
+        .and('contain', 'Address line 3')
+        .and('contain', 'Postcode')
     })
   })
 
