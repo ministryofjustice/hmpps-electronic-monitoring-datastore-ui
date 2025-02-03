@@ -1,4 +1,5 @@
 import z from 'zod'
+import joinAddress from '../utils/joinAddress'
 
 const orderDetails = z.object({
   specials: z.string(),
@@ -83,14 +84,19 @@ const formatOrderDetails = orderDetails.transform(data => {
       },
       {
         key: 'Primary address',
-        value: `${data.primaryAddressLine1 ? `${data.primaryAddressLine1}, ` : ''}
-        ${data.primaryAddressLine2 ? `${data.primaryAddressLine2}, ` : ''}
-        ${data.primaryAddressLine3 ? `${data.primaryAddressLine3}, ` : ''}
-        ${data.primaryAddressPostCode || ''}`,
-        html: `${data.primaryAddressLine1 ? `${data.primaryAddressLine1}<br>` : ''}
-        ${data.primaryAddressLine2 ? `${data.primaryAddressLine2}<br>` : ''}
-        ${data.primaryAddressLine3 ? `${data.primaryAddressLine3}<br>` : ''}
-        ${data.primaryAddressPostCode || ''}`,
+        value: joinAddress(
+          data.primaryAddressLine1,
+          data.primaryAddressLine2,
+          data.primaryAddressLine3,
+          data.primaryAddressPostCode,
+        ),
+        html: joinAddress(
+          data.primaryAddressLine1,
+          data.primaryAddressLine2,
+          data.primaryAddressLine3,
+          data.primaryAddressPostCode,
+          true,
+        ),
       },
       {
         key: 'Phone/mobile number',
