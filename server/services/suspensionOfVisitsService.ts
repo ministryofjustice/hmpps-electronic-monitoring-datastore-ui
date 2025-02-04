@@ -5,7 +5,7 @@ import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 import { OrderRequest } from '../types/OrderRequest'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisitsEvents'
+import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 export default class SuspensionOfVisitsService {
   private readonly datastoreClient: DatastoreClient

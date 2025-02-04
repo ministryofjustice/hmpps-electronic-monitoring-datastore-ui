@@ -12,7 +12,7 @@ import {
   SuspensionOfVisitsEventModel,
   SuspensionOfVisitsEvents,
   SuspensionOfVisitsEvent,
-} from '../models/suspensionOfVisitsEvents'
+} from '../models/suspensionOfVisits'
 
 export default class DatastoreClient {
   private restClient: RestClient
