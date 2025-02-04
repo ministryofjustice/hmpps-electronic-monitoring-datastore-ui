@@ -54,6 +54,7 @@ const apiEndpoints = {
   confirmAPI: '/search/confirmConnection',
   getOrderSummary: '/orders/getOrderSummary',
   getOrderDetails: '/orders/getOrderDetails',
+  getSuspensionOfVisits: '/orders/getSuspensionOfVisits',
 }
 
 export default {
