@@ -8,6 +8,11 @@ import { OrderInformation } from '../interfaces/orderInformation'
 import { ContactEventModel, ContactEvents, ContactEvent } from '../models/contactEvents'
 import { IncidentEventModel, IncidentEvents, IncidentEvent } from '../models/incidentEvents'
 import { MonitoringEventModel, MonitoringEvents, MonitoringEvent } from '../models/monitoringEvents'
+import {
+  SuspensionOfVisitsEventModel,
+  SuspensionOfVisitsEvents,
+  SuspensionOfVisitsEvent,
+} from '../models/suspensionOfVisitsEvents'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -104,6 +109,18 @@ export default class DatastoreClient {
     })
 
     const events = result.events.map(event => ContactEventModel.parse(event))
+
+    return events
+  }
+
+  async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
+    const { orderId } = input
+
+    const result: SuspensionOfVisitsEvents = await this.restClient.get({
+      path: `${config.apiEndpoints.getSuspensionOfVisits}/${orderId}`,
+    })
+
+    const events = result.events.map(event => SuspensionOfVisitsEventModel.parse(event))
 
     return events
   }
