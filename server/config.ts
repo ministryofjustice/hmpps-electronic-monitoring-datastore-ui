@@ -109,7 +109,7 @@ export default {
         response: Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 30000)),
         deadline: Number(get('EM_DATASTORE_API_TIMEOUT_DEADLINE', 30000)),
       },
-      agent: new AgentConfig(Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 5000))),
+      agent: new AgentConfig(Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 15000))),
       enabled: get('EM_DATASTORE_API_ENABLED', 'false') === 'true',
     },
   },
