@@ -9,7 +9,7 @@ import mockOrderInformation from './mockData/orderInformation'
 import { MonitoringEvent } from '../models/monitoringEvents'
 import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisitsEvents'
+import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope

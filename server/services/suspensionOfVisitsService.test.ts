@@ -2,7 +2,7 @@ import SuspensionOfVisitsService from './suspensionOfVisitsService'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisitsEvents'
+import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')

@@ -1,4 +1,4 @@
-import { SuspensionOfVisitsEvent } from '../suspensionOfVisitsEvents'
+import { SuspensionOfVisitsEvent } from '../suspensionOfVisits'
 
 // TODO: Duplicated in events view model. Export to a shared module.
 export type TimelineEventModel = {

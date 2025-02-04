@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import session, { SessionData } from 'express-session'
 import { createDatastoreClient } from '../data/testUtils/mocks'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisitsEvents'
+import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 import SuspensionOfVisitsViewModel from '../models/view-models/suspensionOfVisits'
 import { AuditService, SuspensionOfVisitsService } from '../services'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
