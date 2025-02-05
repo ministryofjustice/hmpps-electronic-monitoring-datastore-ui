@@ -14,7 +14,7 @@ export default class SuspensionOfVisitsController {
     const { orderId } = req.params
 
     const suspensionOfVisitsEvents = await this.suspensionOfVisitsService.getSuspensionOfVisitsEvents({
-      accessToken: res.locals.user.token,
+      userToken: res.locals.user.token,
       orderId,
     })
 
