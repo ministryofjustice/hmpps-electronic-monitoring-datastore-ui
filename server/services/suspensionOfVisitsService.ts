@@ -18,10 +18,8 @@ export default class SuspensionOfVisitsService {
   }
 
   async getSuspensionOfVisitsEvents(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
-    this.datastoreClient.updateToken(input.accessToken)
-
     try {
-      this.datastoreClient.updateToken(input.accessToken)
+      this.datastoreClient.updateToken(input.userToken)
       const result = await this.datastoreClient.getSuspensionOfVisits(input)
       return result
     } catch (error) {

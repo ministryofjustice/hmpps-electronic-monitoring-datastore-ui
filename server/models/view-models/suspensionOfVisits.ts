@@ -5,7 +5,7 @@ export type TimelineEventModel = {
   dateTime: Date
   date: string
   eventType: string
-  properties: unknown
+  properties: SuspensionOfVisitsEvent
 }
 // TODO: Duplicated in events view model. Export to a shared module.
 export type EventsViewModel = {
