@@ -1,0 +1,78 @@
+{% extends "../partials/layout.njk" %}
+
+{% set heading = "Suspension of visits" %}
+{% set pageTitle = heading %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "moj/components/timeline/macro.njk" import mojTimeline %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from "../components/emsDateFilter.njk" import emsDateFilter %}
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: backUrl
+  }) }}
+
+  <h1 class="govuk-heading-m">
+    {{ heading }}
+  </h1>
+
+  {{ emsDateFilter() }}
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
+  {% set timelineItems = [] %}
+
+  {% for event in events %}
+    {% set timelineEntryHtml %}
+      {{
+        govukSummaryList({
+          card: {
+            title: { text: "Rename" }
+          },
+          rows: [
+            {
+              key: { text: "Suspension of visits" },
+              value: { text: event.suspensionOfVisits }
+            },
+            {
+              key: { text: "Suspension of visits requested date" },
+              value: { text: event.suspensionOfVisitsRequestedDate }
+            },
+            {
+              key: { text: "Suspension of visits start date" }, 
+              value: { text: event.suspensionOfVisitsStartDate }
+            },
+            {
+              key: { text: "Suspension of visits start time" },
+              value: { text: event.suspensionOfVisitsStartTime }
+            },
+            {
+              key: { text: "Suspension of visits end date" },
+              value: { text: event.suspensionOfVisitsEndDate }
+            }
+          ]
+        })
+      }}
+    {% endset %}
+
+    {% set timelineItems = (timelineItems.push({
+        label: { text: event.name },
+        html: timelineEntryHtml,
+        datetime: {
+          timestamp: event.suspensionOfVisitsRequestedDate,
+          type: 'shortdate'
+        }
+      }), timelineItems) %}
+  {% endfor %}
+
+  {{ mojTimeline({
+    items: timelineItems
+  })}}
+
+{% endblock %}
