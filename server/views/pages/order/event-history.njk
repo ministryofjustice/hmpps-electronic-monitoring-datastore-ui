@@ -4,12 +4,9 @@
 {% set pageTitle = heading %}
 
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "moj/components/timeline/macro.njk" import mojTimeline %}
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
 {% from "../../components/emsDateFilter.njk" import emsDateFilter %}
+{% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
 
 {% block content %}
 
@@ -29,75 +26,6 @@
 
   <hr class="govuk-section-break govuk-section-break--m">
 
-  {# events | dump #}
-
-  {% set timelineItems = [] %}
-  {% for timestamp, events in events | groupby("date") %}
-    {% set timelineEntryHtml %}
-      {% for event in events %}
-        {% if event.eventType == "Contact" %}
-          {{
-            govukSummaryList({
-              card: {
-                title: { text: event.properties.channel }
-              },
-              rows: [
-                { key: { text: "User" }, value: { text: event.properties.userName } },
-                { key: { text: "Type" }, value: { text: event.properties.contactType } },
-                { key: { text: "Reason" }, value: { text: event.properties.reason } },
-                { key: { text: "Outcome" }, value: { text: event.properties.outcome } },
-                { key: { text: "Time" }, value: { text: event.isoDateTime | govukTime } },
-                { key: { text: "Completed" }, value: { text: event.properties.modifiedDateTime | govukTime } }
-              ]
-            })
-          }}
-        {% elif event.eventType == "Violation alert" %}
-          {% set alertHtml %}
-            <p class="govuk-body"><strong>{{ event.properties.violation }}</strong> at {{ event.isoDateTime | govukTime }}</p>
-          {% endset %}
-          {{ govukWarningText({
-            html: alertHtml,
-            iconFallbackText: "Warning"
-          }) }}
-        {% elif event.eventType == "Status Check" %}
-            <p class="govuk-body"><strong>{{ event.eventType }}</strong> at {{ event.properties.processedDateTime | govukTime }}</p>
-        {% else %}
-          {% set entryRecords = [
-            {
-              key: { text: event.eventType },
-              value: { html: '<strong>Details</strong>' }
-            }
-          ] %}
-          {% for key, value in event.properties %}
-            {% set entryRecords = (entryRecords.push(
-              {
-                key: { text: key },
-                value: { text: value }
-              }
-            ), entryRecords) %}
-          {% endfor %}
-
-          {{
-            govukSummaryList({
-              rows: entryRecords
-            })
-          }}
-        {% endif%}
-      {% endfor %}
-    {% endset %}
-
-    {% set timelineItems = (timelineItems.push({
-        label: { text: event.name },
-        html: timelineEntryHtml,
-        datetime: {
-          timestamp: timestamp,
-          type: 'shortdate'
-        }
-      }), timelineItems) %}
-  {% endfor %}
-
-  {{ mojTimeline({
-    items: timelineItems
-  })}}
+  {{ emsEventTimeline(events) }}
 
 {% endblock %}

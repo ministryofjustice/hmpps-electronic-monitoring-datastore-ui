@@ -1,0 +1,158 @@
+{% from "moj/components/timeline/macro.njk" import mojTimeline %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% macro emsEventTimeline(events) %}
+  {% macro safeGovukDate(value) %}
+    {{ value | govukDate if value else "" }}
+  {% endmacro %}
+
+  {% macro safeGovukDateTime(value) %}
+    {{ value | govukDateTime if value else "" }}
+  {% endmacro %}
+
+  {% set timelineItems = [] %}
+  {% for timestamp, events in events | groupby("dateTime") %}
+    {% for event in events %}
+      {% if event.eventType == "contact" %}
+        {% set contactEventDetailsHtml %}
+          {{
+            govukSummaryList({
+              rows: [
+                { key: { text: "Type" }, value: { text: event.properties.type } },
+                { key: { text: "Channel" }, value: { text: event.properties.channel } },
+                { key: { text: "Time" }, value: { text: safeGovukDateTime(event.isoDateTime) } },
+                { key: { text: "User" }, value: { text: event.properties.userName } },
+                { key: { text: "Reason" }, value: { text: event.properties.reason } },
+                { key: { text: "Outcome" }, value: { text: event.properties.outcome } },
+                { key: { text: "Modified on" }, value: { text: safeGovukDateTime(event.properties.modifiedDateTime) } }
+              ]
+            })
+          }}
+        {% endset%}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: "Contact event" },
+          html: contactEventDetailsHtml,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "monitoring" %}
+        {% set MonitoringEventDetailsHtml %}
+          {{
+            govukSummaryList({
+              rows: [
+                { key: { text: "Type" }, value: { text: event.properties.type } },
+                { key: { text: "Processed at" }, value: { text: safeGovukDateTime(event.properties.processedDateTime) } }
+              ]
+            })
+          }}
+        {% endset%}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: "Monitoring event" },
+          html: MonitoringEventDetailsHtml,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "incident" %}
+        {% set IncidentEventDetailsHtml %}
+          {{
+            govukSummaryList({
+              rows: [
+                { key: { text: "Type" }, value: { text: event.properties.type } }
+              ]
+            })
+          }}
+        {% endset%}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: "Incident event" },
+          html: IncidentEventDetailsHtml,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "violation" %}
+        {% set ViolationEventDetailsHtml %}
+          {{
+            govukSummaryList({
+              rows: [
+                { key: { text: "Breach details" }, value: { text: event.properties.breachDetails } },
+                { key: { text: "Breach enforcement outcome" }, value: { text: event.properties.breachEnforcementOutcome } },
+                { key: { text: "Breach at" }, value: { text: safeGovukDateTime(event.properties.breachDateTime) } },
+                { key: { text: "Breach identified at" }, value: { text: safeGovukDateTime(event.properties.breachIdentifiedDateTime) } },
+                { key: { text: "Breach pack requested on" }, value: { text: safeGovukDate(event.properties.breachPackRequestedDate) } },
+                { key: { text: "Breach pack sent on" }, value: { text: safeGovukDate(event.properties.breachPackSentDate) } },
+
+                { key: { text: "Authority first notified at" }, value: { text: safeGovukDateTime(event.properties.authorityFirstNotifiedDateTime) } },
+
+                { key: { text: "Agency action" }, value: { text: event.properties.agencyAction } },
+                { key: { text: "Agency action on" }, value: { text: safeGovukDate(event.properties.agencyActionDate) } },
+
+                { key: { text: "Investigation outcome reason" }, value: { text: event.properties.investigationOutcomeReason } },
+                { key: { text: "Enforcement reason" }, value: { text: event.properties.enforcementReason } },
+
+                { key: { text: "Warning letter sent at" }, value: { text: safeGovukDateTime(event.properties.warningLetterSentDateTime) } },
+                { key: { text: "Subject letter sent on" }, value: { text: safeGovukDate(event.properties.subjectLetterSentDate) } },
+                { key: { text: "Summons server on" }, value: { text: safeGovukDate(event.properties.summonsServedDate) } },
+                { key: { text: "Hearing date" }, value: { text: safeGovukDate(event.properties.hearingDate) } },
+                { key: { text: "Section 9 date" }, value: { text: safeGovukDate(event.properties.section9Date) } }
+              ]
+            })
+          }}
+        {% endset%}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: "Violation event" },
+          html: ViolationEventDetailsHtml,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% else %}
+        {% set UnknownEventDetailsHtml %}
+          {% set entryRecords = [
+            {
+              key: { text: event.eventType },
+              value: { html: '<strong>Details</strong>' }
+            }
+          ] %}
+          {% for key, value in event.properties %}
+            {% set entryRecords = (entryRecords.push(
+              {
+                key: { text: key },
+                value: { text: value }
+              }
+            ), entryRecords) %}
+          {% endfor %}
+
+          {{
+            govukSummaryList({
+              rows: entryRecords
+            })
+          }}
+        {% endset %}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: "Unknown event" },
+          html: UnknownEventDetailsHtml,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+  {{ mojTimeline({
+    items: timelineItems
+  })}}
+{% endmacro %}

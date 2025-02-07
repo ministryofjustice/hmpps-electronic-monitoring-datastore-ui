@@ -1,6 +1,7 @@
 import { ContactEvent } from '../contactEvents'
 import { IncidentEvent } from '../incidentEvents'
 import { MonitoringEvent } from '../monitoringEvents'
+import { ViolationEvent } from '../violationEvents'
 
 export type TimelineEventModel = {
   dateTime: Date
@@ -17,7 +18,7 @@ export type EventsViewModel = {
 
 const createViewModelFromApiDto = (
   orderId: number,
-  events: (MonitoringEvent | IncidentEvent | ContactEvent)[],
+  events: (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[],
 ): EventsViewModel => ({
   orderId,
   events: events
@@ -36,7 +37,7 @@ const createViewModelFromApiDto = (
 
 const construct = (
   orderId: number,
-  events: (MonitoringEvent | IncidentEvent | ContactEvent)[] = [],
+  events: (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[] = [],
 ): EventsViewModel => {
   return createViewModelFromApiDto(orderId, events)
 }
