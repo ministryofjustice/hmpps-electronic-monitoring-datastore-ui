@@ -5,6 +5,7 @@ export const SuspensionOfVisitsEventModel = z.object({
   suspensionOfVisits: z.string(),
   suspensionOfVisitsRequestedDate: z.string().nullable(),
   suspensionOfVisitsStartDate: z.string().nullable(),
+  suspensionOfVisitsStartTime: z.string().nullable(),
   suspensionOfVisitsEndDate: z.string().nullable(),
 })
 

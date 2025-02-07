@@ -240,6 +240,7 @@ describe('EM Datastore Search Client', () => {
           suspensionOfVisits: 'test',
           suspensionOfVisitsRequestedDate: null,
           suspensionOfVisitsStartDate: null,
+          suspensionOfVisitsStartTime: null,
           suspensionOfVisitsEndDate: null,
         },
       ] as SuspensionOfVisitsEvent[]
