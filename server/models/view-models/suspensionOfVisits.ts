@@ -5,6 +5,7 @@ export type SuspensionOfVisitsViewEvent = {
   suspensionOfVisits: string
   requestedDate: string
   startDate: string
+  startTime: string
   endDate: string
 }
 
@@ -14,9 +15,10 @@ export type SuspensionOfVisitsViewModel = {
   events: SuspensionOfVisitsViewEvent[]
 }
 
-const extractDate = (dateTime: string | null) => (dateTime ? new Date(dateTime).toLocaleDateString('en-UK') : '')
+const parseDate = (dateTime: string | null) => (dateTime ? new Date(dateTime).toLocaleDateString('en-UK') : '')
+const parseTime = (time: string | null) => (time ? time.split(':').slice(0, 2).join('') : '')
 
-const processEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewEvent[] =>
+const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewEvent[] =>
   events
     .sort(
       (a, b) =>
@@ -26,9 +28,10 @@ const processEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsVie
       return {
         timestamp: event.suspensionOfVisitsRequestedDate,
         suspensionOfVisits: event.suspensionOfVisits,
-        requestedDate: extractDate(event.suspensionOfVisitsRequestedDate),
-        startDate: extractDate(event.suspensionOfVisitsStartDate),
-        endDate: extractDate(event.suspensionOfVisitsEndDate),
+        requestedDate: parseDate(event.suspensionOfVisitsRequestedDate),
+        startDate: parseDate(event.suspensionOfVisitsStartDate),
+        startTime: parseTime(event.suspensionOfVisitsStartTime),
+        endDate: parseDate(event.suspensionOfVisitsEndDate),
       }
     })
 
@@ -36,7 +39,7 @@ const createViewModelFromApiDto = (orderId: number, events: SuspensionOfVisitsEv
   return {
     orderId,
     backUrl: `/orders/${orderId}`,
-    events: processEvents(events),
+    events: parseEvents(events),
   }
 }
 
