@@ -2,7 +2,10 @@ import { Request, Response } from 'express'
 import session, { SessionData } from 'express-session'
 import { createDatastoreClient } from '../data/testUtils/mocks'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
-import SuspensionOfVisitsView, { SuspensionOfVisitsViewModel } from '../models/view-models/suspensionOfVisits'
+import SuspensionOfVisitsView, {
+  SuspensionOfVisitsViewEvent,
+  SuspensionOfVisitsViewModel,
+} from '../models/view-models/suspensionOfVisits'
 import { AuditService, SuspensionOfVisitsService } from '../services'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
@@ -33,7 +36,17 @@ describe('SuspensionOfVisitsController', () => {
     }
   }
 
-  const createViewData = (orderId: number, events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewModel => {
+  const createViewEvent = (date: string, dateTime: string): SuspensionOfVisitsViewEvent => {
+    return {
+      timestamp: dateTime,
+      suspensionOfVisits: 'Yes',
+      requestedDate: date,
+      startDate: date,
+      endDate: date,
+    }
+  }
+
+  const createViewData = (orderId: number, events: SuspensionOfVisitsViewEvent[]): SuspensionOfVisitsViewModel => {
     return {
       orderId,
       backUrl: `/orders/${orderId}`,
@@ -83,10 +96,14 @@ describe('SuspensionOfVisitsController', () => {
   })
 
   it('should render the page with suspension of visits events', async () => {
+    const date = '03/02/2001'
     const dateTime = '2001-02-03T01:23:45'
+
     const event = createEvent(testOrderId, dateTime)
+    const viewEvent = createViewEvent(date, dateTime)
+    const expectedViewData = createViewData(testOrderId, [viewEvent, viewEvent])
+
     suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([event, event])
-    const expectedViewData = createViewData(testOrderId, [event, event])
 
     await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
 
@@ -95,16 +112,30 @@ describe('SuspensionOfVisitsController', () => {
   })
 
   it('should order suspension of visits events by requestedDate', async () => {
-    const firstDate = '2001-01-01T01:01:01'
-    const middleDate = '2002-02-02T02:02:02'
-    const lastDate = '2003-03-03T03:03:03'
-    const firstEvent = createEvent(testOrderId, firstDate)
-    const middleEvent = createEvent(testOrderId, middleDate)
-    const lastEvent = createEvent(testOrderId, lastDate)
+    const firstDate = {
+      date: '01/01/2001',
+      dateTime: '2001-01-01T01:01:01',
+    }
+    const secondDate = {
+      date: '02/02/2002',
+      dateTime: '2002-02-02T02:02:02',
+    }
+    const thirdDate = {
+      date: '03/03/2003',
+      dateTime: '2003-03-03T03:03:03',
+    }
 
-    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([middleEvent, lastEvent, firstEvent])
+    const firstEvent = createEvent(testOrderId, firstDate.dateTime)
+    const secondEvent = createEvent(testOrderId, secondDate.dateTime)
+    const thirdEvent = createEvent(testOrderId, thirdDate.dateTime)
 
-    const expectedViewData = createViewData(testOrderId, [firstEvent, middleEvent, lastEvent])
+    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([secondEvent, thirdEvent, firstEvent])
+
+    const firstViewEvent = createViewEvent(firstDate.date, firstDate.dateTime)
+    const secondViewEvent = createViewEvent(secondDate.date, secondDate.dateTime)
+    const thirdViewEvent = createViewEvent(thirdDate.date, thirdDate.dateTime)
+
+    const expectedViewData = createViewData(testOrderId, [firstViewEvent, secondViewEvent, thirdViewEvent])
 
     await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
 
