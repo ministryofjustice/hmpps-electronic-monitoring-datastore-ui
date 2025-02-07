@@ -8,6 +8,7 @@ import { OrderInformation } from '../interfaces/orderInformation'
 import { ContactEventModel, ContactEvents, ContactEvent } from '../models/contactEvents'
 import { IncidentEventModel, IncidentEvents, IncidentEvent } from '../models/incidentEvents'
 import { MonitoringEventModel, MonitoringEvents, MonitoringEvent } from '../models/monitoringEvents'
+import { ViolationEventModel, ViolationEvent, ViolationEvents } from '../models/violationEvents'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -68,10 +69,10 @@ export default class DatastoreClient {
     const { orderId } = input
 
     const result: MonitoringEvents = await this.restClient.get({
-      path: config.apiEndpoints.getMonitoringEvents.replace('_ID_', orderId),
+      path: `${config.apiEndpoints.getMonitoringEvents}/${orderId}`,
     })
 
-    const events = result.events.map(event => MonitoringEventModel.parse(event))
+    const events = result.map(event => MonitoringEventModel.parse(event))
 
     return events
   }
@@ -80,22 +81,34 @@ export default class DatastoreClient {
     const { orderId } = input
 
     const result: IncidentEvents = await this.restClient.get({
-      path: config.apiEndpoints.getIncidentEvents.replace('_ID_', orderId),
+      path: `${config.apiEndpoints.getIncidentEvents}/${orderId}`,
     })
 
-    const events = result.events.map(event => IncidentEventModel.parse(event))
+    const events = result.map(event => IncidentEventModel.parse(event))
 
     return events
   }
 
-  async getContactHistory(input: OrderRequest): Promise<ContactEvent[]> {
+  async getViolationEvents(input: OrderRequest): Promise<ViolationEvent[]> {
+    const { orderId } = input
+
+    const result: ViolationEvents = await this.restClient.get({
+      path: `${config.apiEndpoints.getViolationEvents}/${orderId}`,
+    })
+
+    const events = result.map(event => ViolationEventModel.parse(event))
+
+    return events
+  }
+
+  async getContactEvents(input: OrderRequest): Promise<ContactEvent[]> {
     const { orderId } = input
 
     const result: ContactEvents = await this.restClient.get({
-      path: config.apiEndpoints.getContactEvents.replace('_ID_', orderId),
+      path: `${config.apiEndpoints.getContactEvents}/${orderId}`,
     })
 
-    const events = result.events.map(event => ContactEventModel.parse(event))
+    const events = result.map(event => ContactEventModel.parse(event))
 
     return events
   }

@@ -42,7 +42,7 @@ describe('Events Service', () => {
     it('should return data from the client', async () => {
       datastoreClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
       datastoreClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
-      datastoreClient.getContactHistory.mockResolvedValue(contactEventsResponse)
+      datastoreClient.getContactEvents.mockResolvedValue(contactEventsResponse)
 
       const results = await eventsService.getEvents(orderRequest)
 
@@ -52,7 +52,7 @@ describe('Events Service', () => {
     it('should propagate an error', async () => {
       datastoreClient.getMonitoringEvents.mockRejectedValue(new Error('some error'))
       datastoreClient.getIncidentEvents.mockRejectedValue(new Error('some error'))
-      datastoreClient.getContactHistory.mockRejectedValue(new Error('some error'))
+      datastoreClient.getContactEvents.mockRejectedValue(new Error('some error'))
 
       await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
     })

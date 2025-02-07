@@ -54,9 +54,10 @@ const apiEndpoints = {
   confirmAPI: '/search/confirmConnection',
   getOrderSummary: '/orders/getOrderSummary',
   getOrderDetails: '/orders/getOrderDetails',
-  getMonitoringEvents: '/orders/_ID_/monitoring-events',
-  getIncidentEvents: '/orders/_ID_/incident-events',
-  getContactEvents: '/orders/_ID_/contact-events',
+  getMonitoringEvents: '/orders/getMonitoringEvents',
+  getIncidentEvents: '/orders/getIncidentEvents',
+  getViolationEvents: '/orders/getViolationEvents',
+  getContactEvents: '/orders/getContactEvents',
 }
 
 export default {

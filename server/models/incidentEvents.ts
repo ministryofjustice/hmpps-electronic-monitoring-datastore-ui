@@ -8,10 +8,7 @@ export const IncidentEventModel = z.object({
   details: z.object({}).passthrough(),
 })
 
-export const IncidentEventsModel = z.object({
-  pageSize: z.number().default(0),
-  events: z.array(IncidentEventModel).default([]),
-})
+export const IncidentEventsModel = z.array(IncidentEventModel)
 
 export type IncidentEvent = z.infer<typeof IncidentEventModel>
 export type IncidentEvents = z.infer<typeof IncidentEventsModel>

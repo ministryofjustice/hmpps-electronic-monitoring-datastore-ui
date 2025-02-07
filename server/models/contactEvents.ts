@@ -8,10 +8,7 @@ export const ContactEventModel = z.object({
   details: z.object({}).passthrough(),
 })
 
-export const ContactEventsModel = z.object({
-  pageSize: z.number().default(0),
-  events: z.array(ContactEventModel).default([]),
-})
+export const ContactEventsModel = z.array(ContactEventModel)
 
 export type ContactEvent = z.infer<typeof ContactEventModel>
 export type ContactEvents = z.infer<typeof ContactEventsModel>

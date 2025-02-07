@@ -27,7 +27,7 @@ export default class EventsService {
       events = await Promise.all([
         this.datastoreClient.getMonitoringEvents(input),
         this.datastoreClient.getIncidentEvents(input),
-        this.datastoreClient.getContactHistory(input),
+        this.datastoreClient.getContactEvents(input),
       ])
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving list of events')

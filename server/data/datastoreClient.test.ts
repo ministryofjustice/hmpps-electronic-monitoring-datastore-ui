@@ -6,9 +6,10 @@ import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import mockOrderInformation from './mockData/orderInformation'
-import { MonitoringEvent } from '../models/monitoringEvents'
-import { ContactEvent } from '../models/contactEvents'
-import { IncidentEvent } from '../models/incidentEvents'
+import { MonitoringEvents } from '../models/monitoringEvents'
+import { ContactEvents } from '../models/contactEvents'
+import { IncidentEvents } from '../models/incidentEvents'
+import { ViolationEvents } from '../models/violationEvents'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -99,15 +100,12 @@ describe('EM Datastore Search Client', () => {
   })
 
   describe('getMonitoringEvents', () => {
+    const endpoint = '/orders/getMonitoringEvents'
+
     it('should fetch monitoring events with correct parameters', async () => {
-      const fakeResponse = {
-        pageSize: 0,
-        events: [] as MonitoringEvent[],
-      }
+      const expectedResult = [] as MonitoringEvents
 
-      const expectedResult = [] as MonitoringEvent[]
-
-      fakeClient.get(`/orders/${orderInfo.orderId}/monitoring-events`).reply(200, fakeResponse)
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
       const result = await datastoreClient.getMonitoringEvents(orderInfo)
 
@@ -122,7 +120,7 @@ describe('EM Datastore Search Client', () => {
       }
 
       nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`/orders/${orderInfoWithNullToken.orderId}/monitoring-events`)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
@@ -130,18 +128,15 @@ describe('EM Datastore Search Client', () => {
     })
   })
 
-  describe('getContactHistory', () => {
+  describe('getContactEvents', () => {
+    const endpoint = '/orders/getContactEvents'
+
     it('should fetch contact history with correct parameters', async () => {
-      const fakeResponse = {
-        pageSize: 0,
-        events: [] as ContactEvent[],
-      }
+      const expectedResult = [] as ContactEvents
 
-      const expectedResult = [] as ContactEvent[]
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      fakeClient.get(`/orders/${orderInfo.orderId}/contact-events`).reply(200, fakeResponse)
-
-      const result = await datastoreClient.getContactHistory(orderInfo)
+      const result = await datastoreClient.getContactEvents(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -154,24 +149,21 @@ describe('EM Datastore Search Client', () => {
       }
 
       nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`/orders/${orderInfoWithNullToken.orderId}/contact-events`)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getContactHistory(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(datastoreClient.getContactEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
   describe('getIncidentEvents', () => {
+    const endpoint = '/orders/getIncidentEvents'
+
     it('should fetch incident events with correct parameters', async () => {
-      const fakeResponse = {
-        pageSize: 0,
-        events: [] as IncidentEvent[],
-      }
+      const expectedResult = [] as IncidentEvents
 
-      const expectedResult = [] as IncidentEvent[]
-
-      fakeClient.get(`/orders/${orderInfo.orderId}/incident-events`).reply(200, fakeResponse)
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
       const result = await datastoreClient.getIncidentEvents(orderInfo)
 
@@ -186,11 +178,40 @@ describe('EM Datastore Search Client', () => {
       }
 
       nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`/orders/${orderInfoWithNullToken.orderId}/incident-events`)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
       await expect(datastoreClient.getIncidentEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getViolationEvents', () => {
+    const endpoint = '/orders/getViolationEvents'
+
+    it('should fetch violation events with correct parameters', async () => {
+      const expectedResult = [] as ViolationEvents
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getViolationEvents(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getViolationEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })
