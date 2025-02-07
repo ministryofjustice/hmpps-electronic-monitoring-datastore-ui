@@ -24,7 +24,7 @@ describe('Suspension of visits service', () => {
     jest.resetAllMocks()
   })
 
-  describe('getSuspensionOfVisitsEvents', () => {
+  describe('getSuspensionOfVisits', () => {
     const orderRequest: OrderRequest = {
       orderId: '123',
     }
@@ -34,7 +34,7 @@ describe('Suspension of visits service', () => {
     it('should return data from the client', async () => {
       datastoreClient.getSuspensionOfVisits.mockResolvedValue(suspensionOfVisitsResponse)
 
-      const results = await suspensionOfVisitsService.getSuspensionOfVisitsEvents(orderRequest)
+      const results = await suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)
 
       expect(results).toEqual(expectedResult)
     })
@@ -42,7 +42,7 @@ describe('Suspension of visits service', () => {
     it('should propagate an error', async () => {
       datastoreClient.getSuspensionOfVisits.mockRejectedValue(new Error('some error'))
 
-      await expect(suspensionOfVisitsService.getSuspensionOfVisitsEvents(orderRequest)).rejects.toEqual(
+      await expect(suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)).rejects.toEqual(
         new Error('some error'),
       )
     })

@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import session, { SessionData } from 'express-session'
 import { createDatastoreClient } from '../data/testUtils/mocks'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
-import SuspensionOfVisitsViewModel from '../models/view-models/suspensionOfVisits'
+import SuspensionOfVisitsView, { SuspensionOfVisitsViewModel } from '../models/view-models/suspensionOfVisits'
 import { AuditService, SuspensionOfVisitsService } from '../services'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
@@ -13,7 +13,7 @@ datastoreClientFactory.mockResolvedValue(datastoreClient)
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 jest.mock('../services/suspensionOfVisitsService')
 const suspensionOfVisitsService = new SuspensionOfVisitsService(null, null) as jest.Mocked<SuspensionOfVisitsService>
-jest.spyOn(SuspensionOfVisitsViewModel, 'construct')
+jest.spyOn(SuspensionOfVisitsView, 'construct')
 
 describe('SuspensionOfVisitsController', () => {
   let suspensionOfVisitsController: SuspensionOfVisitsController
@@ -23,24 +23,21 @@ describe('SuspensionOfVisitsController', () => {
 
   const testOrderId = 1234321
 
-  const createEvent = (orderId: number, dateTime: string) => {
+  const createEvent = (orderId: number, dateTime: string): SuspensionOfVisitsEvent => {
     return {
-      legacyOrderId: orderId,
       legacySubjectId: orderId,
       suspensionOfVisits: 'Yes',
-      requestedDate: new Date(dateTime),
-      startDate: dateTime,
-      endDate: dateTime,
+      suspensionOfVisitsRequestedDate: dateTime,
+      suspensionOfVisitsStartDate: dateTime,
+      suspensionOfVisitsEndDate: dateTime,
     }
   }
 
-  const createEventView = (orderId: number, dateTime: string) => {
+  const createViewData = (orderId: number, events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewModel => {
     return {
-      isoDateTime: new Date(dateTime),
-      dateTime: new Date(dateTime),
-      date: new Date(dateTime).toDateString(),
-      eventType: 'Suspension of visits',
-      properties: createEvent(orderId, dateTime),
+      orderId,
+      backUrl: `/orders/${orderId}`,
+      events,
     }
   }
 
@@ -76,68 +73,42 @@ describe('SuspensionOfVisitsController', () => {
       events: [] as SuspensionOfVisitsEvent[],
       orderId: testOrderId,
     }
-    suspensionOfVisitsService.getSuspensionOfVisitsEvents.mockResolvedValue([])
+    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([])
 
     await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
 
-    expect(SuspensionOfVisitsViewModel.construct).toHaveBeenCalledWith(testOrderId, expectedViewModel.events)
-    expect(SuspensionOfVisitsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewModel)
+    expect(SuspensionOfVisitsView.construct).toHaveBeenCalledWith(testOrderId, expectedViewModel.events)
+    expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/suspensionOfVisits', expectedViewModel)
   })
 
   it('should render the page with suspension of visits events', async () => {
     const dateTime = '2001-02-03T01:23:45'
-    const backUrl = `/orders/${testOrderId}`
-
     const event = createEvent(testOrderId, dateTime)
-
-    suspensionOfVisitsService.getSuspensionOfVisitsEvents.mockResolvedValue([event, event])
-
-    const eventView = {
-      isoDateTime: event.requestedDate,
-      dateTime: event.requestedDate,
-      date: event.requestedDate.toDateString(),
-      eventType: 'Suspension of visits',
-      properties: event,
-    }
-
-    const expectedResult = {
-      orderId: testOrderId,
-      backUrl,
-      events: [eventView, eventView],
-    }
+    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([event, event])
+    const expectedViewData = createViewData(testOrderId, [event, event])
 
     await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
 
-    expect(SuspensionOfVisitsViewModel.construct).toHaveReturnedWith(expectedResult)
-    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedResult)
+    expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
+    expect(res.render).toHaveBeenCalledWith('pages/suspensionOfVisits', expectedViewData)
   })
 
   it('should order suspension of visits events by requestedDate', async () => {
     const firstDate = '2001-01-01T01:01:01'
     const middleDate = '2002-02-02T02:02:02'
     const lastDate = '2003-03-03T03:03:03'
-    const backUrl = `/orders/${testOrderId}`
-
     const firstEvent = createEvent(testOrderId, firstDate)
     const middleEvent = createEvent(testOrderId, middleDate)
     const lastEvent = createEvent(testOrderId, lastDate)
 
-    const firstEventView = createEventView(testOrderId, firstDate)
-    const middleEventView = createEventView(testOrderId, middleDate)
-    const lastEventView = createEventView(testOrderId, lastDate)
+    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([middleEvent, lastEvent, firstEvent])
 
-    suspensionOfVisitsService.getSuspensionOfVisitsEvents.mockResolvedValue([middleEvent, lastEvent, firstEvent])
-
-    const expectedResult = {
-      orderId: testOrderId,
-      backUrl,
-      events: [firstEventView, middleEventView, lastEventView],
-    }
+    const expectedViewData = createViewData(testOrderId, [firstEvent, middleEvent, lastEvent])
 
     await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
 
-    expect(SuspensionOfVisitsViewModel.construct).toHaveReturnedWith(expectedResult)
-    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedResult)
+    expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
+    expect(res.render).toHaveBeenCalledWith('pages/suspensionOfVisits', expectedViewData)
   })
 })

@@ -17,7 +17,7 @@ export default class SuspensionOfVisitsService {
     this.datastoreClient = this.datastoreClientFactory('uninitialized')
   }
 
-  async getSuspensionOfVisitsEvents(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
+  async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
     try {
       this.datastoreClient.updateToken(input.userToken)
       const result = await this.datastoreClient.getSuspensionOfVisits(input)

@@ -1,36 +1,24 @@
 import { SuspensionOfVisitsEvent } from '../suspensionOfVisits'
 
-// TODO: Duplicated in events view model. Export to a shared module.
-export type TimelineEventModel = {
-  dateTime: Date
-  date: string
-  eventType: string
-  properties: SuspensionOfVisitsEvent
-}
-// TODO: Duplicated in events view model. Export to a shared module.
-export type EventsViewModel = {
+export type SuspensionOfVisitsViewModel = {
   orderId: number
-  events: TimelineEventModel[]
   backUrl: string
+  events: SuspensionOfVisitsEvent[]
 }
 
-const createViewModelFromApiDto = (orderId: number, events: SuspensionOfVisitsEvent[]): EventsViewModel => ({
-  orderId,
-  backUrl: `/orders/${orderId}`,
-  events: events
-    .map(event => {
-      return {
-        isoDateTime: event.requestedDate,
-        dateTime: new Date(event.requestedDate),
-        date: new Date(event.requestedDate).toDateString(),
-        eventType: 'Suspension of visits',
-        properties: event,
-      }
-    })
-    .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-})
+const createViewModelFromApiDto = (orderId: number, events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewModel => {
+  const model = {
+    orderId,
+    backUrl: `/orders/${orderId}`,
+    events: events.sort(
+      (a, b) =>
+        new Date(a.suspensionOfVisitsRequestedDate).getTime() - new Date(b.suspensionOfVisitsRequestedDate).getTime(),
+    ),
+  }
+  return model
+}
 
-const construct = (orderId: number, events: SuspensionOfVisitsEvent[] = []): EventsViewModel => {
+const construct = (orderId: number, events: SuspensionOfVisitsEvent[] = []): SuspensionOfVisitsViewModel => {
   return createViewModelFromApiDto(orderId, events)
 }
 
