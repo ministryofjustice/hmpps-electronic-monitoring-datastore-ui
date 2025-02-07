@@ -32,9 +32,6 @@
     {% set timelineEntryHtml %}
       {{
         govukSummaryList({
-          card: {
-            title: { text: "Rename" }
-          },
           rows: [
             {
               key: { text: "Suspension of visits" },
@@ -42,19 +39,19 @@
             },
             {
               key: { text: "Suspension of visits requested date" },
-              value: { text: event.suspensionOfVisitsRequestedDate }
+              value: { text: event.requestedDate }
             },
             {
               key: { text: "Suspension of visits start date" }, 
-              value: { text: event.suspensionOfVisitsStartDate }
+              value: { text: event.startDate }
             },
             {
               key: { text: "Suspension of visits start time" },
-              value: { text: event.suspensionOfVisitsStartTime }
+              value: { text: event.startTime }
             },
             {
               key: { text: "Suspension of visits end date" },
-              value: { text: event.suspensionOfVisitsEndDate }
+              value: { text: event.endDate }
             }
           ]
         })
@@ -62,10 +59,10 @@
     {% endset %}
 
     {% set timelineItems = (timelineItems.push({
-        label: { text: event.name },
+        label: { text: event.requestedDate },
         html: timelineEntryHtml,
         datetime: {
-          timestamp: event.suspensionOfVisitsRequestedDate,
+          timestamp: event.timestamp,
           type: 'shortdate'
         }
       }), timelineItems) %}
