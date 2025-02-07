@@ -195,13 +195,18 @@ describe('EM Datastore Search Client', () => {
     })
   })
 
-  describe('getSuspensionOfVisitsEvents', () => {
-    it('should fetch suspension of visits events with correct parameters', async () => {
-      const fakeResponse = {
-        pageSize: 0,
-        events: [] as SuspensionOfVisitsEvent[],
-      }
-      const expectedResult = [] as SuspensionOfVisitsEvent[]
+  describe('getSuspensionOfVisits', () => {
+    it('should fetch suspension of visits events', async () => {
+      const fakeResponse = [
+        {
+          legacySubjectId: 1232123,
+          suspensionOfVisits: 'test',
+          suspensionOfVisitsRequestedDate: null,
+          suspensionOfVisitsStartDate: null,
+          suspensionOfVisitsEndDate: null,
+        },
+      ] as SuspensionOfVisitsEvent[]
+      const expectedResult = fakeResponse
       fakeClient.get(`${config.apiEndpoints.getSuspensionOfVisits}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
       const result = await datastoreClient.getSuspensionOfVisits(orderInfo)
