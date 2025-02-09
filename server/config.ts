@@ -58,6 +58,7 @@ const apiEndpoints = {
   getIncidentEvents: '/orders/getIncidentEvents',
   getViolationEvents: '/orders/getViolationEvents',
   getContactEvents: '/orders/getContactEvents',
+  getEquipmentDetails: '/orders/getEquipmentDetails',
 }
 
 export default {

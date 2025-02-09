@@ -8,9 +8,4 @@ export const MonitoringEventModel = z.object({
   details: z.object({}).passthrough(),
 })
 
-export const MonitoringEventsModel = z.array(MonitoringEventModel)
-
 export type MonitoringEvent = z.infer<typeof MonitoringEventModel>
-export type MonitoringEvents = z.infer<typeof MonitoringEventsModel>
-
-export default MonitoringEventModel

@@ -5,10 +5,11 @@ import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderDetails } from '../interfaces/orderDetails'
 import { OrderInformation } from '../interfaces/orderInformation'
-import { ContactEventModel, ContactEvents, ContactEvent } from '../models/contactEvents'
-import { IncidentEventModel, IncidentEvents, IncidentEvent } from '../models/incidentEvents'
-import { MonitoringEventModel, MonitoringEvents, MonitoringEvent } from '../models/monitoringEvents'
-import { ViolationEventModel, ViolationEvent, ViolationEvents } from '../models/violationEvents'
+import { ContactEventModel, ContactEvent } from '../models/contactEvents'
+import { IncidentEventModel, IncidentEvent } from '../models/incidentEvents'
+import { MonitoringEventModel, MonitoringEvent } from '../models/monitoringEvents'
+import { ViolationEventModel, ViolationEvent } from '../models/violationEvents'
+import { EquipmentDetailsModel, EquipmentDetails } from '../models/equipmentDetail'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -68,7 +69,7 @@ export default class DatastoreClient {
   async getMonitoringEvents(input: OrderRequest): Promise<MonitoringEvent[]> {
     const { orderId } = input
 
-    const result: MonitoringEvents = await this.restClient.get({
+    const result: MonitoringEvent[] = await this.restClient.get({
       path: `${config.apiEndpoints.getMonitoringEvents}/${orderId}`,
     })
 
@@ -80,7 +81,7 @@ export default class DatastoreClient {
   async getIncidentEvents(input: OrderRequest): Promise<IncidentEvent[]> {
     const { orderId } = input
 
-    const result: IncidentEvents = await this.restClient.get({
+    const result: IncidentEvent[] = await this.restClient.get({
       path: `${config.apiEndpoints.getIncidentEvents}/${orderId}`,
     })
 
@@ -92,7 +93,7 @@ export default class DatastoreClient {
   async getViolationEvents(input: OrderRequest): Promise<ViolationEvent[]> {
     const { orderId } = input
 
-    const result: ViolationEvents = await this.restClient.get({
+    const result: ViolationEvent[] = await this.restClient.get({
       path: `${config.apiEndpoints.getViolationEvents}/${orderId}`,
     })
 
@@ -104,12 +105,24 @@ export default class DatastoreClient {
   async getContactEvents(input: OrderRequest): Promise<ContactEvent[]> {
     const { orderId } = input
 
-    const result: ContactEvents = await this.restClient.get({
+    const result: ContactEvent[] = await this.restClient.get({
       path: `${config.apiEndpoints.getContactEvents}/${orderId}`,
     })
 
     const events = result.map(event => ContactEventModel.parse(event))
 
     return events
+  }
+
+  async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+    const { orderId } = input
+
+    const result: EquipmentDetails[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getEquipmentDetails}/${orderId}`,
+    })
+
+    const equipmentDetails = result.map(data => EquipmentDetailsModel.parse(data))
+
+    return equipmentDetails
   }
 }

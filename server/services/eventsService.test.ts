@@ -2,10 +2,10 @@ import EventsService from './eventsService'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
-import { MonitoringEvent, MonitoringEvents } from '../models/monitoringEvents'
-import { IncidentEvent, IncidentEvents } from '../models/incidentEvents'
-import { ContactEvent, ContactEvents } from '../models/contactEvents'
-import { ViolationEvent, ViolationEvents } from '../models/violationEvents'
+import { MonitoringEvent } from '../models/monitoringEvents'
+import { IncidentEvent } from '../models/incidentEvents'
+import { ContactEvent } from '../models/contactEvents'
+import { ViolationEvent } from '../models/violationEvents'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')
@@ -34,10 +34,10 @@ describe('Events Service', () => {
       orderId: '123',
     }
 
-    const monitoringEventsResponse = [] as MonitoringEvents
-    const incidentEventsResponse = [] as IncidentEvents
-    const contactEventsResponse = [] as ContactEvents
-    const violationEventsResponse = [] as ViolationEvents
+    const monitoringEventsResponse = [] as MonitoringEvent[]
+    const incidentEventsResponse = [] as IncidentEvent[]
+    const contactEventsResponse = [] as ContactEvent[]
+    const violationEventsResponse = [] as ViolationEvent[]
 
     const expectedResult = [] as (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[]
 

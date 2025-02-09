@@ -6,10 +6,11 @@ import { Order } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import mockOrderInformation from './mockData/orderInformation'
-import { MonitoringEvents } from '../models/monitoringEvents'
-import { ContactEvents } from '../models/contactEvents'
-import { IncidentEvents } from '../models/incidentEvents'
-import { ViolationEvents } from '../models/violationEvents'
+import { MonitoringEvent } from '../models/monitoringEvents'
+import { ContactEvent } from '../models/contactEvents'
+import { IncidentEvent } from '../models/incidentEvents'
+import { ViolationEvent } from '../models/violationEvents'
+import { EquipmentDetails } from '../models/equipmentDetail'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -103,7 +104,7 @@ describe('EM Datastore Search Client', () => {
     const endpoint = '/orders/getMonitoringEvents'
 
     it('should fetch monitoring events with correct parameters', async () => {
-      const expectedResult = [] as MonitoringEvents
+      const expectedResult = [] as MonitoringEvent[]
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
@@ -132,7 +133,7 @@ describe('EM Datastore Search Client', () => {
     const endpoint = '/orders/getContactEvents'
 
     it('should fetch contact history with correct parameters', async () => {
-      const expectedResult = [] as ContactEvents
+      const expectedResult = [] as ContactEvent[]
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
@@ -161,7 +162,7 @@ describe('EM Datastore Search Client', () => {
     const endpoint = '/orders/getIncidentEvents'
 
     it('should fetch incident events with correct parameters', async () => {
-      const expectedResult = [] as IncidentEvents
+      const expectedResult = [] as IncidentEvent[]
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
@@ -190,7 +191,7 @@ describe('EM Datastore Search Client', () => {
     const endpoint = '/orders/getViolationEvents'
 
     it('should fetch violation events with correct parameters', async () => {
-      const expectedResult = [] as ViolationEvents
+      const expectedResult = [] as ViolationEvent[]
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
@@ -212,6 +213,50 @@ describe('EM Datastore Search Client', () => {
 
       // Expect the method call to throw due to unauthorized access
       await expect(datastoreClient.getViolationEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getEquipmentDetails', () => {
+    const endpoint = '/orders/getEquipmentDetails'
+
+    it('should fetch list of equipment details', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: 123,
+          legacyOrderId: 321,
+        },
+      ]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getEquipmentDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult as EquipmentDetails[])
+    })
+
+    it('should fetch list of equipment details', async () => {
+      const expectedResult = [] as EquipmentDetails[]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getEquipmentDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getEquipmentDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })
