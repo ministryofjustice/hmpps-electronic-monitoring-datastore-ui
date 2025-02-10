@@ -7,6 +7,7 @@ import DatastoreSearchService from './datastoreSearchService'
 import EquipmentDetailsService from './equipmentDetailsService'
 import VisitDetailsService from './visitDetailsService'
 import SuspensionOfVisitsService from './suspensionOfVisitsService'
+import CurfewTimetableService from './curfewTimetableService'
 
 export const services = () => {
   const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreClientFactory } = dataAccess()
@@ -21,6 +22,7 @@ export const services = () => {
   const equipmentDetailsService = new EquipmentDetailsService(datastoreClientFactory, hmppsAuthClient)
   const visitDetailsService = new VisitDetailsService(datastoreClientFactory, hmppsAuthClient)
   const suspensionOfVisitsService = new SuspensionOfVisitsService(datastoreClientFactory, hmppsAuthClient)
+  const curfewTimetableService = new CurfewTimetableService(datastoreClientFactory, hmppsAuthClient)
 
   return {
     applicationInfo,
@@ -32,6 +34,7 @@ export const services = () => {
     equipmentDetailsService,
     visitDetailsService,
     suspensionOfVisitsService,
+    curfewTimetableService,
   }
 }
 
@@ -44,4 +47,5 @@ export {
   EquipmentDetailsService,
   VisitDetailsService,
   SuspensionOfVisitsService,
+  CurfewTimetableService,
 }

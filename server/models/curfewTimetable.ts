@@ -1,7 +1,6 @@
 import z from 'zod'
 
 export const CurfewTimetableModel = z.object({
-  legacyOrderId: z.number(),
   legacySubjectId: z.number(),
   serviceId: z.number().nullable(),
   serviceAddress1: z.string().nullable(),

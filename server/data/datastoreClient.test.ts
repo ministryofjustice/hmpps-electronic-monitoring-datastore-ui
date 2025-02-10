@@ -372,7 +372,6 @@ describe('EM Datastore Search Client', () => {
     it('should fetch all curfew timetables', async () => {
       const expectedResult = [
         {
-          legacyOrderId: 123,
           legacySubjectId: 123,
           serviceId: 321,
           serviceAddress1: 'address line 1',

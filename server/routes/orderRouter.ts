@@ -6,6 +6,7 @@ import EventsController from '../controllers/eventsController'
 import EquipmentDetailsController from '../controllers/equipmentDetailsController'
 import VisitDetailsController from '../controllers/visitDetailsController'
 import SuspensionOfVisitsController from '../controllers/suspensionOfVisitsController'
+import CurfewTimetableController from '../controllers/curfewTimetableController'
 
 export default function orderRouter({
   auditService,
@@ -14,6 +15,7 @@ export default function orderRouter({
   equipmentDetailsService,
   visitDetailsService,
   suspensionOfVisitsService,
+  curfewTimetableService,
 }: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -23,6 +25,7 @@ export default function orderRouter({
   const equipmentDetailsController = new EquipmentDetailsController(auditService, equipmentDetailsService)
   const visitDetailsController = new VisitDetailsController(auditService, visitDetailsService)
   const suspensionOfVisitsController = new SuspensionOfVisitsController(auditService, suspensionOfVisitsService)
+  const curfewTimetableController = new CurfewTimetableController(auditService, curfewTimetableService)
 
   get('/summary', orderController.orderSummary)
   get('/details', orderController.orderDetails)
@@ -30,6 +33,7 @@ export default function orderRouter({
   get('/equipment-details', equipmentDetailsController.showEquipmentDetails)
   get('/suspension-of-visits', suspensionOfVisitsController.showSuspensionOfVisits)
   get('/event-history', eventsController.showHistory)
+  get('/curfew-timetable', curfewTimetableController.showCurfewTimetable)
 
   return router
 }

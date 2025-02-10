@@ -1,0 +1,26 @@
+{% extends "../../partials/layout.njk" %}
+
+{% set heading = "Services" %}
+{% set pageTitle = heading %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from "../../components/emsDateFilter.njk" import emsDateFilter %}
+{% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: backUrl
+  }) }}
+
+  <h1 class="govuk-heading-m">
+    {{ heading }}
+  </h1>
+
+  {{ emsEventTimeline(curfewTimetable) }}
+
+{% endblock %}

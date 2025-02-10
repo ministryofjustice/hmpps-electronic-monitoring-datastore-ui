@@ -6,6 +6,7 @@
 {% from "../components/timeline/equipmentDetails.njk" import equipmentDetails %}
 {% from "../components/timeline/visitDetails.njk" import visitDetails %}
 {% from "../components/timeline/suspensionOfVisits.njk" import suspensionOfVisits %}
+{% from "../components/timeline/curfewTimetable.njk" import curfewTimetable %}
 {% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
 
 {% macro emsEventTimeline(events) %}
@@ -86,6 +87,18 @@
         {% set eventDetails = suspensionOfVisits(event) %}
 
         {% set timelineItems = (timelineItems.push({
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "curfew-timetable" %}
+        {% set eventLabel = "Service" %}
+        {% set eventDetails = curfewTimetable(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: eventLabel },
           html: eventDetails,
           datetime: {
             timestamp: timestamp,
