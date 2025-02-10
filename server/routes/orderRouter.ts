@@ -1,13 +1,11 @@
 import { type RequestHandler, Router } from 'express'
 import asyncMiddleware from '../middleware/asyncMiddleware'
-import createTimeline from '../utils/createTimeline'
-import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
 import { type Services } from '../services'
-import { Page } from '../services/auditService'
 import OrderController from '../controllers/orderController'
 import EventsController from '../controllers/eventsController'
 import EquipmentDetailsController from '../controllers/equipmentDetailsController'
 import VisitDetailsController from '../controllers/visitDetailsController'
+import SuspensionOfVisitsController from '../controllers/suspensionOfVisitsController'
 
 export default function orderRouter({
   auditService,
@@ -15,6 +13,7 @@ export default function orderRouter({
   eventsService,
   equipmentDetailsService,
   visitDetailsService,
+  suspensionOfVisitsService,
 }: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -23,29 +22,14 @@ export default function orderRouter({
   const eventsController = new EventsController(auditService, eventsService)
   const equipmentDetailsController = new EquipmentDetailsController(auditService, equipmentDetailsService)
   const visitDetailsController = new VisitDetailsController(auditService, visitDetailsService)
+  const suspensionOfVisitsController = new SuspensionOfVisitsController(auditService, suspensionOfVisitsService)
 
   get('/summary', orderController.orderSummary)
-
   get('/details', orderController.orderDetails)
   get('/event-history', eventsController.showHistory)
   get('/equipment-details', equipmentDetailsController.showEquipmentDetails)
   get('/visit-details', visitDetailsController.showVisitDetails)
-
-  get('/suspension-of-visits', async (req, res, next) => {
-    await auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
-      who: res.locals.user.username,
-      correlationId: req.id,
-    })
-
-    try {
-      const { orderId } = req.params
-      const suspensions = await getSuspensionOfVisits()
-      const timeline = createTimeline(suspensions, 'Suspension of visits')
-      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
-    } catch {
-      res.status(500).send('Error fetching data')
-    }
-  })
+  get('/suspension-of-visits', suspensionOfVisitsController.showSuspensionOfVisits)
 
   return router
 }

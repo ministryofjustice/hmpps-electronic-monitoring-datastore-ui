@@ -6,6 +6,7 @@ import DatastoreOrderService from './datastoreOrderService'
 import DatastoreSearchService from './datastoreSearchService'
 import EquipmentDetailsService from './equipmentDetailsService'
 import VisitDetailsService from './visitDetailsService'
+import SuspensionOfVisitsService from './suspensionOfVisitsService'
 
 export const services = () => {
   const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreClientFactory } = dataAccess()
@@ -19,6 +20,7 @@ export const services = () => {
   const eventsService = new EventsService(datastoreClientFactory, hmppsAuthClient)
   const equipmentDetailsService = new EquipmentDetailsService(datastoreClientFactory, hmppsAuthClient)
   const visitDetailsService = new VisitDetailsService(datastoreClientFactory, hmppsAuthClient)
+  const suspensionOfVisitsService = new SuspensionOfVisitsService(datastoreClientFactory, hmppsAuthClient)
 
   return {
     applicationInfo,
@@ -29,6 +31,7 @@ export const services = () => {
     eventsService,
     equipmentDetailsService,
     visitDetailsService,
+    suspensionOfVisitsService,
   }
 }
 
@@ -40,4 +43,5 @@ export {
   EventsService,
   EquipmentDetailsService,
   VisitDetailsService,
+  SuspensionOfVisitsService,
 }

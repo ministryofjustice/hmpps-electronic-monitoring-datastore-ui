@@ -5,6 +5,7 @@
 {% from "../components/timeline/violationEventDetails.njk" import violationEventDetails %}
 {% from "../components/timeline/equipmentDetails.njk" import equipmentDetails %}
 {% from "../components/timeline/visitDetails.njk" import visitDetails %}
+{% from "../components/timeline/suspensionOfVisits.njk" import suspensionOfVisits %}
 {% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
 
 {% macro emsEventTimeline(events) %}
@@ -73,6 +74,16 @@
         }), timelineItems) %}
       {% elif event.eventType == "visit-details" %}
         {% set eventDetails = visitDetails(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "suspension-of-visits" %}
+        {% set eventDetails = suspensionOfVisits(event) %}
 
         {% set timelineItems = (timelineItems.push({
           html: eventDetails,

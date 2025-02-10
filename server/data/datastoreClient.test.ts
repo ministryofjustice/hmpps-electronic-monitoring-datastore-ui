@@ -325,7 +325,6 @@ describe('EM Datastore Search Client', () => {
       const expectedResult = [
         {
           legacySubjectId: 123,
-          legacyOrderId: 321,
           suspensionOfVisits: 'Yes',
           suspensionOfVisitsRequestedDate: '2022-02-02T01:01:01',
           suspensionOfVisitsStartDate: '2022-02-02T02:02:02',
