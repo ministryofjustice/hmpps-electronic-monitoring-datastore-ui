@@ -9,7 +9,7 @@ import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { CurfewTimetable, CurfewTimetableModel } from '../models/curfewTimetable'
 
-jest.mock('../services/CurfewTimetableService')
+jest.mock('../services/curfewTimetableService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const curfewTimetableService = new CurfewTimetableService(null, null) as jest.Mocked<CurfewTimetableService>

@@ -9,7 +9,7 @@ import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { SuspensionOfVisits, SuspensionOfVisitsModel } from '../models/suspensionOfVisits'
 
-jest.mock('../services/SuspensionOfVisitsService')
+jest.mock('../services/suspensionOfVisitsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const suspensionOfVisitsService = new SuspensionOfVisitsService(null, null) as jest.Mocked<SuspensionOfVisitsService>

@@ -9,7 +9,7 @@ import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { EquipmentDetails, EquipmentDetailsModel } from '../models/equipmentDetails'
 
-jest.mock('../services/EquipmentDetailsService')
+jest.mock('../services/equipmentDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const equipmentDetailsService = new EquipmentDetailsService(null, null) as jest.Mocked<EquipmentDetailsService>
