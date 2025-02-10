@@ -26,7 +26,7 @@ describe('Visit Details Service', () => {
     jest.resetAllMocks()
   })
 
-  describe('getEvents', () => {
+  describe('getVisitDetails', () => {
     const orderRequest: OrderRequest = {
       orderId: '123',
     }
@@ -43,7 +43,7 @@ describe('Visit Details Service', () => {
       expect(results).toEqual(expectedResult)
     })
 
-    it('should propagate an error if there is an error getting monitoring events', async () => {
+    it('should propagate an error if there is an error getting visit details', async () => {
       datastoreClient.getVisitDetails.mockRejectedValue(new Error('some error'))
 
       await expect(visitDetailsService.getVisitDetails(orderRequest)).rejects.toEqual(new Error('some error'))

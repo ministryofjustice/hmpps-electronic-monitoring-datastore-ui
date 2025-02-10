@@ -5,9 +5,9 @@ import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 import { OrderRequest } from '../types/OrderRequest'
-import { VisitDetails } from '../models/visitDetails'
+import { SuspensionOfVisits } from '../models/suspensionOfVisits'
 
-export default class VisitDetailsService {
+export default class SuspensionOfVisitsService {
   private readonly datastoreClient: DatastoreClient
 
   constructor(
@@ -17,17 +17,17 @@ export default class VisitDetailsService {
     this.datastoreClient = this.datastoreClientFactory('uninitialized')
   }
 
-  async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
+  async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisits[]> {
     this.datastoreClient.updateToken(input.accessToken)
 
-    let visitDetails = [] as VisitDetails[]
+    let suspensionOfVisits = [] as SuspensionOfVisits[]
     try {
-      visitDetails = await this.datastoreClient.getVisitDetails(input)
+      suspensionOfVisits = await this.datastoreClient.getSuspensionOfVisits(input)
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving list of visit details')
+      logger.error(getSanitisedError(error), 'Error retrieving list of suspensions of visits')
       throw error
     }
 
-    return visitDetails
+    return suspensionOfVisits
   }
 }
