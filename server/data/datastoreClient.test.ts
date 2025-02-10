@@ -12,6 +12,7 @@ import { IncidentEvent } from '../models/incidentEvents'
 import { ViolationEvent } from '../models/violationEvents'
 import { EquipmentDetails } from '../models/equipmentDetails'
 import { VisitDetails } from '../models/visitDetails'
+import { SuspensionOfVisits } from '../models/suspensionOfVisits'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -314,6 +315,54 @@ describe('EM Datastore Search Client', () => {
 
       // Expect the method call to throw due to unauthorized access
       await expect(datastoreClient.getVisitDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getSuspensionOfVisits', () => {
+    const endpoint = '/orders/getSuspensionOfVisits'
+
+    it('should fetch all suspensions of visits', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: 123,
+          legacyOrderId: 321,
+          suspensionOfVisits: 'Yes',
+          suspensionOfVisitsRequestedDate: '2022-02-02T01:01:01',
+          suspensionOfVisitsStartDate: '2022-02-02T02:02:02',
+          suspensionOfVisitsEndDate: '2022-02-02T03:03:03',
+        },
+      ] as SuspensionOfVisits[]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getSuspensionOfVisits(orderInfo)
+
+      expect(result).toEqual(expectedResult as SuspensionOfVisits[])
+    })
+
+    it('should fetch an empty list of suspensions of visits', async () => {
+      const expectedResult = [] as SuspensionOfVisits[]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getSuspensionOfVisits(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getSuspensionOfVisits(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })

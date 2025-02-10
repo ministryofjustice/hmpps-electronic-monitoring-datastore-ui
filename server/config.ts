@@ -60,6 +60,7 @@ const apiEndpoints = {
   getContactEvents: '/orders/getContactEvents',
   getEquipmentDetails: '/orders/getEquipmentDetails',
   getVisitDetails: '/orders/getVisitDetails',
+  getSuspensionOfVisits: '/orders/getSuspensionOfVisits',
 }
 
 export default {
