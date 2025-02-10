@@ -61,6 +61,7 @@ const apiEndpoints = {
   getEquipmentDetails: '/orders/getEquipmentDetails',
   getVisitDetails: '/orders/getVisitDetails',
   getSuspensionOfVisits: '/orders/getSuspensionOfVisits',
+  getCurfewTimetable: '/orders/getCurfewTimetable',
 }
 
 export default {

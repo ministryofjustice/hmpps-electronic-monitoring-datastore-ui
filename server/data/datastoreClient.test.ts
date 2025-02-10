@@ -13,6 +13,7 @@ import { ViolationEvent } from '../models/violationEvents'
 import { EquipmentDetails } from '../models/equipmentDetails'
 import { VisitDetails } from '../models/visitDetails'
 import { SuspensionOfVisits } from '../models/suspensionOfVisits'
+import { CurfewTimetable } from '../models/curfewTimetable'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -362,6 +363,66 @@ describe('EM Datastore Search Client', () => {
 
       // Expect the method call to throw due to unauthorized access
       await expect(datastoreClient.getSuspensionOfVisits(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getCurfewTimetable', () => {
+    const endpoint = '/orders/getCurfewTimetable'
+
+    it('should fetch all curfew timetables', async () => {
+      const expectedResult = [
+        {
+          legacyOrderId: 123,
+          legacySubjectId: 123,
+          serviceId: 321,
+          serviceAddress1: 'address line 1',
+          serviceAddress2: 'address line 2',
+          serviceAddress3: 'address line 3',
+          serviceAddressPostcode: 'postcode',
+          serviceStartDate: '2002-05-22T01:01:01',
+          serviceEndDate: '2002-05-22T01:01:01',
+          curfewStartDate: '2002-05-22T01:01:01',
+          curfewEndDate: '2002-05-22T01:01:01',
+          monday: 1,
+          tuesday: 2,
+          wednesday: 3,
+          thursday: 4,
+          friday: 5,
+          saturday: 6,
+          sunday: 7,
+        },
+      ] as CurfewTimetable[]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getCurfewTimetable(orderInfo)
+
+      expect(result).toEqual(expectedResult as CurfewTimetable[])
+    })
+
+    it('should fetch an empty list of curfew timetables', async () => {
+      const expectedResult = [] as CurfewTimetable[]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getCurfewTimetable(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getCurfewTimetable(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })

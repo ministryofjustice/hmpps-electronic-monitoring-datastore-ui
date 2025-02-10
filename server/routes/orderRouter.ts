@@ -26,10 +26,10 @@ export default function orderRouter({
 
   get('/summary', orderController.orderSummary)
   get('/details', orderController.orderDetails)
-  get('/event-history', eventsController.showHistory)
-  get('/equipment-details', equipmentDetailsController.showEquipmentDetails)
   get('/visit-details', visitDetailsController.showVisitDetails)
+  get('/equipment-details', equipmentDetailsController.showEquipmentDetails)
   get('/suspension-of-visits', suspensionOfVisitsController.showSuspensionOfVisits)
+  get('/event-history', eventsController.showHistory)
 
   return router
 }

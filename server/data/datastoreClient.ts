@@ -11,6 +11,7 @@ import { MonitoringEventModel, MonitoringEvent } from '../models/monitoringEvent
 import { ViolationEventModel, ViolationEvent } from '../models/violationEvents'
 import { EquipmentDetailsModel, EquipmentDetails } from '../models/equipmentDetails'
 import { VisitDetailsModel, VisitDetails } from '../models/visitDetails'
+import { CurfewTimetableModel, CurfewTimetable } from '../models/curfewTimetable'
 import { SuspensionOfVisitsModel, SuspensionOfVisits } from '../models/suspensionOfVisits'
 
 export default class DatastoreClient {
@@ -150,5 +151,17 @@ export default class DatastoreClient {
     const suspensionOfVisitsDetails = result.map(data => SuspensionOfVisitsModel.parse(data))
 
     return suspensionOfVisitsDetails
+  }
+
+  async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
+    const { orderId } = input
+
+    const results: CurfewTimetable[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getCurfewTimetable}/${orderId}`,
+    })
+
+    const curfewTimetable = results.map(result => CurfewTimetableModel.parse(result))
+
+    return curfewTimetable
   }
 }
