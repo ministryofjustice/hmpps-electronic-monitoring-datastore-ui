@@ -32,12 +32,13 @@
 
       @media(min-width: 641px) {
         display: block;
-        margin-top: 28px;
+        padding-top: 46px;
       }
     }
 
     &--small-display {
       width: 60px;
+      padding-top: 14px;
       display: block;
 
       @media(min-width: 641px) {
