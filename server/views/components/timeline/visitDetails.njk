@@ -1,0 +1,29 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDateTime %}
+
+{% macro visitDetails(event) %}
+  {% set addressHtml %}
+    {% if (event.properties.address) %}
+    <p class="govuk-body">
+      {{ event.properties.address.addressLine1 }}<br/>
+      {{ event.properties.address.addressLine2 }}<br/>
+      {{ event.properties.address.addressLine3 }}<br/>
+      {{ event.properties.address.addressLine4 }}<br/>
+      {{ event.properties.address.postcode }}
+    </p>
+    {% endif %}
+  {% endset %}
+
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Type" }, value: { text: event.properties.visitType } },
+        { key: { text: "Address" }, value: { html: addressHtml } },
+        { key: { text: "Actual work start date" }, value: { text: safeGovukDateTime(event.properties.actualWorkStartDateTime) } },
+        { key: { text: "Actual work end date" }, value: { text: safeGovukDateTime(event.properties.actualWorkEndDateTime) } },
+        { key: { text: "Notes" }, value: { text: event.properties.visitNotes } },
+        { key: { text: "Outcome" }, value: { text: event.properties.visitOutcome } }
+      ]
+    })
+  }}
+{% endmacro %}

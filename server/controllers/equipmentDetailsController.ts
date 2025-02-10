@@ -23,11 +23,7 @@ export default class EquipmentDetailsController {
       orderId,
     })
 
-    console.log(equipmentDetails)
-
     const viewModel = EquipmentDetailsModel.construct(parseInt(orderId, 10), equipmentDetails)
-
-    console.log(viewModel)
 
     res.render('pages/order/equipment-details', viewModel)
   }

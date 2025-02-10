@@ -269,8 +269,20 @@ describe('EM Datastore Search Client', () => {
         {
           legacySubjectId: 123,
           legacyOrderId: 321,
+          address: {
+            addressLine1: 'address line 1',
+            addressLine2: 'address line 2',
+            addressLine3: 'address line 3',
+            addressLine4: null,
+            postcode: 'address line 3',
+          },
+          actualWorkStartDateTime: '2001-01-01T01:01:01',
+          actualWorkEndDateTime: '2002-02-02T02:02:02',
+          visitNotes: 'TEST_NOTES',
+          visitType: 'TEST_VISIT_TYPE',
+          visitOutcome: 'TEST_OUTCOME',
         },
-      ]
+      ] as VisitDetails[]
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
