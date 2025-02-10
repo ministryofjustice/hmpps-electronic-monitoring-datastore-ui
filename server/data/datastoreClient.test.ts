@@ -10,7 +10,7 @@ import { MonitoringEvent } from '../models/monitoringEvents'
 import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
 import { ViolationEvent } from '../models/violationEvents'
-import { EquipmentDetails } from '../models/equipmentDetail'
+import { EquipmentDetails } from '../models/equipmentDetails'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope

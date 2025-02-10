@@ -9,7 +9,7 @@ import { ContactEventModel, ContactEvent } from '../models/contactEvents'
 import { IncidentEventModel, IncidentEvent } from '../models/incidentEvents'
 import { MonitoringEventModel, MonitoringEvent } from '../models/monitoringEvents'
 import { ViolationEventModel, ViolationEvent } from '../models/violationEvents'
-import { EquipmentDetailsModel, EquipmentDetails } from '../models/equipmentDetail'
+import { EquipmentDetailsModel, EquipmentDetails } from '../models/equipmentDetails'
 
 export default class DatastoreClient {
   private restClient: RestClient

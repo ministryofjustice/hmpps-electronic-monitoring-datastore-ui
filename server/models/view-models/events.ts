@@ -2,13 +2,7 @@ import { ContactEvent } from '../contactEvents'
 import { IncidentEvent } from '../incidentEvents'
 import { MonitoringEvent } from '../monitoringEvents'
 import { ViolationEvent } from '../violationEvents'
-
-export type TimelineEventModel = {
-  dateTime: Date
-  date: string
-  eventType: string
-  properties: unknown
-}
+import { TimelineEventModel } from './TimelineEvent'
 
 export type EventsViewModel = {
   orderId: number
@@ -32,7 +26,7 @@ const createViewModelFromApiDto = (
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/orders/${orderId}`,
+  backUrl: `/orders/${orderId}/summary`,
 })
 
 const construct = (

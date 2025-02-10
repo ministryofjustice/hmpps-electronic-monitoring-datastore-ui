@@ -9,23 +9,31 @@ import getHmuEquipmentDetails from '../data/getHmuEquipmentDetails'
 import getDeviceEquipmentDetails from '../data/getDeviceEquipmentDetails'
 import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
 import tabulateRecords from '../utils/tabulateRecords'
-import type { Services } from '../services'
+import { type Services } from '../services'
 import { Page } from '../services/auditService'
 import OrderController from '../controllers/orderController'
 import EventsController from '../controllers/eventsController'
 import getVisitDetails from '../data/getVisitDetails'
+import EquipmentDetailsController from '../controllers/equipmentDetailsController'
 
-export default function orderRouter({ auditService, datastoreOrderService, eventsService }: Services): Router {
+export default function orderRouter({
+  auditService,
+  datastoreOrderService,
+  eventsService,
+  equipmentDetailsService,
+}: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   const orderController = new OrderController(auditService, datastoreOrderService)
   const eventsController = new EventsController(auditService, eventsService)
+  const equipmentDetailsController = new EquipmentDetailsController(auditService, equipmentDetailsService)
 
   get('/summary', orderController.orderSummary)
 
   get('/details', orderController.orderDetails)
   get('/event-history', eventsController.showHistory)
+  get('/equipment-details', equipmentDetailsController.showEquipmentDetails)
 
   get('/visit-details', async (req, res, next) => {
     await auditService.logPageView(Page.VISIT_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })

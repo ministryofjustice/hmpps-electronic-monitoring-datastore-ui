@@ -2,7 +2,7 @@ import EquipmentDetailsService from './equipmentDetailsService'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
-import { EquipmentDetails } from '../models/equipmentDetail'
+import { EquipmentDetails } from '../models/equipmentDetails'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')

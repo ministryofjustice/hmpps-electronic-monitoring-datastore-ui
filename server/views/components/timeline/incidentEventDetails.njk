@@ -1,0 +1,11 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro incidentEventDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Type" }, value: { text: event.properties.type } }
+      ]
+    })
+  }}
+{% endmacro %}
