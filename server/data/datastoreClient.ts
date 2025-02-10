@@ -10,6 +10,7 @@ import { IncidentEventModel, IncidentEvent } from '../models/incidentEvents'
 import { MonitoringEventModel, MonitoringEvent } from '../models/monitoringEvents'
 import { ViolationEventModel, ViolationEvent } from '../models/violationEvents'
 import { EquipmentDetailsModel, EquipmentDetails } from '../models/equipmentDetails'
+import { VisitDetailsModel, VisitDetails } from '../models/visitDetails'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -124,5 +125,17 @@ export default class DatastoreClient {
     const equipmentDetails = result.map(data => EquipmentDetailsModel.parse(data))
 
     return equipmentDetails
+  }
+
+  async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
+    const { orderId } = input
+
+    const result: VisitDetails[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getVisitDetails}/${orderId}`,
+    })
+
+    const visitDetails = result.map(data => VisitDetailsModel.parse(data))
+
+    return visitDetails
   }
 }

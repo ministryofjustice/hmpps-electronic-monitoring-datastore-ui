@@ -11,6 +11,7 @@ import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
 import { ViolationEvent } from '../models/violationEvents'
 import { EquipmentDetails } from '../models/equipmentDetails'
+import { VisitDetails } from '../models/visitDetails'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -257,6 +258,50 @@ describe('EM Datastore Search Client', () => {
 
       // Expect the method call to throw due to unauthorized access
       await expect(datastoreClient.getEquipmentDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getVisitDetails', () => {
+    const endpoint = '/orders/getVisitDetails'
+
+    it('should fetch list of visit details', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: 123,
+          legacyOrderId: 321,
+        },
+      ]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getVisitDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult as VisitDetails[])
+    })
+
+    it('should fetch list of visit details', async () => {
+      const expectedResult = [] as VisitDetails[]
+
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+
+      const result = await datastoreClient.getVisitDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(datastoreClient.getVisitDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })
