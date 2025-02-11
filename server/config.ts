@@ -57,6 +57,7 @@ const apiEndpoints = {
   getMonitoringEvents: '/orders/_ID_/monitoring-events',
   getIncidentEvents: '/orders/_ID_/incident-events',
   getContactEvents: '/orders/_ID_/contact-events',
+  getSuspensionOfVisits: '/orders/getSuspensionOfVisits',
 }
 
 export default {

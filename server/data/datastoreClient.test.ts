@@ -9,6 +9,7 @@ import mockOrderInformation from './mockData/orderInformation'
 import { MonitoringEvent } from '../models/monitoringEvents'
 import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
+import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -191,6 +192,40 @@ describe('EM Datastore Search Client', () => {
 
       // Expect the method call to throw due to unauthorized access
       await expect(datastoreClient.getIncidentEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getSuspensionOfVisits', () => {
+    it('should fetch suspension of visits events', async () => {
+      const fakeResponse = [
+        {
+          legacySubjectId: 1232123,
+          suspensionOfVisits: 'test',
+          suspensionOfVisitsRequestedDate: null,
+          suspensionOfVisitsStartDate: null,
+          suspensionOfVisitsStartTime: null,
+          suspensionOfVisitsEndDate: null,
+        },
+      ] as SuspensionOfVisitsEvent[]
+      const expectedResult = fakeResponse
+      fakeClient.get(`${config.apiEndpoints.getSuspensionOfVisits}/${orderInfo.orderId}`).reply(200, fakeResponse)
+
+      const result = await datastoreClient.getSuspensionOfVisits(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      const orderInfoWithNullToken: OrderRequest = {
+        orderId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.electronicMonitoringDatastore.url)
+        .get(`${config.apiEndpoints.getSuspensionOfVisits}/${orderInfoWithNullToken.orderId}`)
+        .reply(401)
+
+      await expect(datastoreClient.getSuspensionOfVisits(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })

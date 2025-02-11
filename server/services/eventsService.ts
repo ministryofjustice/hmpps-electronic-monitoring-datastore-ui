@@ -20,7 +20,7 @@ export default class EventsService {
   }
 
   async getEvents(input: OrderRequest): Promise<(ContactEvent | IncidentEvent | MonitoringEvent)[]> {
-    this.datastoreClient.updateToken(input.accessToken)
+    this.datastoreClient.updateToken(input.userToken)
 
     let events = []
     try {

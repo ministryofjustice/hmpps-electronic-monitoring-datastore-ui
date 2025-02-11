@@ -7,25 +7,31 @@ import getCurfewHours from '../data/getCurfewHours'
 import getCurfewViolations from '../data/getCurfewViolations'
 import getHmuEquipmentDetails from '../data/getHmuEquipmentDetails'
 import getDeviceEquipmentDetails from '../data/getDeviceEquipmentDetails'
-import getSuspensionOfVisits from '../data/getSuspensionOfVisits'
 import tabulateRecords from '../utils/tabulateRecords'
 import type { Services } from '../services'
 import { Page } from '../services/auditService'
 import OrderController from '../controllers/orderController'
 import EventsController from '../controllers/eventsController'
+import SuspensionOfVisitsController from '../controllers/suspensionOfVisitsController'
 import getVisitDetails from '../data/getVisitDetails'
 
-export default function orderRouter({ auditService, datastoreOrderService, eventsService }: Services): Router {
+export default function orderRouter({
+  auditService,
+  datastoreOrderService,
+  eventsService,
+  suspensionOfVisitsService,
+}: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
   const orderController = new OrderController(auditService, datastoreOrderService)
   const eventsController = new EventsController(auditService, eventsService)
+  const suspensionOfVisitsController = new SuspensionOfVisitsController(auditService, suspensionOfVisitsService)
 
   get('/summary', orderController.orderSummary)
-
   get('/details', orderController.orderDetails)
   get('/event-history', eventsController.showHistory)
+  get('/suspension-of-visits', suspensionOfVisitsController.showSuspensionOfVisits)
 
   get('/visit-details', async (req, res, next) => {
     await auditService.logPageView(Page.VISIT_DETAILS_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -77,22 +83,6 @@ export default function orderRouter({ auditService, datastoreOrderService, event
       const curfewHours = await getCurfewHours()
       const tabulatedCurfewHours = tabulateRecords(curfewHours, 'Curfew hours')
       res.render('pages/twoColumnTable', { data: tabulatedCurfewHours, backUrl: `/orders/${orderId}/information` })
-    } catch {
-      res.status(500).send('Error fetching data')
-    }
-  })
-
-  get('/suspension-of-visits', async (req, res, next) => {
-    await auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
-      who: res.locals.user.username,
-      correlationId: req.id,
-    })
-
-    try {
-      const { orderId } = req.params
-      const suspensions = await getSuspensionOfVisits()
-      const timeline = createTimeline(suspensions, 'Suspension of visits')
-      res.render('pages/timeline', { data: timeline, backUrl: `/orders/${orderId}/information` })
     } catch {
       res.status(500).send('Error fetching data')
     }

@@ -1,0 +1,75 @@
+{% extends "../partials/layout.njk" %}
+
+{% set heading = "Suspension of visits" %}
+{% set pageTitle = heading %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "moj/components/timeline/macro.njk" import mojTimeline %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from "../components/emsDateFilter.njk" import emsDateFilter %}
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: backUrl
+  }) }}
+
+  <h1 class="govuk-heading-m">
+    {{ heading }}
+  </h1>
+
+  {{ emsDateFilter() }}
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
+  {% set timelineItems = [] %}
+
+  {% for event in events %}
+    {% set timelineEntryHtml %}
+      {{
+        govukSummaryList({
+          rows: [
+            {
+              key: { text: "Suspension of visits" },
+              value: { text: event.suspensionOfVisits }
+            },
+            {
+              key: { text: "Suspension of visits requested date" },
+              value: { text: event.requestedDate }
+            },
+            {
+              key: { text: "Suspension of visits start date" }, 
+              value: { text: event.startDate }
+            },
+            {
+              key: { text: "Suspension of visits start time" },
+              value: { text: event.startTime }
+            },
+            {
+              key: { text: "Suspension of visits end date" },
+              value: { text: event.endDate }
+            }
+          ]
+        })
+      }}
+    {% endset %}
+
+    {% set timelineItems = (timelineItems.push({
+        label: { text: event.requestedDate },
+        html: timelineEntryHtml,
+        datetime: {
+          timestamp: event.timestamp,
+          type: 'shortdate'
+        }
+      }), timelineItems) %}
+  {% endfor %}
+
+  {{ mojTimeline({
+    items: timelineItems
+  })}}
+
+{% endblock %}
