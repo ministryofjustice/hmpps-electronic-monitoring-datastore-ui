@@ -38,7 +38,7 @@ const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewE
 const createViewModelFromApiDto = (orderId: number, events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewModel => {
   return {
     orderId,
-    backUrl: `/orders/${orderId}`,
+    backUrl: `/orders/${orderId}/summary`,
     events: parseEvents(events),
   }
 }
