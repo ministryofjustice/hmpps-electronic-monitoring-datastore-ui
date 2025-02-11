@@ -228,10 +228,63 @@ const getOrderSummary = (options: GetOrderSummaryStubOptions = defaultGetOrderSu
     },
   })
 
+const defaultGetSuspensionOfVisitsOptions = {
+  httpStatus: 200,
+  orderId: 123456789,
+  events: [
+    {
+      legacySubjectId: 123456789,
+      suspensionOfVisits: 'Yes',
+      suspensionOfVisitsRequestedDate: '2001-01-01T01:01:01',
+      suspensionOfVisitsStartDate: '2001-01-01T01:01:01',
+      suspensionOfVisitsStartTime: '01:01:01',
+      suspensionOfVisitsEndDate: '2001-01-01T01:01:01',
+    },
+    {
+      legacySubjectId: 123456789,
+      suspensionOfVisits: 'Yes',
+      suspensionOfVisitsRequestedDate: '2002-02-02T02:02:02',
+      suspensionOfVisitsStartDate: '2002-02-02T02:02:02',
+      suspensionOfVisitsStartTime: '02:02:02',
+      suspensionOfVisitsEndDate: '2002-02-02T02:02:02',
+    },
+    {
+      legacySubjectId: 123456789,
+      suspensionOfVisits: 'Yes',
+      suspensionOfVisitsRequestedDate: '2003-03-03T03:03:03',
+      suspensionOfVisitsStartDate: '2003-03-03T03:03:03',
+      suspensionOfVisitsStartTime: '03:03:03',
+      suspensionOfVisitsEndDate: '2003-03-03T03:03:03',
+    },
+  ],
+} as GetSuspensionOfVisitsStubOptions
+
+type GetSuspensionOfVisitsStubOptions = {
+  httpStatus: number
+  orderId?: number
+  events: { [key: string]: string | number | null }[]
+}
+
+const getSuspensionOfVisits = (
+  options: GetSuspensionOfVisitsStubOptions = defaultGetSuspensionOfVisitsOptions,
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getSuspensionOfVisits}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.events : null,
+    },
+  })
+
 export default {
   stubDatastoreGetOrderDetails: getOrderDetails,
   stubDatastoreGetMonitoringEvents: getMonitoringEvents,
   stubDatastoreGetIncidentEvents: getIncidentEvents,
   stubDatastoreGetContactEvents: getContactEvents,
   stubDatastoreGetOrderSummary: getOrderSummary,
+  stubDatastoreGetSuspensionOfVisits: getSuspensionOfVisits,
 }
