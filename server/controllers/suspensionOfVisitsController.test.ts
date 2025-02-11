@@ -51,7 +51,7 @@ describe('SuspensionOfVisitsController', () => {
   const createViewData = (orderId: number, events: SuspensionOfVisitsViewEvent[]): SuspensionOfVisitsViewModel => {
     return {
       orderId,
-      backUrl: `/orders/${orderId}`,
+      backUrl: `/orders/${orderId}/summary`,
       events,
     }
   }
@@ -84,7 +84,7 @@ describe('SuspensionOfVisitsController', () => {
 
   it('should render the page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}`,
+      backUrl: `/orders/${testOrderId}/summary`,
       events: [] as SuspensionOfVisitsEvent[],
       orderId: testOrderId,
     }
