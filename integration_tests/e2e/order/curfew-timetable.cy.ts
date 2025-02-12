@@ -1,7 +1,7 @@
 import CurfewTimetablePage from '../../pages/order/curfewTimetable'
 import Page from '../../pages/page'
 
-context('Order Details', () => {
+context('Crufew Timetable', () => {
   const orderId = '1232123'
 
   beforeEach(() => {
@@ -22,8 +22,8 @@ context('Order Details', () => {
     Page.verifyOnPage(CurfewTimetablePage)
   })
 
-  describe('Curfew timeline', () => {
-    it('Renders when no timetables have been found', () => {
+  describe('Timetables', () => {
+    it('Renders when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
         orderId,
@@ -36,7 +36,7 @@ context('Order Details', () => {
       curfewTimetablePage.curfewTimetable.should('not.be.visible')
     })
 
-    it('Renders when one timetable has been found', () => {
+    it('Renders when one timetable entry has been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
         orderId,
@@ -71,7 +71,7 @@ context('Order Details', () => {
       curfewTimetablePage.getCurfewTimetableItem(0).contains('Service ID 321')
     })
 
-    it('Renders when multiple timetables has been found', () => {
+    it('Renders when multiple timetable entries have been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
         orderId,
