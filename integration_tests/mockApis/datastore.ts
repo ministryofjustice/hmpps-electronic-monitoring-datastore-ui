@@ -228,10 +228,38 @@ const getOrderSummary = (options: GetOrderSummaryStubOptions = defaultGetOrderSu
     },
   })
 
+const defaultGetCurfewTimetableOptions = {
+  httpStatus: 200,
+  orderId: '123456789',
+  body: [] as unknown[],
+}
+
+type GetCurfewTimetableStubOptions = {
+  httpStatus: number
+  orderId?: string
+  body?: unknown[]
+}
+
+const getCurfewTimetable = (
+  options: GetCurfewTimetableStubOptions = defaultGetCurfewTimetableOptions,
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getCurfewTimetable}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
 export default {
   stubDatastoreGetOrderDetails: getOrderDetails,
   stubDatastoreGetMonitoringEvents: getMonitoringEvents,
   stubDatastoreGetIncidentEvents: getIncidentEvents,
   stubDatastoreGetContactEvents: getContactEvents,
   stubDatastoreGetOrderSummary: getOrderSummary,
+  stubDatastoreGetCurfewTimetable: getCurfewTimetable,
 }
