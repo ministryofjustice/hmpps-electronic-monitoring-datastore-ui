@@ -215,6 +215,19 @@ const getViolationEvents = (options: GetBasicStubOptions = defaultBasicStubOptio
     },
   })
 
+const getSuspensionOfVisits = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getSuspensionOfVisits}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
 export default {
   stubDatastoreGetOrderDetails: getOrderDetails,
   stubDatastoreGetMonitoringEvents: getMonitoringEvents,
@@ -224,4 +237,5 @@ export default {
   stubDatastoreGetCurfewTimetable: getCurfewTimetable,
   stubDatastoreGetEquipmentDetails: getEquipmentDetails,
   stubDatastoreGetViolationEvents: getViolationEvents,
+  stubDatastoreGetSuspensionOfVisits: getSuspensionOfVisits,
 }

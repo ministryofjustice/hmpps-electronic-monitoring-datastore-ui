@@ -1,5 +1,5 @@
-import VisitDetailsPage from '../pages/visitDetails'
-import Page from '../pages/page'
+import VisitDetailsPage from '../../pages/order/visitDetails'
+import Page from '../../pages/page'
 
 context('Visit details', () => {
   const orderId = '1234567'

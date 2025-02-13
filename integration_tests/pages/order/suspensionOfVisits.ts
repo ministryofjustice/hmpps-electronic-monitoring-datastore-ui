@@ -1,8 +1,8 @@
 import Page, { PageElement } from '../page'
 
-export default class EventHistoryPage extends Page {
+export default class SuspensionOfVisitsPage extends Page {
   constructor() {
-    super('All event history')
+    super('Suspension of visits')
   }
 
   get timeline(): PageElement {
