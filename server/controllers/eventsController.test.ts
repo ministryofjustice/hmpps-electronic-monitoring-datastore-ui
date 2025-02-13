@@ -4,11 +4,13 @@ import AuditService from '../services/auditService'
 import EventsService from '../services/eventsService'
 import EventsController from './eventsController'
 // eslint-disable-next-line import/no-named-as-default
-import EventsViewModel, { TimelineEventModel } from '../models/view-models/events'
+import EventsViewModel from '../models/view-models/events'
+import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { MonitoringEvent, MonitoringEventModel } from '../models/monitoringEvents'
 import { IncidentEvent, IncidentEventModel } from '../models/incidentEvents'
 import { ContactEvent, ContactEventModel } from '../models/contactEvents'
+import { ViolationEvent } from '../models/violationEvents'
 
 jest.mock('../services/eventsService')
 
@@ -51,8 +53,8 @@ describe('EventsController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}`,
-      events: [] as (MonitoringEvent | IncidentEvent | ContactEvent)[],
+      backUrl: `/orders/${testOrderId}/summary`,
+      events: [] as (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[],
       orderId: testOrderId,
     }
 
@@ -70,7 +72,7 @@ describe('EventsController', () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}`,
+      backUrl: `/orders/${testOrderId}/summary`,
       events: [
         {
           isoDateTime: eventDateTime,
@@ -104,7 +106,7 @@ describe('EventsController', () => {
     const eventDateTime = '2023-03-03T03:03:03'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}`,
+      backUrl: `/orders/${testOrderId}/summary`,
       events: [
         {
           isoDateTime: eventDateTime,
@@ -138,7 +140,7 @@ describe('EventsController', () => {
     const eventDateTime = '2023-03-03T03:03:03'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}`,
+      backUrl: `/orders/${testOrderId}/summary`,
       events: [
         {
           isoDateTime: eventDateTime,

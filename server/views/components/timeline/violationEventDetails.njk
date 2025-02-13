@@ -1,0 +1,31 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDateTime, safeGovukDate %}
+
+{% macro violationEventDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Breach details" }, value: { text: event.properties.breachDetails } },
+        { key: { text: "Breach enforcement outcome" }, value: { text: event.properties.breachEnforcementOutcome } },
+        { key: { text: "Breach at" }, value: { text: safeGovukDateTime(event.properties.breachDateTime) } },
+        { key: { text: "Breach identified at" }, value: { text: safeGovukDateTime(event.properties.breachIdentifiedDateTime) } },
+        { key: { text: "Breach pack requested on" }, value: { text: safeGovukDate(event.properties.breachPackRequestedDate) } },
+        { key: { text: "Breach pack sent on" }, value: { text: safeGovukDate(event.properties.breachPackSentDate) } },
+
+        { key: { text: "Authority first notified at" }, value: { text: safeGovukDateTime(event.properties.authorityFirstNotifiedDateTime) } },
+
+        { key: { text: "Agency action" }, value: { text: event.properties.agencyAction } },
+        { key: { text: "Agency action on" }, value: { text: safeGovukDate(event.properties.agencyActionDate) } },
+
+        { key: { text: "Investigation outcome reason" }, value: { text: event.properties.investigationOutcomeReason } },
+        { key: { text: "Enforcement reason" }, value: { text: event.properties.enforcementReason } },
+
+        { key: { text: "Warning letter sent at" }, value: { text: safeGovukDateTime(event.properties.warningLetterSentDateTime) } },
+        { key: { text: "Subject letter sent on" }, value: { text: safeGovukDate(event.properties.subjectLetterSentDate) } },
+        { key: { text: "Summons server on" }, value: { text: safeGovukDate(event.properties.summonsServedDate) } },
+        { key: { text: "Hearing date" }, value: { text: safeGovukDate(event.properties.hearingDate) } },
+        { key: { text: "Section 9 date" }, value: { text: safeGovukDate(event.properties.section9Date) } }
+      ]
+    })
+  }}
+{% endmacro %}

@@ -1,0 +1,52 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDateTime %}
+
+{% macro curfewTimetable(event) %}
+  {% set addressHtml %}
+    {% if (event.properties.serviceAddress1 or event.properties.serviceAddress2 or event.properties.serviceAddress3 or event.properties.serviceAddressPostcode ) %}
+    <p class="govuk-body">
+      {{ event.properties.serviceAddress1 }}<br/>
+      {{ event.properties.serviceAddress2 }}<br/>
+      {{ event.properties.serviceAddress3 }}<br/>
+      {{ event.properties.serviceAddress4 }}<br/>
+      {{ event.properties.serviceAddressPostcode }}
+    </p>
+    {% endif %}
+  {% endset %}
+
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Service ID" }, value: { text: event.properties.serviceId } },
+        { key: { text: "Address" }, value: { html: addressHtml } },
+        { key: { text: "Service start date" }, value: { text: safeGovukDateTime(event.properties.serviceStartDate) } },
+        { key: { text: "Service end date" }, value: { text: safeGovukDateTime(event.properties.serviceEndDate) } }
+      ]
+    })
+  }}
+
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Curfew dates" } },
+        { key: { text: "Curfew start date" }, value: { text: safeGovukDateTime(event.properties.curfewStartDate) } },
+        { key: { text: "Curfew end date" }, value: { text: safeGovukDateTime(event.properties.curfewEndDate) } }
+      ]
+    })
+  }}
+
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Curfew schedule" } },
+        { key: { text: "Monday" }, value: { text: event.properties.monday } },
+        { key: { text: "Tuesday" }, value: { text: event.properties.tuesday } },
+        { key: { text: "Wednesday" }, value: { text: event.properties.wednesday } },
+        { key: { text: "Thursday" }, value: { text: event.properties.thursday } },
+        { key: { text: "Friday" }, value: { text: event.properties.friday } },
+        { key: { text: "Saturday" }, value: { text: event.properties.saturday } },
+        { key: { text: "Sunday" }, value: { text: event.properties.sunday } }
+      ]
+    })
+  }}
+{% endmacro %}

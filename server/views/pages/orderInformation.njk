@@ -146,7 +146,7 @@
     {# Button added but services page doesnt exist yet #}
     {% if reports.services %} {{ govukButton({
       text: "Services",
-      href: '/orders/' + orderInformation.legacySubjectId + '/event-history',
+      href: '/orders/' + orderInformation.legacySubjectId + '/curfew-timetable',
       classes: "govuk-button--secondary ems-button-grid__button"
     }) }} {% endif %}
 

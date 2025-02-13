@@ -5,6 +5,9 @@ import EventsService from './eventsService'
 import DatastoreOrderService from './datastoreOrderService'
 import DatastoreSearchService from './datastoreSearchService'
 import SuspensionOfVisitsService from './suspensionOfVisitsService'
+import EquipmentDetailsService from './equipmentDetailsService'
+import VisitDetailsService from './visitDetailsService'
+import CurfewTimetableService from './curfewTimetableService'
 
 export const services = () => {
   const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreClientFactory } = dataAccess()
@@ -17,6 +20,9 @@ export const services = () => {
   const datastoreOrderService = new DatastoreOrderService(datastoreClientFactory, hmppsAuthClient)
   const eventsService = new EventsService(datastoreClientFactory, hmppsAuthClient)
   const suspensionOfVisitsService = new SuspensionOfVisitsService(datastoreClientFactory, hmppsAuthClient)
+  const equipmentDetailsService = new EquipmentDetailsService(datastoreClientFactory, hmppsAuthClient)
+  const visitDetailsService = new VisitDetailsService(datastoreClientFactory, hmppsAuthClient)
+  const curfewTimetableService = new CurfewTimetableService(datastoreClientFactory, hmppsAuthClient)
 
   return {
     applicationInfo,
@@ -26,8 +32,20 @@ export const services = () => {
     datastoreSearchService,
     eventsService,
     suspensionOfVisitsService,
+    equipmentDetailsService,
+    visitDetailsService,
+    curfewTimetableService,
   }
 }
 
 export type Services = ReturnType<typeof services>
-export { AuditService, DatastoreOrderService, DatastoreSearchService, EventsService, SuspensionOfVisitsService }
+export {
+  AuditService,
+  DatastoreOrderService,
+  DatastoreSearchService,
+  EventsService,
+  SuspensionOfVisitsService,
+  EquipmentDetailsService,
+  VisitDetailsService,
+  CurfewTimetableService,
+}

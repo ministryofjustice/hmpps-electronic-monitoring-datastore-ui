@@ -39,26 +39,20 @@ describe('Order details basic GET requests', () => {
     ['order information page', `/orders/${orderId}/summary`, 'Order information', Page.ORDER_INFORMATION_PAGE],
     ['order details page', `/orders/${orderId}/details`, 'Order details', Page.ORDER_DETAILS_PAGE],
     ['visits and tasks page', `/orders/${orderId}/visit-details`, 'Visit details', Page.VISIT_DETAILS_PAGE],
-    // ['event history page', `/orders/${orderId}/event-history`, 'All event history', Page.EVENT_HISTORY_PAGE],
+    ['event history page', `/orders/${orderId}/event-history`, 'All event history', Page.EVENT_HISTORY_PAGE],
     [
       'equipment details page',
       `/orders/${orderId}/equipment-details`,
       'Equipment details',
       Page.EQUIPMENT_DETAILS_PAGE,
     ],
-    // TODO: services is missing
-    ['curfew violations page', `/orders/${orderId}/curfew-violations`, 'Violations', Page.CURFEW_VIOLATIONS_PAGE],
-    ['contact history page', `/orders/${orderId}/contact-history`, 'Contact history', Page.CONTACT_HISTORY_PAGE],
     [
       'suspensions page',
       `/orders/${orderId}/suspension-of-visits`,
       'Suspension of visits',
       Page.SUSPENSION_OF_VISITS_PAGE,
     ],
-    // TODO: curfew hours not on figma, remove here?
-    ['curfew hours page', `/orders/${orderId}/curfew-hours`, 'Curfew hours', Page.CURFEW_HOURS_PAGE],
-    // TODO: alerts is missing
-    // TODO: 'all event history' is missing
+    ['curfew timetable page', `/orders/${orderId}/curfew-timetable`, 'Curfew hours', Page.CURFEW_TIMETABLE_PAGE],
   ])('should render %s', (pageName, route, titleText, auditType) => basicGetTest(pageName, route, titleText, auditType))
 })
 

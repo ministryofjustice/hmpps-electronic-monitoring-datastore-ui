@@ -31,7 +31,7 @@ const createViewModelFromApiDto = (
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/orders/${orderId}`,
+  backUrl: `/orders/${orderId}/summary`,
 })
 
 const construct = (

@@ -1,0 +1,28 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDateTime %}
+
+{% macro equipmentDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "HMU" } },
+        { key: { text: "HMU ID" }, value: { text: event.properties.hmu.id } },
+        { key: { text: "HMU equipment category description" }, value: { text: event.properties.hmu.equipmentCategoryDescription } },
+        { key: { text: "HMU install date" }, value: { text: safeGovukDateTime(event.properties.hmu.installedDateTime) } },
+        { key: { text: "HMU uninstall date" }, value: { text: safeGovukDateTime(event.properties.hmu.removedDateTime) } }
+      ]
+    })
+  }}
+
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Device" } },
+        { key: { text: "PID or Device ID" }, value: { text: event.properties.pid.id } },
+        { key: { text: "PID equipment category description" }, value: { text: event.properties.pid.equipmentCategoryDescription } },
+        { key: { text: "PID install date" }, value: { text: safeGovukDateTime(event.properties.pid.installedDateTime) } },
+        { key: { text: "PID uninstall date" }, value: { text: safeGovukDateTime(event.properties.pid.removedDateTime) } }
+      ]
+    })
+  }}
+{% endmacro %}

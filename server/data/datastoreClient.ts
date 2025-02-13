@@ -5,9 +5,13 @@ import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderDetails } from '../interfaces/orderDetails'
 import { OrderInformation } from '../interfaces/orderInformation'
-import { ContactEventModel, ContactEvents, ContactEvent } from '../models/contactEvents'
-import { IncidentEventModel, IncidentEvents, IncidentEvent } from '../models/incidentEvents'
-import { MonitoringEventModel, MonitoringEvents, MonitoringEvent } from '../models/monitoringEvents'
+import { ContactEventModel, ContactEvent } from '../models/contactEvents'
+import { IncidentEventModel, IncidentEvent } from '../models/incidentEvents'
+import { MonitoringEventModel, MonitoringEvent } from '../models/monitoringEvents'
+import { ViolationEventModel, ViolationEvent } from '../models/violationEvents'
+import { EquipmentDetailsModel, EquipmentDetails } from '../models/equipmentDetails'
+import { VisitDetailsModel, VisitDetails } from '../models/visitDetails'
+import { CurfewTimetableModel, CurfewTimetable } from '../models/curfewTimetable'
 import { SuspensionOfVisitsEventModel, SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 export default class DatastoreClient {
@@ -68,11 +72,11 @@ export default class DatastoreClient {
   async getMonitoringEvents(input: OrderRequest): Promise<MonitoringEvent[]> {
     const { orderId } = input
 
-    const result: MonitoringEvents = await this.restClient.get({
-      path: config.apiEndpoints.getMonitoringEvents.replace('_ID_', orderId),
+    const result: MonitoringEvent[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getMonitoringEvents}/${orderId}`,
     })
 
-    const events = result.events.map(event => MonitoringEventModel.parse(event))
+    const events = result.map(event => MonitoringEventModel.parse(event))
 
     return events
   }
@@ -80,25 +84,61 @@ export default class DatastoreClient {
   async getIncidentEvents(input: OrderRequest): Promise<IncidentEvent[]> {
     const { orderId } = input
 
-    const result: IncidentEvents = await this.restClient.get({
-      path: config.apiEndpoints.getIncidentEvents.replace('_ID_', orderId),
+    const result: IncidentEvent[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getIncidentEvents}/${orderId}`,
     })
 
-    const events = result.events.map(event => IncidentEventModel.parse(event))
+    const events = result.map(event => IncidentEventModel.parse(event))
 
     return events
   }
 
-  async getContactHistory(input: OrderRequest): Promise<ContactEvent[]> {
+  async getViolationEvents(input: OrderRequest): Promise<ViolationEvent[]> {
     const { orderId } = input
 
-    const result: ContactEvents = await this.restClient.get({
-      path: config.apiEndpoints.getContactEvents.replace('_ID_', orderId),
+    const result: ViolationEvent[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getViolationEvents}/${orderId}`,
     })
 
-    const events = result.events.map(event => ContactEventModel.parse(event))
+    const events = result.map(event => ViolationEventModel.parse(event))
 
     return events
+  }
+
+  async getContactEvents(input: OrderRequest): Promise<ContactEvent[]> {
+    const { orderId } = input
+
+    const result: ContactEvent[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getContactEvents}/${orderId}`,
+    })
+
+    const events = result.map(event => ContactEventModel.parse(event))
+
+    return events
+  }
+
+  async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+    const { orderId } = input
+
+    const result: EquipmentDetails[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getEquipmentDetails}/${orderId}`,
+    })
+
+    const equipmentDetails = result.map(data => EquipmentDetailsModel.parse(data))
+
+    return equipmentDetails
+  }
+
+  async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
+    const { orderId } = input
+
+    const result: VisitDetails[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getVisitDetails}/${orderId}`,
+    })
+
+    const visitDetails = result.map(data => VisitDetailsModel.parse(data))
+
+    return visitDetails
   }
 
   async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
@@ -111,5 +151,17 @@ export default class DatastoreClient {
     const events = result.map(event => SuspensionOfVisitsEventModel.parse(event))
 
     return events
+  }
+
+  async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
+    const { orderId } = input
+
+    const results: CurfewTimetable[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getCurfewTimetable}/${orderId}`,
+    })
+
+    const curfewTimetable = results.map(result => CurfewTimetableModel.parse(result))
+
+    return curfewTimetable
   }
 }

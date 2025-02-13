@@ -1,0 +1,115 @@
+{% from "moj/components/timeline/macro.njk" import mojTimeline %}
+{% from "../components/timeline/contactEventDetails.njk" import contactEventDetails %}
+{% from "../components/timeline/monitoringEventDetails.njk" import monitoringEventDetails %}
+{% from "../components/timeline/incidentEventDetails.njk" import incidentEventDetails %}
+{% from "../components/timeline/violationEventDetails.njk" import violationEventDetails %}
+{% from "../components/timeline/equipmentDetails.njk" import equipmentDetails %}
+{% from "../components/timeline/visitDetails.njk" import visitDetails %}
+{% from "../components/timeline/suspensionOfVisits.njk" import suspensionOfVisits %}
+{% from "../components/timeline/curfewTimetable.njk" import curfewTimetable %}
+{% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
+
+{% macro emsEventTimeline(events) %}
+  {% set timelineItems = [] %}
+  {% for timestamp, events in events | groupby("dateTime") %}
+    {% for event in events %}
+      {% if event.eventType == "contact" %}
+        {% set eventLabel = "Contact event" %}
+        {% set eventDetails %}
+          {{ contactEventDetails(event) }}
+        {% endset %}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: eventLabel },
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "monitoring" %}
+        {% set eventLabel = "Monitoring event" %}
+        {% set eventDetails = monitoringEventDetails(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: eventLabel },
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "incident" %}
+        {% set eventLabel = "Incident event" %}
+        {% set eventDetails = incidentEventDetails(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: eventLabel },
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "violation" %}
+        {% set eventLabel = "Violation event" %}
+        {% set eventDetails = violationEventDetails(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: eventLabel },
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "equipment-details" %}
+        {% set eventDetails = equipmentDetails(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "visit-details" %}
+        {% set eventDetails = visitDetails(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% elif event.eventType == "curfew-timetable" %}
+        {% set eventLabel = "Service" %}
+        {% set eventDetails = curfewTimetable(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          label: { text: eventLabel },
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% else %}
+        {% set eventDetails = unknownEventDetails(event) %}
+
+        {% set timelineItems = (timelineItems.push({
+          html: eventDetails,
+          datetime: {
+            timestamp: timestamp,
+            type: 'shortdatetime'
+          }
+        }), timelineItems) %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+  {{ mojTimeline({
+    items: timelineItems
+  })}}
+{% endmacro %}
