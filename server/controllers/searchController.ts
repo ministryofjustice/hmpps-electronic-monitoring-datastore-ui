@@ -57,7 +57,7 @@ export default class SearchController {
       res.redirect('search')
     } else {
       // If input validation succeeds, execute the search
-      const results = await this.datastoreSearchService.search({
+      const { orders } = await this.datastoreSearchService.search({
         userToken: res.locals.user.token,
         data: validatedFormData,
       })
@@ -72,8 +72,8 @@ export default class SearchController {
       })
 
       // If results is Order[], proceed to results view
-      if (results.length > 0) {
-        res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
+      if (orders.length > 0) {
+        res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
       } else {
         res.render('pages/noResults')
       }

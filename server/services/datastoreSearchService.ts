@@ -1,7 +1,7 @@
 import { ZodTypeAny } from 'zod'
 import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
-import { Order } from '../interfaces/order'
+import { Orders } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { ValidationResult } from '../models/Validation'
@@ -63,11 +63,11 @@ export default class DatastoreSearchService {
     return validationErrors
   }
 
-  async search(input: SearchFormInput): Promise<Order[]> {
+  async search(input: SearchFormInput): Promise<Orders> {
     try {
       this.datastoreClient.updateToken(input.userToken)
 
-      const results = this.datastoreClient.searchOrders(input)
+      const results: Orders = await this.datastoreClient.searchOrders(input)
       return results
     } catch (error) {
       const sanitisedError: SanitisedError = getSanitisedError(error)

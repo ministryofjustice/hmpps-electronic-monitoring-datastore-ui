@@ -2,7 +2,7 @@ import nock from 'nock'
 import DatastoreClient from './datastoreClient'
 import orders from './mockData/orders'
 import config from '../config'
-import { Order } from '../interfaces/order'
+import { Orders } from '../interfaces/order'
 import { SearchFormInput } from '../types/SearchFormInput'
 import { OrderRequest } from '../types/OrderRequest'
 import mockOrderInformation from './mockData/orderInformation'
@@ -56,7 +56,7 @@ describe('EM Datastore Search Client', () => {
     it('should return a list of orders from the API', async () => {
       fakeClient.post(endpoint, searchOrder.data).matchHeader('Authorization', `Bearer ${token}`).reply(200, orders)
 
-      const expected: Order[] = orders
+      const expected: Orders = orders
 
       const results = await datastoreClient.searchOrders(searchOrder)
 

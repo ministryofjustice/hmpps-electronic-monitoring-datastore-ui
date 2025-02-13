@@ -238,7 +238,10 @@ describe('SearchController', () => {
       })
 
       datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
-      datastoreSearchService.search = jest.fn().mockResolvedValue([])
+      datastoreSearchService.search = jest.fn().mockResolvedValue({
+        orders: [],
+        queryExecutionId: '',
+      })
 
       await searchController.searchResultsPage(req, res, next)
 
