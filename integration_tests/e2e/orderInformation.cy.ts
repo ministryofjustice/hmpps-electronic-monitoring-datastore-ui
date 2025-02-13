@@ -102,7 +102,7 @@ context('Order Information', () => {
       orderInformationPage.gridButton('Services').should('be.visible')
       orderInformationPage.gridButton('Services').click()
       // TODO: change url once Sevice page is created
-      cy.url().should('include', `/orders/${orderId}/event-history`)
+      cy.url().should('include', `/orders/${orderId}/curfew-timetable`)
     })
   })
 
