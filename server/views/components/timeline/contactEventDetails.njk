@@ -1,17 +1,19 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from '../../components/safeDateFormatters.njk' import safeGovukDateTime %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
 
 {% macro contactEventDetails(event) %}
   {{
     govukSummaryList({
       rows: [
-        { key: { text: "Type" }, value: { text: event.properties.type } },
-        { key: { text: "Channel" }, value: { text: event.properties.channel } },
-        { key: { text: "Time" }, value: { text: safeGovukDateTime(event.isoDateTime) } },
+        { key: { text: "Contact Type" }, value: { text: event.properties.type } },
+        { key: { text: "Contact channel" }, value: { text: event.properties.channel } },
+        { key: { text: "Contact date" }, value: { text: safeGovukDate(event.isoDateTime) } },
+        { key: { text: "Contact time" }, value: { text: safeGovukTime(event.isoDateTime) } },
         { key: { text: "User" }, value: { text: event.properties.userName } },
         { key: { text: "Reason" }, value: { text: event.properties.reason } },
         { key: { text: "Outcome" }, value: { text: event.properties.outcome } },
-        { key: { text: "Modified on" }, value: { text: safeGovukDateTime(event.properties.modifiedDateTime) } }
+        { key: { text: "Modified date" }, value: { text: safeGovukDate(event.properties.modifiedDateTime) } },
+        { key: { text: "Modified time" }, value: { text: safeGovukTime(event.properties.modifiedDateTime) } }
       ]
     })
   }}

@@ -1,5 +1,5 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from '../../components/safeDateFormatters.njk' import safeGovukDateTime %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
 
 {% macro curfewTimetable(event) %}
   {% set addressHtml %}
@@ -19,26 +19,32 @@
       rows: [
         { key: { text: "Service ID" }, value: { text: event.properties.serviceId } },
         { key: { text: "Address" }, value: { html: addressHtml } },
-        { key: { text: "Service start date" }, value: { text: safeGovukDateTime(event.properties.serviceStartDate) } },
-        { key: { text: "Service end date" }, value: { text: safeGovukDateTime(event.properties.serviceEndDate) } }
+        { key: { text: "Service start date" }, value: { text: safeGovukDate(event.properties.serviceStartDate) } },
+        { key: { text: "Service start time" }, value: { text: safeGovukTime(event.properties.serviceStartDate) } },
+        { key: { text: "Service end date" }, value: { text: safeGovukDate(event.properties.serviceEndDate) } },
+        { key: { text: "Service end time" }, value: { text: safeGovukTime(event.properties.serviceEndDate) } }
       ]
     })
   }}
 
-  {{
-    govukSummaryList({
-      rows: [
-        { key: { text: "Curfew dates" } },
-        { key: { text: "Curfew start date" }, value: { text: safeGovukDateTime(event.properties.curfewStartDate) } },
-        { key: { text: "Curfew end date" }, value: { text: safeGovukDateTime(event.properties.curfewEndDate) } }
-      ]
-    })
-  }}
+  <h2 class="govuk-heading-m">Curfew dates</h2>
 
   {{
     govukSummaryList({
       rows: [
-        { key: { text: "Curfew schedule" } },
+        { key: { text: "Curfew start date" }, value: { text: safeGovukDate(event.properties.curfewStartDate) } },
+        { key: { text: "Curfew start time" }, value: { text: safeGovukTime(event.properties.curfewStartDate) } },
+        { key: { text: "Curfew end date" }, value: { text: safeGovukDate(event.properties.curfewEndDate) } },
+        { key: { text: "Curfew end time" }, value: { text: safeGovukTime(event.properties.curfewEndDate) } }
+      ]
+    })
+  }}
+
+  <h2 class="govuk-heading-m">Curfew schedule</h2>
+
+  {{
+    govukSummaryList({
+      rows: [
         { key: { text: "Monday" }, value: { text: event.properties.monday } },
         { key: { text: "Tuesday" }, value: { text: event.properties.tuesday } },
         { key: { text: "Wednesday" }, value: { text: event.properties.wednesday } },

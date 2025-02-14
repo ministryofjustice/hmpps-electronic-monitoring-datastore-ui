@@ -14,97 +14,38 @@
     {% for event in events %}
       {% if event.eventType == "contact" %}
         {% set eventLabel = "Contact event" %}
-        {% set eventDetails %}
-          {{ contactEventDetails(event) }}
-        {% endset %}
-
-        {% set timelineItems = (timelineItems.push({
-          label: { text: eventLabel },
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
+        {% set eventDetails = contactEventDetails(event) %}
       {% elif event.eventType == "monitoring" %}
         {% set eventLabel = "Monitoring event" %}
         {% set eventDetails = monitoringEventDetails(event) %}
-
-        {% set timelineItems = (timelineItems.push({
-          label: { text: eventLabel },
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
       {% elif event.eventType == "incident" %}
         {% set eventLabel = "Incident event" %}
         {% set eventDetails = incidentEventDetails(event) %}
-
-        {% set timelineItems = (timelineItems.push({
-          label: { text: eventLabel },
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
       {% elif event.eventType == "violation" %}
         {% set eventLabel = "Violation event" %}
         {% set eventDetails = violationEventDetails(event) %}
-
-        {% set timelineItems = (timelineItems.push({
-          label: { text: eventLabel },
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
       {% elif event.eventType == "equipment-details" %}
+        {% set eventLabel = "Equipment details" %}
         {% set eventDetails = equipmentDetails(event) %}
-
-        {% set timelineItems = (timelineItems.push({
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
       {% elif event.eventType == "visit-details" %}
+        {% set eventLabel = event.properties.visitType %}
         {% set eventDetails = visitDetails(event) %}
-
-        {% set timelineItems = (timelineItems.push({
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
       {% elif event.eventType == "curfew-timetable" %}
         {% set eventLabel = "Service" %}
         {% set eventDetails = curfewTimetable(event) %}
-
-        {% set timelineItems = (timelineItems.push({
-          label: { text: eventLabel },
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
       {% else %}
+        {% set eventLabel = "Unrecognised event" %}
         {% set eventDetails = unknownEventDetails(event) %}
-
-        {% set timelineItems = (timelineItems.push({
-          html: eventDetails,
-          datetime: {
-            timestamp: timestamp,
-            type: 'shortdatetime'
-          }
-        }), timelineItems) %}
       {% endif %}
+
+      {% set timelineItems = (timelineItems.push({
+        label: { text: eventLabel },
+        html: eventDetails,
+        datetime: {
+          timestamp: timestamp,
+          type: 'shortdatetime'
+        }
+      }), timelineItems) %}
     {% endfor %}
   {% endfor %}
 

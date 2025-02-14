@@ -21,22 +21,22 @@
 
   <hr class="govuk-section-break govuk-section-break--m">
 
-  <h1 class="govuk-heading-m">Order details</h1>
+  <h1 class="govuk-heading-l">Order details</h1>
 
   <hr class="govuk-section-break govuk-section-break--m">
 
   {{ govukTable({
     caption: deviceWearerHeading,
-    captionClasses: "govuk-table__caption--s",
+    captionClasses: "govuk-table__caption--m",
     rows: deviceWearerRecords
   }) }}
 
   <hr class="govuk-section-break govuk-section-break--m">
-  
+
   {{ govukTable({
     caption: orderDetailsHeading,
-    captionClasses: "govuk-table__caption--s",
+    captionClasses: "govuk-table__caption--m",
     rows: orderDetailsRecords
   }) }}
-  
+
 {% endblock %}

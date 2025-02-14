@@ -1,12 +1,13 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from '../../components/safeDateFormatters.njk' import safeGovukDateTime %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
 
 {% macro monitoringEventDetails(event) %}
   {{
     govukSummaryList({
       rows: [
         { key: { text: "Type" }, value: { text: event.properties.type } },
-        { key: { text: "Processed at" }, value: { text: safeGovukDateTime(event.properties.processedDateTime) } }
+        { key: { text: "Processed date" }, value: { text: safeGovukDate(event.properties.processedDateTime) } },
+        { key: { text: "Processed time" }, value: { text: safeGovukTime(event.properties.processedDateTime) } }
       ]
     })
   }}
