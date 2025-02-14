@@ -36,7 +36,10 @@ export default class SearchController {
     res.render('pages/search', viewModel)
   }
 
-  searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
+  // TODO: Split this method.
+  // STEP: 1. Send query to Athena, get a queryID, route to '/results?queryId={queryId}
+  // STEP: 2. Once on route '/results?queryId={queryId}, send queryId from URL param to API, in order to get results, and render{page, data}.
+  submitSearchQuery: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
@@ -57,10 +60,15 @@ export default class SearchController {
       res.redirect('search')
     } else {
       // If input validation succeeds, execute the search
-      const { orders } = await this.datastoreSearchService.search({
+      const result = await this.datastoreSearchService.submitSearchQuery({
         userToken: res.locals.user.token,
         data: validatedFormData,
       })
+
+      // const { orders, queryExecutionId } = await this.datastoreSearchService.search({
+      //   userToken: res.locals.user.token,
+      //   data: validatedFormData,
+      // })
 
       // Clear session data as it is no longer required
       req.session.validationErrors = undefined
@@ -72,11 +80,17 @@ export default class SearchController {
       })
 
       // If results is Order[], proceed to results view
-      if (orders.length > 0) {
-        res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
-      } else {
-        res.render('pages/noResults')
-      }
+      // if (orders.length > 0) {
+      // res.render('pages/searchResults', { data: tabulateOrders(orders as Order[])})
+      // res.redirect(`search/results?queryId=${encodeURIComponent(queryExecutionId)}`)
+
+      // res.locals.modifiedUrl = `/results?queryId=${encodeURIComponent(queryExecutionId)}`
+      // res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]), updatedUrl: `/results?queryId=${encodeURIComponent(queryExecutionId)}` })
+      // res.redirect(`/results?queryId=${encodeURIComponent(queryExecutionId)}`)
+
+      // } else {
+      res.render('pages/noResults')
+      // }
     }
   }
 }

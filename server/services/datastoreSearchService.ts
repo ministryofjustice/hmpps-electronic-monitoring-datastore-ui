@@ -76,4 +76,17 @@ export default class DatastoreSearchService {
       throw sanitisedError
     }
   }
+
+  async submitSearchQuery(input: SearchFormInput): Promise<string> {
+    try {
+      this.datastoreClient.updateToken(input.userToken)
+      const queryExecutionId: string = await this.datastoreClient.submitSearchQuery(input)
+      return queryExecutionId
+    } catch (error) {
+      const sanitisedError: SanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, 'Error submitting search query')
+      sanitisedError.message = 'Error submitting search query'
+      throw sanitisedError
+    }
+  }
 }
