@@ -5,7 +5,7 @@
   {{
     govukSummaryList({
       rows: [
-        { key: { text: "Contact Type" }, value: { text: event.properties.type } },
+        { key: { text: "Contact type" }, value: { text: event.properties.type } },
         { key: { text: "Contact channel" }, value: { text: event.properties.channel } },
         { key: { text: "Contact date" }, value: { text: safeGovukDate(event.isoDateTime) } },
         { key: { text: "Contact time" }, value: { text: safeGovukTime(event.isoDateTime) } },

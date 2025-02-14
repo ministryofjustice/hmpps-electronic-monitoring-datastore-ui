@@ -82,10 +82,12 @@ context('Visit details', () => {
       const visitDetails = Page.verifyOnPage(VisitDetailsPage)
 
       visitDetails.getTimelineItem(0).within($item => {
-        cy.wrap($item).contains('Type TEST_VISIT_TYPE')
+        cy.wrap($item).contains('TEST_VISIT_TYPE')
         cy.wrap($item).contains('Address address line 1 address line 2 address line 3 address line 4 postcode')
-        cy.wrap($item).contains('Actual work start date 2 February 2002 at 1:01am')
-        cy.wrap($item).contains('Actual work end date 2 February 2002 at 2:02am')
+        cy.wrap($item).contains('Actual work start date 2 February 2002')
+        cy.wrap($item).contains('Actual work start time 1:01am')
+        cy.wrap($item).contains('Actual work end date 2 February 2002')
+        cy.wrap($item).contains('Actual work end time 2:02am')
         cy.wrap($item).contains('Notes TEST_NOTES')
         cy.wrap($item).contains('Outcome TEST_OUTCOME')
       })
@@ -135,10 +137,12 @@ context('Visit details', () => {
       const visitDetails = Page.verifyOnPage(VisitDetailsPage)
 
       visitDetails.getTimelineItem(1).within($item => {
-        cy.wrap($item).contains('Type TEST_VISIT_TYPE_2')
+        cy.wrap($item).contains('TEST_VISIT_TYPE_2')
         cy.wrap($item).contains('Address address line 5 address line 6 address line 7 address line 8 postcode 2')
-        cy.wrap($item).contains('Actual work start date 2 February 2002 at 3:03am')
-        cy.wrap($item).contains('Actual work end date 2 February 2002 at 4:04am')
+        cy.wrap($item).contains('Actual work start date 2 February 2002')
+        cy.wrap($item).contains('Actual work start time 3:03am')
+        cy.wrap($item).contains('Actual work end date 2 February 2002')
+        cy.wrap($item).contains('Actual work end time 4:04am')
         cy.wrap($item).contains('Notes TEST_NOTES_2')
         cy.wrap($item).contains('Outcome TEST_OUTCOME_2')
       })
