@@ -1,11 +1,11 @@
 import { ZodTypeAny } from 'zod'
 import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
-import { Orders } from '../interfaces/order'
+import { Order, Orders } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { ValidationResult } from '../models/Validation'
-import { SearchFormInput } from '../types/SearchFormInput'
+import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
 import NameValidator from '../utils/validators/nameValidator'
 import { SearchOrderFormData } from '../models/form-data/searchOrder'
@@ -86,6 +86,21 @@ export default class DatastoreSearchService {
       const sanitisedError: SanitisedError = getSanitisedError(error)
       logger.error(sanitisedError, 'Error submitting search query')
       sanitisedError.message = 'Error submitting search query'
+      throw sanitisedError
+    }
+  }
+
+  async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
+    try {
+      this.datastoreClient.updateToken(request.userToken)
+
+      const orders: Order[] = await this.datastoreClient.getSearchResults(request)
+
+      return orders
+    } catch (error) {
+      const sanitisedError: SanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, 'Error retrieving search results')
+      sanitisedError.message = 'Error retrieving search results'
       throw sanitisedError
     }
   }

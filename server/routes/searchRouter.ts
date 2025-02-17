@@ -15,8 +15,7 @@ export default function searchRouter({ auditService, datastoreSearchService }: S
 
   post('/', searchController.submitSearchQuery)
 
-  // TODO: Create getSearchResults route
-  // get('/results', searchController.getSearchResults)
+  get('/results', searchController.searchResultsPage)
 
   return router
 }

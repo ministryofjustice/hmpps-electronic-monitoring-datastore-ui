@@ -1,8 +1,8 @@
 import RestClient from './restClient'
 import config, { ApiConfig } from '../config'
-import { Orders } from '../interfaces/order'
+import { Order, Orders } from '../interfaces/order'
 import { QueryExecutionResponse } from '../interfaces/search'
-import { SearchFormInput } from '../types/SearchFormInput'
+import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderDetails } from '../interfaces/orderDetails'
 import { OrderInformation } from '../interfaces/orderInformation'
@@ -26,7 +26,7 @@ export default class DatastoreClient {
     this.restClient.updateToken(newTokenValue)
   }
 
-  // TODO: Replace with submitSearchQuery (below) & getSearchResults
+  // TODO: Obsolete; replaced with submitSearchQuery & submitSearchResults. Remove.
   async searchOrders(input: SearchFormInput): Promise<Orders> {
     const { data } = input
 
@@ -47,6 +47,16 @@ export default class DatastoreClient {
     })
 
     return queryExecutionResponse.queryExecutionId
+  }
+
+  async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
+    const { queryExecutionId } = request
+
+    const orders: Order[] = await this.restClient.get({
+      path: `${config.apiEndpoints.getSearchResults}/${queryExecutionId}`,
+    })
+
+    return orders
   }
 
   async confirmApi(): Promise<JSON> {
