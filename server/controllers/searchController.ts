@@ -77,17 +77,24 @@ export default class SearchController {
       correlationId: req.id,
     })
 
-    // Get orders by queryExecutionId
-    const orders = await this.datastoreSearchService.getSearchResults({
-      userToken: res.locals.user.token,
-      queryExecutionId: req.query.search_id as string,
-    })
+    const queryExecutionId = req.query.search_id as string
 
-    // If results is Order[], proceed to results view
-    if (orders.length > 0) {
-      res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
+    // If queryExecutionId is undefined, redirect to search page.
+    if (!queryExecutionId) {
+      res.redirect('/search')
     } else {
-      res.render('pages/noResults')
+      // Get orders by queryExecutionId
+      const orders = await this.datastoreSearchService.getSearchResults({
+        userToken: res.locals.user.token,
+        queryExecutionId,
+      })
+
+      // If results is Order[], proceed to results view
+      if (orders.length > 0) {
+        res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
+      } else {
+        res.render('pages/noResults')
+      }
     }
   }
 }
