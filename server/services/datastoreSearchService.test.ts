@@ -12,6 +12,7 @@ jest.mock('../data/datastoreClient')
 
 describe('Datastore Search Service', () => {
   const token = 'fake-token-value'
+  const queryExecutionId = 'fake-query-execution-id'
   const hmppsAuthClient = createMockHmppsAuthClient()
   const datastoreClient = createDatastoreClient()
 
@@ -211,8 +212,43 @@ describe('Datastore Search Service', () => {
     })
   })
 
-  describe('search', () => {
-    it('searches for orders & returns the results', async () => {
+  // describe('search', () => {
+  //   it('searches for orders & returns the results', async () => {
+  //     const validInput = {
+  //       token: 'mockToken',
+  //       data: {
+  //         firstName: 'John',
+  //         lastName: 'Doe',
+  //         alias: 'JD',
+  //         'dob-day': '10',
+  //         'dob-month': '02',
+  //         'dob-year': '2021',
+  //       },
+  //     }
+  //     jest.spyOn(datastoreClient, 'searchOrders').mockResolvedValue(orders)
+
+  //     const result = await datastoreSearchService.search(validInput)
+
+  //     expect(datastoreClient.searchOrders).toHaveBeenCalledWith(validInput)
+  //     expect(result).toEqual(orders)
+  //   })
+
+  //   it('handles errors from the datastore client', async () => {
+  //     jest.spyOn(datastoreClient, 'searchOrders').mockImplementationOnce(() => {
+  //       throw getSanitisedError(new Error('Client error'))
+  //     })
+
+  //     const input = {
+  //       token: 'mockToken',
+  //       data: {},
+  //     }
+
+  //     expect(datastoreSearchService.search(input)).rejects.toThrow('Error retrieving search results')
+  //   })
+  // })
+
+  describe('submitSearchQuery', () => {
+    it('submits a search query and returns an order execution ID', async () => {
       const validInput = {
         token: 'mockToken',
         data: {
@@ -224,16 +260,17 @@ describe('Datastore Search Service', () => {
           'dob-year': '2021',
         },
       }
-      jest.spyOn(datastoreClient, 'searchOrders').mockResolvedValue(orders)
 
-      const result = await datastoreSearchService.search(validInput)
+      jest.spyOn(datastoreClient, 'submitSearchQuery').mockResolvedValue(queryExecutionId)
 
-      expect(datastoreClient.searchOrders).toHaveBeenCalledWith(validInput)
-      expect(result).toEqual(orders)
+      const result = await datastoreSearchService.submitSearchQuery(validInput)
+
+      expect(datastoreClient.submitSearchQuery).toHaveBeenCalledWith(validInput)
+      expect(result).toEqual(queryExecutionId)
     })
 
     it('handles errors from the datastore client', async () => {
-      jest.spyOn(datastoreClient, 'searchOrders').mockImplementationOnce(() => {
+      jest.spyOn(datastoreClient, 'submitSearchQuery').mockImplementationOnce(() => {
         throw getSanitisedError(new Error('Client error'))
       })
 
@@ -242,7 +279,36 @@ describe('Datastore Search Service', () => {
         data: {},
       }
 
-      expect(datastoreSearchService.search(input)).rejects.toThrow('Error retrieving search results')
+      expect(datastoreSearchService.submitSearchQuery(input)).rejects.toThrow('Error submitting search query')
+    })
+  })
+
+  describe('getSearchResults', () => {
+    it('submits a request containing a query execution ID and returns search results', async () => {
+      jest.spyOn(datastoreClient, 'getSearchResults').mockResolvedValue(orders)
+
+      const request = {
+        token,
+        queryExecutionId,
+      }
+
+      const result = await datastoreSearchService.getSearchResults(request)
+
+      expect(datastoreClient.getSearchResults).toHaveBeenCalledWith(request)
+      expect(result).toEqual(orders)
+    })
+
+    it('handles errors from the datastore client', async () => {
+      jest.spyOn(datastoreClient, 'getSearchResults').mockImplementationOnce(() => {
+        throw getSanitisedError(new Error('Client error'))
+      })
+
+      const request = {
+        token,
+        queryExecutionId: '',
+      }
+
+      expect(datastoreSearchService.getSearchResults(request)).rejects.toThrow('Error retrieving search results')
     })
   })
 })

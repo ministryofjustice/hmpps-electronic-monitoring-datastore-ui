@@ -1,7 +1,7 @@
 import { ZodTypeAny } from 'zod'
 import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
-import { Order, Orders } from '../interfaces/order'
+import { Order } from '../interfaces/order'
 import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { ValidationResult } from '../models/Validation'

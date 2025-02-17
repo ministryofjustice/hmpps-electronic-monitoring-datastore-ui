@@ -8,8 +8,3 @@ export interface Order {
   orderStartDate?: string
   orderEndDate?: string
 }
-
-export interface Orders {
-  orders: Order[]
-  queryExecutionId: string
-}
