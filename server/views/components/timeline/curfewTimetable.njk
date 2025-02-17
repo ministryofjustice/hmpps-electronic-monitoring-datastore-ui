@@ -20,38 +20,47 @@
         { key: { text: "Service ID" }, value: { text: event.properties.serviceId } },
         { key: { text: "Address" }, value: { html: addressHtml } },
         { key: { text: "Service start date" }, value: { text: safeGovukDate(event.properties.serviceStartDate) } },
-        { key: { text: "Service start time" }, value: { text: safeGovukTime(event.properties.serviceStartDate) } },
         { key: { text: "Service end date" }, value: { text: safeGovukDate(event.properties.serviceEndDate) } },
-        { key: { text: "Service end time" }, value: { text: safeGovukTime(event.properties.serviceEndDate) } }
-      ]
-    })
-  }}
-
-  <h2 class="govuk-heading-m">Curfew dates</h2>
-
-  {{
-    govukSummaryList({
-      rows: [
         { key: { text: "Curfew start date" }, value: { text: safeGovukDate(event.properties.curfewStartDate) } },
-        { key: { text: "Curfew start time" }, value: { text: safeGovukTime(event.properties.curfewStartDate) } },
-        { key: { text: "Curfew end date" }, value: { text: safeGovukDate(event.properties.curfewEndDate) } },
-        { key: { text: "Curfew end time" }, value: { text: safeGovukTime(event.properties.curfewEndDate) } }
+        { key: { text: "Curfew end date" }, value: { text: safeGovukDate(event.properties.curfewEndDate) } }
       ]
     })
   }}
 
   <h2 class="govuk-heading-m">Curfew schedule</h2>
+  {% set curfewSchedule %}{{ safeGovukTime(event.properties.curfewStartDate) }} - {{ safeGovukTime(event.properties.curfewEndDate) }}{% endset %}
 
   {{
     govukSummaryList({
       rows: [
-        { key: { text: "Monday" }, value: { text: event.properties.monday } },
-        { key: { text: "Tuesday" }, value: { text: event.properties.tuesday } },
-        { key: { text: "Wednesday" }, value: { text: event.properties.wednesday } },
-        { key: { text: "Thursday" }, value: { text: event.properties.thursday } },
-        { key: { text: "Friday" }, value: { text: event.properties.friday } },
-        { key: { text: "Saturday" }, value: { text: event.properties.saturday } },
-        { key: { text: "Sunday" }, value: { text: event.properties.sunday } }
+        {
+          key: { text: "Monday" },
+          value: { text: curfewSchedule if (event.properties.monday == 1) else "" }
+        },
+        {
+          key: { text: "Tuesday" },
+          value: { text: curfewSchedule if (event.properties.tuesday == 1) else "" }
+        },
+        {
+          key: { text: "Wednesday" },
+          value: { text: curfewSchedule if (event.properties.wednesday == 1) else "" }
+        },
+        {
+          key: { text: "Thursday" },
+          value: { text: curfewSchedule if (event.properties.thursday == 1) else "" }
+        },
+        {
+          key: { text: "Friday" },
+          value: { text: curfewSchedule if (event.properties.friday == 1) else "" }
+        },
+        {
+          key: { text: "Saturday" },
+          value: { text: curfewSchedule if (event.properties.saturday == 1) else "" }
+        },
+        {
+          key: { text: "Sunday" },
+          value: { text: curfewSchedule if (event.properties.sunday == 1) else "" }
+        }
       ]
     })
   }}
