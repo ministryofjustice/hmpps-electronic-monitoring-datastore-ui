@@ -67,7 +67,7 @@ export default class SearchController {
       req.session.formData = undefined
 
       // Redirect to results page
-      res.redirect(`search/results?queryExecutionId=${encodeURIComponent(queryExecutionId)}`)
+      res.redirect(`search/results?search_id=${encodeURIComponent(queryExecutionId)}`)
     }
   }
 
@@ -80,7 +80,7 @@ export default class SearchController {
     // Get orders by queryExecutionId
     const orders = await this.datastoreSearchService.getSearchResults({
       userToken: res.locals.user.token,
-      queryExecutionId: req.query.queryExecutionId as string,
+      queryExecutionId: req.query.search_id as string,
     })
 
     // If results is Order[], proceed to results view
