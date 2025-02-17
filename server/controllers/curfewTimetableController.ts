@@ -11,7 +11,7 @@ export default class CurfewTimetableController {
   ) {}
 
   showCurfewTimetable: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
+    await this.auditService.logPageView(Page.CURFEW_TIMETABLE_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })

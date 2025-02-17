@@ -107,9 +107,10 @@ describe('EM Datastore Search Client', () => {
     const endpoint = '/orders/getMonitoringEvents'
 
     it('should fetch monitoring events with correct parameters', async () => {
+      const fakeResponse = [] as MonitoringEvent[]
       const expectedResult = [] as MonitoringEvent[]
 
-      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
       const result = await datastoreClient.getMonitoringEvents(orderInfo)
 
@@ -136,9 +137,10 @@ describe('EM Datastore Search Client', () => {
     const endpoint = '/orders/getContactEvents'
 
     it('should fetch contact history with correct parameters', async () => {
+      const fakeResponse = [] as ContactEvent[]
       const expectedResult = [] as ContactEvent[]
 
-      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
       const result = await datastoreClient.getContactEvents(orderInfo)
 
@@ -165,9 +167,10 @@ describe('EM Datastore Search Client', () => {
     const endpoint = '/orders/getIncidentEvents'
 
     it('should fetch incident events with correct parameters', async () => {
+      const fakeResponse = [] as IncidentEvent[]
       const expectedResult = [] as IncidentEvent[]
 
-      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
+      fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
       const result = await datastoreClient.getIncidentEvents(orderInfo)
 

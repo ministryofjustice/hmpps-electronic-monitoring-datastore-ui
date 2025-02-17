@@ -76,7 +76,7 @@ export default class DatastoreClient {
       path: `${config.apiEndpoints.getMonitoringEvents}/${orderId}`,
     })
 
-    const events = result.map(event => MonitoringEventModel.parse(event))
+    const events = result.map((event: MonitoringEvent) => MonitoringEventModel.parse(event))
 
     return events
   }
@@ -88,7 +88,7 @@ export default class DatastoreClient {
       path: `${config.apiEndpoints.getIncidentEvents}/${orderId}`,
     })
 
-    const events = result.map(event => IncidentEventModel.parse(event))
+    const events = result.map((event: IncidentEvent) => IncidentEventModel.parse(event))
 
     return events
   }
@@ -100,7 +100,7 @@ export default class DatastoreClient {
       path: `${config.apiEndpoints.getViolationEvents}/${orderId}`,
     })
 
-    const events = result.map(event => ViolationEventModel.parse(event))
+    const events = result.map((event: ViolationEvent) => ViolationEventModel.parse(event))
 
     return events
   }
@@ -112,7 +112,7 @@ export default class DatastoreClient {
       path: `${config.apiEndpoints.getContactEvents}/${orderId}`,
     })
 
-    const events = result.map(event => ContactEventModel.parse(event))
+    const events = result.map((event: ContactEvent) => ContactEventModel.parse(event))
 
     return events
   }
@@ -148,7 +148,7 @@ export default class DatastoreClient {
       path: `${config.apiEndpoints.getSuspensionOfVisits}/${orderId}`,
     })
 
-    const events = result.map(event => SuspensionOfVisitsEventModel.parse(event))
+    const events = result.map((event: SuspensionOfVisitsEvent) => SuspensionOfVisitsEventModel.parse(event))
 
     return events
   }
