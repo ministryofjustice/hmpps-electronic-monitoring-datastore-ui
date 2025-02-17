@@ -26,18 +26,6 @@ export default class DatastoreClient {
     this.restClient.updateToken(newTokenValue)
   }
 
-  // TODO: Obsolete; replaced with submitSearchQuery & submitSearchResults. Remove.
-  async searchOrders(input: SearchFormInput): Promise<Orders> {
-    const { data } = input
-
-    const results: Orders = await this.restClient.post<Orders>({
-      path: config.apiEndpoints.searchOrders,
-      data,
-    })
-
-    return results
-  }
-
   async submitSearchQuery(input: SearchFormInput): Promise<string> {
     const { data } = input
 

@@ -23,7 +23,6 @@ export default class SearchController {
     const errors = req.session.validationErrors || []
     const formData = req.session.formData || {}
 
-    //
     const viewModel = SearchForOrdersViewModel.construct(formData as never, errors as never)
 
     res.locals = {

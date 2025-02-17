@@ -63,20 +63,6 @@ export default class DatastoreSearchService {
     return validationErrors
   }
 
-  async search(input: SearchFormInput): Promise<Orders> {
-    try {
-      this.datastoreClient.updateToken(input.userToken)
-
-      const results: Orders = await this.datastoreClient.searchOrders(input)
-      return results
-    } catch (error) {
-      const sanitisedError: SanitisedError = getSanitisedError(error)
-      logger.error(sanitisedError, 'Error retrieving search results')
-      sanitisedError.message = 'Error retrieving search results'
-      throw sanitisedError
-    }
-  }
-
   async submitSearchQuery(input: SearchFormInput): Promise<string> {
     try {
       this.datastoreClient.updateToken(input.userToken)
