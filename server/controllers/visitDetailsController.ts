@@ -19,7 +19,7 @@ export default class VisitDetailsController {
     const { orderId } = req.params
 
     const visitDetails = await this.visitDetailsService.getVisitDetails({
-      accessToken: res.locals.user.token,
+      userToken: res.locals.user.token,
       orderId,
     })
 

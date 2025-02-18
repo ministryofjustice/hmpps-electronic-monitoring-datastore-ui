@@ -18,7 +18,7 @@ export default class CurfewTimetableService {
   }
 
   async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
-    this.datastoreClient.updateToken(input.accessToken)
+    this.datastoreClient.updateToken(input.userToken)
 
     let curfewTimetable = [] as CurfewTimetable[]
     try {

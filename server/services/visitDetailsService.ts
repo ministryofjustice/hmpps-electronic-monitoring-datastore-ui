@@ -18,7 +18,7 @@ export default class VisitDetailsService {
   }
 
   async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
-    this.datastoreClient.updateToken(input.accessToken)
+    this.datastoreClient.updateToken(input.userToken)
 
     let visitDetails = [] as VisitDetails[]
     try {

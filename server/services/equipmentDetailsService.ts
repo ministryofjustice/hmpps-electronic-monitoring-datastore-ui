@@ -18,7 +18,7 @@ export default class EquipmentDetailsService {
   }
 
   async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
-    this.datastoreClient.updateToken(input.accessToken)
+    this.datastoreClient.updateToken(input.userToken)
 
     let equipmentDetails = [] as EquipmentDetails[]
     try {

@@ -19,7 +19,7 @@ export default class EventsController {
     const { orderId } = req.params
 
     const events = await this.eventsService.getEvents({
-      accessToken: res.locals.user.token,
+      userToken: res.locals.user.token,
       orderId,
     })
 

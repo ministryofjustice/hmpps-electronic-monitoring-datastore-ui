@@ -19,7 +19,7 @@ export default class CurfewTimetableController {
     const { orderId } = req.params
 
     const curfewTimetable = await this.curfewTimetableService.getCurfewTimetable({
-      accessToken: res.locals.user.token,
+      userToken: res.locals.user.token,
       orderId,
     })
 

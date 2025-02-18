@@ -19,7 +19,7 @@ export default class EquipmentDetailsController {
     const { orderId } = req.params
 
     const equipmentDetails = await this.equipmentDetailsService.getEquipmentDetails({
-      accessToken: res.locals.user.token,
+      userToken: res.locals.user.token,
       orderId,
     })
 
