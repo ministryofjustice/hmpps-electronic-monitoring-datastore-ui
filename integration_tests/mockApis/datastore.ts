@@ -64,109 +64,6 @@ const getOrderDetails = (options: GetOrderDetailsStubOptions = defaultGetOrderDe
     },
   })
 
-// GetMonitoringEvents
-
-const defaultGetMonitoringEventsOptions = {
-  httpStatus: 200,
-  orderId: '123456789',
-  events: [] as unknown[],
-} as GetMonitoringEventsStubOptions
-
-type GetMonitoringEventsStubOptions = {
-  httpStatus: number
-  orderId?: string
-  events?: unknown[]
-}
-
-const getMonitoringEvents = (
-  options: GetMonitoringEventsStubOptions = defaultGetMonitoringEventsOptions,
-): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/datastore/orders/${options.orderId}/monitoring-events`,
-    },
-    response: {
-      status: options.httpStatus,
-      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody:
-        options.httpStatus === 200
-          ? {
-              pageSize: options.events.length,
-              events: options.events,
-            }
-          : null,
-    },
-  })
-
-// GetIncidentEvents
-
-const defaultGetIncidentEventsOptions = {
-  httpStatus: 200,
-  orderId: '123456789',
-  events: [] as unknown[],
-} as GetIncidentEventsStubOptions
-
-type GetIncidentEventsStubOptions = {
-  httpStatus: number
-  orderId?: string
-  events?: unknown[]
-}
-
-const getIncidentEvents = (
-  options: GetIncidentEventsStubOptions = defaultGetIncidentEventsOptions,
-): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/datastore/orders/${options.orderId}/incident-events`,
-    },
-    response: {
-      status: options.httpStatus,
-      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody:
-        options.httpStatus === 200
-          ? {
-              pageSize: options.events.length,
-              events: options.events,
-            }
-          : null,
-    },
-  })
-
-// GetContactEvents
-
-const defaultGetContactEventsOptions = {
-  httpStatus: 200,
-  orderId: '123456789',
-  events: [] as unknown[],
-} as GetContactEventsStubOptions
-
-type GetContactEventsStubOptions = {
-  httpStatus: number
-  orderId?: string
-  events?: unknown[]
-}
-
-const getContactEvents = (options: GetContactEventsStubOptions = defaultGetContactEventsOptions): SuperAgentRequest =>
-  stubFor({
-    request: {
-      method: 'GET',
-      urlPattern: `/datastore/orders/${options.orderId}/contact-events`,
-    },
-    response: {
-      status: options.httpStatus,
-      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody:
-        options.httpStatus === 200
-          ? {
-              pageSize: options.events.length,
-              events: options.events,
-            }
-          : null,
-    },
-  })
-
 // GetOrderSummary
 
 const defaultGetOrderSummaryOptions = {
@@ -280,6 +177,109 @@ const getSuspensionOfVisits = (
     },
   })
 
+const defaultBasicStubOptions = {
+  httpStatus: 200,
+  orderId: '123456789',
+  body: [] as unknown[],
+}
+
+type GetBasicStubOptions = {
+  httpStatus: number
+  orderId?: string
+  body?: unknown[]
+}
+
+const getCurfewTimetable = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getCurfewTimetable}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
+const getEquipmentDetails = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getEquipmentDetails}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
+const getMonitoringEvents = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getMonitoringEvents}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
+const getContactEvents = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getContactEvents}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
+const getIncidentEvents = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getIncidentEvents}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
+const getViolationEvents = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getViolationEvents}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
+const getVisitDetails = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getVisitDetails}/${options.orderId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.body : null,
+    },
+  })
+
 export default {
   stubDatastoreGetOrderDetails: getOrderDetails,
   stubDatastoreGetMonitoringEvents: getMonitoringEvents,
@@ -287,4 +287,8 @@ export default {
   stubDatastoreGetContactEvents: getContactEvents,
   stubDatastoreGetOrderSummary: getOrderSummary,
   stubDatastoreGetSuspensionOfVisits: getSuspensionOfVisits,
+  stubDatastoreGetCurfewTimetable: getCurfewTimetable,
+  stubDatastoreGetEquipmentDetails: getEquipmentDetails,
+  stubDatastoreGetViolationEvents: getViolationEvents,
+  stubDatastoreGetVisitDetails: getVisitDetails,
 }

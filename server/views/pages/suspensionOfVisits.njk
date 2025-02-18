@@ -18,7 +18,7 @@
     href: backUrl
   }) }}
 
-  <h1 class="govuk-heading-m">
+  <h1 class="govuk-heading-l">
     {{ heading }}
   </h1>
 
@@ -42,7 +42,7 @@
               value: { text: event.requestedDate }
             },
             {
-              key: { text: "Suspension of visits start date" }, 
+              key: { text: "Suspension of visits start date" },
               value: { text: event.startDate }
             },
             {
@@ -59,7 +59,7 @@
     {% endset %}
 
     {% set timelineItems = (timelineItems.push({
-        label: { text: event.requestedDate },
+        label: { text: "Suspension of visits" },
         html: timelineEntryHtml,
         datetime: {
           timestamp: event.timestamp,

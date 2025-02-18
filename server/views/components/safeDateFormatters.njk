@@ -1,0 +1,11 @@
+{% macro safeGovukDate(value) %}
+  {{ value | govukDate if value else "" }}
+{% endmacro %}
+
+{% macro safeGovukTime(value) %}
+  {{ value | govukTime if value else "" }}
+{% endmacro %}
+
+{% macro safeGovukDateTime(value) %}
+  {{ value | govukDateTime if value else "" }}
+{% endmacro %}

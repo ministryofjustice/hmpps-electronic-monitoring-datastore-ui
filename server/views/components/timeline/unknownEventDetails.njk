@@ -1,0 +1,24 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% macro unknownEventDetails(event) %}
+  {% set entryRecords = [
+    {
+      key: { text: event.eventType },
+      value: { html: '<strong>Details</strong>' }
+    }
+  ] %}
+  {% for key, value in event.properties %}
+    {% set entryRecords = (entryRecords.push(
+      {
+        key: { text: key },
+        value: { text: value }
+      }
+    ), entryRecords) %}
+  {% endfor %}
+
+  {{
+    govukSummaryList({
+      rows: entryRecords
+    })
+  }}
+{% endmacro %}

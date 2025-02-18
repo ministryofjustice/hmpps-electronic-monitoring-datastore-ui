@@ -1,6 +1,6 @@
 {% extends "../../partials/layout.njk" %}
 
-{% set heading = "All event history" %}
+{% set heading = "Equipment details" %}
 {% set pageTitle = heading %}
 
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
@@ -20,12 +20,7 @@
   <h1 class="govuk-heading-l">
     {{ heading }}
   </h1>
-  <p class="govuk-body">Violation alerts, monitoring events and contact history</p>
 
-  {{ emsDateFilter() }}
-
-  <hr class="govuk-section-break govuk-section-break--m">
-
-  {{ emsEventTimeline(events) }}
+  {{ emsEventTimeline(equipmentDetails) }}
 
 {% endblock %}

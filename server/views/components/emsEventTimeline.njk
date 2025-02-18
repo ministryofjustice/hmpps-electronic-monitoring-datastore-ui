@@ -1,0 +1,55 @@
+{% from "moj/components/timeline/macro.njk" import mojTimeline %}
+{% from "../components/timeline/contactEventDetails.njk" import contactEventDetails %}
+{% from "../components/timeline/monitoringEventDetails.njk" import monitoringEventDetails %}
+{% from "../components/timeline/incidentEventDetails.njk" import incidentEventDetails %}
+{% from "../components/timeline/violationEventDetails.njk" import violationEventDetails %}
+{% from "../components/timeline/equipmentDetails.njk" import equipmentDetails %}
+{% from "../components/timeline/visitDetails.njk" import visitDetails %}
+{% from "../components/timeline/curfewTimetable.njk" import curfewTimetable %}
+{% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
+
+{% macro emsEventTimeline(events) %}
+  {% set timelineItems = [] %}
+  {% for timestamp, events in events | groupby("dateTime") %}
+    {% for event in events %}
+      {% if event.eventType == "contact" %}
+        {% set eventLabel = "Contact event" %}
+        {% set eventDetails = contactEventDetails(event) %}
+      {% elif event.eventType == "monitoring" %}
+        {% set eventLabel = "Monitoring event" %}
+        {% set eventDetails = monitoringEventDetails(event) %}
+      {% elif event.eventType == "incident" %}
+        {% set eventLabel = "Incident event" %}
+        {% set eventDetails = incidentEventDetails(event) %}
+      {% elif event.eventType == "violation" %}
+        {% set eventLabel = "Violation event" %}
+        {% set eventDetails = violationEventDetails(event) %}
+      {% elif event.eventType == "equipment-details" %}
+        {% set eventLabel = "Equipment details" %}
+        {% set eventDetails = equipmentDetails(event) %}
+      {% elif event.eventType == "visit-details" %}
+        {% set eventLabel = event.properties.visitType %}
+        {% set eventDetails = visitDetails(event) %}
+      {% elif event.eventType == "curfew-timetable" %}
+        {% set eventLabel = "Service" %}
+        {% set eventDetails = curfewTimetable(event) %}
+      {% else %}
+        {% set eventLabel = "Unrecognised event" %}
+        {% set eventDetails = unknownEventDetails(event) %}
+      {% endif %}
+
+      {% set timelineItems = (timelineItems.push({
+        label: { text: eventLabel },
+        html: eventDetails,
+        datetime: {
+          timestamp: timestamp,
+          type: 'shortdatetime'
+        }
+      }), timelineItems) %}
+    {% endfor %}
+  {% endfor %}
+
+  {{ mojTimeline({
+    items: timelineItems
+  })}}
+{% endmacro %}
