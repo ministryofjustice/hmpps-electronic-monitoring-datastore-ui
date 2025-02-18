@@ -1,9 +1,36 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
 import config from '../../server/config'
+import orders from '../../server/data/mockData/orders'
+import { Order } from '../../server/interfaces/order'
+
+// GetSearchResults
+const defaultGetSearchResultsOptions = {
+  queryExecutionId: 'query-execution-id',
+  httpStatus: 200,
+  results: orders,
+}
+
+type GetSearchResultsStubOptions = {
+  queryExecutionId: string
+  httpStatus: number
+  results: Order[]
+}
+
+const getSearchResults = (options: GetSearchResultsStubOptions = defaultGetSearchResultsOptions): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      urlPattern: `/datastore${config.apiEndpoints.getSearchResults}/${options.queryExecutionId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.results : null,
+    },
+  })
 
 // GetOrderDetails
-
 const defaultGetOrderDetailsOptions = {
   httpStatus: 200,
   orderId: '1234567',
@@ -281,6 +308,7 @@ const getSuspensionOfVisits = (
   })
 
 export default {
+  stubDatastoreGetSearchResults: getSearchResults,
   stubDatastoreGetOrderDetails: getOrderDetails,
   stubDatastoreGetMonitoringEvents: getMonitoringEvents,
   stubDatastoreGetIncidentEvents: getIncidentEvents,
