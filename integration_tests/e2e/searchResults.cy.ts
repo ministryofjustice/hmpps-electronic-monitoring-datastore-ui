@@ -63,6 +63,11 @@ context('SearchResults', () => {
       const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
       searchResultsPage.orderStartDateHeader().should('contain', 'Order start date')
     })
+
+    it('The order end date column header contains the correct text', () => {
+      const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+      searchResultsPage.orderEndDateHeader().should('contain', 'Order end date')
+    })
   })
 
   //   describe('Pagination', () => {

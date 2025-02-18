@@ -23,5 +23,7 @@ export default class SearchResultsPage extends Page {
 
   orderStartDateHeader = (): PageElement => cy.get('.order-start-date-header')
 
+  orderEndDateHeader = (): PageElement => cy.get('.order-end-date-header')
+
   pagination = (): PageElement => cy.get('.moj-pagination')
 }
