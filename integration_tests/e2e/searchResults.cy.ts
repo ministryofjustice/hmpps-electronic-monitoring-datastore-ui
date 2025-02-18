@@ -70,10 +70,10 @@ context('SearchResults', () => {
     })
   })
 
-  //   describe('Pagination', () => {
-  //     it('The pagination component renders', () => {
-  //       const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-  //       searchResultsPage.pagination().should('be.visible')
-  //     })
-  //   })
+  describe('Pagination', () => {
+    it('The pagination component renders', () => {
+      const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+      searchResultsPage.pagination().should('be.visible')
+    })
+  })
 })
