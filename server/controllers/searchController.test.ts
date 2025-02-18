@@ -12,7 +12,7 @@ jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
 jest.mock('../utils/tabulateOrders', () => jest.fn((): unknown[] => ['mockOrders']))
 
-const QUERY_EXECUTION_ID = 'query-execution-id'
+const queryExecutionId = 'query-execution-id'
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()
@@ -156,7 +156,7 @@ describe('SearchController', () => {
       res = createMockResponse()
       next = jest.fn()
 
-      jest.clearAllMocks() // Clear previous mocks to avoid interference
+      jest.clearAllMocks()
     })
 
     it('should redirect to search with appropriate error when validation errors exist', async () => {
@@ -201,12 +201,12 @@ describe('SearchController', () => {
 
     it('when input is valid, redirects to the results page with the query execution ID as a URL query parameter', async () => {
       datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
-      datastoreSearchService.submitSearchQuery = jest.fn().mockResolvedValue(QUERY_EXECUTION_ID)
+      datastoreSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionId)
 
       await searchController.submitSearchQuery(req, res, next)
 
       expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
-      expect(res.redirect).toHaveBeenCalledWith(`search/results?search_id=${QUERY_EXECUTION_ID}`)
+      expect(res.redirect).toHaveBeenCalledWith(`search/results?search_id=${queryExecutionId}`)
     })
   })
 
@@ -233,7 +233,7 @@ describe('SearchController', () => {
       res = createMockResponse()
       next = jest.fn()
 
-      jest.clearAllMocks() // Clear previous mocks to avoid interference
+      jest.clearAllMocks()
     })
 
     it('should redirect to the search page when no orderExecutionId is provided', async () => {
@@ -245,7 +245,7 @@ describe('SearchController', () => {
     })
 
     it('should render the no search results view when a query execution ID is submitted but no orders are returned', async () => {
-      req.query.search_id = QUERY_EXECUTION_ID
+      req.query.search_id = queryExecutionId
       datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue([])
 
       await searchController.searchResultsPage(req, res, next)
@@ -254,7 +254,7 @@ describe('SearchController', () => {
     })
 
     it('should render the search results view when valid orders are returned', async () => {
-      req.query.search_id = QUERY_EXECUTION_ID
+      req.query.search_id = queryExecutionId
       datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       const mockOrders = ['mockOrders'] as string[]

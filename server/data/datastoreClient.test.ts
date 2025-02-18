@@ -15,6 +15,7 @@ describe('EM Datastore Search Client', () => {
   let datastoreClient: DatastoreClient
 
   const token = 'token-1'
+  const queryExecutionId = 'query-execution-id'
 
   const searchQuery: SearchFormInput = {
     userToken: 'mockUserToken',
@@ -29,8 +30,6 @@ describe('EM Datastore Search Client', () => {
       'dob-year': '1990',
     },
   }
-
-  const queryExecutionId = 'query-execution-id-1'
 
   const resultsRequest: SearchResultsRequest = {
     userToken: 'mockUserToken',

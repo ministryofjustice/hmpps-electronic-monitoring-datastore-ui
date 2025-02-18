@@ -12,9 +12,7 @@ export default function searchRouter({ auditService, datastoreSearchService }: S
   const searchController = new SearchController(auditService, datastoreSearchService)
 
   get('/', searchController.searchPage)
-
   post('/', searchController.submitSearchQuery)
-
   get('/results', searchController.searchResultsPage)
 
   return router

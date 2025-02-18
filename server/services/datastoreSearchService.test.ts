@@ -12,7 +12,7 @@ jest.mock('../data/datastoreClient')
 
 describe('Datastore Search Service', () => {
   const token = 'fake-token-value'
-  const queryExecutionId = 'fake-query-execution-id'
+  const queryExecutionId = 'query-execution-id'
   const hmppsAuthClient = createMockHmppsAuthClient()
   const datastoreClient = createDatastoreClient()
 
@@ -125,7 +125,6 @@ describe('Datastore Search Service', () => {
 
       const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
 
-      // Assertions
       expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
       expect(result).toEqual([
         {
@@ -171,7 +170,6 @@ describe('Datastore Search Service', () => {
 
       const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
 
-      // Assertions
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John123')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
       expect(result).toEqual([
@@ -205,47 +203,11 @@ describe('Datastore Search Service', () => {
 
       const result: ValidationResult = datastoreSearchService.validateInput(validInput)
 
-      // Assertions
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('10', '02', '2021', 'dob')
       expect(result).toEqual([])
     })
   })
-
-  // describe('search', () => {
-  //   it('searches for orders & returns the results', async () => {
-  //     const validInput = {
-  //       token: 'mockToken',
-  //       data: {
-  //         firstName: 'John',
-  //         lastName: 'Doe',
-  //         alias: 'JD',
-  //         'dob-day': '10',
-  //         'dob-month': '02',
-  //         'dob-year': '2021',
-  //       },
-  //     }
-  //     jest.spyOn(datastoreClient, 'searchOrders').mockResolvedValue(orders)
-
-  //     const result = await datastoreSearchService.search(validInput)
-
-  //     expect(datastoreClient.searchOrders).toHaveBeenCalledWith(validInput)
-  //     expect(result).toEqual(orders)
-  //   })
-
-  //   it('handles errors from the datastore client', async () => {
-  //     jest.spyOn(datastoreClient, 'searchOrders').mockImplementationOnce(() => {
-  //       throw getSanitisedError(new Error('Client error'))
-  //     })
-
-  //     const input = {
-  //       token: 'mockToken',
-  //       data: {},
-  //     }
-
-  //     expect(datastoreSearchService.search(input)).rejects.toThrow('Error retrieving search results')
-  //   })
-  // })
 
   describe('submitSearchQuery', () => {
     it('submits a search query and returns an order execution ID', async () => {
