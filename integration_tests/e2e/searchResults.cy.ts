@@ -21,7 +21,7 @@ context('SearchResults', () => {
   })
 
   it('is reachable', () => {
-    const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+    Page.verifyOnPage(SearchResultsPage)
   })
 
   describe('Service information banner', () => {
