@@ -72,20 +72,27 @@ export default class SearchController {
       correlationId: req.id,
     })
 
-    const queryExecutionId = req.query.search_id as string
-
-    if (!queryExecutionId) {
-      res.redirect('/search')
-    } else {
-      const orders = await this.datastoreSearchService.getSearchResults({
-        userToken: res.locals.user.token,
-        queryExecutionId,
-      })
-
-      if (orders.length > 0) {
-        res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
+    try {
+      const queryExecutionId = req.query.search_id as string
+      if (!queryExecutionId) {
+        res.redirect('/search')
       } else {
-        res.render('pages/noResults')
+        const orders = await this.datastoreSearchService.getSearchResults({
+          userToken: res.locals.user.token,
+          queryExecutionId,
+        })
+
+        if (orders.length > 0) {
+          res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
+        } else {
+          res.render('pages/noResults')
+        }
+      }
+    } catch (error) {
+      if (error.message === 'Error retrieving search results: Invalid query execution ID') {
+        res.redirect('/search')
+      } else {
+        res.redirect('pages/error')
       }
     }
   }
