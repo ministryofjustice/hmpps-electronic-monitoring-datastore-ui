@@ -24,6 +24,10 @@
 
   <hr class="govuk-section-break govuk-section-break--m">
 
+  <h1 class="govuk-heading-l">Search results</h1>
+
+  <hr class="govuk-section-break govuk-section-break--m">
+
   {% if records|length %}
     <div
       class="ems-sortable-table"
@@ -31,8 +35,6 @@
       data-current-page={{ currentPage }}
     >
       {{ govukTable({
-        caption: "Search results",
-        captionClasses: "govuk-table__caption--l",
         attributes: {
           'data-module': 'moj-sortable-table'
         },
@@ -123,15 +125,16 @@
 
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds-from-desktop">
-          <h1 class="govuk-heading-l">No results found</h1>
+          <h2 class="no-results-header govuk-heading-m">No results found</h2>
       </div>
       <div class="govuk-grid-column-two-thirds">
-        <p>
-            Sorry, no results were found for this search.
+        <p class="no-results-message">
+            Sorry, no results were found for this search
         </p>
         {{ govukButton({
             text: "Return to search page",
-            href: searchUrl
+            href: searchUrl,
+            classes: "return-to-search-button"
         }) }}
       </div>
     </div>

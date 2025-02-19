@@ -6,8 +6,14 @@ export default class SearchResultsPage extends Page {
   }
 
   override checkOnPage(): void {
-    cy.get('caption').contains('Search results')
+    cy.get('h1').contains('Search results')
   }
+
+  noResultsHeader = (): PageElement => cy.get('.no-results-header')
+
+  noResultsMessage = (): PageElement => cy.get('.no-results-message')
+
+  returnToSearchButton = (): PageElement => cy.get('.return-to-search-button')
 
   serviceInformation = (): PageElement => cy.get('.service-information')
 
