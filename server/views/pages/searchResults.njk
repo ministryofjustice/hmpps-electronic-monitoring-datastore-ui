@@ -7,6 +7,7 @@
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 
 {% set pageTitle = applicationName + " - Search results" %}
+{% set searchUrl = "/search" %}
 {% set mainClasses = "app-container govuk-body" %}
 {% set records = data %}
 {% set pageSize = 10 %}
@@ -18,104 +19,122 @@
 
   {{ govukBackLink({
     text: "refine search",
-    href: "/search"
+    href: searchUrl
   }) }}
 
   <hr class="govuk-section-break govuk-section-break--m">
 
-  <div
-    class="ems-sortable-table"
-    data-page-size={{ pageSize }}
-    data-current-page={{ currentPage }}
+  {% if records|length %}
+    <div
+      class="ems-sortable-table"
+      data-page-size={{ pageSize }}
+      data-current-page={{ currentPage }}
     >
-
-    {{ govukTable({
-      caption: "Search results",
-      captionClasses: "govuk-table__caption--l",
-      attributes: {
-        'data-module': 'moj-sortable-table'
-      },
-      classes: "search-results-table",
-      head: [
-        {
-          text: "Legacy subject ID",
-          classes: "subject-id-header",
-          attributes: {
-            "aria-sort": "ascending"
-          }
+      {{ govukTable({
+        caption: "Search results",
+        captionClasses: "govuk-table__caption--l",
+        attributes: {
+          'data-module': 'moj-sortable-table'
         },
-        {
-          text: "Name",
-          classes: "name-header",
-          attributes: {
-            "aria-sort": "none"
-          }
-        },
-        {
-          text: "Address",
-          classes: "address-header",
-          attributes: {
-            "aria-sort": "none"
-          }
-        },
-        {
-          text: "Date of birth",
-          classes: "date-of-birth-header",
-          attributes: {
-            "aria-sort": "none"
-          }
-        },
-        {
-          text: "Order start date",
-          classes: "order-start-date-header",
-          attributes: {
-            "aria-sort": "none"
+        classes: "search-results-table",
+        head: [
+          {
+            text: "Legacy subject ID",
+            classes: "subject-id-header",
+            attributes: {
+              "aria-sort": "ascending"
+            }
           },
-          format: "numeric"
-        },
-        {
-          text: "Order end date",
-          classes: "order-end-date-header",
-          attributes: {
-            "aria-sort": "none"
+          {
+            text: "Name",
+            classes: "name-header",
+            attributes: {
+              "aria-sort": "none"
+            }
           },
-          format: "numeric"
-        }
-      ],
-      rows: records
-    }) }}
+          {
+            text: "Address",
+            classes: "address-header",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Date of birth",
+            classes: "date-of-birth-header",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Order start date",
+            classes: "order-start-date-header",
+            attributes: {
+              "aria-sort": "none"
+            },
+            format: "numeric"
+          },
+          {
+            text: "Order end date",
+            classes: "order-end-date-header",
+            attributes: {
+              "aria-sort": "none"
+            },
+            format: "numeric"
+          }
+        ],
+        rows: records
+      }) }}
 
-    <p class="ems-sortable-table__no-results hidden">No results found.</p>
+      <p class="ems-sortable-table__no-results hidden">No results found.</p>
 
-    <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
+      <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
 
-      <ul class="moj-pagination__list">
-        <li class="moj-pagination__item  moj-pagination__item--prev">
-          <a class="moj-pagination__link" href="">Previous<span class="govuk-visually-hidden"> page</span></a>
-        </li>
-
-        {% for i in range(1, totalPages + 1) %}
-          <li
-            class="moj-pagination__item moj-pagination__item--link"
-            data-button-number="{{ i }}"
-          >
-            <a class="moj-pagination__link" href="#" aria-label="Page {{ i }} of {{ totalPages }}">
-              {{ i }}
-            </a>
+        <ul class="moj-pagination__list">
+          <li class="moj-pagination__item  moj-pagination__item--prev">
+            <a class="moj-pagination__link" href="">Previous<span class="govuk-visually-hidden"> page</span></a>
           </li>
 
-          {% if (i == 1) or (i == totalPages - 1) %}
-            <li class="moj-pagination__item moj-pagination__item--dots hidden">…</li>
-          {% endif %}
-        {% endfor %}
+          {% for i in range(1, totalPages + 1) %}
+            <li
+              class="moj-pagination__item moj-pagination__item--link"
+              data-button-number="{{ i }}"
+            >
+              <a class="moj-pagination__link" href="#" aria-label="Page {{ i }} of {{ totalPages }}">
+                {{ i }}
+              </a>
+            </li>
 
-        <li class="moj-pagination__item  moj-pagination__item--next">
-          <a class="moj-pagination__link" href="">Next<span class="govuk-visually-hidden"> page</span></a>
-        </li>
-      </ul>
-      <p class="moj-pagination__results">Showing <b></b> to <b></b> of <b></b> results</p>
-    </nav>
+            {% if (i == 1) or (i == totalPages - 1) %}
+              <li class="moj-pagination__item moj-pagination__item--dots hidden">…</li>
+            {% endif %}
+          {% endfor %}
 
-  </div>
+          <li class="moj-pagination__item  moj-pagination__item--next">
+            <a class="moj-pagination__link" href="">Next<span class="govuk-visually-hidden"> page</span></a>
+          </li>
+        </ul>
+        <p class="moj-pagination__results">Showing <b></b> to <b></b> of <b></b> results</p>
+      </nav>
+
+    </div>
+
+  {% else %}
+
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds-from-desktop">
+          <h1 class="govuk-heading-l">No results found</h1>
+      </div>
+      <div class="govuk-grid-column-two-thirds">
+        <p>
+            Sorry, no results were found for this search.
+        </p>
+        {{ govukButton({
+            text: "Return to search page",
+            href: searchUrl
+        }) }}
+      </div>
+    </div>
+  {% endif %}
 
 {% endblock %}

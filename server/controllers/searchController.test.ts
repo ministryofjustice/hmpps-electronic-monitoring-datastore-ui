@@ -236,7 +236,7 @@ describe('SearchController', () => {
       jest.clearAllMocks()
     })
 
-    it('should redirect to the search page when no orderExecutionId is provided', async () => {
+    it('should redirect to the search page when no orderExecutionId is submitted', async () => {
       datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)
@@ -244,16 +244,7 @@ describe('SearchController', () => {
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 
-    it('should render the no search results view when a query execution ID is submitted but no orders are returned', async () => {
-      req.query.search_id = queryExecutionId
-      datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue([])
-
-      await searchController.searchResultsPage(req, res, next)
-
-      expect(res.render).toHaveBeenCalledWith('pages/noResults')
-    })
-
-    it('should render the search results view when valid orders are returned', async () => {
+    it('should render the search results view when a valid orderExecutionId is submitted', async () => {
       req.query.search_id = queryExecutionId
       datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 

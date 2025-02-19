@@ -94,11 +94,6 @@ export default class SearchController {
       throw error
     }
 
-    if (orders.length > 0) {
-      res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
-      return
-    }
-
-    res.render('pages/noResults')
+    res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
   }
 }
