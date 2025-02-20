@@ -40,7 +40,7 @@ describe('Datastore Search Service', () => {
       jest.spyOn(datastoreSearchService, 'validateInput')
 
       const invalidInput = {
-        token: 'mockToken',
+        token: 'token',
         data: {
           firstName: '',
           'dob-day': '',
@@ -79,7 +79,7 @@ describe('Datastore Search Service', () => {
       })
 
       const invalidInput = {
-        token: 'mockToken',
+        token: 'token',
         data: {
           firstName: 'John123',
           'dob-day': '10',
@@ -114,7 +114,7 @@ describe('Datastore Search Service', () => {
       })
 
       const invalidInput = {
-        token: 'mockToken',
+        token: 'token',
         data: {
           firstName: 'John',
           'dob-day': '32',
@@ -159,7 +159,7 @@ describe('Datastore Search Service', () => {
       })
 
       const invalidInput = {
-        token: 'mockToken',
+        token: 'token',
         data: {
           firstName: 'John123',
           'dob-day': '32',
@@ -192,7 +192,7 @@ describe('Datastore Search Service', () => {
       })
 
       const validInput = {
-        token: 'mockToken',
+        token: 'token',
         data: {
           firstName: 'John',
           'dob-day': '10',
@@ -212,7 +212,7 @@ describe('Datastore Search Service', () => {
   describe('submitSearchQuery', () => {
     it('submits a search query and returns an order execution ID', async () => {
       const validInput = {
-        token: 'mockToken',
+        token: 'token',
         data: {
           firstName: 'John',
           lastName: 'Doe',
@@ -237,7 +237,7 @@ describe('Datastore Search Service', () => {
       })
 
       const input = {
-        token: 'mockToken',
+        token: 'token',
         data: {},
       }
 
@@ -261,17 +261,23 @@ describe('Datastore Search Service', () => {
     })
 
     describe('error handling', () => {
-      // TODO: Create a working test for invalid execution ID routing.
-      xit('handles invalid query execution ID errors from the datastore client', async () => {
-        const error = getSanitisedError(new Error('Client error'))
-        jest.spyOn(datastoreClient, 'getSearchResults').mockImplementationOnce(() => {
-          throw error
-        })
-
+      it('handles invalid query execution ID errors from the datastore client', async () => {
         const request = {
           token,
           queryExecutionId: '',
         }
+
+        const error = {
+          data: {
+            status: 500,
+            userMessage: '',
+            developerMessage: 'QueryExecution ABC was not found (Service: Athena, Status Code: 400, Request ID: ABC',
+          },
+        }
+
+        jest.spyOn(datastoreClient, 'getSearchResults').mockImplementationOnce(() => {
+          throw error
+        })
 
         await expect(datastoreSearchService.getSearchResults(request)).rejects.toThrow(
           'Error retrieving search results: Invalid query execution ID',
@@ -280,7 +286,7 @@ describe('Datastore Search Service', () => {
 
       it('handles other errors from the datastore client', async () => {
         jest.spyOn(datastoreClient, 'getSearchResults').mockImplementationOnce(() => {
-          throw new Error('Mock error')
+          throw new Error()
         })
 
         const request = {
