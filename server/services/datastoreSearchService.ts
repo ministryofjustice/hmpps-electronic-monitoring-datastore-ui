@@ -9,6 +9,7 @@ import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
 import NameValidator from '../utils/validators/nameValidator'
 import { SearchOrderFormData } from '../models/form-data/searchOrder'
+import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
 export default class DatastoreSearchService {
   private readonly datastoreClient: DatastoreClient
@@ -63,10 +64,10 @@ export default class DatastoreSearchService {
     return validationErrors
   }
 
-  async submitSearchQuery(input: SearchFormInput): Promise<string> {
+  async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     try {
       this.datastoreClient.updateToken(input.userToken)
-      const queryExecutionId: string = await this.datastoreClient.submitSearchQuery(input)
+      const queryExecutionId: QueryExecutionResponse = await this.datastoreClient.submitSearchQuery(input)
       return queryExecutionId
     } catch (error) {
       const sanitisedError: SanitisedError = getSanitisedError(error)

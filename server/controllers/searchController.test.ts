@@ -13,6 +13,9 @@ jest.mock('../services/datastoreSearchService')
 jest.mock('../utils/tabulateOrders', () => jest.fn((): unknown[] => ['mockOrders']))
 
 const queryExecutionId = 'query-execution-id'
+const queryExecutionResponse = {
+  queryExecutionId,
+}
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const datastoreClient = createDatastoreClient()
@@ -201,7 +204,7 @@ describe('SearchController', () => {
 
     it('when input is valid, redirects to the results page with the query execution ID as a URL query parameter', async () => {
       datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
-      datastoreSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionId)
+      datastoreSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionResponse)
 
       await searchController.submitSearchQuery(req, res, next)
 

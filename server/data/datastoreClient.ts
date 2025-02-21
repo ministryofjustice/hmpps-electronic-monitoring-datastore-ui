@@ -26,7 +26,7 @@ export default class DatastoreClient {
     this.restClient.updateToken(newTokenValue)
   }
 
-  async submitSearchQuery(input: SearchFormInput): Promise<string> {
+  async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     const { data } = input
 
     const queryExecutionResponse: QueryExecutionResponse = await this.restClient.post<QueryExecutionResponse>({
@@ -34,7 +34,7 @@ export default class DatastoreClient {
       data,
     })
 
-    return queryExecutionResponse.queryExecutionId
+    return queryExecutionResponse
   }
 
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {

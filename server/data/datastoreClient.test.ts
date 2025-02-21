@@ -9,6 +9,7 @@ import { MonitoringEvent } from '../models/monitoringEvents'
 import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
@@ -16,6 +17,9 @@ describe('EM Datastore Search Client', () => {
 
   const token = 'token-1'
   const queryExecutionId = 'query-execution-id'
+  const queryExecutionResponse = {
+    queryExecutionId,
+  }
 
   const searchQuery: SearchFormInput = {
     userToken: 'mockUserToken',
@@ -62,13 +66,11 @@ describe('EM Datastore Search Client', () => {
       fakeClient
         .post(endpoint, searchQuery.data)
         .matchHeader('Authorization', `Bearer ${token}`)
-        .reply(200, { queryExecutionId })
-
-      const expected: string = queryExecutionId
+        .reply(200, queryExecutionResponse)
 
       const result = await datastoreClient.submitSearchQuery(searchQuery)
 
-      expect(result).toEqual(expected)
+      expect(result).toEqual(queryExecutionResponse)
     })
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {

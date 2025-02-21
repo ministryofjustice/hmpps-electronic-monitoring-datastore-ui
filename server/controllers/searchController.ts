@@ -53,7 +53,7 @@ export default class SearchController {
       req.session.validationErrors = validationErrors
       res.redirect('search')
     } else {
-      const queryExecutionId = await this.datastoreSearchService.submitSearchQuery({
+      const queryExecutionResponse = await this.datastoreSearchService.submitSearchQuery({
         userToken: res.locals.user.token,
         data: validatedFormData,
       })
@@ -62,7 +62,7 @@ export default class SearchController {
       req.session.formData = undefined
 
       // Redirect to results page
-      res.redirect(`search/results?search_id=${encodeURIComponent(queryExecutionId)}`)
+      res.redirect(`search/results?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
     }
   }
 

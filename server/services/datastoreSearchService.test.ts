@@ -13,6 +13,9 @@ jest.mock('../data/datastoreClient')
 describe('Datastore Search Service', () => {
   const token = 'fake-token-value'
   const queryExecutionId = 'query-execution-id'
+  const queryExecutionResponse = {
+    queryExecutionId,
+  }
   const hmppsAuthClient = createMockHmppsAuthClient()
   const datastoreClient = createDatastoreClient()
 
@@ -223,12 +226,12 @@ describe('Datastore Search Service', () => {
         },
       }
 
-      jest.spyOn(datastoreClient, 'submitSearchQuery').mockResolvedValue(queryExecutionId)
+      jest.spyOn(datastoreClient, 'submitSearchQuery').mockResolvedValue(queryExecutionResponse)
 
       const result = await datastoreSearchService.submitSearchQuery(validInput)
 
       expect(datastoreClient.submitSearchQuery).toHaveBeenCalledWith(validInput)
-      expect(result).toEqual(queryExecutionId)
+      expect(result).toEqual(queryExecutionResponse)
     })
 
     it('handles errors from the datastore client', async () => {
