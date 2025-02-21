@@ -23,7 +23,6 @@ export default class SearchController {
     const errors = req.session.validationErrors || []
     const formData = req.session.formData || {}
 
-    //
     const viewModel = SearchForOrdersViewModel.construct(formData as never, errors as never)
 
     res.locals = {
@@ -36,7 +35,7 @@ export default class SearchController {
     res.render('pages/search', viewModel)
   }
 
-  searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
+  submitSearchQuery: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
@@ -44,39 +43,57 @@ export default class SearchController {
 
     const validatedFormData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
 
-    // Validate input
     const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({
       userToken: res.locals.user.token,
       data: validatedFormData,
     })
 
-    // If input validation fails, redirect to search view with errors
     if (validationErrors.length > 0) {
       req.session.formData = validatedFormData
       req.session.validationErrors = validationErrors
       res.redirect('search')
     } else {
-      // If input validation succeeds, execute the search
-      const results = await this.datastoreSearchService.search({
+      const queryExecutionResponse = await this.datastoreSearchService.submitSearchQuery({
         userToken: res.locals.user.token,
         data: validatedFormData,
       })
 
-      // Clear session data as it is no longer required
       req.session.validationErrors = undefined
       req.session.formData = undefined
 
-      await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
-        who: res.locals.user.username,
-        correlationId: req.id,
-      })
-
-      // If results is Order[], proceed to results view
-      if (results.length > 0) {
-        res.render('pages/searchResults', { data: tabulateOrders(results as Order[]) })
-      } else {
-        res.render('pages/noResults')
-      }
+      // Redirect to results page
+      res.redirect(`search/orders?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
     }
+  }
+
+  searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
+    await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
+
+    const queryExecutionId = req.query.search_id as string
+
+    if (!queryExecutionId) {
+      res.redirect('/search')
+      return
+    }
+
+    let orders: Order[]
+
+    try {
+      orders = await this.datastoreSearchService.getSearchResults({
+        userToken: res.locals.user.token,
+        queryExecutionId,
+      })
+    } catch (error) {
+      if (error.message === 'Error retrieving search results: Invalid query execution ID') {
+        res.redirect('/search')
+        return
+      }
+      throw error
+    }
+
+    res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
   }
 }

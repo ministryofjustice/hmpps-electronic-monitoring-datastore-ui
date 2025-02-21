@@ -2,8 +2,7 @@ import nock from 'nock'
 import DatastoreClient from './datastoreClient'
 import orders from './mockData/orders'
 import config from '../config'
-import { Order } from '../interfaces/order'
-import { SearchFormInput } from '../types/SearchFormInput'
+import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 import mockOrderInformation from './mockData/orderInformation'
 import { MonitoringEvent } from '../models/monitoringEvents'
@@ -14,14 +13,19 @@ import { EquipmentDetails } from '../models/equipmentDetails'
 import { VisitDetails } from '../models/visitDetails'
 import { CurfewTimetable } from '../models/curfewTimetable'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
 describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
   let datastoreClient: DatastoreClient
 
-  const token = 'token-1'
+  const token: string = 'token-1'
+  const queryExecutionId: string = 'query-execution-id'
+  const queryExecutionResponse: QueryExecutionResponse = {
+    queryExecutionId,
+  }
 
-  const searchOrder: SearchFormInput = {
+  const searchQuery: SearchFormInput = {
     userToken: 'mockUserToken',
     data: {
       searchType: 'am',
@@ -33,6 +37,11 @@ describe('EM Datastore Search Client', () => {
       'dob-month': '01',
       'dob-year': '1990',
     },
+  }
+
+  const resultsRequest: SearchResultsRequest = {
+    userToken: 'mockUserToken',
+    queryExecutionId,
   }
 
   const orderInfo: OrderRequest = {
@@ -54,23 +63,44 @@ describe('EM Datastore Search Client', () => {
     nock.cleanAll()
   })
 
-  describe('searchOrders', () => {
-    const endpoint = '/search/orders'
+  describe('submitSearchQuery', () => {
+    const endpoint = config.apiEndpoints.searchOrders
 
-    it('should return a list of orders from the API', async () => {
-      fakeClient.post(endpoint, searchOrder.data).matchHeader('Authorization', `Bearer ${token}`).reply(200, orders)
+    it('should return a queryExecutionId from the API', async () => {
+      fakeClient
+        .post(endpoint, searchQuery.data)
+        .matchHeader('Authorization', `Bearer ${token}`)
+        .reply(200, queryExecutionResponse)
 
-      const expected: Order[] = orders
+      const result = await datastoreClient.submitSearchQuery(searchQuery)
 
-      const results = await datastoreClient.searchOrders(searchOrder)
-
-      expect(results).toEqual(expected)
+      expect(result).toEqual(queryExecutionResponse)
     })
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
-      fakeClient.post(endpoint, searchOrder.data).matchHeader('Authorization', `Bearer ${token}`).reply(401)
+      fakeClient.post(endpoint, searchQuery.data).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
-      await expect(datastoreClient.searchOrders(searchOrder)).rejects.toThrow('Unauthorized')
+      await expect(datastoreClient.submitSearchQuery(searchQuery)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getSearchResults', () => {
+    const endpoint = `${config.apiEndpoints.searchOrders}/${queryExecutionId}`
+
+    it('should return a list of orders from the API', async () => {
+      fakeClient.get(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(200, orders)
+
+      const expected = orders
+
+      const result = await datastoreClient.getSearchResults(resultsRequest)
+
+      expect(result).toEqual(expected)
+    })
+
+    it('should handle 401 Unauthorized when the user token is invalid', async () => {
+      fakeClient.get(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(401)
+
+      await expect(datastoreClient.getSearchResults(resultsRequest)).rejects.toThrow('Unauthorized')
     })
   })
 

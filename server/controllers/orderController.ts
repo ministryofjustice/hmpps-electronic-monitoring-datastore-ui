@@ -23,7 +23,7 @@ export default class OrderController {
       userToken: res.locals.user.token,
       orderId,
     })
-    const backUrl: string = '/search/results'
+    const backUrl: string = '/search/orders'
     const reports: Reports = {
       orderDetails: true,
       visitDetails: true,

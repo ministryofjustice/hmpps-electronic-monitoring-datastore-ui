@@ -1,7 +1,8 @@
 import RestClient from './restClient'
 import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
-import { SearchFormInput } from '../types/SearchFormInput'
+import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
+import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderDetails } from '../interfaces/orderDetails'
 import { OrderInformation } from '../interfaces/orderInformation'
@@ -29,16 +30,25 @@ export default class DatastoreClient {
     this.restClient.updateToken(newTokenValue)
   }
 
-  // TODO: This should replace SearchForOrders
-  async searchOrders(input: SearchFormInput): Promise<Order[]> {
+  async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     const { data } = input
 
-    const results: Order[] = await this.restClient.post<Order[]>({
+    const queryExecutionResponse: QueryExecutionResponse = await this.restClient.post<QueryExecutionResponse>({
       path: config.apiEndpoints.searchOrders,
       data,
     })
 
-    return results
+    return queryExecutionResponse
+  }
+
+  async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
+    const { queryExecutionId } = request
+
+    const orders: Order[] = await this.restClient.get({
+      path: `${config.apiEndpoints.searchOrders}/${queryExecutionId}`,
+    })
+
+    return orders
   }
 
   async confirmApi(): Promise<JSON> {
