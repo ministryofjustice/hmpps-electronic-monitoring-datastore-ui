@@ -1,7 +1,7 @@
 import RestClient from './restClient'
 import config, { ApiConfig } from '../config'
 import { Order } from '../interfaces/order'
-import { QueryExecutionResponse } from '../interfaces/search'
+import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 import { OrderDetails } from '../interfaces/orderDetails'
