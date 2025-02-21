@@ -81,7 +81,7 @@ describe('EM Datastore Search Client', () => {
   })
 
   describe('getSearchResults', () => {
-    const endpoint = `${config.apiEndpoints.getSearchResults}/${queryExecutionId}`
+    const endpoint = `${config.apiEndpoints.searchOrders}/${queryExecutionId}`
 
     it('should return a list of orders from the API', async () => {
       fakeClient.get(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(200, orders)

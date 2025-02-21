@@ -16,7 +16,7 @@ context('SearchResults', () => {
         results: [],
       })
       cy.signIn()
-      cy.visit(`/search/results?search_id=${queryExecutionId}`)
+      cy.visit(`/search/orders?search_id=${queryExecutionId}`)
     })
 
     it('is reachable', () => {
@@ -86,7 +86,7 @@ context('SearchResults', () => {
       })
 
       cy.signIn()
-      cy.visit(`/search/results?search_id=${queryExecutionId}`)
+      cy.visit(`/search/orders?search_id=${queryExecutionId}`)
     })
 
     it('is reachable', () => {

@@ -13,7 +13,7 @@ export default function searchRouter({ auditService, datastoreSearchService }: S
 
   get('/', searchController.searchPage)
   post('/', searchController.submitSearchQuery)
-  get('/results', searchController.searchResultsPage)
+  get('/orders', searchController.searchResultsPage)
 
   return router
 }

@@ -62,7 +62,7 @@ export default class SearchController {
       req.session.formData = undefined
 
       // Redirect to results page
-      res.redirect(`search/results?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
+      res.redirect(`search/orders?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
     }
   }
 

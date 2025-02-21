@@ -209,7 +209,7 @@ describe('SearchController', () => {
       await searchController.submitSearchQuery(req, res, next)
 
       expect(SearchOrderFormDataModel.parse).toHaveBeenCalledWith(req.body)
-      expect(res.redirect).toHaveBeenCalledWith(`search/results?search_id=${queryExecutionId}`)
+      expect(res.redirect).toHaveBeenCalledWith(`search/orders?search_id=${queryExecutionId}`)
     })
   })
 

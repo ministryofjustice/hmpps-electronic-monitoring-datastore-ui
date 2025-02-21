@@ -21,7 +21,7 @@ const getSearchResults = (options: GetSearchResultsStubOptions = defaultGetSearc
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getSearchResults}/${options.queryExecutionId}`,
+      urlPattern: `/datastore${config.apiEndpoints.searchOrders}/${options.queryExecutionId}`,
     },
     response: {
       status: options.httpStatus,
