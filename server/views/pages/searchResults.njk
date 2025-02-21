@@ -88,6 +88,7 @@
         rows: records
       }) }}
 
+{# TODO: This <p> isn't required in this page and should be removed. To remove it, the javascript for this component also needs to be updated (assets/js/emsSortableTable.js).  #}
       <p class="ems-sortable-table__no-results hidden">No results found.</p>
 
       <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
