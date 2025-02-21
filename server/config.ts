@@ -50,7 +50,6 @@ const auditConfig = () => {
 
 const apiEndpoints = {
   searchOrders: '/search/orders',
-  // getSearchResults: '/search/results',
   getCases: '/search/cases',
   confirmAPI: '/search/confirmConnection',
   getOrderSummary: '/orders/getOrderSummary',
