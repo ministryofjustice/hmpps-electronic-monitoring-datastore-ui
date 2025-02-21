@@ -15,9 +15,9 @@ describe('EM Datastore Search Client', () => {
   let fakeClient: nock.Scope
   let datastoreClient: DatastoreClient
 
-  const token = 'token-1'
-  const queryExecutionId = 'query-execution-id'
-  const queryExecutionResponse = {
+  const token: string = 'token-1'
+  const queryExecutionId: string = 'query-execution-id'
+  const queryExecutionResponse: QueryExecutionResponse = {
     queryExecutionId,
   }
 
