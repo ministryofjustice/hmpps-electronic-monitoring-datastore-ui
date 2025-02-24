@@ -25,17 +25,17 @@ const tabulateOrders = (orders: Order[]) => {
       {
         attributes: {
           'data-sort-value': `
-            ${order.primaryAddressLine1}
-            ${order.primaryAddressLine2}
-            ${order.primaryAddressLine3}
-            ${order.primaryAddressPostCode}
+            ${order.addressLine1}
+            ${order.addressLine2}
+            ${order.addressLine3}
+            ${order.addressPostcode}
           `,
         },
         html: `<p>
-          ${order.primaryAddressLine1 && `${order.primaryAddressLine1}<br/>`}
-          ${order.primaryAddressLine2 && `${order.primaryAddressLine2}<br/>`}
-          ${order.primaryAddressLine3 && `${order.primaryAddressLine3}<br/>`}
-          ${order.primaryAddressPostCode}
+          ${order.addressLine1 && `${order.addressLine1}<br/>`}
+          ${order.addressLine2 && `${order.addressLine2}<br/>`}
+          ${order.addressLine3 && `${order.addressLine3}<br/>`}
+          ${order.addressPostcode}
         </p>`,
       },
       {
