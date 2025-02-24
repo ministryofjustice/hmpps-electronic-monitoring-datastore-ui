@@ -4,13 +4,23 @@
 {% macro visitDetails(event) %}
   {% set addressHtml %}
     {% if (event.properties.address) %}
-    <p class="govuk-body">
-      {{ event.properties.address.addressLine1 }}<br/>
-      {{ event.properties.address.addressLine2 }}<br/>
-      {{ event.properties.address.addressLine3 }}<br/>
-      {{ event.properties.address.addressLine4 }}<br/>
-      {{ event.properties.address.postcode }}
-    </p>
+      <p class="govuk-body">
+        {% if (event.properties.address.addressLine1) %}
+          {{ event.properties.address.addressLine1 }}<br/>
+        {% endif %}
+        {% if (event.properties.address.addressLine2) %}
+          {{ event.properties.address.addressLine2 }}<br/>
+        {% endif %}
+        {% if (event.properties.address.addressLine3) %}
+          {{ event.properties.address.addressLine3 }}<br/>
+        {% endif %}
+        {% if (event.properties.address.addressLine4) %}
+          {{ event.properties.address.addressLine4 }}<br/>
+        {% endif %}
+        {% if (event.properties.address.postcode) %}
+          {{ event.properties.address.postcode }}
+        {% endif %}
+      </p>
     {% endif %}
   {% endset %}
 
