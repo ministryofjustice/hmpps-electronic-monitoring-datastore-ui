@@ -24,11 +24,19 @@ const tabulateOrders = (orders: Order[]) => {
       },
       {
         attributes: {
-          'data-sort-value': order.address,
+          'data-sort-value': `
+            ${order.primaryAddressLine1}
+            ${order.primaryAddressLine2}
+            ${order.primaryAddressLine3}
+            ${order.primaryAddressPostCode}
+          `,
         },
-        html: `
-          <p>${order.address}</p>
-        `,
+        html: `<p>
+          ${order.primaryAddressLine1 && `${order.primaryAddressLine1}<br/>`}
+          ${order.primaryAddressLine2 && `${order.primaryAddressLine2}<br/>`}
+          ${order.primaryAddressLine3 && `${order.primaryAddressLine3}<br/>`}
+          ${order.primaryAddressPostCode}
+        </p>`,
       },
       {
         text: order.dateOfBirth,
