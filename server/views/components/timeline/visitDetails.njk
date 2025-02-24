@@ -17,9 +17,7 @@
         {% if (event.properties.address.addressLine4) %}
           {{ event.properties.address.addressLine4 }}<br/>
         {% endif %}
-        {% if (event.properties.address.postcode) %}
-          {{ event.properties.address.postcode }}
-        {% endif %}
+        {{ event.properties.address.postcode }}
       </p>
     {% endif %}
   {% endset %}
