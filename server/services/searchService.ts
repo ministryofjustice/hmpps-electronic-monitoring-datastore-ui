@@ -11,7 +11,7 @@ import NameValidator from '../utils/validators/nameValidator'
 import { SearchOrderFormData } from '../models/form-data/searchOrder'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
-export default class DatastoreSearchService {
+export default class SearchService {
   private readonly datastoreClient: DatastoreClient
 
   constructor(

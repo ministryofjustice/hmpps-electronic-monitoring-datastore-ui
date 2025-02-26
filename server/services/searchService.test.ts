@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import DatastoreSearchService from './datastoreSearchService'
+import SearchService from './searchService'
 import orders from '../data/mockData/orders'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
 import { DateValidator } from '../utils/validators/dateValidator'
@@ -21,11 +21,11 @@ describe('Datastore Search Service', () => {
 
   const datastoreClientFactory = jest.fn()
 
-  let datastoreSearchService: DatastoreSearchService
+  let searchService: SearchService
 
   beforeEach(() => {
     datastoreClientFactory.mockReturnValue(datastoreClient)
-    datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+    searchService = new SearchService(datastoreClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -39,8 +39,8 @@ describe('Datastore Search Service', () => {
 
   describe('validateInput', () => {
     it('returns a validation error when the form is empty', async () => {
-      jest.spyOn(datastoreSearchService, 'isEmptySearch')
-      jest.spyOn(datastoreSearchService, 'validateInput')
+      jest.spyOn(searchService, 'isEmptySearch')
+      jest.spyOn(searchService, 'validateInput')
 
       const invalidInput = {
         token: 'token',
@@ -58,10 +58,10 @@ describe('Datastore Search Service', () => {
         },
       ]
 
-      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+      const result: ValidationResult = searchService.validateInput(invalidInput)
 
-      expect(datastoreSearchService.validateInput).toHaveBeenCalledWith(invalidInput)
-      expect(datastoreSearchService.isEmptySearch).toHaveBeenCalledWith(invalidInput.data)
+      expect(searchService.validateInput).toHaveBeenCalledWith(invalidInput)
+      expect(searchService.isEmptySearch).toHaveBeenCalledWith(invalidInput.data)
       expect(result).toEqual(expectedResult)
     })
 
@@ -91,7 +91,7 @@ describe('Datastore Search Service', () => {
         },
       }
 
-      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+      const result: ValidationResult = searchService.validateInput(invalidInput)
 
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John123')
       expect(result).toEqual([
@@ -126,7 +126,7 @@ describe('Datastore Search Service', () => {
         },
       }
 
-      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+      const result: ValidationResult = searchService.validateInput(invalidInput)
 
       expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
       expect(result).toEqual([
@@ -171,7 +171,7 @@ describe('Datastore Search Service', () => {
         },
       }
 
-      const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
+      const result: ValidationResult = searchService.validateInput(invalidInput)
 
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John123')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
@@ -204,7 +204,7 @@ describe('Datastore Search Service', () => {
         },
       }
 
-      const result: ValidationResult = datastoreSearchService.validateInput(validInput)
+      const result: ValidationResult = searchService.validateInput(validInput)
 
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John')
       expect(DateValidator.validateDate).toHaveBeenCalledWith('10', '02', '2021', 'dob')
@@ -228,7 +228,7 @@ describe('Datastore Search Service', () => {
 
       jest.spyOn(datastoreClient, 'submitSearchQuery').mockResolvedValue(queryExecutionResponse)
 
-      const result = await datastoreSearchService.submitSearchQuery(validInput)
+      const result = await searchService.submitSearchQuery(validInput)
 
       expect(datastoreClient.submitSearchQuery).toHaveBeenCalledWith(validInput)
       expect(result).toEqual(queryExecutionResponse)
@@ -244,7 +244,7 @@ describe('Datastore Search Service', () => {
         data: {},
       }
 
-      expect(datastoreSearchService.submitSearchQuery(input)).rejects.toThrow('Error submitting search query')
+      expect(searchService.submitSearchQuery(input)).rejects.toThrow('Error submitting search query')
     })
   })
 
@@ -257,7 +257,7 @@ describe('Datastore Search Service', () => {
         queryExecutionId,
       }
 
-      const result = await datastoreSearchService.getSearchResults(request)
+      const result = await searchService.getSearchResults(request)
 
       expect(datastoreClient.getSearchResults).toHaveBeenCalledWith(request)
       expect(result).toEqual(orders)
@@ -282,7 +282,7 @@ describe('Datastore Search Service', () => {
           throw error
         })
 
-        await expect(datastoreSearchService.getSearchResults(request)).rejects.toThrow(
+        await expect(searchService.getSearchResults(request)).rejects.toThrow(
           'Error retrieving search results: Invalid query execution ID',
         )
       })
@@ -297,9 +297,7 @@ describe('Datastore Search Service', () => {
           queryExecutionId: '',
         }
 
-        await expect(datastoreSearchService.getSearchResults(request)).rejects.toThrow(
-          'Error retrieving search results',
-        )
+        await expect(searchService.getSearchResults(request)).rejects.toThrow('Error retrieving search results')
       })
     })
   })

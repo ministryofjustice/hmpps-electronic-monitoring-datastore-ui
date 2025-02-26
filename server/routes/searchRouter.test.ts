@@ -3,15 +3,15 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
-import DatastoreSearchService from '../services/datastoreSearchService'
+import SearchService from '../services/searchService'
 import { GetRequestFixture } from './index.test'
 // import { createMockRequest } from '../testutils/mocks/mockExpress'
 
 jest.mock('../services/auditService')
-jest.mock('../services/datastoreSearchService')
+jest.mock('../services/searchService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const datastoreSearchService = new DatastoreSearchService(null, null) as jest.Mocked<DatastoreSearchService>
+const searchService = new SearchService(null, null) as jest.Mocked<SearchService>
 
 let app: Express
 
@@ -19,7 +19,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
-      datastoreSearchService,
+      searchService,
     },
     userSupplier: () => user,
   })
@@ -45,7 +45,7 @@ describe('Core page basic GET requests', () => {
 })
 
 describe('Search results page', () => {
-  // TODO: Fix this test by mocking return values of the datastoreSearchService .validateInput() and .search() methods
+  // TODO: Fix this test by mocking return values of the searchService .validateInput() and .search() methods
   // it('Returns data', async () => {
   //   const req = createMockRequest({
   //     session: {

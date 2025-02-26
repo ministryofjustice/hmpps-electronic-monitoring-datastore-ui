@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, DatastoreSearchService } from '../services'
+import { AuditService, SearchService } from '../services'
 import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchOrderFormDataModel, { SearchOrderFormData } from '../models/form-data/searchOrder'
@@ -11,7 +11,7 @@ import { ValidationResult } from '../models/Validation'
 export default class SearchController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly datastoreSearchService: DatastoreSearchService,
+    private readonly searchService: SearchService,
   ) {}
 
   searchPage: RequestHandler = async (req: Request, res: Response) => {
@@ -43,7 +43,7 @@ export default class SearchController {
 
     const validatedFormData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
 
-    const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({
+    const validationErrors: ValidationResult = this.searchService.validateInput({
       userToken: res.locals.user.token,
       data: validatedFormData,
     })
@@ -53,7 +53,7 @@ export default class SearchController {
       req.session.validationErrors = validationErrors
       res.redirect('search')
     } else {
-      const queryExecutionResponse = await this.datastoreSearchService.submitSearchQuery({
+      const queryExecutionResponse = await this.searchService.submitSearchQuery({
         userToken: res.locals.user.token,
         data: validatedFormData,
       })
@@ -82,7 +82,7 @@ export default class SearchController {
     let orders: Order[]
 
     try {
-      orders = await this.datastoreSearchService.getSearchResults({
+      orders = await this.searchService.getSearchResults({
         userToken: res.locals.user.token,
         queryExecutionId,
       })

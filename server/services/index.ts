@@ -3,7 +3,7 @@ import AuditService from './auditService'
 import OrderService from './orderService'
 import EventsService from './eventsService'
 import DatastoreOrderService from './datastoreOrderService'
-import DatastoreSearchService from './datastoreSearchService'
+import SearchService from './searchService'
 import SuspensionOfVisitsService from './suspensionOfVisitsService'
 import EquipmentDetailsService from './equipmentDetailsService'
 import VisitDetailsService from './visitDetailsService'
@@ -13,7 +13,7 @@ export const services = () => {
   const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreClientFactory } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
-  const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+  const searchService = new SearchService(datastoreClientFactory, hmppsAuthClient)
 
   // TODO: Deprecate order service in favour of DataStoreOrderService
   const orderService = new OrderService()
@@ -29,7 +29,7 @@ export const services = () => {
     auditService,
     orderService,
     datastoreOrderService,
-    datastoreSearchService,
+    searchService,
     eventsService,
     suspensionOfVisitsService,
     equipmentDetailsService,
@@ -42,7 +42,7 @@ export type Services = ReturnType<typeof services>
 export {
   AuditService,
   DatastoreOrderService,
-  DatastoreSearchService,
+  SearchService,
   EventsService,
   SuspensionOfVisitsService,
   EquipmentDetailsService,
