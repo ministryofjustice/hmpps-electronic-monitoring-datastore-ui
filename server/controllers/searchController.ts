@@ -94,6 +94,6 @@ export default class SearchController {
       throw error
     }
 
-    res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
+    res.render('pages/searchResults', { orders })
   }
 }

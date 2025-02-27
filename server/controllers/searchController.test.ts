@@ -249,12 +249,10 @@ describe('SearchController', () => {
       req.query.search_id = queryExecutionId
       searchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
-      const mockOrders = ['mockOrders'] as string[]
-
       await searchController.searchResultsPage(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/searchResults', {
-        data: mockOrders,
+        orders,
       })
     })
   })
