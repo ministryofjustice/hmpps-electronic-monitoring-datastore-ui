@@ -14,6 +14,7 @@ import { EquipmentDetailsModel, EquipmentDetails } from '../models/equipmentDeta
 import { VisitDetailsModel, VisitDetails } from '../models/visitDetails'
 import { CurfewTimetableModel, CurfewTimetable } from '../models/curfewTimetable'
 import { SuspensionOfVisitsEventModel, SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import logger from '../../logger'
 
 export default class DatastoreClient {
   private restClient: RestClient
@@ -28,6 +29,7 @@ export default class DatastoreClient {
 
   updateToken(newTokenValue: string): void {
     this.restClient.updateToken(newTokenValue)
+    logger.info(`Updating JWT token to: ${newTokenValue}`)
   }
 
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {

@@ -29,7 +29,7 @@ const tokenVerifier: TokenVerifier = async request => {
     return true
   }
 
-  logger.debug(`token request for user "${user.username}'`)
+  logger.debug(`token request for user "${user.username}" with token: ${user.token}'`)
 
   const result = await getApiClientToken(user.token)
   if (result) {
