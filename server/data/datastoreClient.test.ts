@@ -258,10 +258,10 @@ describe('EM Datastore Search Client', () => {
         {
           legacySubjectId: 1232123,
           suspensionOfVisits: 'test',
-          suspensionOfVisitsRequestedDate: null,
-          suspensionOfVisitsStartDate: null,
-          suspensionOfVisitsStartTime: null,
-          suspensionOfVisitsEndDate: null,
+          requestedDate: null,
+          startDate: null,
+          startTime: null,
+          endDate: null,
         },
       ] as SuspensionOfVisitsEvent[]
       const expectedResult = fakeResponse
