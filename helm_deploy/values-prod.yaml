@@ -11,7 +11,7 @@ generic-service:
     TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     EM_DATASTORE_API_URL: "https://electronic-monitoring-datastore-api.hmpps.service.justice.gov.uk"
     ENVIRONMENT_NAME: PRODUCTION
-    AUDIT_ENABLED: "true"
+    AUDIT_ENABLED: "false"
 
 generic-prometheus-alerts:
   alertSeverity: digital-prison-service
