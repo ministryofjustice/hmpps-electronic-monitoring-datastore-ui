@@ -23,7 +23,7 @@ context('Search', () => {
       const searchPage = Page.verifyOnPage(SearchPage)
       searchPage
         .serviceInformation()
-        .should('contain', 'This service gives you access to all order data that was held by Capita and G4S.')
+        .should('contain', 'This service gives you access to all order data that was held by Capita and G4S')
     })
   })
 
