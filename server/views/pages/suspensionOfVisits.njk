@@ -22,54 +22,61 @@
     {{ heading }}
   </h1>
 
-  {{ emsDateFilter() }}
+  {% if events|length %}
 
-  <hr class="govuk-section-break govuk-section-break--m">
+    {{ emsDateFilter() }}
 
-  {% set timelineItems = [] %}
+    <hr class="govuk-section-break govuk-section-break--m">
 
-  {% for event in events %}
-    {% set timelineEntryHtml %}
-      {{
-        govukSummaryList({
-          rows: [
-            {
-              key: { text: "Suspension of visits" },
-              value: { text: event.suspensionOfVisits }
-            },
-            {
-              key: { text: "Suspension of visits requested date" },
-              value: { text: event.requestedDate }
-            },
-            {
-              key: { text: "Suspension of visits start date" },
-              value: { text: event.startDate }
-            },
-            {
-              key: { text: "Suspension of visits start time" },
-              value: { text: event.startTime }
-            },
-            {
-              key: { text: "Suspension of visits end date" },
-              value: { text: event.endDate }
-            }
-          ]
-        })
-      }}
-    {% endset %}
+    {% set timelineItems = [] %}
 
-    {% set timelineItems = (timelineItems.push({
-        label: { text: "Suspension of visits" },
-        html: timelineEntryHtml,
-        datetime: {
-          timestamp: event.timestamp,
-          type: 'shortdate'
-        }
-      }), timelineItems) %}
-  {% endfor %}
+    {% for event in events %}
+      {% set timelineEntryHtml %}
+        {{
+          govukSummaryList({
+            rows: [
+              {
+                key: { text: "Suspension of visits" },
+                value: { text: event.suspensionOfVisits }
+              },
+              {
+                key: { text: "Suspension of visits requested date" },
+                value: { text: event.requestedDate }
+              },
+              {
+                key: { text: "Suspension of visits start date" },
+                value: { text: event.startDate }
+              },
+              {
+                key: { text: "Suspension of visits start time" },
+                value: { text: event.startTime }
+              },
+              {
+                key: { text: "Suspension of visits end date" },
+                value: { text: event.endDate }
+              }
+            ]
+          })
+        }}
+      {% endset %}
 
-  {{ mojTimeline({
-    items: timelineItems
-  })}}
+      {% set timelineItems = (timelineItems.push({
+          label: { text: "Suspension of visits" },
+          html: timelineEntryHtml,
+          datetime: {
+            timestamp: event.timestamp,
+            type: 'shortdate'
+          }
+        }), timelineItems) %}
+    {% endfor %}
+
+    {{ mojTimeline({
+      items: timelineItems
+    })}}
+
+  {% else %}
+    <h3 class="govuk-heading-m">No {{ heading | lower }} found</h3>
+    <p>There are no {{ heading | lower }} associated with this order</p>
+  {% endif %}
 
 {% endblock %}
