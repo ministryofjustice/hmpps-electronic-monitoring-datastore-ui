@@ -22,10 +22,13 @@
   </h1>
   <p class="govuk-body">Violation alerts, monitoring events and contact history</p>
 
-  {{ emsDateFilter() }}
-
-  <hr class="govuk-section-break govuk-section-break--m">
-
+  {% if events|length %}
+    {{ emsDateFilter() }}
+    <hr class="govuk-section-break govuk-section-break--m">
   {{ emsEventTimeline(events) }}
+  {% else %}
+    <h3 class="govuk-heading-m">No events found</h3>
+    <p>There are no events associated with this order</p>
+  {% endif %}
 
 {% endblock %}
