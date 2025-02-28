@@ -21,6 +21,13 @@
     {{ heading }}
   </h1>
 
-  {{ emsEventTimeline(curfewTimetable) }}
+  {% if curfewTimetable|length %}
+    {{ emsDateFilter() }}
+    <hr class="govuk-section-break govuk-section-break--m">
+    {{ emsEventTimeline(curfewTimetable) }}
+  {% else %}
+    <h3 class="govuk-heading-m">No {{ heading | lower }} found</h3>
+    <p>There are no {{ heading | lower }} associated with this order</p>
+  {% endif %}
 
 {% endblock %}
