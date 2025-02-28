@@ -26,8 +26,8 @@
     <hr class="govuk-section-break govuk-section-break--m">
     {{ emsEventTimeline(equipmentDetails) }}
   {% else %}
-    <h3 class="govuk-heading-m">No events found</h3>
-    <p>No {{ heading | lower }} events are associated with this order</p>
+    <h3 class="govuk-heading-m">No {{ heading | lower }} found</h3>
+    <p>There are no {{ heading | lower }} associated with this order</p>
   {% endif %}
 
 {% endblock %}
