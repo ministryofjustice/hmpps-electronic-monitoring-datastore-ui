@@ -22,7 +22,7 @@ context('Equipment Details', () => {
     Page.verifyOnPage(EquipmentDetailsPage)
   })
 
-  describe('Timetables', () => {
+  describe('No results message', () => {
     it('Renders when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
@@ -33,10 +33,44 @@ context('Equipment Details', () => {
       cy.visit(`/orders/${orderId}/equipment-details`)
 
       const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
-      equipmentDetailsPage.timeline.should('not.be.visible')
+      equipmentDetailsPage.noResultsHeading.should('be.visible')
+      equipmentDetailsPage.noResultsMessage.should('be.visible')
     })
 
-    it('Renders when no timetable entries have been found', () => {
+    it('Does not render when a timetable entry has been found', () => {
+      cy.task('stubDatastoreGetEquipmentDetails', {
+        httpStatus: 200,
+        orderId,
+        body: [
+          {
+            legacySubjectId: 123,
+            legacyOrderId: 321,
+            pid: {
+              id: '123456',
+              equipmentCategoryDescription: 'TEST_PID_DESCRIPTION',
+              installedDateTime: '2002-02-02T01:01:01',
+              removedDateTime: '2002-06-02T01:01:01',
+            },
+            hmu: {
+              id: '098765',
+              equipmentCategoryDescription: 'TEST_HMU_DESCRIPTION',
+              installedDateTime: '2002-02-02T01:01:01',
+              removedDateTime: '2002-06-02T01:01:01',
+            },
+          },
+        ],
+      })
+
+      cy.visit(`/orders/${orderId}/equipment-details`)
+
+      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      equipmentDetailsPage.noResultsHeading.should('not.exist')
+      equipmentDetailsPage.noResultsMessage.should('not.exist')
+    })
+  })
+
+  describe('Timetables', () => {
+    it('Does not render when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
         orderId,
@@ -46,7 +80,7 @@ context('Equipment Details', () => {
       cy.visit(`/orders/${orderId}/equipment-details`)
 
       const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
-      equipmentDetailsPage.timeline.should('not.be.visible')
+      equipmentDetailsPage.timeline.should('not.exist')
     })
 
     it('Renders when one timetable entry have been found', () => {
