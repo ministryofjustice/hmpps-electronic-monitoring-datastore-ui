@@ -4,10 +4,12 @@ const strings: Record<string, Record<string, string>> = {
     invalidFirstName: 'First name must contain letters only',
     invalidLastName: 'Last name must contain letters only',
     invalidAlias: 'Alias must contain letters and spaces only',
-    incompleteDate: 'Incomplete date provided. Please ensure day, month, and year are all filled out',
-    incorrectDateFormat:
-      'Date is in the incorrect format. Enter the date in the format DD/MM/YYYY (Day/Month/Year). For example, 24/10/2020.',
-    futureDateNotAllowed: 'Future dates are not allowed.',
+    missingDay: 'Date of birth must include a day',
+    missingMonth: 'Date of birth must include a month',
+    missingYear: 'Date of birth must include a year',
+    unrealDate: 'Please enter a real date in the format DD/MM/YYYY. For example, 24/10/2020',
+    dateBelowLimit: 'Enter a date after ',
+    futureDate: 'Future dates are not allowed',
   },
   errorCodesFromApi: {},
   pageHeadings: {

@@ -6,9 +6,9 @@ import DatastoreClient from '../data/datastoreClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { ValidationResult } from '../models/Validation'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
-import { DateValidationResponse, DateValidator } from '../utils/validators/dateValidator'
+import { DateValidationResponse, dateValidator } from '../utils/validators/dateValidator'
 import NameValidator from '../utils/validators/nameValidator'
-import { SearchOrderFormData } from '../models/form-data/searchOrder'
+import { ParsedSearchFormData } from '../models/form-data/searchOrder'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
 export default class DatastoreSearchService {
@@ -21,7 +21,7 @@ export default class DatastoreSearchService {
     this.datastoreClient = this.datastoreClientFactory('uninitialised')
   }
 
-  isEmptySearch(searchData: SearchOrderFormData): boolean {
+  isEmptySearch(searchData: ParsedSearchFormData): boolean {
     return Object.values(searchData).every(value => value === '')
   }
 
@@ -36,15 +36,13 @@ export default class DatastoreSearchService {
       return validationErrors
     }
 
-    const isDobValid: DateValidationResponse = DateValidator.validateDate(
-      input.data['dob-day'],
-      input.data['dob-month'],
-      input.data['dob-year'],
-      'dob',
-    )
-
-    if (isDobValid.result === false) {
-      validationErrors.push(isDobValid.error!)
+    const parsedDateOfBirth: DateValidationResponse = dateValidator.parse({
+      day: input.data.dobDay,
+      month: input.data.dobMonth,
+      year: input.data.dobYear,
+    })
+    if (!parsedDateOfBirth.isValid) {
+      validationErrors.push(parsedDateOfBirth.error!)
     }
 
     ;['firstName', 'lastName', 'alias'].forEach(field => {
