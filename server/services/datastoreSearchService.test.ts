@@ -2,14 +2,14 @@ import { ZodError } from 'zod'
 import DatastoreSearchService from './datastoreSearchService'
 import orders from '../data/mockData/orders'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
-import { dateValidator } from '../utils/validators/newDateValidator'
+import { dateValidator } from '../utils/validators/dateValidator'
 import NameValidator from '../utils/validators/nameValidator'
 import { ValidationResult } from '../models/Validation'
 import getSanitisedError from '../sanitisedError'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')
-jest.mock('../utils/validators/newDateValidator', () => ({
+jest.mock('../utils/validators/dateValidator', () => ({
   dateValidator: { parse: jest.fn() },
 }))
 
