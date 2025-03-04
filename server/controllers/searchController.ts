@@ -3,7 +3,7 @@ import { Page } from '../services/auditService'
 import { AuditService, DatastoreSearchService } from '../services'
 import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
-import SearchOrderFormDataModel, { SearchOrderFormData } from '../models/form-data/searchOrder'
+import { ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
 import tabulateOrders from '../utils/tabulateOrders'
 import { ValidationResult } from '../models/Validation'
@@ -41,7 +41,7 @@ export default class SearchController {
       correlationId: req.id,
     })
 
-    const validatedFormData: SearchOrderFormData = SearchOrderFormDataModel.parse(req.body)
+    const validatedFormData = ParsedSearchFormDataModel.parse(req.body)
 
     const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({
       userToken: res.locals.user.token,

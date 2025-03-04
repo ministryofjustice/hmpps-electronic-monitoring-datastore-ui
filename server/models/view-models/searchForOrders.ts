@@ -1,4 +1,4 @@
-import { SearchOrderFormData } from '../form-data/searchOrder'
+import { ParsedSearchFormData } from '../form-data/searchOrder'
 import { DateField, ErrorMessage, getError, TextField } from '../utils'
 import { ValidationResult } from '../Validation'
 
@@ -13,7 +13,7 @@ type SearchForOrdersViewModel = {
 }
 
 const createViewModelFromFormData = (
-  formData: SearchOrderFormData,
+  formData: ParsedSearchFormData,
   validationErrors: ValidationResult,
 ): SearchForOrdersViewModel => {
   return {
@@ -32,9 +32,9 @@ const createViewModelFromFormData = (
     alias: formData.alias ? { value: formData.alias, error: getError(validationErrors, 'alias') } : undefined,
     dob: {
       value: {
-        day: formData['dob-day'] || '',
-        month: formData['dob-month'] || '',
-        year: formData['dob-year'] || '',
+        day: formData.dobDay || '',
+        month: formData.dobMonth || '',
+        year: formData.dobYear || '',
       },
       error: getError(validationErrors, 'dob'),
     },
@@ -43,7 +43,7 @@ const createViewModelFromFormData = (
 }
 
 const construct = (
-  formData: SearchOrderFormData = {} as SearchOrderFormData,
+  formData: ParsedSearchFormData = {} as ParsedSearchFormData,
   validationErrors: ValidationResult = [],
 ): SearchForOrdersViewModel => {
   return createViewModelFromFormData(formData, validationErrors)
