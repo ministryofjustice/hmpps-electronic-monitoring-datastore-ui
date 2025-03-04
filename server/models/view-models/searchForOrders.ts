@@ -18,27 +18,44 @@ const createViewModelFromFormData = (
 ): SearchForOrdersViewModel => {
   return {
     searchType: formData.searchType
-      ? { value: formData.searchType, error: getError(validationErrors, 'searchType') }
+      ? {
+          value: formData.searchType,
+          ...getError(validationErrors, 'searchType'),
+        }
       : undefined,
     legacySubjectId: formData.legacySubjectId
-      ? { value: formData.legacySubjectId, error: getError(validationErrors, 'legacySubjectId') }
+      ? {
+          value: formData.legacySubjectId,
+          ...getError(validationErrors, 'legacySubjectId'),
+        }
       : undefined,
     firstName: formData.firstName
-      ? { value: formData.firstName, error: getError(validationErrors, 'firstName') }
+      ? {
+          value: formData.firstName,
+          ...getError(validationErrors, 'firstName'),
+        }
       : undefined,
     lastName: formData.lastName
-      ? { value: formData.lastName, error: getError(validationErrors, 'lastName') }
+      ? {
+          value: formData.lastName,
+          ...getError(validationErrors, 'lastName'),
+        }
       : undefined,
-    alias: formData.alias ? { value: formData.alias, error: getError(validationErrors, 'alias') } : undefined,
+    alias: formData.alias
+      ? {
+          value: formData.alias,
+          ...getError(validationErrors, 'alias'),
+        }
+      : undefined,
     dob: {
       value: {
         day: formData.dobDay || '',
         month: formData.dobMonth || '',
         year: formData.dobYear || '',
       },
-      error: getError(validationErrors, 'dob'),
+      ...getError(validationErrors, 'dob'),
     },
-    emptyFormError: getError(validationErrors, 'emptyForm') || undefined,
+    emptyFormError: getError(validationErrors, 'emptyForm')?.error || undefined,
   }
 }
 

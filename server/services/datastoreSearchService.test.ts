@@ -2,13 +2,16 @@ import { ZodError } from 'zod'
 import DatastoreSearchService from './datastoreSearchService'
 import orders from '../data/mockData/orders'
 import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
-import { DateValidator } from '../utils/validators/dateValidator'
+import { dateValidator } from '../utils/validators/newDateValidator'
 import NameValidator from '../utils/validators/nameValidator'
 import { ValidationResult } from '../models/Validation'
 import getSanitisedError from '../sanitisedError'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/datastoreClient')
+jest.mock('../utils/validators/newDateValidator', () => ({
+  dateValidator: { parse: jest.fn() },
+}))
 
 describe('Datastore Search Service', () => {
   const token = 'fake-token-value'
@@ -45,10 +48,14 @@ describe('Datastore Search Service', () => {
       const invalidInput = {
         token: 'token',
         data: {
+          searchType: '',
+          legacySubjectId: '',
           firstName: '',
-          'dob-day': '',
-          'dob-month': '',
-          'dob-year': '',
+          lastName: '',
+          alias: '',
+          dobDay: '',
+          dobMonth: '',
+          dobYear: '',
         },
       }
       const expectedResult = [
@@ -66,7 +73,9 @@ describe('Datastore Search Service', () => {
     })
 
     it('returns a validation error when firstName is invalid', async () => {
-      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
+      dateValidator.parse = jest.fn().mockReturnValue({
+        isValid: true,
+      })
 
       jest.spyOn(NameValidator.firstName, 'safeParse').mockImplementation(() => {
         return {
@@ -84,10 +93,14 @@ describe('Datastore Search Service', () => {
       const invalidInput = {
         token: 'token',
         data: {
+          searchType: '',
+          legacySubjectId: '',
           firstName: 'John123',
-          'dob-day': '10',
-          'dob-month': '02',
-          'dob-year': '2021',
+          lastName: '',
+          alias: '',
+          dobDay: '10',
+          dobMonth: '02',
+          dobYear: '2021',
         },
       }
 
@@ -103,12 +116,11 @@ describe('Datastore Search Service', () => {
     })
 
     it('returns a validation error when dob is invalid', async () => {
-      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
-        result: false,
+      dateValidator.parse = jest.fn().mockReturnValue({
+        isValid: false,
         error: {
           field: 'dob',
-          error:
-            'Date is in the incorrect format. Enter the date in the format DD/MM/YYYY (Day/Month/Year). For example, 24/10/2020.',
+          error: 'Date of birth error',
         },
       })
 
@@ -119,32 +131,38 @@ describe('Datastore Search Service', () => {
       const invalidInput = {
         token: 'token',
         data: {
+          searchType: '',
+          legacySubjectId: '',
           firstName: 'John',
-          'dob-day': '32',
-          'dob-month': '13',
-          'dob-year': '2021',
+          lastName: '',
+          alias: '',
+          dobDay: '32',
+          dobMonth: '13',
+          dobYear: '2021',
         },
       }
 
       const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
 
-      expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
+      expect(dateValidator.parse).toHaveBeenCalledWith({
+        day: '32',
+        month: '13',
+        year: '2021',
+      })
       expect(result).toEqual([
         {
           field: 'dob',
-          error:
-            'Date is in the incorrect format. Enter the date in the format DD/MM/YYYY (Day/Month/Year). For example, 24/10/2020.',
+          error: 'Date of birth error',
         },
       ])
     })
 
     it('returns multiple errors when multiple fields are invalid', async () => {
-      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({
-        result: false,
+      dateValidator.parse = jest.fn().mockReturnValue({
+        isValid: false,
         error: {
           field: 'dob',
-          error:
-            'Date is in the incorrect format. Enter the date in the format DD/MM/YYYY (Day/Month/Year). For example, 24/10/2020.',
+          error: 'Date of birth error',
         },
       })
 
@@ -164,22 +182,29 @@ describe('Datastore Search Service', () => {
       const invalidInput = {
         token: 'token',
         data: {
+          searchType: '',
+          legacySubjectId: '',
           firstName: 'John123',
-          'dob-day': '32',
-          'dob-month': '13',
-          'dob-year': '2021',
+          lastName: '',
+          alias: '',
+          dobDay: '32',
+          dobMonth: '13',
+          dobYear: '2021',
         },
       }
 
       const result: ValidationResult = datastoreSearchService.validateInput(invalidInput)
 
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John123')
-      expect(DateValidator.validateDate).toHaveBeenCalledWith('32', '13', '2021', 'dob')
+      expect(dateValidator.parse).toHaveBeenCalledWith({
+        day: '32',
+        month: '13',
+        year: '2021',
+      })
       expect(result).toEqual([
         {
           field: 'dob',
-          error:
-            'Date is in the incorrect format. Enter the date in the format DD/MM/YYYY (Day/Month/Year). For example, 24/10/2020.',
+          error: 'Date of birth error',
         },
         {
           field: 'firstName',
@@ -189,7 +214,9 @@ describe('Datastore Search Service', () => {
     })
 
     it('returns no errors when form data is valid', async () => {
-      jest.spyOn(DateValidator, 'validateDate').mockReturnValue({ result: true })
+      dateValidator.parse = jest.fn().mockReturnValue({
+        isValid: true,
+      })
       jest.spyOn(NameValidator.firstName, 'safeParse').mockImplementation(() => {
         return { success: true, data: '' }
       })
@@ -197,17 +224,25 @@ describe('Datastore Search Service', () => {
       const validInput = {
         token: 'token',
         data: {
+          searchType: '',
+          legacySubjectId: '',
           firstName: 'John',
-          'dob-day': '10',
-          'dob-month': '02',
-          'dob-year': '2021',
+          lastName: '',
+          alias: '',
+          dobDay: '10',
+          dobMonth: '02',
+          dobYear: '2021',
         },
       }
 
       const result: ValidationResult = datastoreSearchService.validateInput(validInput)
 
       expect(NameValidator.firstName.safeParse).toHaveBeenCalledWith('John')
-      expect(DateValidator.validateDate).toHaveBeenCalledWith('10', '02', '2021', 'dob')
+      expect(dateValidator.parse).toHaveBeenCalledWith({
+        day: '10',
+        month: '02',
+        year: '2021',
+      })
       expect(result).toEqual([])
     })
   })
@@ -217,12 +252,14 @@ describe('Datastore Search Service', () => {
       const validInput = {
         token: 'token',
         data: {
+          searchType: '',
+          legacySubjectId: '',
           firstName: 'John',
           lastName: 'Doe',
           alias: 'JD',
-          'dob-day': '10',
-          'dob-month': '02',
-          'dob-year': '2021',
+          dobDay: '10',
+          dobMonth: '02',
+          dobYear: '2021',
         },
       }
 
@@ -241,7 +278,16 @@ describe('Datastore Search Service', () => {
 
       const input = {
         token: 'token',
-        data: {},
+        data: {
+          searchType: '',
+          legacySubjectId: '',
+          firstName: '',
+          lastName: '',
+          alias: '',
+          dobDay: '',
+          dobMonth: '',
+          dobYear: '',
+        },
       }
 
       expect(datastoreSearchService.submitSearchQuery(input)).rejects.toThrow('Error submitting search query')

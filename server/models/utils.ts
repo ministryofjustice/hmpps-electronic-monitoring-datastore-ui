@@ -22,12 +22,14 @@ export type DateField = FormField & {
   value: Date
 }
 
-export const getError = (validationErrors: ValidationResult, field: string): ErrorMessage | undefined => {
+export const getError = (validationErrors: ValidationResult, field: string): FormField | undefined => {
   const matchedError = validationErrors.find(e => e.field === field)
 
   if (matchedError) {
     return {
-      text: matchedError.error,
+      error: {
+        text: matchedError.error,
+      },
     }
   }
 

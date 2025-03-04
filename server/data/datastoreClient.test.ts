@@ -33,9 +33,9 @@ describe('EM Datastore Search Client', () => {
       firstName: 'John',
       lastName: 'Doe',
       alias: 'JD',
-      'dob-day': '01',
-      'dob-month': '01',
-      'dob-year': '1990',
+      dobDay: '01',
+      dobMonth: '01',
+      dobYear: '1990',
     },
   }
 
