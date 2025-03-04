@@ -110,6 +110,7 @@ export const dateValidator = dateModel.transform((data): DateValidationResponse 
   // Invalid condition: Date constructor can't generate a date with the provided values
   try {
     inputDate = new Date(parsedYear, parsedMonth - 1, parsedDay)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return {
       isValid: false,
