@@ -11,6 +11,18 @@ const SearchOrderFormDataModel = z.object({
   'dob-year': z.string().optional(),
 })
 
-export type SearchOrderFormData = z.infer<typeof SearchOrderFormDataModel>
+export const ParsedSearchFormDataModel = SearchOrderFormDataModel.transform(data => {
+  return {
+    searchType: data.searchType,
+    legacySubjectId: data.legacySubjectId,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    alias: data.alias,
+    dobDay: data['dob-day'],
+    dobMonth: data['dob-month'],
+    dobYear: data['dob-year'],
+  }
+})
 
-export default SearchOrderFormDataModel
+export type SearchOrderFormData = z.infer<typeof SearchOrderFormDataModel>
+export type ParsedSearchFormData = z.infer<typeof ParsedSearchFormDataModel>

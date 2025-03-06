@@ -1,9 +1,9 @@
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { Token } from '../interfaces/token'
-import { SearchOrderFormData } from '../models/form-data/searchOrder'
+import { ParsedSearchFormData } from '../models/form-data/searchOrder'
 
 export type SearchFormInput = Token & {
-  data: SearchOrderFormData
+  data: ParsedSearchFormData
 }
 
 export type SearchResultsRequest = Token & QueryExecutionResponse
