@@ -9,9 +9,9 @@ export default class SearchPage extends Page {
 
   serviceInformationText = (): PageElement => cy.get('.service-information').children('.govuk-warning-text__text')
 
-  subjectIdField = (): PageElement => cy.get('#subject-id')
+  subjectIdField = (): PageElement => cy.get('#legacy-subject-id')
 
-  subjectIdLabel = (): PageElement => cy.get('#subject-id').siblings('label')
+  subjectIdLabel = (): PageElement => cy.get('#legacy-subject-id').siblings('label')
 
   firstNameField = (): PageElement => cy.get('#first-name')
 
