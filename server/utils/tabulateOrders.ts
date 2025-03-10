@@ -42,16 +42,16 @@ const tabulateOrders = (orders: Order[]) => {
         text: order.dateOfBirth,
         attributes: {
           'data-sort-value':
-            order.dateOfBirth.split('-')[2] + order.dateOfBirth.split('-')[1] + order.dateOfBirth.split('-')[0],
+            order.dateOfBirth.split('-')[0] + order.dateOfBirth.split('-')[1] + order.dateOfBirth.split('-')[2],
         },
       },
       {
         text: order.orderStartDate,
         attributes: {
           'data-sort-value':
-            order.orderStartDate.split('-')[2] +
+            order.orderStartDate.split('-')[0] +
             order.orderStartDate.split('-')[1] +
-            order.orderStartDate.split('-')[0],
+            order.orderStartDate.split('-')[2],
         },
         classes: 'govuk-table__cell--numeric',
       },
@@ -59,7 +59,7 @@ const tabulateOrders = (orders: Order[]) => {
         text: order.orderEndDate,
         attributes: {
           'data-sort-value':
-            order.orderEndDate.split('-')[2] + order.orderEndDate.split('-')[1] + order.orderEndDate.split('-')[0],
+            order.orderEndDate.split('-')[0] + order.orderEndDate.split('-')[1] + order.orderEndDate.split('-')[2],
         },
         classes: 'govuk-table__cell--numeric',
       },
