@@ -37,9 +37,9 @@ describe('SuspensionOfVisitsController', () => {
     }
   }
 
-  const createViewEvent = (viewDate: string, viewTime: string, timestamp: string): SuspensionOfVisitsViewEvent => {
+  const createViewEvent = (viewDate: string, viewTime: string, isoDateTime: string): SuspensionOfVisitsViewEvent => {
     return {
-      timestamp,
+      isoDateTime,
       suspensionOfVisits: 'Yes',
       requestedDate: viewDate,
       startDate: viewDate,
