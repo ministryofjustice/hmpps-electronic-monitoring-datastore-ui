@@ -13,7 +13,7 @@ function init() {
     const timelineItems = document.querySelectorAll('.moj-timeline__item')
 
     const filterElement = (element, startDate, endDate, filterDate) => {
-      if ((startDate == null || filterDate > startDate) && (endDate == null || filterDate < endDate)) {
+      if ((startDate == null || filterDate >= startDate) && (endDate == null || filterDate <= endDate)) {
         element.classList.remove('filter-active')
       } else {
         element.classList.add('filter-active')
