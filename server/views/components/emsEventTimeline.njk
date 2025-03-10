@@ -41,10 +41,10 @@
       {% set timelineItems = (timelineItems.push({
         label: { text: eventLabel },
         html: eventDetails,
-        datetime: {
-          timestamp: timestamp,
-          type: 'shortdatetime'
-        }
+          datetime: {
+            timestamp: event.isoDateTime,
+            type: 'shortdatetime'
+          }
       }), timelineItems) %}
     {% endfor %}
   {% endfor %}
