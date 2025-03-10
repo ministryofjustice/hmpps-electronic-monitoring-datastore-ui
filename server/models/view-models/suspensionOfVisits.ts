@@ -2,6 +2,7 @@ import { SuspensionOfVisitsEvent } from '../suspensionOfVisits'
 
 export type SuspensionOfVisitsViewEvent = {
   isoDateTime: string
+  eventType: string
   suspensionOfVisits: string
   requestedDate: string
   startDate: string
@@ -27,6 +28,7 @@ const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewE
     .map(event => {
       return {
         isoDateTime: event.suspensionOfVisitsRequestedDate,
+        eventType: 'suspension-of-visits',
         suspensionOfVisits: event.suspensionOfVisits,
         requestedDate: parseDate(event.suspensionOfVisitsRequestedDate),
         startDate: parseDate(event.suspensionOfVisitsStartDate),
