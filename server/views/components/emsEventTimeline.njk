@@ -5,6 +5,7 @@
 {% from "../components/timeline/violationEventDetails.njk" import violationEventDetails %}
 {% from "../components/timeline/equipmentDetails.njk" import equipmentDetails %}
 {% from "../components/timeline/visitDetails.njk" import visitDetails %}
+{% from "../components/timeline/suspensionOfVisitsDetails.njk" import suspensionOfVisitsDetails %}
 {% from "../components/timeline/curfewTimetable.njk" import curfewTimetable %}
 {% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
 
@@ -33,6 +34,9 @@
       {% elif event.eventType == "curfew-timetable" %}
         {% set eventLabel = "Service" %}
         {% set eventDetails = curfewTimetable(event) %}
+      {% elif event.eventType == "suspension-of-visits" %}
+        {% set eventLabel = "Suspension of visits" %}
+        {% set eventDetails = suspensionOfVisitsDetails(event) %}
       {% else %}
         {% set eventLabel = "Unrecognised event" %}
         {% set eventDetails = unknownEventDetails(event) %}

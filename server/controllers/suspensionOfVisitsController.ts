@@ -25,6 +25,6 @@ export default class SuspensionOfVisitsController {
       correlationId: req.id,
     })
 
-    res.render('pages/suspensionOfVisits', viewModel)
+    res.render('pages/order/suspension-of-visits', viewModel)
   }
 }

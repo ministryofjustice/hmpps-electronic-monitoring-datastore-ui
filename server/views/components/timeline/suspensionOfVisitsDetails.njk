@@ -1,0 +1,31 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
+
+{% macro suspensionOfVisitsDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        {
+          key: { text: "Suspension of visits" },
+          value: { text: event.suspensionOfVisits }
+        },
+        {
+          key: { text: "Suspension of visits requested date" },
+          value: { text: event.requestedDate }
+        },
+        {
+          key: { text: "Suspension of visits start date" },
+          value: { text: event.startDate }
+        },
+        {
+          key: { text: "Suspension of visits start time" },
+          value: { text: event.startTime }
+        },
+        {
+          key: { text: "Suspension of visits end date" },
+          value: { text: event.endDate }
+        }
+      ]
+    })
+  }}
+{% endmacro %}

@@ -40,6 +40,7 @@ describe('SuspensionOfVisitsController', () => {
   const createViewEvent = (viewDate: string, viewTime: string, isoDateTime: string): SuspensionOfVisitsViewEvent => {
     return {
       isoDateTime,
+      eventType: 'suspension-of-visits',
       suspensionOfVisits: 'Yes',
       requestedDate: viewDate,
       startDate: viewDate,
@@ -94,7 +95,7 @@ describe('SuspensionOfVisitsController', () => {
 
     expect(SuspensionOfVisitsView.construct).toHaveBeenCalledWith(testOrderId, expectedViewModel.events)
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/suspensionOfVisits', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewModel)
   })
 
   it('should render the page with suspension of visits events', async () => {
@@ -112,7 +113,7 @@ describe('SuspensionOfVisitsController', () => {
     await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
 
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
-    expect(res.render).toHaveBeenCalledWith('pages/suspensionOfVisits', expectedViewData)
+    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewData)
   })
 
   it('should order suspension of visits events by requestedDate', async () => {
@@ -148,6 +149,6 @@ describe('SuspensionOfVisitsController', () => {
     await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
 
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
-    expect(res.render).toHaveBeenCalledWith('pages/suspensionOfVisits', expectedViewData)
+    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewData)
   })
 })
