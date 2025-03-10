@@ -44,7 +44,6 @@ const createViewModelFromApiDto = (orderId: number, events: SuspensionOfVisitsEv
 }
 
 const construct = (orderId: number, events: SuspensionOfVisitsEvent[] = []): SuspensionOfVisitsViewModel => {
-  console.log(createViewModelFromApiDto(orderId, events))
   return createViewModelFromApiDto(orderId, events)
 }
 
