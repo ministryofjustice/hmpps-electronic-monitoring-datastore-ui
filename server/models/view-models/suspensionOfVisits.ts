@@ -1,7 +1,7 @@
 import { SuspensionOfVisitsEvent } from '../suspensionOfVisits'
 
 export type SuspensionOfVisitsViewEvent = {
-  timestamp: string
+  isoDateTime: string
   suspensionOfVisits: string
   requestedDate: string
   startDate: string
@@ -26,7 +26,7 @@ const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewE
     )
     .map(event => {
       return {
-        timestamp: event.suspensionOfVisitsRequestedDate,
+        isoDateTime: event.suspensionOfVisitsRequestedDate,
         suspensionOfVisits: event.suspensionOfVisits,
         requestedDate: parseDate(event.suspensionOfVisitsRequestedDate),
         startDate: parseDate(event.suspensionOfVisitsStartDate),
@@ -44,6 +44,7 @@ const createViewModelFromApiDto = (orderId: number, events: SuspensionOfVisitsEv
 }
 
 const construct = (orderId: number, events: SuspensionOfVisitsEvent[] = []): SuspensionOfVisitsViewModel => {
+  console.log(createViewModelFromApiDto(orderId, events))
   return createViewModelFromApiDto(orderId, events)
 }
 
