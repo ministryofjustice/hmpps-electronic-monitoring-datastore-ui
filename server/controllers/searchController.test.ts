@@ -10,7 +10,6 @@ import { ParsedSearchFormData, ParsedSearchFormDataModel } from '../models/form-
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
-jest.mock('../utils/tabulateOrders', () => jest.fn((): unknown[] => ['mockOrders']))
 
 const queryExecutionId = 'query-execution-id'
 const queryExecutionResponse = {
@@ -273,12 +272,10 @@ describe('SearchController', () => {
       req.query.search_id = queryExecutionId
       datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
-      const mockOrders = ['mockOrders'] as string[]
-
       await searchController.searchResultsPage(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/searchResults', {
-        data: mockOrders,
+        orders,
       })
     })
   })

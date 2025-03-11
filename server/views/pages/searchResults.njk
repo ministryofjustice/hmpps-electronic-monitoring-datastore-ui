@@ -5,6 +5,7 @@
 {%- from "govuk/components/table/macro.njk" import govukTable -%}
 {%- from "moj/components/pagination/macro.njk" import mojPagination -%}
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from '../components/safeDateFormatters.njk' import safeGovukDate %}
 
 {% set pageTitle = applicationName + " - Search results" %}
 {% set searchUrl = "/search" %}
@@ -13,6 +14,79 @@
 {% set pageSize = 10 %}
 {% set currentPage = 1 %}
 {% set totalPages = (records.length / pageSize) | round(0, 'ceil') %}
+
+
+{% set rows = [] %}
+{% for order in orders %}
+  {% set legacySubjectIdHtml %}
+    <a href="/orders/{{ order.legacySubjectId }}/summary">
+      {{ order.legacySubjectId }}
+    </a>
+  {% endset %} 
+
+  {% set nameHtml %}
+    {% if (order.name) %}
+      <p>{{ order.name }}</p>
+      {% if (order.alias) %}
+        <p>Alias: {{ order.alias }}</p>
+      {% endif %}
+    {% endif %}
+  {% endset %}
+
+  {% set addressSortValue %}
+    {{ order.addressLine1 ~ order.addressLine2 ~ order.addressLine3 ~ order.addressPostcode }}
+  {% endset %}
+
+  {% set addressHtml %}
+    {% if (order.addressLine1 or order.addressLine2 or order.addressLine3 or order.addressPostcode ) %}
+      <p class="govuk-body">
+        {% if (order.addressLine1) %}
+          {{ order.addressLine1 }}<br/>
+        {% endif %}
+        {% if (order.addressLine2) %}
+          {{ order.addressLine2 }}<br/>
+        {% endif %}
+        {% if (order.addressLine3) %}
+          {{ order.addressLine3 }}<br/>
+        {% endif %}
+        {% if (event.properties.serviceAddress4) %}
+          {{ event.properties.serviceAddress4 }}<br/>
+        {% endif %}
+        {{ order.addressPostcode }}
+      </p>
+    {% endif %}
+  {% endset %}
+
+  {% set rows = (rows.push( 
+    [
+      {
+        attributes: { 'data-sort-value': order.legacySubjectId },
+        html: legacySubjectIdHtml
+      },
+      {
+        attributes: { 'data-sort-value': order.name },
+        html: nameHtml
+      },
+      {
+        attributes: { 'data-sort-value': addressSortValue },
+        html: addressHtml
+      },
+      {
+        attributes: { 'data-sort-value': order.dateOfBirth },
+        text: safeGovukDate(order.dateOfBirth)
+      },
+      {
+        attributes: { 'data-sort-value': order.orderStartDate },
+        text: safeGovukDate(order.orderStartDate)
+      },
+      {
+        attributes: { 'data-sort-value': order.orderEndDate },
+        text: safeGovukDate(order.orderEndDate)
+      }
+    ]
+  ), rows) %}
+{% endfor %}
+
 
 {% block content %}
   {{ emsServiceInformation() }}
@@ -23,12 +97,10 @@
   }) }}
 
   <hr class="govuk-section-break govuk-section-break--m">
-
   <h1 class="govuk-heading-l">Search results</h1>
-
   <hr class="govuk-section-break govuk-section-break--m">
 
-  {% if records|length %}
+  {% if orders|length %}
     <div
       class="ems-sortable-table"
       data-page-size={{ pageSize }}
@@ -85,7 +157,7 @@
             format: "numeric"
           }
         ],
-        rows: records
+        rows: rows
       }) }}
 
 {# TODO: This <p> isn't required in this page and should be removed. To remove it, the javascript for this component also needs to be updated (assets/js/emsSortableTable.js).  #}

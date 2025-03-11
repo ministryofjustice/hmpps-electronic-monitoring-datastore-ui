@@ -5,7 +5,6 @@ import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import { ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
-import tabulateOrders from '../utils/tabulateOrders'
 import { ValidationResult } from '../models/Validation'
 
 export default class SearchController {
@@ -94,6 +93,6 @@ export default class SearchController {
       throw error
     }
 
-    res.render('pages/searchResults', { data: tabulateOrders(orders as Order[]) })
+    res.render('pages/searchResults', { orders })
   }
 }
