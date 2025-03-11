@@ -1,5 +1,5 @@
-import SuspensionOfVisitsPage from '../pages/suspensionOfVisits'
-import Page from '../pages/page'
+import SuspensionOfVisitsPage from '../../pages/suspensionOfVisits'
+import Page from '../../pages/page'
 
 context('Suspensions', () => {
   const orderId = 1234567
@@ -7,52 +7,52 @@ context('Suspensions', () => {
     {
       legacySubjectId: 123456789,
       suspensionOfVisits: 'Yes',
-      suspensionOfVisitsRequestedDate: '2001-01-01T01:01:01',
-      suspensionOfVisitsStartDate: '2001-01-01T01:01:01',
-      suspensionOfVisitsStartTime: '01:01:01',
-      suspensionOfVisitsEndDate: '2001-01-01T01:01:01',
+      requestedDate: '2001-01-01T01:01:01',
+      startDate: '2001-01-01T01:01:01',
+      startTime: '01:01:01',
+      endDate: '2001-01-01T01:01:01',
     },
     {
       legacySubjectId: 123456789,
       suspensionOfVisits: 'Yes',
-      suspensionOfVisitsRequestedDate: '2002-02-02T02:02:02',
-      suspensionOfVisitsStartDate: '2002-02-02T02:02:02',
-      suspensionOfVisitsStartTime: '02:02:02',
-      suspensionOfVisitsEndDate: '2002-02-02T02:02:02',
+      requestedDate: '2002-02-02T02:02:02',
+      startDate: '2002-02-02T02:02:02',
+      startTime: '02:02:02',
+      endDate: '2002-02-02T02:02:02',
     },
     {
       legacySubjectId: 123456789,
       suspensionOfVisits: 'Yes',
-      suspensionOfVisitsRequestedDate: '2003-03-03T03:03:03',
-      suspensionOfVisitsStartDate: '2003-03-03T03:03:03',
-      suspensionOfVisitsStartTime: '03:03:03',
-      suspensionOfVisitsEndDate: '2003-03-03T03:03:03',
+      requestedDate: '2003-03-03T03:03:03',
+      startDate: '2003-03-03T03:03:03',
+      startTime: '03:03:03',
+      endDate: '2003-03-03T03:03:03',
     },
   ]
   const expectedEventValues = [
     {
       legacySubjectId: '123456789',
       suspensionOfVisits: 'Yes',
-      suspensionOfVisitsRequestedDate: '01/01/2001',
-      suspensionOfVisitsStartDate: '01/01/2001',
-      suspensionOfVisitsStartTime: '0101',
-      suspensionOfVisitsEndDate: '01/01/2001',
+      requestedDate: '1 January 2001',
+      startDate: '1 January 2001',
+      startTime: '1:01am',
+      endDate: '1 January 2001',
     },
     {
       legacySubjectId: '123456789',
       suspensionOfVisits: 'Yes',
-      suspensionOfVisitsRequestedDate: '02/02/2002',
-      suspensionOfVisitsStartDate: '02/02/2002',
-      suspensionOfVisitsStartTime: '0202',
-      suspensionOfVisitsEndDate: '02/02/2002',
+      requestedDate: '2 February 2002',
+      startDate: '2 February 2002',
+      startTime: '2:02am',
+      endDate: '2 February 2002',
     },
     {
       legacySubjectId: '123456789',
       suspensionOfVisits: 'Yes',
-      suspensionOfVisitsRequestedDate: '03/03/2003',
-      suspensionOfVisitsStartDate: '03/03/2003',
-      suspensionOfVisitsStartTime: '0303',
-      suspensionOfVisitsEndDate: '03/03/2003',
+      requestedDate: '3 March 2003',
+      startDate: '3 March 2003',
+      startTime: '3:03am',
+      endDate: '3 March 2003',
     },
   ]
 
@@ -114,19 +114,19 @@ context('Suspensions', () => {
           suspensions
             .itemTableHeaders('Suspension of visits requested date')
             .next('dd')
-            .should('contain', expectedEventValues[index].suspensionOfVisitsRequestedDate)
+            .should('contain', expectedEventValues[index].requestedDate)
           suspensions
             .itemTableHeaders('Suspension of visits start date')
             .next('dd')
-            .should('contain', expectedEventValues[index].suspensionOfVisitsStartDate)
+            .should('contain', expectedEventValues[index].startDate)
           suspensions
             .itemTableHeaders('Suspension of visits start time')
             .next('dd')
-            .should('contain', expectedEventValues[index].suspensionOfVisitsStartTime)
+            .should('contain', expectedEventValues[index].startTime)
           suspensions
             .itemTableHeaders('Suspension of visits end date')
             .next('dd')
-            .should('contain', expectedEventValues[index].suspensionOfVisitsEndDate)
+            .should('contain', expectedEventValues[index].endDate)
         })
       })
     })
