@@ -11,19 +11,19 @@
         },
         {
           key: { text: "Suspension of visits requested date" },
-          value: { text: event.requestedDate }
+          value: { text: safeGovukDate(event.requestedDate) }
         },
         {
           key: { text: "Suspension of visits start date" },
-          value: { text: event.startDate }
+          value: { text: safeGovukDate(event.startDate) }
         },
         {
           key: { text: "Suspension of visits start time" },
-          value: { text: event.startTime }
+          value: { text: safeGovukTime(event.startTime) }
         },
         {
           key: { text: "Suspension of visits end date" },
-          value: { text: event.endDate }
+          value: { text: safeGovukDate(event.endDate) }
         }
       ]
     })

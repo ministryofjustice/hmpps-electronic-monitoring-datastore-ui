@@ -30,22 +30,22 @@ describe('SuspensionOfVisitsController', () => {
     return {
       legacySubjectId: orderId,
       suspensionOfVisits: 'Yes',
-      suspensionOfVisitsRequestedDate: dateTime,
-      suspensionOfVisitsStartDate: dateTime,
-      suspensionOfVisitsStartTime: time,
-      suspensionOfVisitsEndDate: dateTime,
+      requestedDate: dateTime,
+      startDate: dateTime,
+      startTime: time,
+      endDate: dateTime,
     }
   }
 
-  const createViewEvent = (viewDate: string, viewTime: string, isoDateTime: string): SuspensionOfVisitsViewEvent => {
+  const createViewEvent = (dateTime: string, time: string): SuspensionOfVisitsViewEvent => {
     return {
-      isoDateTime,
+      isoDateTime: dateTime,
       eventType: 'suspension-of-visits',
       suspensionOfVisits: 'Yes',
-      requestedDate: viewDate,
-      startDate: viewDate,
-      startTime: viewTime,
-      endDate: viewDate,
+      requestedDate: dateTime,
+      startDate: dateTime,
+      startTime: time,
+      endDate: dateTime,
     }
   }
 
@@ -101,11 +101,9 @@ describe('SuspensionOfVisitsController', () => {
   it('should render the page with suspension of visits events', async () => {
     const dateTime = '2001-02-03T01:23:45'
     const time = '10:20:30'
-    const viewDate = '03/02/2001'
-    const viewTime = '1020'
 
     const event = createEvent(testOrderId, time, dateTime)
-    const viewEvent = createViewEvent(viewDate, viewTime, dateTime)
+    const viewEvent = createViewEvent(dateTime, time)
     const expectedViewData = createViewData(testOrderId, [viewEvent, viewEvent])
 
     suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([event, event])
@@ -120,18 +118,14 @@ describe('SuspensionOfVisitsController', () => {
     const firstDate = {
       time: '01:01:01',
       dateTime: '2001-01-01T01:01:01',
-      viewTime: '0101',
-      viewDate: '01/01/2001',
     }
     const secondDate = {
       ...firstDate,
       dateTime: '2002-02-02T02:02:02',
-      viewDate: '02/02/2002',
     }
     const thirdDate = {
       ...firstDate,
       dateTime: '2003-03-03T03:03:03',
-      viewDate: '03/03/2003',
     }
 
     const firstEvent = createEvent(testOrderId, firstDate.time, firstDate.dateTime)
@@ -140,9 +134,9 @@ describe('SuspensionOfVisitsController', () => {
 
     suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([secondEvent, thirdEvent, firstEvent])
 
-    const firstViewEvent = createViewEvent(firstDate.viewDate, firstDate.viewTime, firstDate.dateTime)
-    const secondViewEvent = createViewEvent(secondDate.viewDate, secondDate.viewTime, secondDate.dateTime)
-    const thirdViewEvent = createViewEvent(thirdDate.viewDate, thirdDate.viewTime, thirdDate.dateTime)
+    const firstViewEvent = createViewEvent(firstDate.dateTime, firstDate.time)
+    const secondViewEvent = createViewEvent(secondDate.dateTime, secondDate.time)
+    const thirdViewEvent = createViewEvent(thirdDate.dateTime, thirdDate.time)
 
     const expectedViewData = createViewData(testOrderId, [firstViewEvent, secondViewEvent, thirdViewEvent])
 

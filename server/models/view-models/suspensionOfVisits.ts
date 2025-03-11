@@ -16,24 +16,18 @@ export type SuspensionOfVisitsViewModel = {
   events: SuspensionOfVisitsViewEvent[]
 }
 
-const parseDate = (dateTime: string | null) => (dateTime ? new Date(dateTime).toLocaleDateString('en-UK') : '')
-const parseTime = (time: string | null) => (time ? time.split(':').slice(0, 2).join('') : '')
-
 const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewEvent[] =>
   events
-    .sort(
-      (a, b) =>
-        new Date(a.suspensionOfVisitsRequestedDate).getTime() - new Date(b.suspensionOfVisitsRequestedDate).getTime(),
-    )
+    .sort((a, b) => new Date(a.requestedDate).getTime() - new Date(b.requestedDate).getTime())
     .map(event => {
       return {
-        isoDateTime: event.suspensionOfVisitsRequestedDate,
+        isoDateTime: event.requestedDate,
         eventType: 'suspension-of-visits',
         suspensionOfVisits: event.suspensionOfVisits,
-        requestedDate: parseDate(event.suspensionOfVisitsRequestedDate),
-        startDate: parseDate(event.suspensionOfVisitsStartDate),
-        startTime: parseTime(event.suspensionOfVisitsStartTime),
-        endDate: parseDate(event.suspensionOfVisitsEndDate),
+        requestedDate: event.requestedDate,
+        startDate: event.startDate,
+        startTime: event.startTime,
+        endDate: event.endDate,
       }
     })
 
