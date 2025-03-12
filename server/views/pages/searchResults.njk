@@ -10,10 +10,9 @@
 {% set pageTitle = applicationName + " - Search results" %}
 {% set searchUrl = "/search" %}
 {% set mainClasses = "app-container govuk-body" %}
-{% set records = data %}
 {% set pageSize = 10 %}
 {% set currentPage = 1 %}
-{% set totalPages = (records.length / pageSize) | round(0, 'ceil') %}
+{% set totalPages = (orders.length / pageSize) | round(0, 'ceil') %}
 
 
 {% set rows = [] %}
