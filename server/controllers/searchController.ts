@@ -3,6 +3,7 @@ import { Page } from '../services/auditService'
 import { AuditService, DatastoreSearchService } from '../services'
 import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
+import SearchResultsViewModel from '../models/view-models/searchResults'
 import { ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
 import { ValidationResult } from '../models/Validation'
@@ -93,6 +94,8 @@ export default class SearchController {
       throw error
     }
 
-    res.render('pages/searchResults', { orders })
+    const viewModel = SearchResultsViewModel.construct(orders)
+
+    res.render('pages/searchResults', { viewModel })
   }
 }
