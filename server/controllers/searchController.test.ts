@@ -5,6 +5,7 @@ import { AuditService, DatastoreSearchService } from '../services'
 import SearchController from './searchController'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import orders from '../data/mockData/orders'
+import ordersView from '../data/mockData/ordersView'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { ParsedSearchFormData, ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
 
@@ -269,13 +270,14 @@ describe('SearchController', () => {
     })
 
     it('should render the search results view when a valid orderExecutionId is submitted', async () => {
+      const viewModel = [...ordersView]
       req.query.search_id = queryExecutionId
       datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/searchResults', {
-        orders,
+        viewModel,
       })
     })
   })

@@ -7,6 +7,7 @@
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 {% from '../components/safeDateFormatters.njk' import safeGovukDate %}
 
+{% set orders = viewModel %}
 {% set pageTitle = applicationName + " - Search results" %}
 {% set searchUrl = "/search" %}
 {% set mainClasses = "app-container govuk-body" %}
@@ -32,10 +33,6 @@
     {% endif %}
   {% endset %}
 
-  {% set addressSortValue %}
-    {{ order.addressLine1 ~ order.addressLine2 ~ order.addressLine3 ~ order.addressPostcode }}
-  {% endset %}
-
   {% set addressHtml %}
     {% if (order.addressLine1 or order.addressLine2 or order.addressLine3 or order.addressPostcode ) %}
       <p class="govuk-body">
@@ -59,7 +56,7 @@
   {% set rows = (rows.push( 
     [
       {
-        attributes: { 'data-sort-value': order.legacySubjectId },
+        attributes: {'data-sort-value': order.legacySubjectId },
         html: legacySubjectIdHtml
       },
       {
@@ -67,19 +64,19 @@
         html: nameHtml
       },
       {
-        attributes: { 'data-sort-value': addressSortValue },
+        attributes: { 'data-sort-value': order.sortAddress },
         html: addressHtml
       },
       {
-        attributes: { 'data-sort-value': order.dateOfBirth },
+        attributes: { 'data-sort-value': order.sortDateOfBirth },
         text: safeGovukDate(order.dateOfBirth)
       },
       {
-        attributes: { 'data-sort-value': order.orderStartDate },
+        attributes: { 'data-sort-value': order.sortOrderStartDate },
         text: safeGovukDate(order.orderStartDate)
       },
       {
-        attributes: { 'data-sort-value': order.orderEndDate },
+        attributes: { 'data-sort-value': order.sortOrderEndDate },
         text: safeGovukDate(order.orderEndDate)
       }
     ]
