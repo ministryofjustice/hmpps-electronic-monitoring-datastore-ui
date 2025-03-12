@@ -27,9 +27,9 @@ const createViewModelFromApiDto = (orders: Order[]): OrdersViewModel =>
         (order.addressLine2 || '') +
         (order.addressLine3 || '') +
         (order.addressPostcode || ''),
-      sortDateOfBirth: new Date(order.dateOfBirth).getTime(),
-      sortOrderStartDate: new Date(order.orderStartDate).getTime(),
-      sortOrderEndDate: new Date(order.orderEndDate).getTime(),
+      sortDateOfBirth: new Date(`${order.dateOfBirth}Z`).getTime(),
+      sortOrderStartDate: new Date(`${order.orderStartDate}Z`).getTime(),
+      sortOrderEndDate: new Date(`${order.orderEndDate}Z`).getTime(),
     }
   })
 
