@@ -18,11 +18,13 @@
           href: searchUrl,
           isStartButton: true
       }) }}
-      {{ govukButton({
-          text: "Test API connection",
-          href: "/test-api",
-          isStartButton: true,
-  classes: "govuk-button--secondary"
-      }) }}
+      {% if (environmentName == 'dev') %}
+        {{ govukButton({
+            text: "Test API connection",
+            href: "/test-api",
+            isStartButton: true,
+    classes: "govuk-button--secondary"
+        }) }}
+      {% endif %}
   </div>
 {% endblock %}
