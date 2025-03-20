@@ -6,7 +6,7 @@ import StartPage from '../pages/start'
 context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+    cy.task('stubSignIn', { name: 'john smith', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
   })
 
   it('Unauthenticated user directed to auth', () => {
