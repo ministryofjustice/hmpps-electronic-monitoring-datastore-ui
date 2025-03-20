@@ -6,7 +6,7 @@ context('Event history', () => {
 
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn')
+    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
     cy.task('stubDatastoreGetMonitoringEvents', {
       httpStatus: 200,
