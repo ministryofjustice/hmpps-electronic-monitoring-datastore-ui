@@ -19,31 +19,35 @@
         {% endif %}
 
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
-        {# TODO: Not enabled until we have alcohol monitoring #}
-        {# {{ govukRadios({
-          classes: "govuk-radios--small",
-          name: "searchType",
-          fieldset: {
-            legend: {
-              text: "What data are you searching for?",
-              isPageHeading: false,
-              classes: "govuk-fieldset__legend--m"
-            }
-          },
-          items: [
-            {
-              value: "integrity",
-              text: "Integrity data only"
+        
+        {# TODO: Remove environment flag when AM is ready for deployment to preprod & prod #}
+        {% if (environmentName == 'dev') %}
+          {{ govukRadios({
+            classes: "govuk-radios--small",
+            name: "searchType",
+            fieldset: {
+              legend: {
+                text: "What data are you searching for?",
+                isPageHeading: false,
+                classes: "govuk-fieldset__legend--m"
+              }
             },
-            {
-              value: "am",
-              text: "Alcohol monitoring data only"
+            items: [
+              {
+                value: "integrity",
+                text: "Integrity data only",
+                checked: true
+              },
+              {
+                value: "am",
+                text: "Alcohol monitoring data only"
+              }
+            ],
+            errorMessage: {
+              text: "Select the type of data to search for"
             }
-          ],
-          errorMessage: {
-            text: "Select the type of data to search for"
-          }
-        }) }} #}
+          }) }}
+        {% endif %}
 
         {{ govukInput({
           label: {
