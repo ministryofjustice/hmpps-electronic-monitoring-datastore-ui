@@ -4,7 +4,7 @@ import Page from '../pages/page'
 context('Search', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn')
+    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
     cy.signIn()
     cy.visit('/search')
   })

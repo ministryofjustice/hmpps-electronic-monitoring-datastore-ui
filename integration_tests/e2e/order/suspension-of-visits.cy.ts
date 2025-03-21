@@ -58,7 +58,7 @@ context('Suspensions', () => {
 
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn')
+    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
     cy.task('stubDatastoreGetSuspensionOfVisits', {
       httpStatus: 200,

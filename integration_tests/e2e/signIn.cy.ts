@@ -6,7 +6,7 @@ import StartPage from '../pages/startPage'
 context('Sign In', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn')
+    cy.task('stubSignIn', { name: 'john smith', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
   })
 
   it('Unauthenticated user directed to auth', () => {
@@ -66,7 +66,7 @@ context('Sign In', () => {
     cy.request('/').its('body').should('contain', 'Sign in')
 
     cy.task('stubVerifyToken', true)
-    cy.task('stubSignIn', { name: 'bobby brown' })
+    cy.task('stubSignIn', { name: 'bobby brown', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
     cy.signIn()
 
