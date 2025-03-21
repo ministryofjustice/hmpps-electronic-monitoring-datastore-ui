@@ -22,7 +22,8 @@ export default class DatastoreSearchService {
   }
 
   isEmptySearch(searchData: ParsedSearchFormData): boolean {
-    return Object.values(searchData).every(value => value === '' || value === undefined)
+    const { searchType, ...mandatoryFields } = searchData
+    return Object.values(mandatoryFields).every(value => value === '' || value === undefined)
   }
 
   validateInput(input: SearchFormInput): ValidationResult {
