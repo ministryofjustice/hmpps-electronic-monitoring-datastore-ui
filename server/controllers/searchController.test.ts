@@ -8,6 +8,7 @@ import orders from '../data/mockData/orders'
 import ordersView from '../data/mockData/ordersView'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { ParsedSearchFormData, ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
+import { ErrorMessage, TextField } from '../models/utils'
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
@@ -86,6 +87,7 @@ describe('SearchController', () => {
       ]
 
       req.session.formData = {
+        searchType: 'integrity',
         firstName: 'John123',
         lastName: 'Doe',
         alias: 'JD',
@@ -95,6 +97,10 @@ describe('SearchController', () => {
       }
 
       const expectedViewModel = {
+        searchType: {
+          value: 'integrity',
+        },
+        legacySubjectId: undefined as TextField | undefined,
         firstName: {
           value: 'John123',
           error: {
@@ -117,6 +123,7 @@ describe('SearchController', () => {
             text: 'Invalid date format',
           },
         },
+        emptyFormError: undefined as ErrorMessage | undefined,
       }
 
       await searchController.searchPage(req, res, jest.fn())
@@ -197,6 +204,7 @@ describe('SearchController', () => {
       ]
 
       req.body = {
+        searchType: 'integrity',
         firstName: '',
         lastName: '',
         alias: '',
@@ -206,6 +214,7 @@ describe('SearchController', () => {
       }
 
       const parsedFormData = {
+        searchType: 'integrity',
         firstName: '',
         lastName: '',
         alias: '',
@@ -228,10 +237,20 @@ describe('SearchController', () => {
       datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
       datastoreSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionResponse)
 
+      req.body = {
+        searchType: 'integrity',
+        firstName: '',
+        lastName: '',
+        alias: '',
+        'dob-day': '',
+        'dob-month': '',
+        'dob-year': '',
+      }
+
       await searchController.submitSearchQuery(req, res, next)
 
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
-      expect(res.redirect).toHaveBeenCalledWith(`search/orders?search_id=${queryExecutionId}`)
+      expect(res.redirect).toHaveBeenCalledWith(`search/integrity?search_id=${queryExecutionId}`)
     })
   })
 
