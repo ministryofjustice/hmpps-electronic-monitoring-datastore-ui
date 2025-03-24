@@ -4,145 +4,151 @@ import Page from '../pages/page'
 import orders from '../../server/data/mockData/orders'
 
 context('SearchResults', () => {
-  describe('No results found view', () => {
-    const queryExecutionId = 'query-execution-id'
+  const paths = ['/search/integrity', '/search/alcohol-monitoring']
 
-    beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-      cy.task('stubDatastoreGetSearchResults', {
-        queryExecutionId: 'query-execution-id',
-        httpStatus: 200,
-        results: [],
-      })
-      cy.signIn()
-      cy.visit(`/search/orders?search_id=${queryExecutionId}`)
-    })
+  paths.forEach(path => {
+    describe(path, () => {
+      describe('No results found view', () => {
+        const queryExecutionId = 'query-execution-id'
 
-    it('is reachable', () => {
-      Page.verifyOnPage(SearchResultsPage)
-    })
+        beforeEach(() => {
+          cy.task('reset')
+          cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+          cy.task('stubDatastoreGetSearchResults', {
+            queryExecutionId: 'query-execution-id',
+            httpStatus: 200,
+            results: [],
+          })
+          cy.signIn()
+          cy.visit(`${path}?search_id=${queryExecutionId}`)
+        })
 
-    describe('Service information banner', () => {
-      it('Service information banner renders', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.serviceInformation().should('be.visible')
-      })
+        it('is reachable', () => {
+          Page.verifyOnPage(SearchResultsPage)
+        })
 
-      it('Service information banner text is correct', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage
-          .serviceInformation()
-          .should('contain', 'This service gives you access to all order data that was held by Capita and G4S')
-      })
-    })
+        describe('Service information banner', () => {
+          it('Service information banner renders', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.serviceInformation().should('be.visible')
+          })
 
-    describe('No results message', () => {
-      it('No results heading renders', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.noResultsHeader().should('be.visible')
-      })
+          it('Service information banner text is correct', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage
+              .serviceInformation()
+              .should('contain', 'This service gives you access to all order data that was held by Capita and G4S')
+          })
+        })
 
-      it('No results heading text is correct', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.noResultsHeader().should('contain', 'No results found')
-      })
+        describe('No results message', () => {
+          it('No results heading renders', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.noResultsHeader().should('be.visible')
+          })
 
-      it('No results message renders', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.noResultsMessage().should('be.visible')
-      })
+          it('No results heading text is correct', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.noResultsHeader().should('contain', 'No results found')
+          })
 
-      it('No results message text is correct', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.noResultsMessage().should('contain', 'Sorry, no results were found for this search')
-      })
-    })
+          it('No results message renders', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.noResultsMessage().should('be.visible')
+          })
 
-    describe('Return to search page button', () => {
-      it('Return to search page button renders', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.returnToSearchButton().should('be.visible')
-      })
+          it('No results message text is correct', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.noResultsMessage().should('contain', 'Sorry, no results were found for this search')
+          })
+        })
 
-      it('Return to search page button href is correct', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.returnToSearchButton().should('have.attr', 'href', '/search')
-      })
-    })
-  })
+        describe('Return to search page button', () => {
+          it('Return to search page button renders', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.returnToSearchButton().should('be.visible')
+          })
 
-  describe('Results found view', () => {
-    const queryExecutionId = 'query-execution-id'
-
-    beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
-      cy.task('stubDatastoreGetSearchResults', {
-        queryExecutionId: 'query-execution-id',
-        httpStatus: 200,
-        results: orders,
+          it('Return to search page button href is correct', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.returnToSearchButton().should('have.attr', 'href', '/search')
+          })
+        })
       })
 
-      cy.signIn()
-      cy.visit(`/search/orders?search_id=${queryExecutionId}`)
-    })
+      describe('Results found view', () => {
+        const queryExecutionId = 'query-execution-id'
 
-    it('is reachable', () => {
-      Page.verifyOnPage(SearchResultsPage)
-    })
+        beforeEach(() => {
+          cy.task('reset')
+          cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-    describe('Service information banner', () => {
-      it('Service information banner renders', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.serviceInformation().should('be.visible')
-      })
+          cy.task('stubDatastoreGetSearchResults', {
+            queryExecutionId: 'query-execution-id',
+            httpStatus: 200,
+            results: orders,
+          })
 
-      it('Service information banner text is correct', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage
-          .serviceInformation()
-          .should('contain', 'This service gives you access to all order data that was held by Capita and G4S')
-      })
-    })
+          cy.signIn()
+          cy.visit(`${path}?search_id=${queryExecutionId}`)
+        })
 
-    describe('Search results table', () => {
-      it('The table renders', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.resultsTable().should('be.visible')
-      })
+        it('is reachable', () => {
+          Page.verifyOnPage(SearchResultsPage)
+        })
 
-      it('The subject ID column header contains the correct text', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.subjectIdHeader().should('contain', 'Legacy subject ID')
-      })
+        describe('Service information banner', () => {
+          it('Service information banner renders', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.serviceInformation().should('be.visible')
+          })
 
-      it('The name column header contains the correct text', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.nameHeader().should('contain', 'Name')
-      })
+          it('Service information banner text is correct', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage
+              .serviceInformation()
+              .should('contain', 'This service gives you access to all order data that was held by Capita and G4S')
+          })
+        })
 
-      it('The date of birth column header contains the correct text', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.dateOfBirthHeader().should('contain', 'Date of birth')
-      })
+        describe('Search results table', () => {
+          it('The table renders', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.resultsTable().should('be.visible')
+          })
 
-      it('The order start date column header contains the correct text', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.orderStartDateHeader().should('contain', 'Order start date')
-      })
+          it('The subject ID column header contains the correct text', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.subjectIdHeader().should('contain', 'Legacy subject ID')
+          })
 
-      it('The order end date column header contains the correct text', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.orderEndDateHeader().should('contain', 'Order end date')
-      })
-    })
+          it('The name column header contains the correct text', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.nameHeader().should('contain', 'Name')
+          })
 
-    describe('Pagination', () => {
-      it('The pagination component renders', () => {
-        const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
-        searchResultsPage.pagination().should('be.visible')
+          it('The date of birth column header contains the correct text', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.dateOfBirthHeader().should('contain', 'Date of birth')
+          })
+
+          it('The order start date column header contains the correct text', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.orderStartDateHeader().should('contain', 'Order start date')
+          })
+
+          it('The order end date column header contains the correct text', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.orderEndDateHeader().should('contain', 'Order end date')
+          })
+        })
+
+        describe('Pagination', () => {
+          it('The pagination component renders', () => {
+            const searchResultsPage = Page.verifyOnPage(SearchResultsPage)
+            searchResultsPage.pagination().should('be.visible')
+          })
+        })
       })
     })
   })
