@@ -4,7 +4,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 1000000,
-    name: 'Amy Smith',
+    firstName: 'Amy',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -17,7 +18,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 2000000,
-    name: 'Bill Smith',
+    firstName: 'Bill',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -30,7 +32,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 3000000,
-    name: 'Claire Smith',
+    firstName: 'Claire',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -43,7 +46,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 8000000,
-    name: 'Daniel Smith',
+    firstName: 'Daniel',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -56,7 +60,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 30000,
-    name: 'Emma Smith',
+    firstName: 'Emma',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -69,7 +74,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 4000000,
-    name: 'Fred Smith',
+    firstName: 'Fred',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -82,7 +88,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 30000,
-    name: 'Geoff Smith',
+    firstName: 'Geoff',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -95,7 +102,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 4000000,
-    name: 'Hortense Smith',
+    firstName: 'Hortense',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -108,7 +116,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 30000,
-    name: 'Isaac Smith',
+    firstName: 'Isaac',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -121,7 +130,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 4000000,
-    name: 'Jessica Smith',
+    firstName: 'Jessica',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -134,7 +144,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 30000,
-    name: 'Ken Smith',
+    firstName: 'Ken',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
@@ -147,7 +158,8 @@ const orders: Order[] = [
   {
     dataType: 'am',
     legacySubjectId: 4000000,
-    name: 'Lucille Smith',
+    firstName: 'Lucille',
+    lastName: 'Smith',
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',

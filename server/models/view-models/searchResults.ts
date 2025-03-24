@@ -3,7 +3,8 @@ import { Order } from '../../interfaces/order'
 export type OrdersViewModel = {
   dataType: string
   legacySubjectId?: number
-  name?: string
+  firstName?: string
+  lastName?: string
   addressLine1?: string
   addressLine2?: string
   addressLine3?: string
