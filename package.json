@@ -123,8 +123,8 @@
     "@types/superagent": "^8.1.9",
     "@types/supertest": "^6.0.2",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.26.1",
-    "@typescript-eslint/parser": "^8.26.1",
+    "@typescript-eslint/eslint-plugin": "^8.27.0",
+    "@typescript-eslint/parser": "^8.27.0",
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
     "chokidar": "^3.6.0",
@@ -162,7 +162,7 @@
   },
   "overrides": {
     "aws-sdk-client-mock": {
-      "sinon": "^19.0.2",
+      "sinon": "^19.0.4",
       "@types/sinon": "^17.0.4"
     }
   }
