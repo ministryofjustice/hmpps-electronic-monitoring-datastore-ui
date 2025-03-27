@@ -43,8 +43,7 @@ export default class DatastoreClient {
 
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     const { queryExecutionId } = request
-
-    const orders: Order[] = await this.restClient.get({
+    const orders: Order[] = await this.restClient.post({
       path: `${config.apiEndpoints.searchOrders}/${queryExecutionId}`,
     })
 

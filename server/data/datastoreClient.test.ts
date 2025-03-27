@@ -88,7 +88,7 @@ describe('EM Datastore Search Client', () => {
     const endpoint = `${config.apiEndpoints.searchOrders}/${queryExecutionId}`
 
     it('should return a list of orders from the API', async () => {
-      fakeClient.get(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(200, orders)
+      fakeClient.post(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(200, orders)
 
       const expected = orders
 
@@ -98,7 +98,7 @@ describe('EM Datastore Search Client', () => {
     })
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
-      fakeClient.get(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(401)
+      fakeClient.post(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
       await expect(datastoreClient.getSearchResults(resultsRequest)).rejects.toThrow('Unauthorized')
     })
