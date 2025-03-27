@@ -20,7 +20,7 @@ type GetSearchResultsStubOptions = {
 const getSearchResults = (options: GetSearchResultsStubOptions = defaultGetSearchResultsOptions): SuperAgentRequest =>
   stubFor({
     request: {
-      method: 'GET',
+      method: 'POST',
       urlPattern: `/datastore${config.apiEndpoints.searchOrders}/${options.queryExecutionId}`,
     },
     response: {
