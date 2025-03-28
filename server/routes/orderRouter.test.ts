@@ -2,16 +2,13 @@ import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
-import OrderService from '../services/orderService'
 import EventsService from '../services/eventsService'
 import { basicGetTest, GetRequestFixture } from './index.test'
 
 jest.mock('../services/auditService')
-jest.mock('../services/orderService')
 jest.mock('../services/eventsService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const orderService = new OrderService() as jest.Mocked<OrderService>
 const eventsService = new EventsService(null, null) as jest.Mocked<EventsService>
 
 let app: Express
@@ -20,7 +17,6 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
-      orderService,
       eventsService,
     },
     userSupplier: () => user,
@@ -54,17 +50,4 @@ describe('Order details basic GET requests', () => {
     ],
     ['curfew timetable page', `/orders/${orderId}/curfew-timetable`, 'Curfew hours', Page.CURFEW_TIMETABLE_PAGE],
   ])('should render %s', (pageName, route, titleText, auditType) => basicGetTest(pageName, route, titleText, auditType))
-})
-
-xdescribe('Order information page', () => {
-  it('should call the getOrderInformation to return data', () => {
-    const orderId = 'testOrderId'
-
-    return request(app)
-      .get(`/orders/${orderId}/information`)
-      .expect('Content-Type', /html/)
-      .expect(res => {
-        expect(orderService.getOrderInformation).toHaveBeenCalledTimes(1)
-      })
-  })
 })

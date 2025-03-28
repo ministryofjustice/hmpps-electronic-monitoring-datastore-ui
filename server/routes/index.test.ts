@@ -3,15 +3,12 @@ import request from 'supertest'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
 import DatastoreSearchService from '../services/datastoreSearchService'
-import OrderService from '../services/orderService'
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
-jest.mock('../services/orderService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
 const datastoreSearchService = new DatastoreSearchService(null, null) as jest.Mocked<DatastoreSearchService>
-const orderService = new OrderService() as jest.Mocked<OrderService>
 
 let app: Express
 
@@ -20,7 +17,6 @@ beforeEach(() => {
     services: {
       auditService,
       datastoreSearchService,
-      orderService,
     },
     userSupplier: () => user,
   })

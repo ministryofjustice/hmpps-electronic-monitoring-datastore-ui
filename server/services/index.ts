@@ -1,6 +1,5 @@
 import { dataAccess } from '../data'
 import AuditService from './auditService'
-import OrderService from './orderService'
 import EventsService from './eventsService'
 import DatastoreOrderService from './datastoreOrderService'
 import DatastoreSearchService from './datastoreSearchService'
@@ -16,7 +15,6 @@ export const services = () => {
   const datastoreSearchService = new DatastoreSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
 
   // TODO: Deprecate order service in favour of DataStoreOrderService
-  const orderService = new OrderService()
   const datastoreOrderService = new DatastoreOrderService(emDatastoreApiClientFactory, hmppsAuthClient)
   const eventsService = new EventsService(emDatastoreApiClientFactory, hmppsAuthClient)
   const suspensionOfVisitsService = new SuspensionOfVisitsService(emDatastoreApiClientFactory, hmppsAuthClient)
@@ -27,7 +25,6 @@ export const services = () => {
   return {
     applicationInfo,
     auditService,
-    orderService,
     datastoreOrderService,
     datastoreSearchService,
     eventsService,

@@ -8,7 +8,6 @@ import errorHandler from '../errorHandler'
 import type { Services } from '../services'
 import AuditService from '../services/auditService'
 import DatastoreSearchService from '../services/datastoreSearchService'
-import OrderService from '../services/orderService'
 
 import { HmppsUser } from '../interfaces/hmppsUser'
 import setUpWebSession from '../middleware/setUpWebSession'
@@ -16,7 +15,6 @@ import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/t
 
 jest.mock('../services/auditService')
 jest.mock('../services/datastoreSearchService')
-jest.mock('../services/orderService')
 
 const hmppsAuthClient = createMockHmppsAuthClient()
 const emDatastoreApiClient = createEmDatastoreApiClient()
@@ -69,7 +67,6 @@ export function appWithAllRoutes({
   services = {
     auditService: new AuditService(null) as jest.Mocked<AuditService>,
     datastoreSearchService: new DatastoreSearchService(emDatastoreApiClientFactory, hmppsAuthClient),
-    orderService: new OrderService() as jest.Mocked<OrderService>,
   },
   userSupplier = () => user,
 }: {
