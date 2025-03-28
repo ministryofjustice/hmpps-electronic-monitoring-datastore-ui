@@ -15,15 +15,11 @@ import { VisitDetailsModel, VisitDetails } from '../models/visitDetails'
 import { CurfewTimetableModel, CurfewTimetable } from '../models/curfewTimetable'
 import { SuspensionOfVisitsEventModel, SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
-export default class DatastoreClient {
+export default class EmDatastoreApiClient {
   private restClient: RestClient
 
   constructor(token: string) {
-    this.restClient = new RestClient(
-      'datastoreApiClient',
-      config.apis.electronicMonitoringDatastore as ApiConfig,
-      token,
-    )
+    this.restClient = new RestClient('emDatastoreApiClient', config.apis.emDatastoreApi as ApiConfig, token)
   }
 
   updateToken(newTokenValue: string): void {

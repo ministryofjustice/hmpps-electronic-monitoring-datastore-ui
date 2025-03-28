@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import session, { SessionData } from 'express-session'
-import { createDatastoreClient } from '../data/testUtils/mocks'
+import { createEmDatastoreApiClient } from '../data/testUtils/mocks'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 import SuspensionOfVisitsView, {
   SuspensionOfVisitsViewEvent,
@@ -10,9 +10,9 @@ import { AuditService, SuspensionOfVisitsService } from '../services'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 
-const datastoreClient = createDatastoreClient()
-const datastoreClientFactory = jest.fn()
-datastoreClientFactory.mockResolvedValue(datastoreClient)
+const emDatastoreApiClient = createEmDatastoreApiClient()
+const emDatastoreApiClientFactory = jest.fn()
+emDatastoreApiClientFactory.mockResolvedValue(emDatastoreApiClient)
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 jest.mock('../services/suspensionOfVisitsService')
 const suspensionOfVisitsService = new SuspensionOfVisitsService(null, null) as jest.Mocked<SuspensionOfVisitsService>

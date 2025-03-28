@@ -17,9 +17,9 @@ jest.mock('../../applicationInfo', () => {
   return jest.fn(() => testAppInfo)
 })
 
-import { HmppsAuthClient, DatastoreClient } from '..'
+import { HmppsAuthClient, EmDatastoreApiClient } from '..'
 
 jest.mock('..')
 
 export const createMockHmppsAuthClient = () => new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
-export const createDatastoreClient = () => new DatastoreClient(null) as jest.Mocked<DatastoreClient>
+export const createEmDatastoreApiClient = () => new EmDatastoreApiClient(null) as jest.Mocked<EmDatastoreApiClient>

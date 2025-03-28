@@ -1,14 +1,14 @@
 import { ZodError } from 'zod'
 import DatastoreSearchService from './datastoreSearchService'
 import orders from '../data/mockData/orders'
-import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
+import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 import { dateValidator } from '../utils/validators/dateValidator'
 import NameValidator from '../utils/validators/nameValidator'
 import { ValidationResult } from '../models/Validation'
 import getSanitisedError from '../sanitisedError'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/datastoreClient')
+jest.mock('../data/emDatastoreApiClient')
 jest.mock('../utils/validators/dateValidator', () => ({
   dateValidator: { parse: jest.fn() },
 }))
@@ -20,15 +20,15 @@ describe('Datastore Search Service', () => {
     queryExecutionId,
   }
   const hmppsAuthClient = createMockHmppsAuthClient()
-  const datastoreClient = createDatastoreClient()
+  const emDatastoreApiClient = createEmDatastoreApiClient()
 
-  const datastoreClientFactory = jest.fn()
+  const emDatastoreApiClientFactory = jest.fn()
 
   let datastoreSearchService: DatastoreSearchService
 
   beforeEach(() => {
-    datastoreClientFactory.mockReturnValue(datastoreClient)
-    datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
+    datastoreSearchService = new DatastoreSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -263,16 +263,16 @@ describe('Datastore Search Service', () => {
         },
       }
 
-      jest.spyOn(datastoreClient, 'submitSearchQuery').mockResolvedValue(queryExecutionResponse)
+      jest.spyOn(emDatastoreApiClient, 'submitSearchQuery').mockResolvedValue(queryExecutionResponse)
 
       const result = await datastoreSearchService.submitSearchQuery(validInput)
 
-      expect(datastoreClient.submitSearchQuery).toHaveBeenCalledWith(validInput)
+      expect(emDatastoreApiClient.submitSearchQuery).toHaveBeenCalledWith(validInput)
       expect(result).toEqual(queryExecutionResponse)
     })
 
     it('handles errors from the datastore client', async () => {
-      jest.spyOn(datastoreClient, 'submitSearchQuery').mockImplementationOnce(() => {
+      jest.spyOn(emDatastoreApiClient, 'submitSearchQuery').mockImplementationOnce(() => {
         throw getSanitisedError(new Error('Client error'))
       })
 
@@ -296,7 +296,7 @@ describe('Datastore Search Service', () => {
 
   describe('getSearchResults', () => {
     it('submits a request containing a query execution ID and returns search results', async () => {
-      jest.spyOn(datastoreClient, 'getSearchResults').mockResolvedValue(orders)
+      jest.spyOn(emDatastoreApiClient, 'getSearchResults').mockResolvedValue(orders)
 
       const request = {
         token,
@@ -305,7 +305,7 @@ describe('Datastore Search Service', () => {
 
       const result = await datastoreSearchService.getSearchResults(request)
 
-      expect(datastoreClient.getSearchResults).toHaveBeenCalledWith(request)
+      expect(emDatastoreApiClient.getSearchResults).toHaveBeenCalledWith(request)
       expect(result).toEqual(orders)
     })
 
@@ -324,7 +324,7 @@ describe('Datastore Search Service', () => {
           },
         }
 
-        jest.spyOn(datastoreClient, 'getSearchResults').mockImplementationOnce(() => {
+        jest.spyOn(emDatastoreApiClient, 'getSearchResults').mockImplementationOnce(() => {
           throw error
         })
 
@@ -334,7 +334,7 @@ describe('Datastore Search Service', () => {
       })
 
       it('handles other errors from the datastore client', async () => {
-        jest.spyOn(datastoreClient, 'getSearchResults').mockImplementationOnce(() => {
+        jest.spyOn(emDatastoreApiClient, 'getSearchResults').mockImplementationOnce(() => {
           throw new Error()
         })
 

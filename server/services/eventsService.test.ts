@@ -1,5 +1,5 @@
 import EventsService from './eventsService'
-import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
+import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
 import { MonitoringEvent } from '../models/monitoringEvents'
@@ -8,20 +8,20 @@ import { ContactEvent } from '../models/contactEvents'
 import { ViolationEvent } from '../models/violationEvents'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/datastoreClient')
+jest.mock('../data/emDatastoreApiClient')
 
 describe('Events Service', () => {
   const token = 'fake-token-value'
   const hmppsAuthClient = createMockHmppsAuthClient()
-  const datastoreClient = createDatastoreClient()
+  const emDatastoreApiClient = createEmDatastoreApiClient()
 
-  const datastoreClientFactory = jest.fn()
+  const emDatastoreApiClientFactory = jest.fn()
 
   let eventsService: EventsService
 
   beforeEach(() => {
-    datastoreClientFactory.mockReturnValue(datastoreClient)
-    eventsService = new EventsService(datastoreClientFactory, hmppsAuthClient)
+    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
+    eventsService = new EventsService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -42,10 +42,10 @@ describe('Events Service', () => {
     const expectedResult = [] as (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[]
 
     it('should return data from the client', async () => {
-      datastoreClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
-      datastoreClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
-      datastoreClient.getContactEvents.mockResolvedValue(contactEventsResponse)
-      datastoreClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
+      emDatastoreApiClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
+      emDatastoreApiClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
+      emDatastoreApiClient.getContactEvents.mockResolvedValue(contactEventsResponse)
+      emDatastoreApiClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
 
       const results = await eventsService.getEvents(orderRequest)
 
@@ -53,37 +53,37 @@ describe('Events Service', () => {
     })
 
     it('should propagate an error if there is an error getting monitoring events', async () => {
-      datastoreClient.getMonitoringEvents.mockRejectedValue(new Error('some error'))
-      datastoreClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
-      datastoreClient.getContactEvents.mockResolvedValue(contactEventsResponse)
-      datastoreClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
+      emDatastoreApiClient.getMonitoringEvents.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
+      emDatastoreApiClient.getContactEvents.mockResolvedValue(contactEventsResponse)
+      emDatastoreApiClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
 
       await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
     })
 
     it('should propagate an error if there is an error getting incident events', async () => {
-      datastoreClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
-      datastoreClient.getIncidentEvents.mockRejectedValue(new Error('some error'))
-      datastoreClient.getContactEvents.mockResolvedValue(contactEventsResponse)
-      datastoreClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
+      emDatastoreApiClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
+      emDatastoreApiClient.getIncidentEvents.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getContactEvents.mockResolvedValue(contactEventsResponse)
+      emDatastoreApiClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
 
       await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
     })
 
     it('should propagate an error if there is an error getting contact events', async () => {
-      datastoreClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
-      datastoreClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
-      datastoreClient.getContactEvents.mockRejectedValue(new Error('some error'))
-      datastoreClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
+      emDatastoreApiClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
+      emDatastoreApiClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
+      emDatastoreApiClient.getContactEvents.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
 
       await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
     })
 
     it('should propagate an error if there is an error getting violation events', async () => {
-      datastoreClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
-      datastoreClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
-      datastoreClient.getContactEvents.mockResolvedValue(contactEventsResponse)
-      datastoreClient.getViolationEvents.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getMonitoringEvents.mockResolvedValue(monitoringEventsResponse)
+      emDatastoreApiClient.getIncidentEvents.mockResolvedValue(incidentEventsResponse)
+      emDatastoreApiClient.getContactEvents.mockResolvedValue(contactEventsResponse)
+      emDatastoreApiClient.getViolationEvents.mockRejectedValue(new Error('some error'))
 
       await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
     })

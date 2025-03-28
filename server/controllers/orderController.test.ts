@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
+import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 import { AuditService, DatastoreOrderService } from '../services'
 import { Page } from '../services/auditService'
 import OrderController from './orderController'
@@ -16,14 +16,14 @@ jest.mock('../models/orderDetails', () => ({
 }))
 
 const hmppsAuthClient = createMockHmppsAuthClient()
-const datastoreClient = createDatastoreClient()
-const datastoreClientFactory = jest.fn()
-datastoreClientFactory.mockResolvedValue(datastoreClient)
+const emDatastoreApiClient = createEmDatastoreApiClient()
+const emDatastoreApiClientFactory = jest.fn()
+emDatastoreApiClientFactory.mockResolvedValue(emDatastoreApiClient)
 const auditService = {
   logPageView: jest.fn(),
 } as unknown as AuditService
 
-const datastoreOrderService = new DatastoreOrderService(datastoreClientFactory, hmppsAuthClient)
+const datastoreOrderService = new DatastoreOrderService(emDatastoreApiClientFactory, hmppsAuthClient)
 
 describe('OrderController', () => {
   let orderController: OrderController

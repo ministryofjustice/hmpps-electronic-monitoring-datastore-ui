@@ -1,28 +1,28 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 
-import DatastoreClient from '../data/datastoreClient'
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 import { OrderRequest } from '../types/OrderRequest'
 import { VisitDetails } from '../models/visitDetails'
 
 export default class VisitDetailsService {
-  private readonly datastoreClient: DatastoreClient
+  private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
-    private readonly datastoreClientFactory: RestClientBuilder<DatastoreClient>,
+    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {
-    this.datastoreClient = this.datastoreClientFactory('uninitialized')
+    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
   async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
-    this.datastoreClient.updateToken(input.userToken)
+    this.emDatastoreApiClient.updateToken(input.userToken)
 
     let visitDetails = [] as VisitDetails[]
     try {
-      visitDetails = await this.datastoreClient.getVisitDetails(input)
+      visitDetails = await this.emDatastoreApiClient.getVisitDetails(input)
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving list of visit details')
       throw error

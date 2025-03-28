@@ -10,7 +10,7 @@ export enum HMPPS_AUTH_ROLES {
   ROLE_ELECTRONIC_MONITORING_DATASTORE_API_SEARCH = 'ROLE_ELECTRONIC_MONITORING_DATASTORE_API_SEARCH',
 }
 
-export const datastoreAuthorisedRoles = () => {
+export const emDatastoreApiAuthorisedRoles = () => {
   return Object.keys(HMPPS_AUTH_ROLES).map(key => HMPPS_AUTH_ROLES[key as keyof typeof HMPPS_AUTH_ROLES])
 }
 

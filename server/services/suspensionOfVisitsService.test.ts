@@ -1,22 +1,22 @@
 import SuspensionOfVisitsService from './suspensionOfVisitsService'
-import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
+import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/datastoreClient')
+jest.mock('../data/emDatastoreApiClient')
 
 describe('Suspension of visits service', () => {
   const token = 'fake-token-value'
   const hmppsAuthClient = createMockHmppsAuthClient()
-  const datastoreClient = createDatastoreClient()
-  const datastoreClientFactory = jest.fn()
+  const emDatastoreApiClient = createEmDatastoreApiClient()
+  const emDatastoreApiClientFactory = jest.fn()
   let suspensionOfVisitsService: SuspensionOfVisitsService
 
   beforeEach(() => {
-    datastoreClientFactory.mockReturnValue(datastoreClient)
-    suspensionOfVisitsService = new SuspensionOfVisitsService(datastoreClientFactory, hmppsAuthClient)
+    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
+    suspensionOfVisitsService = new SuspensionOfVisitsService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -32,7 +32,7 @@ describe('Suspension of visits service', () => {
     const expectedResult = [] as SuspensionOfVisitsEvent[]
 
     it('should return data from the client', async () => {
-      datastoreClient.getSuspensionOfVisits.mockResolvedValue(suspensionOfVisitsResponse)
+      emDatastoreApiClient.getSuspensionOfVisits.mockResolvedValue(suspensionOfVisitsResponse)
 
       const results = await suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)
 
@@ -40,7 +40,7 @@ describe('Suspension of visits service', () => {
     })
 
     it('should propagate an error', async () => {
-      datastoreClient.getSuspensionOfVisits.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getSuspensionOfVisits.mockRejectedValue(new Error('some error'))
 
       await expect(suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)).rejects.toEqual(
         new Error('some error'),

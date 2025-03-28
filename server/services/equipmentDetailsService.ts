@@ -1,28 +1,28 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 
-import DatastoreClient from '../data/datastoreClient'
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 import { OrderRequest } from '../types/OrderRequest'
 import { EquipmentDetails } from '../models/equipmentDetails'
 
 export default class EquipmentDetailsService {
-  private readonly datastoreClient: DatastoreClient
+  private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
-    private readonly datastoreClientFactory: RestClientBuilder<DatastoreClient>,
+    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {
-    this.datastoreClient = this.datastoreClientFactory('uninitialized')
+    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
   async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
-    this.datastoreClient.updateToken(input.userToken)
+    this.emDatastoreApiClient.updateToken(input.userToken)
 
     let equipmentDetails = [] as EquipmentDetails[]
     try {
-      equipmentDetails = await this.datastoreClient.getEquipmentDetails(input)
+      equipmentDetails = await this.emDatastoreApiClient.getEquipmentDetails(input)
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving list of equipment details')
       throw error

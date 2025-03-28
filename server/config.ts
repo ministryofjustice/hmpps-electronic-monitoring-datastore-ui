@@ -107,7 +107,7 @@ export default {
       agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
-    electronicMonitoringDatastore: {
+    emDatastoreApi: {
       url: get('EM_DATASTORE_API_URL', 'http://localhost:8080', requiredInProduction),
       timeout: {
         response: Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 30000)),

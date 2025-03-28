@@ -1,24 +1,24 @@
 import VisitDetailsService from './visitDetailsService'
-import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
+import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
 import { VisitDetails } from '../models/visitDetails'
 
 jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/datastoreClient')
+jest.mock('../data/emDatastoreApiClient')
 
 describe('Visit Details Service', () => {
   const token = 'fake-token-value'
   const hmppsAuthClient = createMockHmppsAuthClient()
-  const datastoreClient = createDatastoreClient()
+  const emDatastoreApiClient = createEmDatastoreApiClient()
 
-  const datastoreClientFactory = jest.fn()
+  const emDatastoreApiClientFactory = jest.fn()
 
   let visitDetailsService: VisitDetailsService
 
   beforeEach(() => {
-    datastoreClientFactory.mockReturnValue(datastoreClient)
-    visitDetailsService = new VisitDetailsService(datastoreClientFactory, hmppsAuthClient)
+    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
+    visitDetailsService = new VisitDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -36,7 +36,7 @@ describe('Visit Details Service', () => {
     const expectedResult = [] as VisitDetails[]
 
     it('should return data from the client', async () => {
-      datastoreClient.getVisitDetails.mockResolvedValue(visitDetailsResponse)
+      emDatastoreApiClient.getVisitDetails.mockResolvedValue(visitDetailsResponse)
 
       const results = await visitDetailsService.getVisitDetails(orderRequest)
 
@@ -44,7 +44,7 @@ describe('Visit Details Service', () => {
     })
 
     it('should propagate an error if there is an error getting visit details', async () => {
-      datastoreClient.getVisitDetails.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getVisitDetails.mockRejectedValue(new Error('some error'))
 
       await expect(visitDetailsService.getVisitDetails(orderRequest)).rejects.toEqual(new Error('some error'))
     })

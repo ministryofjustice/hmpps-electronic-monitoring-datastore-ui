@@ -1,7 +1,7 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 
-import DatastoreClient from '../data/datastoreClient'
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 import { OrderRequest } from '../types/OrderRequest'
@@ -11,25 +11,25 @@ import { MonitoringEvent } from '../models/monitoringEvents'
 import { ViolationEvent } from '../models/violationEvents'
 
 export default class EventsService {
-  private readonly datastoreClient: DatastoreClient
+  private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
-    private readonly datastoreClientFactory: RestClientBuilder<DatastoreClient>,
+    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {
-    this.datastoreClient = this.datastoreClientFactory('uninitialized')
+    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
   async getEvents(input: OrderRequest): Promise<(ContactEvent | IncidentEvent | MonitoringEvent | ViolationEvent)[]> {
-    this.datastoreClient.updateToken(input.userToken)
+    this.emDatastoreApiClient.updateToken(input.userToken)
 
     let events = []
     try {
       events = await Promise.all([
-        this.datastoreClient.getMonitoringEvents(input),
-        this.datastoreClient.getIncidentEvents(input),
-        this.datastoreClient.getContactEvents(input),
-        this.datastoreClient.getViolationEvents(input),
+        this.emDatastoreApiClient.getMonitoringEvents(input),
+        this.emDatastoreApiClient.getIncidentEvents(input),
+        this.emDatastoreApiClient.getContactEvents(input),
+        this.emDatastoreApiClient.getViolationEvents(input),
       ])
     } catch (error) {
       logger.error(getSanitisedError(error), 'Error retrieving list of events')

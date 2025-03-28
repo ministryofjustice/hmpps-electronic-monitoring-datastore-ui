@@ -1,7 +1,7 @@
 import logger from '../../logger'
 import getSanitisedError from '../sanitisedError'
 
-import DatastoreClient from '../data/datastoreClient'
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 // TODO: bubble this down
@@ -10,20 +10,20 @@ import { OrderInformation } from '../interfaces/orderInformation'
 import { OrderRequest } from '../types/OrderRequest'
 
 export default class DatastoreOrderService {
-  private readonly datastoreClient: DatastoreClient
+  private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
-    private readonly datastoreClientFactory: RestClientBuilder<DatastoreClient>,
+    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {
-    this.datastoreClient = this.datastoreClientFactory('uninitialised')
+    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialised')
   }
 
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     try {
-      this.datastoreClient.updateToken(input.userToken)
+      this.emDatastoreApiClient.updateToken(input.userToken)
 
-      const result = await this.datastoreClient.getOrderSummary(input)
+      const result = await this.emDatastoreApiClient.getOrderSummary(input)
 
       return result
     } catch (error) {
@@ -41,8 +41,8 @@ export default class DatastoreOrderService {
 
   async getOrderDetails(input: OrderRequest): Promise<OrderDetails> {
     try {
-      this.datastoreClient.updateToken(input.userToken)
-      const result = await this.datastoreClient.getOrderDetails(input)
+      this.emDatastoreApiClient.updateToken(input.userToken)
+      const result = await this.emDatastoreApiClient.getOrderDetails(input)
 
       return result
     } catch (error) {
@@ -52,8 +52,8 @@ export default class DatastoreOrderService {
   }
 
   async confirmApi(token: string): Promise<JSON> {
-    this.datastoreClient.updateToken(token)
-    const result = this.datastoreClient.confirmApi()
+    this.emDatastoreApiClient.updateToken(token)
+    const result = this.emDatastoreApiClient.confirmApi()
     return result
   }
 }

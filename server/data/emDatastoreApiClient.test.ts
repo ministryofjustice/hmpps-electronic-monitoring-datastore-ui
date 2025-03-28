@@ -1,5 +1,5 @@
 import nock from 'nock'
-import DatastoreClient from './datastoreClient'
+import EmDatastoreApiClient from './emDatastoreApiClient'
 import orders from './mockData/orders'
 import config from '../config'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
@@ -15,9 +15,9 @@ import { CurfewTimetable } from '../models/curfewTimetable'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
-describe('EM Datastore Search Client', () => {
+describe('EM Datastore API Client', () => {
   let fakeClient: nock.Scope
-  let datastoreClient: DatastoreClient
+  let emDatastoreApiClient: EmDatastoreApiClient
 
   const token: string = 'token-1'
   const queryExecutionId: string = 'query-execution-id'
@@ -50,8 +50,8 @@ describe('EM Datastore Search Client', () => {
   }
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.electronicMonitoringDatastore.url)
-    datastoreClient = new DatastoreClient(token)
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(token)
   })
 
   afterEach(() => {
@@ -72,7 +72,7 @@ describe('EM Datastore Search Client', () => {
         .matchHeader('Authorization', `Bearer ${token}`)
         .reply(200, queryExecutionResponse)
 
-      const result = await datastoreClient.submitSearchQuery(searchQuery)
+      const result = await emDatastoreApiClient.submitSearchQuery(searchQuery)
 
       expect(result).toEqual(queryExecutionResponse)
     })
@@ -80,7 +80,7 @@ describe('EM Datastore Search Client', () => {
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
       fakeClient.post(endpoint, searchQuery.data).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
-      await expect(datastoreClient.submitSearchQuery(searchQuery)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.submitSearchQuery(searchQuery)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -92,7 +92,7 @@ describe('EM Datastore Search Client', () => {
 
       const expected = orders
 
-      const result = await datastoreClient.getSearchResults(resultsRequest)
+      const result = await emDatastoreApiClient.getSearchResults(resultsRequest)
 
       expect(result).toEqual(expected)
     })
@@ -100,7 +100,7 @@ describe('EM Datastore Search Client', () => {
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
       fakeClient.post(endpoint).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
-      await expect(datastoreClient.getSearchResults(resultsRequest)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getSearchResults(resultsRequest)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -112,7 +112,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getOrderSummary(orderInfo)
+      const result = await emDatastoreApiClient.getOrderSummary(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -124,12 +124,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getOrderSummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getOrderSummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -142,7 +140,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
-      const result = await datastoreClient.getMonitoringEvents(orderInfo)
+      const result = await emDatastoreApiClient.getMonitoringEvents(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -154,12 +152,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getMonitoringEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getMonitoringEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -172,7 +168,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
-      const result = await datastoreClient.getContactEvents(orderInfo)
+      const result = await emDatastoreApiClient.getContactEvents(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -184,12 +180,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getContactEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getContactEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -202,7 +196,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
-      const result = await datastoreClient.getIncidentEvents(orderInfo)
+      const result = await emDatastoreApiClient.getIncidentEvents(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -214,12 +208,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getIncidentEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getIncidentEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -231,7 +223,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getViolationEvents(orderInfo)
+      const result = await emDatastoreApiClient.getViolationEvents(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -243,12 +235,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getViolationEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getViolationEvents(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -267,7 +257,7 @@ describe('EM Datastore Search Client', () => {
       const expectedResult = fakeResponse
       fakeClient.get(`${config.apiEndpoints.getSuspensionOfVisits}/${orderInfo.orderId}`).reply(200, fakeResponse)
 
-      const result = await datastoreClient.getSuspensionOfVisits(orderInfo)
+      const result = await emDatastoreApiClient.getSuspensionOfVisits(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -278,11 +268,11 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
+      nock(config.apis.emDatastoreApi.url)
         .get(`${config.apiEndpoints.getSuspensionOfVisits}/${orderInfoWithNullToken.orderId}`)
         .reply(401)
 
-      await expect(datastoreClient.getSuspensionOfVisits(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getSuspensionOfVisits(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -299,7 +289,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getEquipmentDetails(orderInfo)
+      const result = await emDatastoreApiClient.getEquipmentDetails(orderInfo)
 
       expect(result).toEqual(expectedResult as EquipmentDetails[])
     })
@@ -309,7 +299,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getEquipmentDetails(orderInfo)
+      const result = await emDatastoreApiClient.getEquipmentDetails(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -321,12 +311,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getEquipmentDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getEquipmentDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -355,7 +343,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getVisitDetails(orderInfo)
+      const result = await emDatastoreApiClient.getVisitDetails(orderInfo)
 
       expect(result).toEqual(expectedResult as VisitDetails[])
     })
@@ -365,7 +353,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getVisitDetails(orderInfo)
+      const result = await emDatastoreApiClient.getVisitDetails(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -377,12 +365,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getVisitDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getVisitDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -414,7 +400,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getCurfewTimetable(orderInfo)
+      const result = await emDatastoreApiClient.getCurfewTimetable(orderInfo)
 
       expect(result).toEqual(expectedResult as CurfewTimetable[])
     })
@@ -424,7 +410,7 @@ describe('EM Datastore Search Client', () => {
 
       fakeClient.get(`${endpoint}/${orderInfo.orderId}`).reply(200, expectedResult)
 
-      const result = await datastoreClient.getCurfewTimetable(orderInfo)
+      const result = await emDatastoreApiClient.getCurfewTimetable(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -436,12 +422,10 @@ describe('EM Datastore Search Client', () => {
         userToken: null,
       }
 
-      nock(config.apis.electronicMonitoringDatastore.url)
-        .get(`${endpoint}/${orderInfoWithNullToken.orderId}`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`${endpoint}/${orderInfoWithNullToken.orderId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(datastoreClient.getCurfewTimetable(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getCurfewTimetable(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 })

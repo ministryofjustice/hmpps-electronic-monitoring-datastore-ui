@@ -10,19 +10,19 @@ import VisitDetailsService from './visitDetailsService'
 import CurfewTimetableService from './curfewTimetableService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuthClient, hmppsAuditClient, datastoreClientFactory } = dataAccess()
+  const { applicationInfo, hmppsAuthClient, hmppsAuditClient, emDatastoreApiClientFactory } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
-  const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+  const datastoreSearchService = new DatastoreSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
 
   // TODO: Deprecate order service in favour of DataStoreOrderService
   const orderService = new OrderService()
-  const datastoreOrderService = new DatastoreOrderService(datastoreClientFactory, hmppsAuthClient)
-  const eventsService = new EventsService(datastoreClientFactory, hmppsAuthClient)
-  const suspensionOfVisitsService = new SuspensionOfVisitsService(datastoreClientFactory, hmppsAuthClient)
-  const equipmentDetailsService = new EquipmentDetailsService(datastoreClientFactory, hmppsAuthClient)
-  const visitDetailsService = new VisitDetailsService(datastoreClientFactory, hmppsAuthClient)
-  const curfewTimetableService = new CurfewTimetableService(datastoreClientFactory, hmppsAuthClient)
+  const datastoreOrderService = new DatastoreOrderService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const eventsService = new EventsService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const suspensionOfVisitsService = new SuspensionOfVisitsService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const equipmentDetailsService = new EquipmentDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const visitDetailsService = new VisitDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const curfewTimetableService = new CurfewTimetableService(emDatastoreApiClientFactory, hmppsAuthClient)
 
   return {
     applicationInfo,

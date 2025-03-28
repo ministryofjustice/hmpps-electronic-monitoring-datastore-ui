@@ -2,7 +2,7 @@ import { ZodTypeAny } from 'zod'
 import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
 import { Order } from '../interfaces/order'
-import DatastoreClient from '../data/datastoreClient'
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { ValidationResult } from '../models/Validation'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
@@ -12,13 +12,13 @@ import { ParsedSearchFormData } from '../models/form-data/searchOrder'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
 export default class DatastoreSearchService {
-  private readonly datastoreClient: DatastoreClient
+  private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
-    private readonly datastoreClientFactory: RestClientBuilder<DatastoreClient>,
+    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {
-    this.datastoreClient = this.datastoreClientFactory('uninitialised')
+    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialised')
   }
 
   isEmptySearch(searchData: ParsedSearchFormData): boolean {
@@ -65,8 +65,8 @@ export default class DatastoreSearchService {
 
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     try {
-      this.datastoreClient.updateToken(input.userToken)
-      const queryExecutionId: QueryExecutionResponse = await this.datastoreClient.submitSearchQuery(input)
+      this.emDatastoreApiClient.updateToken(input.userToken)
+      const queryExecutionId: QueryExecutionResponse = await this.emDatastoreApiClient.submitSearchQuery(input)
       return queryExecutionId
     } catch (error) {
       const sanitisedError: SanitisedError = getSanitisedError(error)
@@ -78,8 +78,8 @@ export default class DatastoreSearchService {
 
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     try {
-      this.datastoreClient.updateToken(request.userToken)
-      const orders: Order[] = await this.datastoreClient.getSearchResults(request)
+      this.emDatastoreApiClient.updateToken(request.userToken)
+      const orders: Order[] = await this.emDatastoreApiClient.getSearchResults(request)
       return orders
     } catch (error) {
       const sanitisedError = getSanitisedError(error)
