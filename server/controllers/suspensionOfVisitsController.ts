@@ -1,13 +1,13 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, SuspensionOfVisitsService } from '../services'
+import { AuditService, EmDatastoreSuspensionOfVisitsService } from '../services'
 // eslint-disable-next-line import/no-named-as-default
 import SuspensionOfVisitsViewModel from '../models/view-models/suspensionOfVisits'
 
 export default class SuspensionOfVisitsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly suspensionOfVisitsService: SuspensionOfVisitsService,
+    private readonly suspensionOfVisitsService: EmDatastoreSuspensionOfVisitsService,
   ) {}
 
   showSuspensionOfVisits: RequestHandler = async (req: Request, res: Response) => {

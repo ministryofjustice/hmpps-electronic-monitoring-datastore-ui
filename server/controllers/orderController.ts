@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, DatastoreOrderService } from '../services'
+import { AuditService, EmDatastoreOrderDetailsService, EmDatastoreOrderSummaryService } from '../services'
 import { Reports } from '../interfaces/orderInformation'
 import tabulateRecords from '../utils/tabulateRecords'
 import { formatOrderDetails } from '../models/orderDetails'
@@ -8,7 +8,8 @@ import { formatOrderDetails } from '../models/orderDetails'
 export default class OrderController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly datastoreOrderService: DatastoreOrderService,
+    private readonly emDatastoreOrderDetailsService: EmDatastoreOrderDetailsService,
+    private readonly emDatastoreOrderSummaryService: EmDatastoreOrderSummaryService,
   ) {}
 
   orderSummary: RequestHandler = async (req: Request, res: Response) => {
@@ -19,7 +20,7 @@ export default class OrderController {
 
     const { orderId } = req.params
 
-    const orderInformation = await this.datastoreOrderService.getOrderSummary({
+    const orderInformation = await this.emDatastoreOrderSummaryService.getOrderSummary({
       userToken: res.locals.user.token,
       orderId,
     })
@@ -44,7 +45,7 @@ export default class OrderController {
     const { orderId } = req.params
 
     try {
-      const orderDetails = await this.datastoreOrderService.getOrderDetails({
+      const orderDetails = await this.emDatastoreOrderDetailsService.getOrderDetails({
         userToken: res.locals.user.token,
         orderId,
       })

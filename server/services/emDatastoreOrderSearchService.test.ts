@@ -1,5 +1,5 @@
 import { ZodError } from 'zod'
-import DatastoreSearchService from './datastoreSearchService'
+import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
 import orders from '../data/mockData/orders'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 import { dateValidator } from '../utils/validators/dateValidator'
@@ -24,11 +24,11 @@ describe('Datastore Search Service', () => {
 
   const emDatastoreApiClientFactory = jest.fn()
 
-  let datastoreSearchService: DatastoreSearchService
+  let datastoreSearchService: EmDatastoreOrderSearchService
 
   beforeEach(() => {
     emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    datastoreSearchService = new DatastoreSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
+    datastoreSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 

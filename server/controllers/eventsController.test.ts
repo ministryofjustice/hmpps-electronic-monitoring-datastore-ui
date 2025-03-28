@@ -1,7 +1,7 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import AuditService from '../services/auditService'
-import EventsService from '../services/eventsService'
+import EmDatastoreEventsService from '../services/emDatastoreEventsService'
 import EventsController from './eventsController'
 // eslint-disable-next-line import/no-named-as-default
 import EventsViewModel from '../models/view-models/events'
@@ -12,10 +12,10 @@ import { IncidentEvent, IncidentEventModel } from '../models/incidentEvents'
 import { ContactEvent, ContactEventModel } from '../models/contactEvents'
 import { ViolationEvent } from '../models/violationEvents'
 
-jest.mock('../services/eventsService')
+jest.mock('../services/emDatastoreEventsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const eventsService = new EventsService(null, null) as jest.Mocked<EventsService>
+const eventsService = new EmDatastoreEventsService(null, null) as jest.Mocked<EmDatastoreEventsService>
 
 jest.spyOn(EventsViewModel, 'construct')
 

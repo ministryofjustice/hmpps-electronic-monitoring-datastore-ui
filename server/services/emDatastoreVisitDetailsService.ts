@@ -7,7 +7,7 @@ import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { OrderRequest } from '../types/OrderRequest'
 import { VisitDetails } from '../models/visitDetails'
 
-export default class VisitDetailsService {
+export default class EmDatastoreVisitDetailsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -18,16 +18,15 @@ export default class VisitDetailsService {
   }
 
   async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
-    this.emDatastoreApiClient.updateToken(input.userToken)
-
-    let visitDetails = [] as VisitDetails[]
     try {
-      visitDetails = await this.emDatastoreApiClient.getVisitDetails(input)
+      this.emDatastoreApiClient.updateToken(input.userToken)
+      return this.emDatastoreApiClient.getVisitDetails(input)
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving list of visit details')
-      throw error
+      const userFreindlyMessage = 'Error retrieving list of visit details'
+      const sanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, userFreindlyMessage)
+      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
+      throw sanitisedError
     }
-
-    return visitDetails
   }
 }

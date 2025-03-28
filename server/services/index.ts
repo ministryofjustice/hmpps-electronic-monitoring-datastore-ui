@@ -1,48 +1,72 @@
 import { dataAccess } from '../data'
 import AuditService from './auditService'
-import EventsService from './eventsService'
-import DatastoreOrderService from './datastoreOrderService'
-import DatastoreSearchService from './datastoreSearchService'
-import SuspensionOfVisitsService from './suspensionOfVisitsService'
-import EquipmentDetailsService from './equipmentDetailsService'
-import VisitDetailsService from './visitDetailsService'
-import CurfewTimetableService from './curfewTimetableService'
+import EmDatastoreOrderDetailsService from './emDatastoreOrderDetailsService'
+import EmDatastoreOrderSummaryService from './emDatastoreOrderSummaryService'
+import EmDatastoreConnectionService from './emDatastoreConnectionService'
+import EmDatastoreEventsService from './emDatastoreEventsService'
+import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
+import EmDatastoreSuspensionOfVisitsService from './emDatastoreSuspensionOfVisitsService'
+import EmDatastoreEquipmentDetailsService from './emDatastoreEquipmentDetailsService'
+import EmDatastoreVisitDetailsService from './emDatastoreVisitDetailsService'
+import EmDatastoreCurfewTimetableService from './emDatastoreCurfewTimetableService'
 
 export const services = () => {
   const { applicationInfo, hmppsAuthClient, hmppsAuditClient, emDatastoreApiClientFactory } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
-  const datastoreSearchService = new DatastoreSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
-
-  // TODO: Deprecate order service in favour of DataStoreOrderService
-  const datastoreOrderService = new DatastoreOrderService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const eventsService = new EventsService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const suspensionOfVisitsService = new SuspensionOfVisitsService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const equipmentDetailsService = new EquipmentDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const visitDetailsService = new VisitDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const curfewTimetableService = new CurfewTimetableService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const emDatastoreOrderDetailsService = new EmDatastoreOrderDetailsService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
+  const emDatastoreOrderSummaryService = new EmDatastoreOrderSummaryService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
+  const emDatastoreEventsService = new EmDatastoreEventsService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const emDatastoreSuspensionOfVisitsService = new EmDatastoreSuspensionOfVisitsService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
+  const emDatastoreEquipmentDetailsService = new EmDatastoreEquipmentDetailsService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
+  const emDatastoreVisitDetailsService = new EmDatastoreVisitDetailsService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
+  const emDatastoreCurfewTimetableService = new EmDatastoreCurfewTimetableService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
 
   return {
     applicationInfo,
     auditService,
-    datastoreOrderService,
-    datastoreSearchService,
-    eventsService,
-    suspensionOfVisitsService,
-    equipmentDetailsService,
-    visitDetailsService,
-    curfewTimetableService,
+    emDatastoreConnectionService,
+    emDatastoreOrderDetailsService,
+    emDatastoreOrderSummaryService,
+    emDatastoreOrderSearchService,
+    emDatastoreEventsService,
+    emDatastoreSuspensionOfVisitsService,
+    emDatastoreEquipmentDetailsService,
+    emDatastoreVisitDetailsService,
+    emDatastoreCurfewTimetableService,
   }
 }
 
 export type Services = ReturnType<typeof services>
 export {
   AuditService,
-  DatastoreOrderService,
-  DatastoreSearchService,
-  EventsService,
-  SuspensionOfVisitsService,
-  EquipmentDetailsService,
-  VisitDetailsService,
-  CurfewTimetableService,
+  EmDatastoreConnectionService,
+  EmDatastoreOrderSearchService,
+  EmDatastoreOrderDetailsService,
+  EmDatastoreOrderSummaryService,
+  EmDatastoreEventsService,
+  EmDatastoreSuspensionOfVisitsService,
+  EmDatastoreEquipmentDetailsService,
+  EmDatastoreVisitDetailsService,
+  EmDatastoreCurfewTimetableService,
 }

@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, DatastoreSearchService } from '../services'
+import { AuditService, EmDatastoreOrderSearchService } from '../services'
 import strings from '../constants/strings'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchResultsViewModel from '../models/view-models/searchResults'
@@ -11,7 +11,7 @@ import { ValidationResult } from '../models/Validation'
 export default class SearchController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly datastoreSearchService: DatastoreSearchService,
+    private readonly datastoreSearchService: EmDatastoreOrderSearchService,
   ) {}
 
   searchPage: RequestHandler = async (req: Request, res: Response) => {

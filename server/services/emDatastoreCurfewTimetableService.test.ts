@@ -1,4 +1,4 @@
-import CurfewTimetableService from './curfewTimetableService'
+import EmDatastoreCurfewTimetableService from './emDatastoreCurfewTimetableService'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
@@ -14,11 +14,11 @@ describe('Visit Details Service', () => {
 
   const emDatastoreApiClientFactory = jest.fn()
 
-  let curfewTimetableService: CurfewTimetableService
+  let curfewTimetableService: EmDatastoreCurfewTimetableService
 
   beforeEach(() => {
     emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    curfewTimetableService = new CurfewTimetableService(emDatastoreApiClientFactory, hmppsAuthClient)
+    curfewTimetableService = new EmDatastoreCurfewTimetableService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 

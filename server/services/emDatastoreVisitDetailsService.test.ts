@@ -1,4 +1,4 @@
-import VisitDetailsService from './visitDetailsService'
+import EmDatastoreVisitDetailsService from './emDatastoreVisitDetailsService'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
@@ -14,11 +14,11 @@ describe('Visit Details Service', () => {
 
   const emDatastoreApiClientFactory = jest.fn()
 
-  let visitDetailsService: VisitDetailsService
+  let visitDetailsService: EmDatastoreVisitDetailsService
 
   beforeEach(() => {
     emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    visitDetailsService = new VisitDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
+    visitDetailsService = new EmDatastoreVisitDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 

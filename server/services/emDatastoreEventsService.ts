@@ -10,7 +10,7 @@ import { IncidentEvent } from '../models/incidentEvents'
 import { MonitoringEvent } from '../models/monitoringEvents'
 import { ViolationEvent } from '../models/violationEvents'
 
-export default class EventsService {
+export default class EmDatastoreEventsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -21,21 +21,22 @@ export default class EventsService {
   }
 
   async getEvents(input: OrderRequest): Promise<(ContactEvent | IncidentEvent | MonitoringEvent | ViolationEvent)[]> {
-    this.emDatastoreApiClient.updateToken(input.userToken)
-
-    let events = []
     try {
-      events = await Promise.all([
-        this.emDatastoreApiClient.getMonitoringEvents(input),
-        this.emDatastoreApiClient.getIncidentEvents(input),
-        this.emDatastoreApiClient.getContactEvents(input),
-        this.emDatastoreApiClient.getViolationEvents(input),
-      ])
+      this.emDatastoreApiClient.updateToken(input.userToken)
+      return (
+        await Promise.all([
+          this.emDatastoreApiClient.getMonitoringEvents(input),
+          this.emDatastoreApiClient.getIncidentEvents(input),
+          this.emDatastoreApiClient.getContactEvents(input),
+          this.emDatastoreApiClient.getViolationEvents(input),
+        ])
+      ).flat()
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving list of events')
-      throw error
+      const userFreindlyMessage = 'Error retrieving list of events'
+      const sanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, userFreindlyMessage)
+      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
+      throw sanitisedError
     }
-
-    return events.flat()
   }
 }

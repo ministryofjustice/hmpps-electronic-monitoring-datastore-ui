@@ -1,7 +1,7 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import AuditService from '../services/auditService'
-import CurfewTimetableService from '../services/curfewTimetableService'
+import EmDatastoreCurfewTimetableService from '../services/emDatastoreCurfewTimetableService'
 import CurfewTimetableController from './curfewTimetableController'
 // eslint-disable-next-line import/no-named-as-default
 import CurfewTimetableViewModel from '../models/view-models/curfewTimetable'
@@ -9,10 +9,13 @@ import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { CurfewTimetable, CurfewTimetableModel } from '../models/curfewTimetable'
 
-jest.mock('../services/curfewTimetableService')
+jest.mock('../services/emDatastoreCurfewTimetableService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const curfewTimetableService = new CurfewTimetableService(null, null) as jest.Mocked<CurfewTimetableService>
+const curfewTimetableService = new EmDatastoreCurfewTimetableService(
+  null,
+  null,
+) as jest.Mocked<EmDatastoreCurfewTimetableService>
 
 jest.spyOn(CurfewTimetableViewModel, 'construct')
 

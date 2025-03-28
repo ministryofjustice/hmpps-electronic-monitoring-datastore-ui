@@ -1,13 +1,13 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, CurfewTimetableService } from '../services'
+import { AuditService, EmDatastoreCurfewTimetableService } from '../services'
 // eslint-disable-next-line import/no-named-as-default
 import CurfewTimetableModel from '../models/view-models/curfewTimetable'
 
 export default class CurfewTimetableController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly curfewTimetableService: CurfewTimetableService,
+    private readonly curfewTimetableService: EmDatastoreCurfewTimetableService,
   ) {}
 
   showCurfewTimetable: RequestHandler = async (req: Request, res: Response) => {

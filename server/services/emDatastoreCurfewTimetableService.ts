@@ -7,7 +7,7 @@ import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { OrderRequest } from '../types/OrderRequest'
 import { CurfewTimetable } from '../models/curfewTimetable'
 
-export default class CurfewTimetableService {
+export default class EmDatastoreCurfewTimetableService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -18,16 +18,15 @@ export default class CurfewTimetableService {
   }
 
   async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
-    this.emDatastoreApiClient.updateToken(input.userToken)
-
-    let curfewTimetable = [] as CurfewTimetable[]
     try {
-      curfewTimetable = await this.emDatastoreApiClient.getCurfewTimetable(input)
+      this.emDatastoreApiClient.updateToken(input.userToken)
+      return this.emDatastoreApiClient.getCurfewTimetable(input)
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving list of curfew timetables')
-      throw error
+      const userFreindlyMessage = 'Error retrieving curfew timetable'
+      const sanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, userFreindlyMessage)
+      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
+      throw sanitisedError
     }
-
-    return curfewTimetable
   }
 }

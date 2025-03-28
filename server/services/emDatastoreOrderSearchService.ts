@@ -11,7 +11,7 @@ import NameValidator from '../utils/validators/nameValidator'
 import { ParsedSearchFormData } from '../models/form-data/searchOrder'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
-export default class DatastoreSearchService {
+export default class EmDatastoreOrderSearchService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -79,26 +79,22 @@ export default class DatastoreSearchService {
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     try {
       this.emDatastoreApiClient.updateToken(request.userToken)
-      const orders: Order[] = await this.emDatastoreApiClient.getSearchResults(request)
-      return orders
+      return this.emDatastoreApiClient.getSearchResults(request)
     } catch (error) {
+      let userFreindlyMessage = 'Error retrieving search results'
       const sanitisedError = getSanitisedError(error)
-      const errorMessage: string | undefined = error.data?.developerMessage
 
+      const errorMessage: string | undefined = error.data?.developerMessage
       if (
         errorMessage &&
         errorMessage.includes('QueryExecution') &&
         errorMessage.includes('was not found (Service: Athena, Status Code: 400, Request ID:')
       ) {
-        const message = 'Error retrieving search results: Invalid query execution ID'
-        logger.error(sanitisedError, message)
-        sanitisedError.message = message
-      } else {
-        const message = 'Error retrieving search results'
-        logger.error(sanitisedError, message)
-        sanitisedError.message = message
+        userFreindlyMessage += ': Invalid query execution ID'
       }
 
+      logger.error(sanitisedError, userFreindlyMessage)
+      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
       throw sanitisedError
     }
   }

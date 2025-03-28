@@ -1,15 +1,14 @@
 import type { Express } from 'express'
-import request from 'supertest'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
-import EventsService from '../services/eventsService'
+import EmDatastoreEventsService from '../services/emDatastoreEventsService'
 import { basicGetTest, GetRequestFixture } from './index.test'
 
 jest.mock('../services/auditService')
-jest.mock('../services/eventsService')
+jest.mock('../services/emDatastoreEventsService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const eventsService = new EventsService(null, null) as jest.Mocked<EventsService>
+const eventsService = new EmDatastoreEventsService(null, null) as jest.Mocked<EmDatastoreEventsService>
 
 let app: Express
 
@@ -17,7 +16,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
-      eventsService,
+      emDatastoreEventsService: eventsService,
     },
     userSupplier: () => user,
   })

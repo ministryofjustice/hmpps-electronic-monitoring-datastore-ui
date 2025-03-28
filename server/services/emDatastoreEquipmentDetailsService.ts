@@ -5,9 +5,9 @@ import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../data'
 
 import { OrderRequest } from '../types/OrderRequest'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import { EquipmentDetails } from '../models/equipmentDetails'
 
-export default class SuspensionOfVisitsService {
+export default class EmDatastoreEquipmentDetailsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -17,14 +17,16 @@ export default class SuspensionOfVisitsService {
     this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
-  async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
+  async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      const result = await this.emDatastoreApiClient.getSuspensionOfVisits(input)
-      return result
+      return this.emDatastoreApiClient.getEquipmentDetails(input)
     } catch (error) {
-      logger.error(getSanitisedError(error), 'Error retrieving suspension of visits data')
-      throw error
+      const userFreindlyMessage = 'Error retrieving list of equipment details'
+      const sanitisedError = getSanitisedError(error)
+      logger.error(sanitisedError, userFreindlyMessage)
+      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
+      throw sanitisedError
     }
   }
 }

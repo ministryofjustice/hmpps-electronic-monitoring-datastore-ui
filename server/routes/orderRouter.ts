@@ -10,17 +10,22 @@ import CurfewTimetableController from '../controllers/curfewTimetableController'
 
 export default function orderRouter({
   auditService,
-  datastoreOrderService,
-  eventsService,
-  suspensionOfVisitsService,
-  equipmentDetailsService,
-  visitDetailsService,
-  curfewTimetableService,
+  emDatastoreOrderDetailsService,
+  emDatastoreOrderSummaryService,
+  emDatastoreEventsService: eventsService,
+  emDatastoreSuspensionOfVisitsService: suspensionOfVisitsService,
+  emDatastoreEquipmentDetailsService: equipmentDetailsService,
+  emDatastoreVisitDetailsService: visitDetailsService,
+  emDatastoreCurfewTimetableService: curfewTimetableService,
 }: Services): Router {
   const router = Router({ mergeParams: true })
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
 
-  const orderController = new OrderController(auditService, datastoreOrderService)
+  const orderController = new OrderController(
+    auditService,
+    emDatastoreOrderDetailsService,
+    emDatastoreOrderSummaryService,
+  )
   const eventsController = new EventsController(auditService, eventsService)
   const suspensionOfVisitsController = new SuspensionOfVisitsController(auditService, suspensionOfVisitsService)
   const equipmentDetailsController = new EquipmentDetailsController(auditService, equipmentDetailsService)

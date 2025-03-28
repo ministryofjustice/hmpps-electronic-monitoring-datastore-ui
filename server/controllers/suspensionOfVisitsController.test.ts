@@ -6,7 +6,8 @@ import SuspensionOfVisitsView, {
   SuspensionOfVisitsViewEvent,
   SuspensionOfVisitsViewModel,
 } from '../models/view-models/suspensionOfVisits'
-import { AuditService, SuspensionOfVisitsService } from '../services'
+import AuditService from '../services/auditService'
+import EmDatastoreSuspensionOfVisitsService from '../services/emDatastoreSuspensionOfVisitsService'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 
@@ -14,8 +15,11 @@ const emDatastoreApiClient = createEmDatastoreApiClient()
 const emDatastoreApiClientFactory = jest.fn()
 emDatastoreApiClientFactory.mockResolvedValue(emDatastoreApiClient)
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-jest.mock('../services/suspensionOfVisitsService')
-const suspensionOfVisitsService = new SuspensionOfVisitsService(null, null) as jest.Mocked<SuspensionOfVisitsService>
+jest.mock('../services/../services/emDatastoreSuspensionOfVisitsService')
+const suspensionOfVisitsService = new EmDatastoreSuspensionOfVisitsService(
+  null,
+  null,
+) as jest.Mocked<EmDatastoreSuspensionOfVisitsService>
 jest.spyOn(SuspensionOfVisitsView, 'construct')
 
 describe('SuspensionOfVisitsController', () => {

@@ -1,13 +1,13 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, EquipmentDetailsService } from '../services'
+import { AuditService, EmDatastoreEquipmentDetailsService } from '../services'
 // eslint-disable-next-line import/no-named-as-default
 import EquipmentDetailsModel from '../models/view-models/equipmentDetails'
 
 export default class EquipmentDetailsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly equipmentDetailsService: EquipmentDetailsService,
+    private readonly equipmentDetailsService: EmDatastoreEquipmentDetailsService,
   ) {}
 
   showEquipmentDetails: RequestHandler = async (req: Request, res: Response) => {

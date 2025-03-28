@@ -1,7 +1,8 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
-import { AuditService, DatastoreSearchService } from '../services'
+import AuditService from '../services/auditService'
+import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import SearchController from './searchController'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import orders from '../data/mockData/orders'
@@ -11,7 +12,7 @@ import { ParsedSearchFormData, ParsedSearchFormDataModel } from '../models/form-
 import { ErrorMessage, TextField } from '../models/utils'
 
 jest.mock('../services/auditService')
-jest.mock('../services/datastoreSearchService')
+jest.mock('../services/emDatastoreOrderSearchService')
 
 const queryExecutionId = 'query-execution-id'
 const queryExecutionResponse = {
@@ -26,7 +27,7 @@ const auditService = {
   logPageView: jest.fn(),
 } as unknown as AuditService
 
-const datastoreSearchService = new DatastoreSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
+const datastoreSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
 
 jest.spyOn(SearchForOrdersViewModel, 'construct')
 jest.spyOn(ParsedSearchFormDataModel, 'parse')

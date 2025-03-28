@@ -1,17 +1,18 @@
-// import session, { SessionData } from 'express-session'
 import type { Express } from 'express'
 import request from 'supertest'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import AuditService, { Page } from '../services/auditService'
-import DatastoreSearchService from '../services/datastoreSearchService'
+import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import { GetRequestFixture } from './index.test'
-// import { createMockRequest } from '../testutils/mocks/mockExpress'
 
 jest.mock('../services/auditService')
-jest.mock('../services/datastoreSearchService')
+jest.mock('../services/emDatastoreOrderSearchService')
 
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
-const datastoreSearchService = new DatastoreSearchService(null, null) as jest.Mocked<DatastoreSearchService>
+const datastoreSearchService = new EmDatastoreOrderSearchService(
+  null,
+  null,
+) as jest.Mocked<EmDatastoreOrderSearchService>
 
 let app: Express
 
@@ -19,7 +20,7 @@ beforeEach(() => {
   app = appWithAllRoutes({
     services: {
       auditService,
-      datastoreSearchService,
+      emDatastoreOrderSearchService: datastoreSearchService,
     },
     userSupplier: () => user,
   })

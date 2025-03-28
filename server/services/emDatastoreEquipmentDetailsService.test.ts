@@ -1,4 +1,4 @@
-import EquipmentDetailsService from './equipmentDetailsService'
+import EmDatastoreEquipmentDetailsService from './emDatastoreEquipmentDetailsService'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
@@ -14,11 +14,11 @@ describe('Equipment Details Service', () => {
 
   const emDatastoreApiClientFactory = jest.fn()
 
-  let equipmentDetailsService: EquipmentDetailsService
+  let equipmentDetailsService: EmDatastoreEquipmentDetailsService
 
   beforeEach(() => {
     emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    equipmentDetailsService = new EquipmentDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
+    equipmentDetailsService = new EmDatastoreEquipmentDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 

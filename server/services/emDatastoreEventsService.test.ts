@@ -1,4 +1,4 @@
-import EventsService from './eventsService'
+import EmDatastoreEventsService from './emDatastoreEventsService'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
@@ -17,11 +17,11 @@ describe('Events Service', () => {
 
   const emDatastoreApiClientFactory = jest.fn()
 
-  let eventsService: EventsService
+  let eventsService: EmDatastoreEventsService
 
   beforeEach(() => {
     emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    eventsService = new EventsService(emDatastoreApiClientFactory, hmppsAuthClient)
+    eventsService = new EmDatastoreEventsService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 
@@ -58,7 +58,9 @@ describe('Events Service', () => {
       emDatastoreApiClient.getContactEvents.mockResolvedValue(contactEventsResponse)
       emDatastoreApiClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
 
-      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
+      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of events: some error'),
+      )
     })
 
     it('should propagate an error if there is an error getting incident events', async () => {
@@ -67,7 +69,9 @@ describe('Events Service', () => {
       emDatastoreApiClient.getContactEvents.mockResolvedValue(contactEventsResponse)
       emDatastoreApiClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
 
-      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
+      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of events: some error'),
+      )
     })
 
     it('should propagate an error if there is an error getting contact events', async () => {
@@ -76,7 +80,9 @@ describe('Events Service', () => {
       emDatastoreApiClient.getContactEvents.mockRejectedValue(new Error('some error'))
       emDatastoreApiClient.getViolationEvents.mockResolvedValue(violationEventsResponse)
 
-      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
+      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of events: some error'),
+      )
     })
 
     it('should propagate an error if there is an error getting violation events', async () => {
@@ -85,7 +91,9 @@ describe('Events Service', () => {
       emDatastoreApiClient.getContactEvents.mockResolvedValue(contactEventsResponse)
       emDatastoreApiClient.getViolationEvents.mockRejectedValue(new Error('some error'))
 
-      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(new Error('some error'))
+      await expect(eventsService.getEvents(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of events: some error'),
+      )
     })
   })
 })

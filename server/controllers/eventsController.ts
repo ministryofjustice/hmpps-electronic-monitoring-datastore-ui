@@ -1,13 +1,13 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, EventsService } from '../services'
+import { AuditService, EmDatastoreEventsService } from '../services'
 // eslint-disable-next-line import/no-named-as-default
 import EventsViewModel from '../models/view-models/events'
 
 export default class EventsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly eventsService: EventsService,
+    private readonly eventsService: EmDatastoreEventsService,
   ) {}
 
   showHistory: RequestHandler = async (req: Request, res: Response) => {

@@ -1,4 +1,4 @@
-import SuspensionOfVisitsService from './suspensionOfVisitsService'
+import EmDatastoreSuspensionOfVisitsService from './emDatastoreSuspensionOfVisitsService'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
@@ -12,11 +12,11 @@ describe('Suspension of visits service', () => {
   const hmppsAuthClient = createMockHmppsAuthClient()
   const emDatastoreApiClient = createEmDatastoreApiClient()
   const emDatastoreApiClientFactory = jest.fn()
-  let suspensionOfVisitsService: SuspensionOfVisitsService
+  let suspensionOfVisitsService: EmDatastoreSuspensionOfVisitsService
 
   beforeEach(() => {
     emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    suspensionOfVisitsService = new SuspensionOfVisitsService(emDatastoreApiClientFactory, hmppsAuthClient)
+    suspensionOfVisitsService = new EmDatastoreSuspensionOfVisitsService(emDatastoreApiClientFactory, hmppsAuthClient)
     hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
   })
 

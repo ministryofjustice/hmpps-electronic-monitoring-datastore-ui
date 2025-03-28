@@ -28,7 +28,7 @@ export default function routes(services: Services): Router {
 
   get('/test-api', async (req, res, next) => {
     const { token } = res.locals.user
-    const apiResult: JSON = await services.datastoreOrderService.confirmApi(token)
+    const apiResult: JSON = await services.emDatastoreConnectionService.test(token)
     res.render('pages/apiTest', { data: JSON.stringify(apiResult) })
   })
 
