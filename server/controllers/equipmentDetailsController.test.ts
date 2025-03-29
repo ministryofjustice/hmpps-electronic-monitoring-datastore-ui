@@ -9,13 +9,11 @@ import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { EquipmentDetails, EquipmentDetailsModel } from '../models/equipmentDetails'
 
+jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreEquipmentDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const equipmentDetailsService = new EmDatastoreEquipmentDetailsService(
-  null,
-  null,
-) as jest.Mocked<EmDatastoreEquipmentDetailsService>
+const emDatastoreEquipmentDetailsService = { getEvents: jest.fn() } as unknown as EmDatastoreEquipmentDetailsService
 
 jest.spyOn(EquipmentDetailsViewModel, 'construct')
 
@@ -28,7 +26,7 @@ describe('EquipmentDetailsController', () => {
   const testOrderId = 123456789
 
   beforeEach(() => {
-    equipmentDetailsController = new EquipmentDetailsController(auditService, equipmentDetailsService)
+    equipmentDetailsController = new EquipmentDetailsController(auditService, emDatastoreEquipmentDetailsService)
 
     req = createMockRequest({
       session: {
@@ -58,7 +56,7 @@ describe('EquipmentDetailsController', () => {
       orderId: testOrderId,
     }
 
-    equipmentDetailsService.getEquipmentDetails.mockResolvedValue([])
+    emDatastoreEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([])
 
     await equipmentDetailsController.showEquipmentDetails(req, res, next)
 
@@ -99,7 +97,7 @@ describe('EquipmentDetailsController', () => {
       orderId: testOrderId,
     }
 
-    equipmentDetailsService.getEquipmentDetails.mockResolvedValue([
+    emDatastoreEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([
       EquipmentDetailsModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,

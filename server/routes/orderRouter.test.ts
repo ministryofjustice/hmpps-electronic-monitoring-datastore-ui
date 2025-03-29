@@ -10,6 +10,7 @@ jest.mock('../services/emDatastoreEventsService')
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
 const eventsService = new EmDatastoreEventsService(null, null) as jest.Mocked<EmDatastoreEventsService>
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 let app: Express
 
 beforeEach(() => {
@@ -31,7 +32,7 @@ describe('Order details basic GET requests', () => {
   const orderId = 3
 
   xit.each<GetRequestFixture>([
-    ['order information page', `/orders/${orderId}/summary`, 'Order information', Page.ORDER_INFORMATION_PAGE],
+    ['order information page', `/orders/${orderId}`, 'Order information', Page.ORDER_INFORMATION_PAGE],
     ['order details page', `/orders/${orderId}/details`, 'Order details', Page.ORDER_DETAILS_PAGE],
     ['visits and tasks page', `/orders/${orderId}/visit-details`, 'Visit details', Page.VISIT_DETAILS_PAGE],
     ['event history page', `/orders/${orderId}/event-history`, 'All event history', Page.EVENT_HISTORY_PAGE],

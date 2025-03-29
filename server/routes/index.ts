@@ -6,19 +6,9 @@ import { Page } from '../services/auditService'
 import searchRouter from './searchRouter'
 import orderRouter from './orderRouter'
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function routes(services: Services): Router {
   const router = Router()
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
-
-  // TODO: Define controller expressions here
-  // Have two controllers - searchController and orderController
-
-  /**
-   * With a controller I need to pass services via di:
-   *  - auditService
-   *  - relevant Service
-   */
 
   get('/', async (req, res, next) => {
     await services.auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -32,8 +22,8 @@ export default function routes(services: Services): Router {
     res.render('pages/apiTest', { data: JSON.stringify(apiResult) })
   })
 
-  router.use('/search', searchRouter(services))
-  router.use('/orders/:orderId', orderRouter(services))
+  router.use(searchRouter(services))
+  router.use(orderRouter(services))
 
   return router
 }

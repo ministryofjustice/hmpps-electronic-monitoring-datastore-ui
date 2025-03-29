@@ -12,10 +12,11 @@ import { IncidentEvent, IncidentEventModel } from '../models/incidentEvents'
 import { ContactEvent, ContactEventModel } from '../models/contactEvents'
 import { ViolationEvent } from '../models/violationEvents'
 
+jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreEventsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const eventsService = new EmDatastoreEventsService(null, null) as jest.Mocked<EmDatastoreEventsService>
+const emDatastoreEventsService = { getEvents: jest.fn() } as unknown as EmDatastoreEventsService
 
 jest.spyOn(EventsViewModel, 'construct')
 
@@ -28,7 +29,7 @@ describe('EventsController', () => {
   const testOrderId = 123456789
 
   beforeEach(() => {
-    eventsController = new EventsController(auditService, eventsService)
+    eventsController = new EventsController(auditService, emDatastoreEventsService)
 
     req = createMockRequest({
       session: {
@@ -58,7 +59,7 @@ describe('EventsController', () => {
       orderId: testOrderId,
     }
 
-    eventsService.getEvents.mockResolvedValue([])
+    emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([])
 
     await eventsController.showHistory(req, res, next)
 
@@ -85,7 +86,7 @@ describe('EventsController', () => {
       orderId: testOrderId,
     }
 
-    eventsService.getEvents.mockResolvedValue([
+    emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
       MonitoringEventModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,
@@ -119,7 +120,7 @@ describe('EventsController', () => {
       orderId: testOrderId,
     }
 
-    eventsService.getEvents.mockResolvedValue([
+    emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
       IncidentEventModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,
@@ -153,7 +154,7 @@ describe('EventsController', () => {
       orderId: testOrderId,
     }
 
-    eventsService.getEvents.mockResolvedValue([
+    emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
       ContactEventModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,

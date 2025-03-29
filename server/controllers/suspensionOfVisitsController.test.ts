@@ -1,29 +1,27 @@
 import { Request, Response } from 'express'
 import session, { SessionData } from 'express-session'
-import { createEmDatastoreApiClient } from '../data/testUtils/mocks'
+import AuditService from '../services/auditService'
+import EmDatastoreSuspensionOfVisitsService from '../services/emDatastoreSuspensionOfVisitsService'
+import SuspensionOfVisitsController from './suspensionOfVisitsController'
+import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 import SuspensionOfVisitsView, {
   SuspensionOfVisitsViewEvent,
   SuspensionOfVisitsViewModel,
 } from '../models/view-models/suspensionOfVisits'
-import AuditService from '../services/auditService'
-import EmDatastoreSuspensionOfVisitsService from '../services/emDatastoreSuspensionOfVisitsService'
-import SuspensionOfVisitsController from './suspensionOfVisitsController'
-import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 
-const emDatastoreApiClient = createEmDatastoreApiClient()
-const emDatastoreApiClientFactory = jest.fn()
-emDatastoreApiClientFactory.mockResolvedValue(emDatastoreApiClient)
+jest.mock('../services/auditService')
+jest.mock('../services/emDatastoreOrderSummaryService')
+
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-jest.mock('../services/../services/emDatastoreSuspensionOfVisitsService')
-const suspensionOfVisitsService = new EmDatastoreSuspensionOfVisitsService(
-  null,
-  null,
-) as jest.Mocked<EmDatastoreSuspensionOfVisitsService>
+const emDatastoreSuspensionOfVisitsService = {
+  getSuspensionOfVisits: jest.fn(),
+} as unknown as EmDatastoreSuspensionOfVisitsService
+
 jest.spyOn(SuspensionOfVisitsView, 'construct')
 
 describe('SuspensionOfVisitsController', () => {
-  let suspensionOfVisitsController: SuspensionOfVisitsController
+  let controller: SuspensionOfVisitsController
   let req: Request
   let res: Response
   const next = jest.fn()
@@ -64,7 +62,7 @@ describe('SuspensionOfVisitsController', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    suspensionOfVisitsController = new SuspensionOfVisitsController(auditService, suspensionOfVisitsService)
+    controller = new SuspensionOfVisitsController(auditService, emDatastoreSuspensionOfVisitsService)
 
     req = createMockRequest({
       session: {
@@ -93,9 +91,9 @@ describe('SuspensionOfVisitsController', () => {
       events: [] as SuspensionOfVisitsEvent[],
       orderId: testOrderId,
     }
-    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([])
+    emDatastoreSuspensionOfVisitsService.getSuspensionOfVisits = jest.fn().mockResolvedValue([])
 
-    await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
+    await controller.showSuspensionOfVisits(req, res, next)
 
     expect(SuspensionOfVisitsView.construct).toHaveBeenCalledWith(testOrderId, expectedViewModel.events)
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewModel)
@@ -110,9 +108,9 @@ describe('SuspensionOfVisitsController', () => {
     const viewEvent = createViewEvent(dateTime, time)
     const expectedViewData = createViewData(testOrderId, [viewEvent, viewEvent])
 
-    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([event, event])
+    emDatastoreSuspensionOfVisitsService.getSuspensionOfVisits = jest.fn().mockResolvedValue([event, event])
 
-    await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
+    await controller.showSuspensionOfVisits(req, res, next)
 
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
     expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewData)
@@ -136,7 +134,9 @@ describe('SuspensionOfVisitsController', () => {
     const secondEvent = createEvent(testOrderId, secondDate.time, secondDate.dateTime)
     const thirdEvent = createEvent(testOrderId, thirdDate.time, thirdDate.dateTime)
 
-    suspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([secondEvent, thirdEvent, firstEvent])
+    emDatastoreSuspensionOfVisitsService.getSuspensionOfVisits = jest
+      .fn()
+      .mockResolvedValue([secondEvent, thirdEvent, firstEvent])
 
     const firstViewEvent = createViewEvent(firstDate.dateTime, firstDate.time)
     const secondViewEvent = createViewEvent(secondDate.dateTime, secondDate.time)
@@ -144,7 +144,7 @@ describe('SuspensionOfVisitsController', () => {
 
     const expectedViewData = createViewData(testOrderId, [firstViewEvent, secondViewEvent, thirdViewEvent])
 
-    await suspensionOfVisitsController.showSuspensionOfVisits(req, res, next)
+    await controller.showSuspensionOfVisits(req, res, next)
 
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
     expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewData)

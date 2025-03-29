@@ -1,40 +1,14 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
-import { AuditService, EmDatastoreOrderDetailsService, EmDatastoreOrderSummaryService } from '../services'
-import { Reports } from '../interfaces/orderInformation'
+import { AuditService, EmDatastoreOrderDetailsService } from '../services'
 import tabulateRecords from '../utils/tabulateRecords'
 import { formatOrderDetails } from '../models/orderDetails'
 
-export default class OrderController {
+export default class OrderDetailsController {
   constructor(
     private readonly auditService: AuditService,
     private readonly emDatastoreOrderDetailsService: EmDatastoreOrderDetailsService,
-    private readonly emDatastoreOrderSummaryService: EmDatastoreOrderSummaryService,
   ) {}
-
-  orderSummary: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.ORDER_INFORMATION_PAGE, {
-      who: res.locals.user.username,
-      correlationId: req.id,
-    })
-
-    const { orderId } = req.params
-
-    const orderInformation = await this.emDatastoreOrderSummaryService.getOrderSummary({
-      userToken: res.locals.user.token,
-      orderId,
-    })
-    const backUrl: string = '/search/orders'
-    const reports: Reports = {
-      orderDetails: true,
-      visitDetails: true,
-      equipmentDetails: true,
-      suspensionOfVisits: true,
-      allEventHistory: true,
-      services: true,
-    }
-    res.render('pages/orderInformation', { data: orderInformation, backUrl, reports })
-  }
 
   orderDetails: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.ORDER_DETAILS_PAGE, {
@@ -68,7 +42,7 @@ export default class OrderController {
         'Order data',
       )
 
-      res.render('pages/orderDetails', {
+      res.render('pages/order/details', {
         deviceWearer: tabulatedDeviceWearerData,
         orderDetails: tabulatedOrderData,
         backUrl: `/orders/${orderId}/summary`,

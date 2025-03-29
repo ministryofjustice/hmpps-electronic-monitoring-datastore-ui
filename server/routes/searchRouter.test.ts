@@ -31,7 +31,7 @@ afterEach(() => {
 })
 
 describe('Core page basic GET requests', () => {
-  it.each<GetRequestFixture>([['search page', '/search', 'Search for order details', Page.SEARCH_PAGE]])(
+  it.each<GetRequestFixture>([['search page', '/orders', 'Search for order details', Page.SEARCH_PAGE]])(
     'should render %s',
     async (pageName, route, titleText, auditType) => {
       const res = await request(app).get(route).expect(200) // Expect a 200 OK response

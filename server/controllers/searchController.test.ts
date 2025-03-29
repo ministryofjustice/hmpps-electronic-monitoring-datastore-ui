@@ -1,6 +1,5 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 import AuditService from '../services/auditService'
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import SearchController from './searchController'
@@ -19,15 +18,13 @@ const queryExecutionResponse = {
   queryExecutionId,
 }
 
-const hmppsAuthClient = createMockHmppsAuthClient()
-const emDatastoreApiClient = createEmDatastoreApiClient()
-const emDatastoreApiClientFactory = jest.fn()
-emDatastoreApiClientFactory.mockResolvedValue(emDatastoreApiClient)
-const auditService = {
-  logPageView: jest.fn(),
-} as unknown as AuditService
-
-const datastoreSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
+const auditService = { logPageView: jest.fn() } as unknown as AuditService
+const emDatastoreOrderSearchService = {
+  isEmptySearch: jest.fn(),
+  validateInput: jest.fn(),
+  submitSearchQuery: jest.fn(),
+  getSearchResults: jest.fn(),
+} as unknown as EmDatastoreOrderSearchService
 
 jest.spyOn(SearchForOrdersViewModel, 'construct')
 jest.spyOn(ParsedSearchFormDataModel, 'parse')
@@ -41,7 +38,7 @@ describe('SearchController', () => {
   describe('SearchPage', () => {
     beforeEach(() => {
       jest.clearAllMocks()
-      searchController = new SearchController(auditService, datastoreSearchService)
+      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
       req = createMockRequest({
         session: {
@@ -140,7 +137,7 @@ describe('SearchController', () => {
 
   describe('SubmitSearchQuery', () => {
     beforeEach(() => {
-      searchController = new SearchController(auditService, datastoreSearchService)
+      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
       req = createMockRequest({
         body: {
@@ -184,7 +181,7 @@ describe('SearchController', () => {
         dobYear: '2021',
       }
 
-      datastoreSearchService.validateInput = jest
+      emDatastoreOrderSearchService.validateInput = jest
         .fn()
         .mockReturnValueOnce([{ field: 'firstName', error: 'Invalid first name' }])
 
@@ -224,7 +221,7 @@ describe('SearchController', () => {
         dobYear: '',
       }
 
-      datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce(validationErrors)
+      emDatastoreOrderSearchService.validateInput = jest.fn().mockReturnValueOnce(validationErrors)
 
       await searchController.submitSearchQuery(req, res, next)
 
@@ -235,8 +232,8 @@ describe('SearchController', () => {
     })
 
     it('when input is valid, redirects to the results page with the query execution ID as a URL query parameter', async () => {
-      datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
-      datastoreSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionResponse)
+      emDatastoreOrderSearchService.validateInput = jest.fn().mockReturnValueOnce([])
+      emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionResponse)
 
       req.body = {
         searchType: 'integrity',
@@ -257,7 +254,7 @@ describe('SearchController', () => {
 
   describe('SearchResultsPage', () => {
     beforeEach(() => {
-      searchController = new SearchController(auditService, datastoreSearchService)
+      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
       req = createMockRequest({
         session: {
@@ -282,7 +279,7 @@ describe('SearchController', () => {
     })
 
     it('should redirect to the search page when no orderExecutionId is submitted', async () => {
-      datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
+      emDatastoreOrderSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)
 
@@ -292,7 +289,7 @@ describe('SearchController', () => {
     it('should render the search results view when a valid orderExecutionId is submitted', async () => {
       const viewModel = [...ordersView]
       req.query.search_id = queryExecutionId
-      datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
+      emDatastoreOrderSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)
 

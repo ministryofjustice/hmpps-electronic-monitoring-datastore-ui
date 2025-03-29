@@ -9,13 +9,11 @@ import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { VisitDetails, VisitDetailsModel } from '../models/visitDetails'
 
+jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreVisitDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const visitDetailsService = new EmDatastoreVisitDetailsService(
-  null,
-  null,
-) as jest.Mocked<EmDatastoreVisitDetailsService>
+const emDatastoreVisitDetailsService = { getOrderSummary: jest.fn() } as unknown as EmDatastoreVisitDetailsService
 
 jest.spyOn(VisitDetailsViewModel, 'construct')
 
@@ -28,7 +26,7 @@ describe('VisitDetailsController', () => {
   const testOrderId = 123456789
 
   beforeEach(() => {
-    visitDetailsController = new VisitDetailsController(auditService, visitDetailsService)
+    visitDetailsController = new VisitDetailsController(auditService, emDatastoreVisitDetailsService)
 
     req = createMockRequest({
       session: {
@@ -58,7 +56,7 @@ describe('VisitDetailsController', () => {
       orderId: testOrderId,
     }
 
-    visitDetailsService.getVisitDetails.mockResolvedValue([])
+    emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([])
 
     await visitDetailsController.showVisitDetails(req, res, next)
 
@@ -99,7 +97,7 @@ describe('VisitDetailsController', () => {
       orderId: testOrderId,
     }
 
-    visitDetailsService.getVisitDetails.mockResolvedValue([
+    emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([
       VisitDetailsModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,

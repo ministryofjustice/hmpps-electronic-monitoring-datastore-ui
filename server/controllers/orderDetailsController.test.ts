@@ -1,9 +1,8 @@
+import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 import AuditService, { Page } from '../services/auditService'
 import EmDatastoreOrderDetailsService from '../services/emDatastoreOrderDetailsService'
-import EmDatastoreOrderSummaryService from '../services/emDatastoreOrderSummaryService'
-import OrderController from './orderController'
+import OrderDetailsController from './orderDetailsController'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { OrderRequest } from '../types/OrderRequest'
 import tabluateRecords from '../utils/tabulateRecords'
@@ -11,116 +10,43 @@ import { formatOrderDetails } from '../models/orderDetails'
 
 jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreOrderDetailsService')
-jest.mock('../services/emDatastoreOrderSummaryService')
 jest.mock('../utils/tabulateRecords', () => jest.fn(() => 'mock-tabulated-data'))
-jest.mock('../models/orderDetails', () => ({
-  formatOrderDetails: { parse: jest.fn() },
-}))
+jest.mock('../models/orderDetails', () => ({ formatOrderDetails: { parse: jest.fn() } }))
 
-const hmppsAuthClient = createMockHmppsAuthClient()
-const emDatastoreApiClient = createEmDatastoreApiClient()
-const emDatastoreApiClientFactory = jest.fn()
-emDatastoreApiClientFactory.mockResolvedValue(emDatastoreApiClient)
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
+const emDatastoreOrderDetailsService = { getOrderDetails: jest.fn() } as unknown as EmDatastoreOrderDetailsService
 
-const emDatastoreOrderDetailsService = new EmDatastoreOrderDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
-const emDatastoreOrderSummaryService = new EmDatastoreOrderSummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
-
-describe('OrderController', () => {
-  let orderController: OrderController
+describe('OrderDetailsController', () => {
+  let controller: OrderDetailsController
   let req: Request
   let res: Response
   const next = jest.fn()
 
   it(`constructs the system under test and mocks appropriately`, () => {
-    orderController = new OrderController(auditService, emDatastoreOrderDetailsService, emDatastoreOrderSummaryService)
-    expect(orderController).not.toBeNull()
-  })
-
-  describe('OrderSummary', () => {
-    beforeEach(() => {
-      jest.clearAllMocks()
-      orderController = new OrderController(
-        auditService,
-        emDatastoreOrderDetailsService,
-        emDatastoreOrderSummaryService,
-      )
-
-      req = createMockRequest({
-        id: 'fakeId',
-      })
-
-      res = createMockResponse()
-      res.status = jest.fn().mockReturnValue(res)
-    })
-
-    it(`logs hitting the page`, async () => {
-      const expectedLogData = { who: 'fakeUserName', correlationId: 'fakeId' }
-
-      orderController.orderSummary(req, res, next)
-
-      expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_INFORMATION_PAGE, expectedLogData)
-    })
-
-    it(`calls the DatastoreOrderService for data using the correct orderId parameter`, async () => {
-      const expectedOrderId = 'testId'
-      const expectedOrderServiceParams: OrderRequest = {
-        userToken: 'fakeUserToken',
-        orderId: expectedOrderId,
-      }
-
-      req = createMockRequest({
-        params: {
-          orderId: expectedOrderId,
-        },
-      })
-
-      await orderController.orderSummary(req, res, next)
-
-      expect(emDatastoreOrderSummaryService.getOrderSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
-    })
-
-    it(`returns correct error when orderService fails`, async () => {
-      emDatastoreOrderSummaryService.getOrderSummary = jest.fn().mockImplementation(() => {
-        throw new Error('Expected error message')
-      })
-
-      await expect(orderController.orderSummary(req, res, next)).rejects.toThrow('Expected error message')
-    })
-
-    it(`renders the page with appropriate data`, async () => {
-      const expectedOrderDetails = 'expectedOrderDetails'
-      const expectedPageData = {
-        data: expectedOrderDetails,
-        backUrl: '/search/orders',
-        reports: {
-          orderDetails: true,
-          visitDetails: true,
-          equipmentDetails: true,
-          suspensionOfVisits: true,
-          allEventHistory: true,
-          services: true,
-        },
-      }
-
-      emDatastoreOrderSummaryService.getOrderSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
-
-      await orderController.orderSummary(req, res, next)
-
-      expect(res.render).toHaveBeenCalledWith('pages/orderInformation', expectedPageData)
-    })
+    controller = new OrderDetailsController(auditService, emDatastoreOrderDetailsService)
+    expect(controller).not.toBeNull()
   })
 
   describe('OrderDetails', () => {
     beforeEach(() => {
       jest.clearAllMocks()
-      orderController = new OrderController(
-        auditService,
-        emDatastoreOrderDetailsService,
-        emDatastoreOrderSummaryService,
-      )
+      controller = new OrderDetailsController(auditService, emDatastoreOrderDetailsService)
 
       req = createMockRequest({
+        session: {
+          id: 'mock-session-id',
+          cookie: { originalMaxAge: 3600000 } as session.Cookie,
+          regenerate: jest.fn(),
+          destroy: jest.fn(),
+          reload: jest.fn(),
+          save: jest.fn(),
+          touch: jest.fn(),
+          resetMaxAge: jest.fn(),
+          returnTo: '/return',
+          nowInMinutes: 12345,
+          validationErrors: [],
+          formData: {},
+        } as session.Session & Partial<SessionData>,
         id: 'fakeId',
       })
 
@@ -131,7 +57,7 @@ describe('OrderController', () => {
     it(`logs hitting the page`, async () => {
       const expectedLogData = { who: 'fakeUserName', correlationId: 'fakeId' }
 
-      orderController.orderDetails(req, res, next)
+      controller.orderDetails(req, res, next)
 
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_DETAILS_PAGE, expectedLogData)
     })
@@ -148,7 +74,7 @@ describe('OrderController', () => {
         },
       })
 
-      await orderController.orderDetails(req, res, next)
+      await controller.orderDetails(req, res, next)
 
       expect(emDatastoreOrderDetailsService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
@@ -158,7 +84,7 @@ describe('OrderController', () => {
 
       emDatastoreOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
-      await orderController.orderDetails(req, res, next)
+      await controller.orderDetails(req, res, next)
 
       expect(formatOrderDetails.parse).toHaveBeenCalledTimes(1)
       expect(formatOrderDetails.parse).toHaveBeenCalledWith(expectedOrderDetails)
@@ -180,7 +106,7 @@ describe('OrderController', () => {
 
       formatOrderDetails.parse = jest.fn().mockReturnValue(mockParsedData)
 
-      await orderController.orderDetails(req, res, next)
+      await controller.orderDetails(req, res, next)
 
       expect(tabluateRecords).toHaveBeenCalledTimes(2)
       expect(tabluateRecords).toHaveBeenCalledWith(
@@ -204,7 +130,7 @@ describe('OrderController', () => {
         throw new Error('Error message')
       })
 
-      await orderController.orderDetails(req, res, next)
+      await controller.orderDetails(req, res, next)
 
       expect(res.status).toHaveBeenCalledWith(500)
       expect(res.send).toHaveBeenCalledWith('Error fetching data')
@@ -228,9 +154,9 @@ describe('OrderController', () => {
 
       emDatastoreOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
-      await orderController.orderDetails(req, res, next)
+      await controller.orderDetails(req, res, next)
 
-      expect(res.render).toHaveBeenCalledWith('pages/orderDetails', expectedPageData)
+      expect(res.render).toHaveBeenCalledWith('pages/order/details', expectedPageData)
     })
   })
 })

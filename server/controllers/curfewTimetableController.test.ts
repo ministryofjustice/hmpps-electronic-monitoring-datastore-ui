@@ -9,13 +9,11 @@ import { TimelineEventModel } from '../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { CurfewTimetable, CurfewTimetableModel } from '../models/curfewTimetable'
 
+jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreCurfewTimetableService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const curfewTimetableService = new EmDatastoreCurfewTimetableService(
-  null,
-  null,
-) as jest.Mocked<EmDatastoreCurfewTimetableService>
+const emDatastoreCurfewTimetableService = { getEvents: jest.fn() } as unknown as EmDatastoreCurfewTimetableService
 
 jest.spyOn(CurfewTimetableViewModel, 'construct')
 
@@ -28,7 +26,7 @@ describe('CurfewTimetableController', () => {
   const testOrderId = 123456789
 
   beforeEach(() => {
-    curfewTimetableController = new CurfewTimetableController(auditService, curfewTimetableService)
+    curfewTimetableController = new CurfewTimetableController(auditService, emDatastoreCurfewTimetableService)
 
     req = createMockRequest({
       session: {
@@ -58,7 +56,7 @@ describe('CurfewTimetableController', () => {
       orderId: testOrderId,
     }
 
-    curfewTimetableService.getCurfewTimetable.mockResolvedValue([])
+    emDatastoreCurfewTimetableService.getCurfewTimetable = jest.fn().mockResolvedValue([])
 
     await curfewTimetableController.showCurfewTimetable(req, res, next)
 
@@ -102,7 +100,7 @@ describe('CurfewTimetableController', () => {
       orderId: testOrderId,
     }
 
-    curfewTimetableService.getCurfewTimetable.mockResolvedValue([
+    emDatastoreCurfewTimetableService.getCurfewTimetable = jest.fn().mockResolvedValue([
       CurfewTimetableModel.parse({
         legacySubjectId: testOrderId,
         serviceId: 321,

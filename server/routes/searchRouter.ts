@@ -14,10 +14,10 @@ export default function searchRouter({
 
   const searchController = new SearchController(auditService, datastoreSearchService)
 
-  get('/', searchController.searchPage)
-  post('/', searchController.submitSearchQuery)
-  get('/integrity', searchController.searchResultsPage)
-  get('/alcohol-monitoring', searchController.searchResultsPage)
+  get('/orders', searchController.searchPage)
+  post('/orders', searchController.submitSearchQuery)
+  get('/orders/integrity', searchController.searchResultsPage)
+  get('/orders/alcohol-monitoring', searchController.searchResultsPage)
 
   return router
 }
