@@ -48,21 +48,6 @@ const auditConfig = () => {
   }
 }
 
-const apiEndpoints = {
-  searchOrders: '/search/orders',
-  confirmAPI: '/search/confirmConnection',
-  getOrderSummary: '/orders/getOrderSummary',
-  getOrderDetails: '/orders/getOrderDetails',
-  getMonitoringEvents: '/orders/getMonitoringEvents',
-  getIncidentEvents: '/orders/getIncidentEvents',
-  getViolationEvents: '/orders/getViolationEvents',
-  getContactEvents: '/orders/getContactEvents',
-  getEquipmentDetails: '/orders/getEquipmentDetails',
-  getVisitDetails: '/orders/getVisitDetails',
-  getSuspensionOfVisits: '/orders/getSuspensionOfVisits',
-  getCurfewTimetable: '/orders/getCurfewTimetable',
-}
-
 export default {
   applicationName: 'Electronic Monitoring Datastore',
   buildNumber: get('BUILD_NUMBER', '1_0_0', requiredInProduction),
@@ -79,7 +64,6 @@ export default {
     password: process.env.REDIS_AUTH_TOKEN,
     tls_enabled: get('REDIS_TLS_ENABLED', 'false'),
   },
-  apiEndpoints,
   session: {
     secret: get('SESSION_SECRET', 'app-insecure-default-session', requiredInProduction),
     expiryMinutes: Number(get('WEB_SESSION_TIMEOUT_IN_MINUTES', 120)),

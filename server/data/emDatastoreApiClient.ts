@@ -29,91 +29,91 @@ export default class EmDatastoreApiClient {
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     const { data } = input
     return this.restClient.post<QueryExecutionResponse>({
-      path: config.apiEndpoints.searchOrders,
+      path: '/integrity/orders',
       data,
     })
   }
 
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     const { queryExecutionId } = request
-    return this.restClient.post<Order[]>({
-      path: `${config.apiEndpoints.searchOrders}/${queryExecutionId}`,
+    return this.restClient.get<Order[]>({
+      path: `/integrity/orders?queryExecutionId=${queryExecutionId}`,
     })
   }
 
   async confirmApi(): Promise<JSON> {
     return this.restClient.get<JSON>({
-      path: config.apiEndpoints.confirmAPI,
+      path: '/test',
     })
   }
 
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     const { orderId } = input
     return this.restClient.get<OrderInformation>({
-      path: `${config.apiEndpoints.getOrderSummary}/${orderId}`,
+      path: `/integrity/orders/${orderId}`,
     })
   }
 
   async getOrderDetails(input: OrderRequest): Promise<OrderDetails> {
     const { orderId } = input
     return this.restClient.get<OrderDetails>({
-      path: `${config.apiEndpoints.getOrderDetails}/${orderId}`,
+      path: `/integrity/orders/${orderId}/details`,
     })
   }
 
   async getMonitoringEvents(input: OrderRequest): Promise<MonitoringEvent[]> {
     const { orderId } = input
     return this.restClient.get<MonitoringEvent[]>({
-      path: `${config.apiEndpoints.getMonitoringEvents}/${orderId}`,
+      path: `/integrity/orders/${orderId}/monitoring-events`,
     })
   }
 
   async getIncidentEvents(input: OrderRequest): Promise<IncidentEvent[]> {
     const { orderId } = input
     return this.restClient.get<IncidentEvent[]>({
-      path: `${config.apiEndpoints.getIncidentEvents}/${orderId}`,
+      path: `/integrity/orders/${orderId}/incident-events`,
     })
   }
 
   async getViolationEvents(input: OrderRequest): Promise<ViolationEvent[]> {
     const { orderId } = input
     return this.restClient.get<ViolationEvent[]>({
-      path: `${config.apiEndpoints.getViolationEvents}/${orderId}`,
+      path: `/integrity/orders/${orderId}/violation-events`,
     })
   }
 
   async getContactEvents(input: OrderRequest): Promise<ContactEvent[]> {
     const { orderId } = input
     return this.restClient.get<ContactEvent[]>({
-      path: `${config.apiEndpoints.getContactEvents}/${orderId}`,
+      path: `/integrity/orders/${orderId}/contact-events`,
     })
   }
 
   async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
     const { orderId } = input
     return this.restClient.get<EquipmentDetails[]>({
-      path: `${config.apiEndpoints.getEquipmentDetails}/${orderId}`,
+      path: `/integrity/orders/${orderId}/equipment-details`,
     })
   }
 
   async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
     const { orderId } = input
     return this.restClient.get<VisitDetails[]>({
-      path: `${config.apiEndpoints.getVisitDetails}/${orderId}`,
+      path: `/integrity/orders/${orderId}/visit-details`,
     })
   }
 
   async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
     const { orderId } = input
     return this.restClient.get<SuspensionOfVisitsEvent[]>({
-      path: `${config.apiEndpoints.getSuspensionOfVisits}/${orderId}`,
+      path: `/integrity/orders/${orderId}/suspension-of-visits`,
     })
   }
 
   async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
     const { orderId } = input
     return this.restClient.get<CurfewTimetable[]>({
-      path: `${config.apiEndpoints.getCurfewTimetable}/${orderId}`,
+      path: `/integrity/orders/${orderId}/curfew-timetable`,
     })
   }
 }
