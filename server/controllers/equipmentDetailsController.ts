@@ -16,14 +16,14 @@ export default class EquipmentDetailsController {
       correlationId: req.id,
     })
 
-    const { orderId } = req.params
+    const { legacySubjectId } = req.params
 
     const equipmentDetails = await this.equipmentDetailsService.getEquipmentDetails({
       userToken: res.locals.user.token,
-      orderId,
+      legacySubjectId,
     })
 
-    const viewModel = EquipmentDetailsModel.construct(parseInt(orderId, 10), equipmentDetails)
+    const viewModel = EquipmentDetailsModel.construct(parseInt(legacySubjectId, 10), equipmentDetails)
 
     res.render('pages/order/equipment-details', viewModel)
   }

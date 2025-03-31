@@ -2,6 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
 import { AuditService, EmDatastoreOrderSearchService } from '../services'
 import strings from '../constants/strings'
+import paths from '../constants/paths'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchResultsViewModel from '../models/view-models/searchResults'
 import { ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
@@ -51,7 +52,7 @@ export default class SearchController {
     if (validationErrors.length > 0) {
       req.session.formData = validatedFormData
       req.session.validationErrors = validationErrors
-      res.redirect('search')
+      res.redirect(paths.SEARCH)
     } else {
       const queryExecutionResponse = await this.datastoreSearchService.submitSearchQuery({
         userToken: res.locals.user.token,
@@ -61,9 +62,9 @@ export default class SearchController {
       req.session.validationErrors = undefined
       req.session.formData = undefined
 
-      res.redirect(
-        `search/${req.body.searchType}?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`,
-      )
+      const redirectUrl =
+        req.body.searchType === 'integrity' ? paths.INTEGRITY_ORDER.INDEX : paths.ALCOHOL_MONITORING.INDEX
+      res.redirect(`${redirectUrl}?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
     }
   }
 
@@ -76,7 +77,7 @@ export default class SearchController {
     const queryExecutionId = req.query.search_id as string
 
     if (!queryExecutionId) {
-      res.redirect('/search')
+      res.redirect(paths.SEARCH)
       return
     }
 
@@ -89,7 +90,7 @@ export default class SearchController {
       })
     } catch (error) {
       if (error.message === 'Error retrieving search results: Invalid query execution ID') {
-        res.redirect('/search')
+        res.redirect(paths.SEARCH)
         return
       }
       throw error

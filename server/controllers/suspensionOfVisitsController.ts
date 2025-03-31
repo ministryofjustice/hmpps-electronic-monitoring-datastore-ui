@@ -11,14 +11,14 @@ export default class SuspensionOfVisitsController {
   ) {}
 
   showSuspensionOfVisits: RequestHandler = async (req: Request, res: Response) => {
-    const { orderId } = req.params
+    const { legacySubjectId } = req.params
 
     const suspensionOfVisitsData = await this.suspensionOfVisitsService.getSuspensionOfVisits({
       userToken: res.locals.user.token,
-      orderId,
+      legacySubjectId,
     })
 
-    const viewModel = SuspensionOfVisitsViewModel.construct(parseInt(orderId, 10), suspensionOfVisitsData)
+    const viewModel = SuspensionOfVisitsViewModel.construct(parseInt(legacySubjectId, 10), suspensionOfVisitsData)
 
     await this.auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
       who: res.locals.user.username,

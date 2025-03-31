@@ -1,8 +1,8 @@
-import EquipmentDetailsPage from '../../pages/order/equipmentDetails'
-import Page from '../../pages/page'
+import Page from '../../../pages/page'
+import EquipmentDetailsPage from '../../../pages/order/equipmentDetails'
 
 context('Equipment Details', () => {
-  const orderId = '1232123'
+  const legacySubjectId = '1232123'
 
   beforeEach(() => {
     cy.task('reset')
@@ -13,12 +13,11 @@ context('Equipment Details', () => {
   it('is reachable', () => {
     cy.task('stubDatastoreGetEquipmentDetails', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       body: [],
     })
 
-    cy.visit(`/orders/${orderId}/equipment-details`)
-
+    cy.visit(`/integrity/orders/${legacySubjectId}/equipment-details`)
     Page.verifyOnPage(EquipmentDetailsPage)
   })
 
@@ -26,13 +25,11 @@ context('Equipment Details', () => {
     it('Renders when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [],
       })
 
-      cy.visit(`/orders/${orderId}/equipment-details`)
-
-      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      const equipmentDetailsPage = Page.visit(EquipmentDetailsPage, { legacySubjectId })
       equipmentDetailsPage.noResultsHeading.should('be.visible')
       equipmentDetailsPage.noResultsMessage.should('be.visible')
     })
@@ -40,7 +37,7 @@ context('Equipment Details', () => {
     it('Does not render when a timetable entry has been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -61,9 +58,7 @@ context('Equipment Details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/equipment-details`)
-
-      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      const equipmentDetailsPage = Page.visit(EquipmentDetailsPage, { legacySubjectId })
       equipmentDetailsPage.noResultsHeading.should('not.exist')
       equipmentDetailsPage.noResultsMessage.should('not.exist')
     })
@@ -73,20 +68,18 @@ context('Equipment Details', () => {
     it('Does not render when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [],
       })
 
-      cy.visit(`/orders/${orderId}/equipment-details`)
-
-      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      const equipmentDetailsPage = Page.visit(EquipmentDetailsPage, { legacySubjectId })
       equipmentDetailsPage.timeline.should('not.exist')
     })
 
     it('Renders when one timetable entry have been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -107,9 +100,7 @@ context('Equipment Details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/equipment-details`)
-
-      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      const equipmentDetailsPage = Page.visit(EquipmentDetailsPage, { legacySubjectId })
       equipmentDetailsPage.timeline.should('be.visible')
       equipmentDetailsPage.timelineItems.should('have.length', 1)
       equipmentDetailsPage.getTimelineItem(0).contains('PID or Device ID 123456')
@@ -119,7 +110,7 @@ context('Equipment Details', () => {
     it('Renders when multiple timetable entries have been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -156,9 +147,7 @@ context('Equipment Details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/equipment-details`)
-
-      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      const equipmentDetailsPage = Page.visit(EquipmentDetailsPage, { legacySubjectId })
       equipmentDetailsPage.timeline.should('be.visible')
       equipmentDetailsPage.timelineItems.should('have.length', 2)
       equipmentDetailsPage.getTimelineItem(0).contains('PID or Device ID 123456')
@@ -170,7 +159,7 @@ context('Equipment Details', () => {
     it('Renders empty details when no Device is present', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -185,9 +174,7 @@ context('Equipment Details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/equipment-details`)
-
-      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      const equipmentDetailsPage = Page.visit(EquipmentDetailsPage, { legacySubjectId })
       equipmentDetailsPage.timeline.should('be.visible')
       equipmentDetailsPage.timelineItems.should('have.length', 1)
       equipmentDetailsPage.getTimelineItem(0).contains('PID or Device ID PID equipment category description')
@@ -197,7 +184,7 @@ context('Equipment Details', () => {
     it('Renders empty details when no HMU Device is present', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -212,9 +199,7 @@ context('Equipment Details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/equipment-details`)
-
-      const equipmentDetailsPage = Page.verifyOnPage(EquipmentDetailsPage)
+      const equipmentDetailsPage = Page.visit(EquipmentDetailsPage, { legacySubjectId })
       equipmentDetailsPage.timeline.should('be.visible')
       equipmentDetailsPage.timelineItems.should('have.length', 1)
       equipmentDetailsPage.getTimelineItem(0).contains('PID or Device ID 012938 PID equipment category description')

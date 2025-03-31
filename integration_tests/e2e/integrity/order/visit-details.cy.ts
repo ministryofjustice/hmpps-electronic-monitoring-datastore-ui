@@ -1,8 +1,8 @@
-import VisitDetailsPage from '../../pages/order/visitDetails'
-import Page from '../../pages/page'
+import Page from '../../../pages/page'
+import VisitDetailsPage from '../../../pages/order/visitDetails'
 
 context('Visit details', () => {
-  const orderId = '1234567'
+  const legacySubjectId = '1234567'
 
   beforeEach(() => {
     cy.task('reset')
@@ -13,19 +13,19 @@ context('Visit details', () => {
   it('is reachable', () => {
     cy.task('stubDatastoreGetVisitDetails', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       body: [],
     })
 
-    cy.visit(`/orders/${orderId}/visit-details`)
-    Page.verifyOnPage(VisitDetailsPage)
+    cy.visit(`/integrity/orders/${legacySubjectId}/visit-details`)
+    Page.verifyOnPage(VisitDetailsPage, { legacySubjectId })
   })
 
   describe('timeline component', () => {
     it('Renders a suspensions timeline', () => {
       cy.task('stubDatastoreGetVisitDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacyOrderId: 123,
@@ -46,9 +46,7 @@ context('Visit details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/visit-details`)
-      const suspensions = Page.verifyOnPage(VisitDetailsPage)
-
+      const suspensions = Page.visit(VisitDetailsPage, { legacySubjectId })
       suspensions.timeline.should('be.visible')
     })
   })
@@ -57,7 +55,7 @@ context('Visit details', () => {
     it('First table includes expected column headers', () => {
       cy.task('stubDatastoreGetVisitDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacyOrderId: 123,
@@ -78,9 +76,7 @@ context('Visit details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/visit-details`)
-      const visitDetails = Page.verifyOnPage(VisitDetailsPage)
-
+      const visitDetails = Page.visit(VisitDetailsPage, { legacySubjectId })
       visitDetails.getTimelineItem(0).within($item => {
         cy.wrap($item).contains('TEST_VISIT_TYPE')
         cy.wrap($item).contains('Address address line 1 address line 2 address line 3 address line 4 postcode')
@@ -96,7 +92,7 @@ context('Visit details', () => {
     it('Second table includes expected column headers', () => {
       cy.task('stubDatastoreGetVisitDetails', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacyOrderId: 123,
@@ -133,9 +129,7 @@ context('Visit details', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/visit-details`)
-      const visitDetails = Page.verifyOnPage(VisitDetailsPage)
-
+      const visitDetails = Page.visit(VisitDetailsPage, { legacySubjectId })
       visitDetails.getTimelineItem(1).within($item => {
         cy.wrap($item).contains('TEST_VISIT_TYPE_2')
         cy.wrap($item).contains('Address address line 5 address line 6 address line 7 address line 8 postcode 2')

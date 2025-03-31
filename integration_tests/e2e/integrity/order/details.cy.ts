@@ -1,8 +1,8 @@
-import OrderDetailsPage from '../pages/orderDetails'
-import Page from '../pages/page'
+import Page from '../../../pages/page'
+import OrderDetailsPage from '../../../pages/order/details'
 
 context('Order Details', () => {
-  const orderId = '1232123'
+  const legacySubjectId = '1232123'
 
   beforeEach(() => {
     cy.task('reset')
@@ -10,11 +10,11 @@ context('Order Details', () => {
 
     cy.task('stubDatastoreGetOrderDetails', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       details: {
         specials: 'no',
-        legacySubjectId: orderId,
-        legacyOrderId: orderId,
+        legacySubjectId,
+        legacyOrderId: legacySubjectId,
         firstName: null,
         lastName: null,
         alias: null,
@@ -50,22 +50,21 @@ context('Order Details', () => {
     })
 
     cy.signIn()
-    cy.visit(`/orders/${orderId}/details`)
   })
 
   it('is reachable', () => {
+    cy.visit(`/integrity/orders/${legacySubjectId}/details`)
     Page.verifyOnPage(OrderDetailsPage)
   })
 
   describe('Device wearer table', () => {
     it('Renders', () => {
-      const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
+      const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.deviceWearerTable().should('be.visible')
     })
 
     it('Includes expected row headers', () => {
-      const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
-
+      const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.deviceWearerTable().each(() => {
         orderDetailsPage.deviceWearerRowHeaders('Specials').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('Legacy subject ID').should('be.visible')
@@ -95,7 +94,7 @@ context('Order Details', () => {
     })
 
     it('Displays primary address values in a single cell', () => {
-      const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
+      const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       const primaryAddressCell = orderDetailsPage.tableCell('Primary address').next()
 
       primaryAddressCell
@@ -108,13 +107,12 @@ context('Order Details', () => {
 
   describe('Order data table', () => {
     it('Renders', () => {
-      const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
+      const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.orderTable().should('be.visible')
     })
 
     it('Includes expected row headers', () => {
-      const orderDetailsPage = Page.verifyOnPage(OrderDetailsPage)
-
+      const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.deviceWearerTable().each(() => {
         orderDetailsPage.deviceWearerRowHeaders('Order start date').should('be.visible')
         orderDetailsPage.deviceWearerRowHeaders('Order end date').should('be.visible')

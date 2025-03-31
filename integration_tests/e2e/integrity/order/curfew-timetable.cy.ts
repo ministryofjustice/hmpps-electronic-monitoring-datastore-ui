@@ -1,8 +1,8 @@
-import CurfewTimetablePage from '../../pages/order/curfewTimetable'
-import Page from '../../pages/page'
+import Page from '../../../pages/page'
+import CurfewTimetablePage from '../../../pages/order/curfewTimetable'
 
 context('Crufew Timetable', () => {
-  const orderId = '1232123'
+  const legacySubjectId = '1232123'
 
   beforeEach(() => {
     cy.task('reset')
@@ -13,12 +13,11 @@ context('Crufew Timetable', () => {
   it('is reachable', () => {
     cy.task('stubDatastoreGetCurfewTimetable', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       body: [],
     })
 
-    cy.visit(`/orders/${orderId}/curfew-timetable`)
-
+    cy.visit(`/integrity/orders/${legacySubjectId}/curfew-timetable`)
     Page.verifyOnPage(CurfewTimetablePage)
   })
 
@@ -26,13 +25,11 @@ context('Crufew Timetable', () => {
     it('Renders when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [],
       })
 
-      cy.visit(`/orders/${orderId}/curfew-timetable`)
-
-      const curfewTimetablePage = Page.verifyOnPage(CurfewTimetablePage)
+      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
       curfewTimetablePage.noResultsHeading.should('be.visible')
       curfewTimetablePage.noResultsMessage.should('be.visible')
     })
@@ -40,7 +37,7 @@ context('Crufew Timetable', () => {
     it('Does not render when a timetable entry has been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -64,9 +61,7 @@ context('Crufew Timetable', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/curfew-timetable`)
-
-      const curfewTimetablePage = Page.verifyOnPage(CurfewTimetablePage)
+      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
       curfewTimetablePage.noResultsHeading.should('not.exist')
       curfewTimetablePage.noResultsMessage.should('not.exist')
     })
@@ -76,20 +71,18 @@ context('Crufew Timetable', () => {
     it('Does not render when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [],
       })
 
-      cy.visit(`/orders/${orderId}/curfew-timetable`)
-
-      const curfewTimetablePage = Page.verifyOnPage(CurfewTimetablePage)
+      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
       curfewTimetablePage.curfewTimetable.should('not.exist')
     })
 
     it('Renders when one timetable entry has been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -113,9 +106,7 @@ context('Crufew Timetable', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/curfew-timetable`)
-
-      const curfewTimetablePage = Page.verifyOnPage(CurfewTimetablePage)
+      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
       curfewTimetablePage.curfewTimetable.should('be.visible')
       curfewTimetablePage.curfewTimetableItems.should('have.length', 1)
       curfewTimetablePage.getCurfewTimetableItem(0).contains('Service ID 321')
@@ -124,7 +115,7 @@ context('Crufew Timetable', () => {
     it('Renders when multiple timetable entries have been found', () => {
       cy.task('stubDatastoreGetCurfewTimetable', {
         httpStatus: 200,
-        orderId,
+        legacySubjectId,
         body: [
           {
             legacySubjectId: 123,
@@ -167,9 +158,7 @@ context('Crufew Timetable', () => {
         ],
       })
 
-      cy.visit(`/orders/${orderId}/curfew-timetable`)
-
-      const curfewTimetablePage = Page.verifyOnPage(CurfewTimetablePage)
+      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
       curfewTimetablePage.curfewTimetable.should('be.visible')
       curfewTimetablePage.curfewTimetableItems.should('have.length', 2)
       curfewTimetablePage.getCurfewTimetableItem(0).contains('Service ID 321')

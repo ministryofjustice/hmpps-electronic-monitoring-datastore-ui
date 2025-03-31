@@ -28,7 +28,7 @@ describe('Visit Details Service', () => {
 
   describe('getCurfewTimetable', () => {
     const orderRequest: OrderRequest = {
-      orderId: '123',
+      legacySubjectId: '123',
     }
 
     const curfewTimetableResponse = [] as CurfewTimetable[]

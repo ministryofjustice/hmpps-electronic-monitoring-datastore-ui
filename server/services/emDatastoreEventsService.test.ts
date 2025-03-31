@@ -31,7 +31,7 @@ describe('Events Service', () => {
 
   describe('getEvents', () => {
     const orderRequest: OrderRequest = {
-      orderId: '123',
+      legacySubjectId: '123',
     }
 
     const monitoringEventsResponse = [] as MonitoringEvent[]

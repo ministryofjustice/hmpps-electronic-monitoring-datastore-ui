@@ -43,7 +43,7 @@ describe('CurfewTimetableController', () => {
         validationErrors: [],
         formData: {},
       } as session.Session & Partial<SessionData>,
-      params: { orderId: `${testOrderId}` },
+      params: { legacySubjectId: `${testOrderId}` },
     })
 
     res = createMockResponse()
@@ -53,7 +53,7 @@ describe('CurfewTimetableController', () => {
     const expectedViewModel = {
       backUrl: `/orders/${testOrderId}/summary`,
       curfewTimetable: [] as CurfewTimetable[],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreCurfewTimetableService.getCurfewTimetable = jest.fn().mockResolvedValue([])
@@ -97,7 +97,7 @@ describe('CurfewTimetableController', () => {
           },
         } as TimelineEventModel,
       ],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreCurfewTimetableService.getCurfewTimetable = jest.fn().mockResolvedValue([

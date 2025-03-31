@@ -1,8 +1,10 @@
-import Page, { PageElement } from '../page'
+import AppPage from '../appPage'
+import PageElement from '../PageElement'
+import paths from '../../../server/constants/paths'
 
-export default class VisitDetailsPage extends Page {
+export default class VisitDetailsPage extends AppPage {
   constructor() {
-    super('Visit details')
+    super('Visit details', paths.INTEGRITY_ORDER.VISIT_DETAILS)
   }
 
   get timeline(): PageElement {

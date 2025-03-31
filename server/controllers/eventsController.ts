@@ -16,14 +16,14 @@ export default class EventsController {
       correlationId: req.id,
     })
 
-    const { orderId } = req.params
+    const { legacySubjectId } = req.params
 
     const events = await this.eventsService.getEvents({
       userToken: res.locals.user.token,
-      orderId,
+      legacySubjectId,
     })
 
-    const viewModel = EventsViewModel.construct(parseInt(orderId, 10), events)
+    const viewModel = EventsViewModel.construct(parseInt(legacySubjectId, 10), events)
 
     res.render('pages/order/event-history', viewModel)
   }

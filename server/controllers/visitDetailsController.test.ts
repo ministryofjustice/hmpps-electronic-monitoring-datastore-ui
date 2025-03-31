@@ -43,7 +43,7 @@ describe('VisitDetailsController', () => {
         validationErrors: [],
         formData: {},
       } as session.Session & Partial<SessionData>,
-      params: { orderId: `${testOrderId}` },
+      params: { legacySubjectId: `${testOrderId}` },
     })
 
     res = createMockResponse()
@@ -53,7 +53,7 @@ describe('VisitDetailsController', () => {
     const expectedViewModel = {
       backUrl: `/orders/${testOrderId}/summary`,
       visitDetails: [] as VisitDetails[],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([])
@@ -94,7 +94,7 @@ describe('VisitDetailsController', () => {
           },
         } as TimelineEventModel,
       ],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([

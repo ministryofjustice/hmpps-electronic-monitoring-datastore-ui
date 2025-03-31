@@ -1,7 +1,7 @@
-import AuthSignInPage from '../pages/authSignIn'
 import Page from '../pages/page'
-import AuthManageDetailsPage from '../pages/authManageDetails'
-import StartPage from '../pages/startPage'
+import AuthSignInPage from '../pages/auth/signIn'
+import AuthManageDetailsPage from '../pages/auth/manageDetails'
+import StartPage from '../pages/start'
 
 context('Sign In', () => {
   beforeEach(() => {
@@ -22,19 +22,19 @@ context('Sign In', () => {
   it('User name visible in header', () => {
     cy.signIn()
     const startPage = Page.verifyOnPage(StartPage)
-    startPage.headerUserName().should('contain.text', 'J. Smith')
+    startPage.header.userName.contains('J. Smith')
   })
 
   it('Phase banner visible in header', () => {
     cy.signIn()
     const indexPage = Page.verifyOnPage(StartPage)
-    indexPage.headerPhaseBanner().should('contain.text', 'dev')
+    indexPage.header.phaseBanner.contains('dev')
   })
 
   it('User can sign out', () => {
     cy.signIn()
     const indexPage = Page.verifyOnPage(StartPage)
-    indexPage.signOut().click()
+    indexPage.header.signOut.click()
     Page.verifyOnPage(AuthSignInPage)
   })
 
@@ -43,8 +43,8 @@ context('Sign In', () => {
     cy.task('stubAuthManageDetails')
     const indexPage = Page.verifyOnPage(StartPage)
 
-    indexPage.manageDetails().get('a').invoke('removeAttr', 'target')
-    indexPage.manageDetails().click()
+    indexPage.header.manageDetails.get('a').invoke('removeAttr', 'target')
+    indexPage.header.manageDetails.click()
     Page.verifyOnPage(AuthManageDetailsPage)
   })
 
@@ -70,6 +70,6 @@ context('Sign In', () => {
 
     cy.signIn()
 
-    indexPage.headerUserName().contains('B. Brown')
+    indexPage.header.userName.contains('B. Brown')
   })
 })

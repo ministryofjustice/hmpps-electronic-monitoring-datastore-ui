@@ -15,11 +15,11 @@ export default class OrderSummaryController {
       correlationId: req.id,
     })
 
-    const { orderId } = req.params
+    const { legacySubjectId } = req.params
 
     const orderInformation = await this.emDatastoreOrderSummaryService.getOrderSummary({
       userToken: res.locals.user.token,
-      orderId,
+      legacySubjectId,
     })
     const backUrl: string = '/orders'
     const reports: Reports = {

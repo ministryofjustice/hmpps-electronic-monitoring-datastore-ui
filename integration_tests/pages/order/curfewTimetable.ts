@@ -1,8 +1,10 @@
-import Page, { PageElement } from '../page'
+import AppPage from '../appPage'
+import PageElement from '../PageElement'
+import paths from '../../../server/constants/paths'
 
-export default class CurfewTimetablePage extends Page {
+export default class CurfewTimetablePage extends AppPage {
   constructor() {
-    super('Services')
+    super('Services', paths.INTEGRITY_ORDER.CURFEW_TIMETABLE)
   }
 
   get curfewTimetable(): PageElement {

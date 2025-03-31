@@ -190,7 +190,7 @@ describe('SearchController', () => {
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(parsedFormData)
       expect(req.session.validationErrors).toEqual([{ field: 'firstName', error: 'Invalid first name' }])
-      expect(res.redirect).toHaveBeenCalledWith('search')
+      expect(res.redirect).toHaveBeenCalledWith('/orders')
     })
 
     it('should redirect to search with appropriate error when no search data supplied', async () => {
@@ -228,7 +228,7 @@ describe('SearchController', () => {
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(parsedFormData)
       expect(req.session.validationErrors).toEqual(validationErrors)
-      expect(res.redirect).toHaveBeenCalledWith('search')
+      expect(res.redirect).toHaveBeenCalledWith('/orders')
     })
 
     it('when input is valid, redirects to the results page with the query execution ID as a URL query parameter', async () => {
@@ -248,7 +248,7 @@ describe('SearchController', () => {
       await searchController.submitSearchQuery(req, res, next)
 
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
-      expect(res.redirect).toHaveBeenCalledWith(`search/integrity?search_id=${queryExecutionId}`)
+      expect(res.redirect).toHaveBeenCalledWith(`/integrity/orders?search_id=${queryExecutionId}`)
     })
   })
 
@@ -283,7 +283,7 @@ describe('SearchController', () => {
 
       await searchController.searchResultsPage(req, res, next)
 
-      expect(res.redirect).toHaveBeenCalledWith('/search')
+      expect(res.redirect).toHaveBeenCalledWith('/orders')
     })
 
     it('should render the search results view when a valid orderExecutionId is submitted', async () => {

@@ -28,9 +28,9 @@ describe('SuspensionOfVisitsController', () => {
 
   const testOrderId = 1234321
 
-  const createEvent = (orderId: number, time: string, dateTime: string): SuspensionOfVisitsEvent => {
+  const createEvent = (legacySubjectId: number, time: string, dateTime: string): SuspensionOfVisitsEvent => {
     return {
-      legacySubjectId: orderId,
+      legacySubjectId,
       suspensionOfVisits: 'Yes',
       requestedDate: dateTime,
       startDate: dateTime,
@@ -51,10 +51,13 @@ describe('SuspensionOfVisitsController', () => {
     }
   }
 
-  const createViewData = (orderId: number, events: SuspensionOfVisitsViewEvent[]): SuspensionOfVisitsViewModel => {
+  const createViewData = (
+    legacySubjectId: number,
+    events: SuspensionOfVisitsViewEvent[],
+  ): SuspensionOfVisitsViewModel => {
     return {
-      orderId,
-      backUrl: `/orders/${orderId}/summary`,
+      legacySubjectId,
+      backUrl: `/orders/${legacySubjectId}/summary`,
       events,
     }
   }
@@ -79,7 +82,7 @@ describe('SuspensionOfVisitsController', () => {
         validationErrors: [],
         formData: {},
       } as session.Session & Partial<SessionData>,
-      params: { orderId: `${testOrderId}` },
+      params: { legacySubjectId: `${testOrderId}` },
     })
 
     res = createMockResponse()
@@ -89,7 +92,7 @@ describe('SuspensionOfVisitsController', () => {
     const expectedViewModel = {
       backUrl: `/orders/${testOrderId}/summary`,
       events: [] as SuspensionOfVisitsEvent[],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
     emDatastoreSuspensionOfVisitsService.getSuspensionOfVisits = jest.fn().mockResolvedValue([])
 

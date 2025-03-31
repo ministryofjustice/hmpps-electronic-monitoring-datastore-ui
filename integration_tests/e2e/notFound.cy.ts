@@ -1,5 +1,5 @@
-import NotFoundPage from '../pages/notFound'
 import Page from '../pages/page'
+import { NotFoundErrorPage } from '../pages/error'
 
 context('Not found', () => {
   const orderId = '1234567'
@@ -12,6 +12,6 @@ context('Not found', () => {
   })
 
   it('is reachable', () => {
-    Page.verifyOnPage(NotFoundPage)
+    Page.verifyOnPage(NotFoundErrorPage)
   })
 })

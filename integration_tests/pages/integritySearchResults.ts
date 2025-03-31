@@ -1,8 +1,10 @@
-import Page, { PageElement } from './page'
+import AppPage from './appPage'
+import PageElement from './PageElement'
+import paths from '../../server/constants/paths'
 
-export default class SearchResultsPage extends Page {
+export default class IntegritySearchResultsPage extends AppPage {
   constructor() {
-    super('Search results')
+    super('Search results', paths.INTEGRITY_ORDER.INDEX)
   }
 
   override checkOnPage(): void {

@@ -1,8 +1,10 @@
-import Page, { PageElement } from './page'
+import AppPage from '../appPage'
+import PageElement from '../PageElement'
+import paths from '../../../server/constants/paths'
 
-export default class OrderDetailsPage extends Page {
+export default class OrderDetailsPage extends AppPage {
   constructor() {
-    super('Order details')
+    super('Order details', paths.INTEGRITY_ORDER.DETAILS)
   }
 
   deviceWearerTable = (): PageElement =>

@@ -10,7 +10,7 @@ const paths = {
     EQUIPMENT_DETAILS: '/integrity/orders/:legacySubjectId/equipment-details',
     SUSPENSION_OF_VISITS: '/integrity/orders/:legacySubjectId/suspension-of-visits',
     EVENT_HISTORY: '/integrity/orders/:legacySubjectId/event-history',
-    CURFEW_TIMETABLE: '/integrity/orders/:legacySubjectId/curfew-timeline',
+    CURFEW_TIMETABLE: '/integrity/orders/:legacySubjectId/curfew-timetable',
   },
 
   ALCOHOL_MONITORING: {

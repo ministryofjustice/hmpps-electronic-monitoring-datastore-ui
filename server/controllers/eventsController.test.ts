@@ -46,7 +46,7 @@ describe('EventsController', () => {
         validationErrors: [],
         formData: {},
       } as session.Session & Partial<SessionData>,
-      params: { orderId: `${testOrderId}` },
+      params: { legacySubjectId: `${testOrderId}` },
     })
 
     res = createMockResponse()
@@ -56,7 +56,7 @@ describe('EventsController', () => {
     const expectedViewModel = {
       backUrl: `/orders/${testOrderId}/summary`,
       events: [] as (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([])
@@ -83,7 +83,7 @@ describe('EventsController', () => {
           properties: {},
         } as TimelineEventModel,
       ],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
@@ -117,7 +117,7 @@ describe('EventsController', () => {
           properties: {},
         } as TimelineEventModel,
       ],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
@@ -151,7 +151,7 @@ describe('EventsController', () => {
           properties: {},
         } as TimelineEventModel,
       ],
-      orderId: testOrderId,
+      legacySubjectId: testOrderId,
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([

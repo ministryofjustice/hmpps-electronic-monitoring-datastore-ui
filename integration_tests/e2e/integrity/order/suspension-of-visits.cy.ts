@@ -1,8 +1,8 @@
-import SuspensionOfVisitsPage from '../../pages/suspensionOfVisits'
-import Page from '../../pages/page'
+import Page from '../../../pages/page'
+import SuspensionOfVisitsPage from '../../../pages/order/suspensionOfVisits'
 
 context('Suspensions', () => {
-  const orderId = 1234567
+  const legacySubjectId = 1234567
   const events = [
     {
       legacySubjectId: 123456789,
@@ -62,26 +62,26 @@ context('Suspensions', () => {
 
     cy.task('stubDatastoreGetSuspensionOfVisits', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       events,
     })
 
     cy.signIn()
-    cy.visit(`/orders/${orderId}/suspension-of-visits`)
   })
 
   it('is reachable', () => {
+    cy.visit(`/integrity/orders/${legacySubjectId}/suspension-of-visits`)
     Page.verifyOnPage(SuspensionOfVisitsPage)
   })
 
   describe('Timeline component', () => {
     it('Renders a suspensions timeline', () => {
-      const suspensions = Page.verifyOnPage(SuspensionOfVisitsPage)
+      const suspensions = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
       suspensions.timeline().should('be.visible')
     })
 
     it('Renders the expected number of suspension of visits events', () => {
-      const suspensions = Page.verifyOnPage(SuspensionOfVisitsPage)
+      const suspensions = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
       suspensions.timelineItems().then($items => {
         expect($items.length).to.be.equals(3)
       })
@@ -90,7 +90,7 @@ context('Suspensions', () => {
 
   describe('Timeline events', () => {
     it('Each table includes expected headers', () => {
-      const suspensions = Page.verifyOnPage(SuspensionOfVisitsPage)
+      const suspensions = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
       suspensions.timelineItems().each($item => {
         cy.wrap($item).within(() => {
           suspensions.itemTableHeaders('Suspension of visits').should('be.visible')
@@ -103,7 +103,7 @@ context('Suspensions', () => {
     })
 
     it('Each table includes expected values', () => {
-      const suspensions = Page.verifyOnPage(SuspensionOfVisitsPage)
+      const suspensions = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
 
       suspensions.timelineItems().each(($item, index) => {
         cy.wrap($item).within(() => {
@@ -131,6 +131,4 @@ context('Suspensions', () => {
       })
     })
   })
-
-  // TODO: Add tests for date filter.
 })

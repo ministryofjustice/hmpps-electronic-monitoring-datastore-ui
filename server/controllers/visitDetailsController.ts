@@ -16,14 +16,14 @@ export default class VisitDetailsController {
       correlationId: req.id,
     })
 
-    const { orderId } = req.params
+    const { legacySubjectId } = req.params
 
     const visitDetails = await this.visitDetailsService.getVisitDetails({
       userToken: res.locals.user.token,
-      orderId,
+      legacySubjectId,
     })
 
-    const viewModel = VisitDetailsModel.construct(parseInt(orderId, 10), visitDetails)
+    const viewModel = VisitDetailsModel.construct(parseInt(legacySubjectId, 10), visitDetails)
 
     res.render('pages/order/visit-details', viewModel)
   }

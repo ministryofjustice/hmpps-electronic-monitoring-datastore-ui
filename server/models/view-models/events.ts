@@ -10,16 +10,16 @@ export type TimelineEventModel = {
 }
 
 export type EventsViewModel = {
-  orderId: number
+  legacySubjectId: number
   events: TimelineEventModel[]
   backUrl: string
 }
 
 const createViewModelFromApiDto = (
-  orderId: number,
+  legacySubjectId: number,
   events: (MonitoringEvent | IncidentEvent | ContactEvent)[],
 ): EventsViewModel => ({
-  orderId,
+  legacySubjectId,
   events: events
     .map(event => {
       return {
@@ -31,14 +31,14 @@ const createViewModelFromApiDto = (
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/orders/${orderId}/summary`,
+  backUrl: `/orders/${legacySubjectId}/summary`,
 })
 
 const construct = (
-  orderId: number,
+  legacySubjectId: number,
   events: (MonitoringEvent | IncidentEvent | ContactEvent)[] = [],
 ): EventsViewModel => {
-  return createViewModelFromApiDto(orderId, events)
+  return createViewModelFromApiDto(legacySubjectId, events)
 }
 
 export default {

@@ -1,8 +1,10 @@
-import Page, { PageElement } from './page'
+import AppPage from '../appPage'
+import PageElement from '../PageElement'
+import paths from '../../../server/constants/paths'
 
-export default class OrderInformationPage extends Page {
+export default class OrderSummaryPage extends AppPage {
   constructor() {
-    super('Key order details')
+    super('Key order details', paths.INTEGRITY_ORDER.SUMMARY)
   }
 
   override checkOnPage(): void {

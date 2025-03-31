@@ -48,72 +48,72 @@ export default class EmDatastoreApiClient {
   }
 
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<OrderInformation>({
-      path: `/integrity/orders/${orderId}`,
+      path: `/integrity/orders/${legacySubjectId}`,
     })
   }
 
   async getOrderDetails(input: OrderRequest): Promise<OrderDetails> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<OrderDetails>({
-      path: `/integrity/orders/${orderId}/details`,
+      path: `/integrity/orders/${legacySubjectId}/details`,
     })
   }
 
   async getMonitoringEvents(input: OrderRequest): Promise<MonitoringEvent[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<MonitoringEvent[]>({
-      path: `/integrity/orders/${orderId}/monitoring-events`,
+      path: `/integrity/orders/${legacySubjectId}/monitoring-events`,
     })
   }
 
   async getIncidentEvents(input: OrderRequest): Promise<IncidentEvent[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<IncidentEvent[]>({
-      path: `/integrity/orders/${orderId}/incident-events`,
+      path: `/integrity/orders/${legacySubjectId}/incident-events`,
     })
   }
 
   async getViolationEvents(input: OrderRequest): Promise<ViolationEvent[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<ViolationEvent[]>({
-      path: `/integrity/orders/${orderId}/violation-events`,
+      path: `/integrity/orders/${legacySubjectId}/violation-events`,
     })
   }
 
   async getContactEvents(input: OrderRequest): Promise<ContactEvent[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<ContactEvent[]>({
-      path: `/integrity/orders/${orderId}/contact-events`,
+      path: `/integrity/orders/${legacySubjectId}/contact-events`,
     })
   }
 
   async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<EquipmentDetails[]>({
-      path: `/integrity/orders/${orderId}/equipment-details`,
+      path: `/integrity/orders/${legacySubjectId}/equipment-details`,
     })
   }
 
   async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<VisitDetails[]>({
-      path: `/integrity/orders/${orderId}/visit-details`,
+      path: `/integrity/orders/${legacySubjectId}/visit-details`,
     })
   }
 
   async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<SuspensionOfVisitsEvent[]>({
-      path: `/integrity/orders/${orderId}/suspension-of-visits`,
+      path: `/integrity/orders/${legacySubjectId}/suspension-of-visits`,
     })
   }
 
   async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
-    const { orderId } = input
+    const { legacySubjectId } = input
     return this.restClient.get<CurfewTimetable[]>({
-      path: `/integrity/orders/${orderId}/curfew-timetable`,
+      path: `/integrity/orders/${legacySubjectId}/curfew-timetable`,
     })
   }
 }

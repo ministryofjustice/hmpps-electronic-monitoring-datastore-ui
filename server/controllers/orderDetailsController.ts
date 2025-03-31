@@ -16,19 +16,19 @@ export default class OrderDetailsController {
       correlationId: req.id,
     })
 
-    const { orderId } = req.params
+    const { legacySubjectId } = req.params
 
     try {
       const orderDetails = await this.emDatastoreOrderDetailsService.getOrderDetails({
         userToken: res.locals.user.token,
-        orderId,
+        legacySubjectId,
       })
 
       const { deviceWearerData, orderData } = formatOrderDetails.parse(orderDetails)
 
       const tabulatedDeviceWearerData = tabulateRecords(
         {
-          backUrl: `/orders/${orderId}/summary`,
+          backUrl: `/orders/${legacySubjectId}/summary`,
           records: deviceWearerData,
         },
         'Device wearer data',
@@ -36,7 +36,7 @@ export default class OrderDetailsController {
 
       const tabulatedOrderData = tabulateRecords(
         {
-          backUrl: `/orders/${orderId}/summary`,
+          backUrl: `/orders/${legacySubjectId}/summary`,
           records: orderData,
         },
         'Order data',
@@ -45,7 +45,7 @@ export default class OrderDetailsController {
       res.render('pages/order/details', {
         deviceWearer: tabulatedDeviceWearerData,
         orderDetails: tabulatedOrderData,
-        backUrl: `/orders/${orderId}/summary`,
+        backUrl: `/orders/${legacySubjectId}/summary`,
       })
     } catch {
       res.status(500).send('Error fetching data')

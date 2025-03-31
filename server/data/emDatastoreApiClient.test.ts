@@ -46,7 +46,7 @@ describe('EM Datastore API Client', () => {
 
   const orderInfo: OrderRequest = {
     userToken: 'user-token',
-    orderId: '7654321',
+    legacySubjectId: '7654321',
   }
 
   beforeEach(() => {
@@ -110,7 +110,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch order summary with correct parameters', async () => {
       const expectedResult = mockOrderInformation
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getOrderSummary(orderInfo)
 
@@ -120,11 +120,11 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
-      nock(config.apis.emDatastoreApi.url).get(`/integrity/orders/${orderInfoWithNullToken.orderId}`).reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
       await expect(emDatastoreApiClient.getOrderSummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
@@ -136,7 +136,7 @@ describe('EM Datastore API Client', () => {
       const fakeResponse = [] as MonitoringEvent[]
       const expectedResult = [] as MonitoringEvent[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/monitoring-events`).reply(200, fakeResponse)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/monitoring-events`).reply(200, fakeResponse)
 
       const result = await emDatastoreApiClient.getMonitoringEvents(orderInfo)
 
@@ -146,12 +146,12 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/monitoring-events`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/monitoring-events`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
@@ -164,7 +164,7 @@ describe('EM Datastore API Client', () => {
       const fakeResponse = [] as ContactEvent[]
       const expectedResult = [] as ContactEvent[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/contact-events`).reply(200, fakeResponse)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/contact-events`).reply(200, fakeResponse)
 
       const result = await emDatastoreApiClient.getContactEvents(orderInfo)
 
@@ -174,12 +174,12 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/contact-events`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/contact-events`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
@@ -192,7 +192,7 @@ describe('EM Datastore API Client', () => {
       const fakeResponse = [] as IncidentEvent[]
       const expectedResult = [] as IncidentEvent[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/incident-events`).reply(200, fakeResponse)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/incident-events`).reply(200, fakeResponse)
 
       const result = await emDatastoreApiClient.getIncidentEvents(orderInfo)
 
@@ -202,12 +202,12 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/incident-events`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/incident-events`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
@@ -219,7 +219,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch violation events with correct parameters', async () => {
       const expectedResult = [] as ViolationEvent[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/violation-events`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/violation-events`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getViolationEvents(orderInfo)
 
@@ -229,12 +229,12 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/violation-events`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/violation-events`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
@@ -255,7 +255,7 @@ describe('EM Datastore API Client', () => {
         },
       ] as SuspensionOfVisitsEvent[]
       const expectedResult = fakeResponse
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/suspension-of-visits`).reply(200, fakeResponse)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/suspension-of-visits`).reply(200, fakeResponse)
 
       const result = await emDatastoreApiClient.getSuspensionOfVisits(orderInfo)
 
@@ -264,12 +264,12 @@ describe('EM Datastore API Client', () => {
 
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/suspension-of-visits`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/suspension-of-visits`)
         .reply(401)
 
       await expect(emDatastoreApiClient.getSuspensionOfVisits(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
@@ -285,7 +285,7 @@ describe('EM Datastore API Client', () => {
         },
       ]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/equipment-details`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getEquipmentDetails(orderInfo)
 
@@ -295,7 +295,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch list of equipment details', async () => {
       const expectedResult = [] as EquipmentDetails[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/equipment-details`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getEquipmentDetails(orderInfo)
 
@@ -305,12 +305,12 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/equipment-details`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/equipment-details`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
@@ -339,7 +339,7 @@ describe('EM Datastore API Client', () => {
         },
       ] as VisitDetails[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/visit-details`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getVisitDetails(orderInfo)
 
@@ -349,7 +349,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch list of visit details', async () => {
       const expectedResult = [] as VisitDetails[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/visit-details`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getVisitDetails(orderInfo)
 
@@ -359,12 +359,12 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/visit-details`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/visit-details`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
@@ -396,7 +396,7 @@ describe('EM Datastore API Client', () => {
         },
       ] as CurfewTimetable[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/curfew-timetable`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/curfew-timetable`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getCurfewTimetable(orderInfo)
 
@@ -406,7 +406,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch an empty list of curfew timetables', async () => {
       const expectedResult = [] as CurfewTimetable[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.orderId}/curfew-timetable`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/curfew-timetable`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getCurfewTimetable(orderInfo)
 
@@ -416,12 +416,12 @@ describe('EM Datastore API Client', () => {
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       // Create orderInfo with userToken explicitly set to null
       const orderInfoWithNullToken: OrderRequest = {
-        orderId: '123',
+        legacySubjectId: '123',
         userToken: null,
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.orderId}/curfew-timetable`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/curfew-timetable`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access

@@ -1,0 +1,15 @@
+/* eslint max-classes-per-file: ["error", 2] */
+
+import AppPage from './page'
+
+export default class ErrorPage extends AppPage {
+  constructor(errorMessage: string) {
+    super(errorMessage, /\/*/)
+  }
+}
+
+export class NotFoundErrorPage extends AppPage {
+  constructor(errorMessage: string = 'Page not found') {
+    super(errorMessage, /\/*'/)
+  }
+}

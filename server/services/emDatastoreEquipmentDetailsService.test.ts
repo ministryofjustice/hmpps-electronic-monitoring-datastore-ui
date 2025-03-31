@@ -28,7 +28,7 @@ describe('Equipment Details Service', () => {
 
   describe('getEquipmentDetails', () => {
     const orderRequest: OrderRequest = {
-      orderId: '123',
+      legacySubjectId: '123',
     }
 
     const equipmentDetailsResponse = [] as EquipmentDetails[]

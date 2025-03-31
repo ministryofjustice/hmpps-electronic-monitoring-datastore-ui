@@ -26,7 +26,7 @@ describe('Suspension of visits service', () => {
 
   describe('getSuspensionOfVisits', () => {
     const orderRequest: OrderRequest = {
-      orderId: '123',
+      legacySubjectId: '123',
     }
     const suspensionOfVisitsResponse = [] as SuspensionOfVisitsEvent[]
     const expectedResult = [] as SuspensionOfVisitsEvent[]

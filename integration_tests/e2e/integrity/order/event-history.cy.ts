@@ -1,8 +1,8 @@
-import EventHistoryPage from '../../pages/order/eventHistory'
-import Page from '../../pages/page'
+import Page from '../../../pages/page'
+import EventHistoryPage from '../../../pages/order/eventHistory'
 
 context('Event history', () => {
-  const orderId = 1234567
+  const legacySubjectId = 1234567
 
   beforeEach(() => {
     cy.task('reset')
@@ -10,11 +10,11 @@ context('Event history', () => {
 
     cy.task('stubDatastoreGetMonitoringEvents', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       body: [
         {
-          legacyOrderId: orderId,
-          legacySubjectId: orderId,
+          legacyOrderId: legacySubjectId,
+          legacySubjectId,
           type: 'monitoring',
           dateTime: '2022-02-02T01:03:03',
           details: {
@@ -23,13 +23,14 @@ context('Event history', () => {
         },
       ],
     })
+
     cy.task('stubDatastoreGetIncidentEvents', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       body: [
         {
-          legacyOrderId: orderId,
-          legacySubjectId: orderId,
+          legacyOrderId: legacySubjectId,
+          legacySubjectId,
           type: 'incident',
           dateTime: '2022-02-02T01:06:06',
           details: {
@@ -38,13 +39,14 @@ context('Event history', () => {
         },
       ],
     })
+
     cy.task('stubDatastoreGetContactEvents', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       body: [
         {
-          legacyOrderId: orderId,
-          legacySubjectId: orderId,
+          legacyOrderId: legacySubjectId,
+          legacySubjectId,
           type: 'contact',
           dateTime: '2022-02-03T01:09:09',
           details: {
@@ -59,13 +61,14 @@ context('Event history', () => {
         },
       ],
     })
+
     cy.task('stubDatastoreGetViolationEvents', {
       httpStatus: 200,
-      orderId,
+      legacySubjectId,
       body: [
         {
-          legacyOrderId: orderId,
-          legacySubjectId: orderId,
+          legacyOrderId: legacySubjectId,
+          legacySubjectId,
           type: 'violation',
           dateTime: '2022-02-03T01:12:12',
           details: {
@@ -98,24 +101,20 @@ context('Event history', () => {
   })
 
   it('is reachable', () => {
-    cy.visit(`/orders/${orderId}/event-history`)
+    cy.visit(`/integrity/orders/${legacySubjectId}/event-history`)
     Page.verifyOnPage(EventHistoryPage)
   })
 
   describe('Event timeline component', () => {
     it('Renders an event timeline', () => {
-      cy.visit(`/orders/${orderId}/event-history`)
-
-      const eventHistory = Page.verifyOnPage(EventHistoryPage)
+      const eventHistory = Page.visit(EventHistoryPage, { legacySubjectId })
       eventHistory.timeline.should('be.visible')
     })
   })
 
   describe('Event timeline item', () => {
     it('Includes expected monitoring event', () => {
-      cy.visit(`/orders/${orderId}/event-history`)
-
-      const eventHistory = Page.verifyOnPage(EventHistoryPage)
+      const eventHistory = Page.visit(EventHistoryPage, { legacySubjectId })
       eventHistory.getTimelineItem(0).within($item => {
         cy.wrap($item).contains('Monitoring event 2 Feb 2022 at 1:03am')
         cy.wrap($item).contains('Processed date 2 February 2022')
@@ -124,9 +123,7 @@ context('Event history', () => {
     })
 
     it('Includes expected incident event', () => {
-      cy.visit(`/orders/${orderId}/event-history`)
-
-      const eventHistory = Page.verifyOnPage(EventHistoryPage)
+      const eventHistory = Page.visit(EventHistoryPage, { legacySubjectId })
       eventHistory.getTimelineItem(1).within($item => {
         cy.wrap($item).contains('Incident event 2 Feb 2022 at 1:06am')
         cy.wrap($item).contains('Type an incident occurred')
@@ -134,9 +131,7 @@ context('Event history', () => {
     })
 
     it('Includes expected contact event', () => {
-      cy.visit(`/orders/${orderId}/event-history`)
-
-      const eventHistory = Page.verifyOnPage(EventHistoryPage)
+      const eventHistory = Page.visit(EventHistoryPage, { legacySubjectId })
       eventHistory.getTimelineItem(2).within($item => {
         cy.wrap($item).contains('Contact event 3 Feb 2022 at 1:09am')
 
@@ -151,9 +146,7 @@ context('Event history', () => {
     })
 
     it('Includes expected violation event', () => {
-      cy.visit(`/orders/${orderId}/event-history`)
-
-      const eventHistory = Page.verifyOnPage(EventHistoryPage)
+      const eventHistory = Page.visit(EventHistoryPage, { legacySubjectId })
       eventHistory.getTimelineItem(3).within($item => {
         cy.wrap($item).contains('Violation event 3 Feb 2022 at 1:12am')
 

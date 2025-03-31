@@ -62,15 +62,15 @@ describe('OrderDetailsController', () => {
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_DETAILS_PAGE, expectedLogData)
     })
 
-    it(`calls the DatastoreOrderService for data using the correct orderId parameter`, async () => {
+    it(`calls the DatastoreOrderService for data using the correct legacySubjectId parameter`, async () => {
       const expectedOrderId = 'testId'
       const expectedOrderServiceParams: OrderRequest = {
         userToken: 'fakeUserToken',
-        orderId: expectedOrderId,
+        legacySubjectId: expectedOrderId,
       }
       req = createMockRequest({
         params: {
-          orderId: expectedOrderId,
+          legacySubjectId: expectedOrderId,
         },
       })
 
@@ -100,7 +100,7 @@ describe('OrderDetailsController', () => {
       }
       req = createMockRequest({
         params: {
-          orderId: expectedOrderId,
+          legacySubjectId: expectedOrderId,
         },
       })
 
@@ -142,7 +142,7 @@ describe('OrderDetailsController', () => {
 
       req = createMockRequest({
         params: {
-          orderId: expectedOrderId,
+          legacySubjectId: expectedOrderId,
         },
       })
 

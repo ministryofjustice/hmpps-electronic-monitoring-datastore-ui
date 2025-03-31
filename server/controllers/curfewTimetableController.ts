@@ -16,14 +16,14 @@ export default class CurfewTimetableController {
       correlationId: req.id,
     })
 
-    const { orderId } = req.params
+    const { legacySubjectId } = req.params
 
     const curfewTimetable = await this.curfewTimetableService.getCurfewTimetable({
       userToken: res.locals.user.token,
-      orderId,
+      legacySubjectId,
     })
 
-    const viewModel = CurfewTimetableModel.construct(parseInt(orderId, 10), curfewTimetable)
+    const viewModel = CurfewTimetableModel.construct(parseInt(legacySubjectId, 10), curfewTimetable)
 
     res.render('pages/order/curfew-timetable', viewModel)
   }
