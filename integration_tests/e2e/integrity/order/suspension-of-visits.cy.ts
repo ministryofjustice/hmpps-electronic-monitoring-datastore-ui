@@ -74,6 +74,15 @@ context('Suspensions', () => {
     Page.verifyOnPage(SuspensionOfVisitsPage)
   })
 
+  it('Should render the correct elements ', () => {
+    const page = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
+
+    page.header.userName.should('contain.text', 'M. Tester')
+    page.header.phaseBanner.should('contain.text', 'dev')
+
+    page.checkIsAccessible()
+  })
+
   describe('Timeline component', () => {
     it('Renders a suspensions timeline', () => {
       const suspensions = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })

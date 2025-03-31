@@ -1,6 +1,6 @@
 /* eslint max-classes-per-file: ["error", 2] */
 
-import AppPage from './page'
+import AppPage from './appPage'
 
 export default class ErrorPage extends AppPage {
   constructor(errorMessage: string) {

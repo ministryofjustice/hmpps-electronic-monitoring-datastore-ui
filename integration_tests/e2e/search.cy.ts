@@ -13,6 +13,15 @@ context('Search', () => {
     Page.verifyOnPage(SearchPage)
   })
 
+  it('Should render the correct elements ', () => {
+    const page = Page.visit(SearchPage)
+
+    page.header.userName.should('contain.text', 'M. Tester')
+    page.header.phaseBanner.should('contain.text', 'dev')
+
+    page.checkIsAccessible()
+  })
+
   describe('Service information banner', () => {
     it('Service information banner is displayed', () => {
       const searchPage = Page.visit(SearchPage)

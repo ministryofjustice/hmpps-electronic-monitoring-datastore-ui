@@ -21,6 +21,21 @@ context('Equipment Details', () => {
     Page.verifyOnPage(EquipmentDetailsPage)
   })
 
+  it('Should render the correct elements ', () => {
+    cy.task('stubDatastoreGetEquipmentDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(EquipmentDetailsPage, { legacySubjectId })
+
+    page.header.userName.should('contain.text', 'M. Tester')
+    page.header.phaseBanner.should('contain.text', 'dev')
+
+    page.checkIsAccessible()
+  })
+
   describe('No results message', () => {
     it('Renders when no timetable entries have been found', () => {
       cy.task('stubDatastoreGetEquipmentDetails', {

@@ -5,13 +5,9 @@ import EmDatastoreOrderDetailsService from '../services/emDatastoreOrderDetailsS
 import OrderDetailsController from './orderDetailsController'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
 import { OrderRequest } from '../types/OrderRequest'
-import tabluateRecords from '../utils/tabulateRecords'
-import { formatOrderDetails } from '../models/orderDetails'
 
 jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreOrderDetailsService')
-jest.mock('../utils/tabulateRecords', () => jest.fn(() => 'mock-tabulated-data'))
-jest.mock('../models/orderDetails', () => ({ formatOrderDetails: { parse: jest.fn() } }))
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreOrderDetailsService = { getOrderDetails: jest.fn() } as unknown as EmDatastoreOrderDetailsService
@@ -79,52 +75,6 @@ describe('OrderDetailsController', () => {
       expect(emDatastoreOrderDetailsService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
-    it(`calls formatOrderDetails with the expected data`, async () => {
-      const expectedOrderDetails = ['expectedOrderDetails']
-
-      emDatastoreOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
-
-      await controller.orderDetails(req, res, next)
-
-      expect(formatOrderDetails.parse).toHaveBeenCalledTimes(1)
-      expect(formatOrderDetails.parse).toHaveBeenCalledWith(expectedOrderDetails)
-    })
-
-    it(`calls tabulateRecords with device wearer data and order data`, async () => {
-      const expectedOrderId = 'testId'
-      const expectedDeviceWearerData = 'expectedDeviceWearerData'
-      const expectedOrderData = 'expectedOrderData'
-      const mockParsedData = {
-        deviceWearerData: expectedDeviceWearerData,
-        orderData: expectedOrderData,
-      }
-      req = createMockRequest({
-        params: {
-          legacySubjectId: expectedOrderId,
-        },
-      })
-
-      formatOrderDetails.parse = jest.fn().mockReturnValue(mockParsedData)
-
-      await controller.orderDetails(req, res, next)
-
-      expect(tabluateRecords).toHaveBeenCalledTimes(2)
-      expect(tabluateRecords).toHaveBeenCalledWith(
-        {
-          backUrl: `/orders/${expectedOrderId}/summary`,
-          records: expectedDeviceWearerData,
-        },
-        'Device wearer data',
-      )
-      expect(tabluateRecords).toHaveBeenCalledWith(
-        {
-          backUrl: `/orders/${expectedOrderId}/summary`,
-          records: expectedOrderData,
-        },
-        'Order data',
-      )
-    })
-
     it(`returns correct error when getOrderDetails fails`, async () => {
       emDatastoreOrderDetailsService.getOrderDetails = jest.fn().mockImplementation(() => {
         throw new Error('Error message')
@@ -147,8 +97,7 @@ describe('OrderDetailsController', () => {
       })
 
       const expectedPageData = {
-        deviceWearer: 'mock-tabulated-data',
-        orderDetails: 'mock-tabulated-data',
+        details: 'expectedOrderDetails',
         backUrl: `/orders/${expectedOrderId}/summary`,
       }
 

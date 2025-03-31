@@ -105,6 +105,15 @@ context('Event history', () => {
     Page.verifyOnPage(EventHistoryPage)
   })
 
+  it('Should render the correct elements ', () => {
+    const page = Page.visit(EventHistoryPage, { legacySubjectId })
+
+    page.header.userName.should('contain.text', 'M. Tester')
+    page.header.phaseBanner.should('contain.text', 'dev')
+
+    page.checkIsAccessible()
+  })
+
   describe('Event timeline component', () => {
     it('Renders an event timeline', () => {
       const eventHistory = Page.visit(EventHistoryPage, { legacySubjectId })

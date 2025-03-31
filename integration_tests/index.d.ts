@@ -38,5 +38,14 @@ declare namespace Cypress {
       legend: string | RegExp,
       options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>,
     ) => Chainable<JQuery>
+
+    /**
+     * Custom command to get a form fieldset by legend text. Options are passed to the command to get the actual fieldset element
+     * @example cy.getBySummaryListKey('Item 1')
+     */
+    getBySummaryListKey: (
+      key: string | RegExp,
+      options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>,
+    ) => Chainable<JQuery>
   }
 }

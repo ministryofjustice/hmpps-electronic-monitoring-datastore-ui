@@ -21,7 +21,7 @@ context('Order Information', () => {
       keyOrderInformation: {
         specials: 'no',
         legacySubjectId,
-        legacyOrderId: '1234567',
+        legacyOrderId: legacySubjectId,
         name: 'Testopher Fakesmith',
         alias: 'an old tv show',
         dateOfBirth: '1950-01-01',
@@ -52,69 +52,159 @@ context('Order Information', () => {
     Page.verifyOnPage(SummaryPage)
   })
 
-  describe('Order information table', () => {
+  it('Should render the correct elements ', () => {
+    const page = Page.visit(SummaryPage, { legacySubjectId })
+
+    page.header.userName.should('contain.text', 'M. Tester')
+    page.header.phaseBanner.should('contain.text', 'dev')
+
+    page.checkIsAccessible()
+  })
+
+  describe('Order information details', () => {
     it('Includes expected rows', () => {
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
-      summaryPage.orderInformationTable().each(() => {
-        summaryPage.tableRowHeaders('Specials').should('be.visible')
-        summaryPage.tableRowHeaders('Legacy Subject ID').should('be.visible')
-        summaryPage.tableRowHeaders('Legacy Order ID').should('be.visible')
-        summaryPage.tableRowHeaders('Name').should('be.visible')
-        summaryPage.tableRowHeaders('Alias').should('be.visible')
-        summaryPage.tableRowHeaders('Date of birth').should('be.visible')
-        summaryPage.tableRowHeaders('Primary address').should('be.visible')
-        summaryPage.tableRowHeaders('Order start date').should('be.visible')
-        summaryPage.tableRowHeaders('Order end date').should('be.visible')
+      summaryPage.orderInformationDetails.within($summary => {
+        cy.wrap($summary).getBySummaryListKey('Specials').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Legacy Subject ID').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Legacy Order ID').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Name').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Alias').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Date of birth').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Primary address').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Order start date').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('Order end date').should('be.visible')
       })
+    })
+
+    it('Displays primary address values in a single cell', () => {
+      const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
+      summaryPage.orderInformationDetails
+        .getBySummaryListKey('Primary address')
+        .contains('123 Fourth StreetFivetonSixbury7AB 8CD')
     })
   })
 
   describe('Grid buttons', () => {
     it('Contains order details button and navigates to expected page', () => {
-      cy.task('stubDatastoreGetOrderDetails')
+      cy.task('stubDatastoreGetOrderDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        details: {
+          specials: 'no',
+          legacySubjectId,
+          legacyOrderId: legacySubjectId,
+          firstName: null,
+          lastName: null,
+          alias: null,
+          dateOfBirth: null,
+          adultOrChild: null,
+          sex: null,
+          contact: null,
+          primaryAddressLine1: 'primaryAddressLine1',
+          primaryAddressLine2: 'primaryAddressLine2',
+          primaryAddressLine3: null,
+          primaryAddressPostCode: 'primaryAddressPostCode',
+          phoneOrMobileNumber: null,
+          ppo: null,
+          mappa: null,
+          technicalBail: null,
+          manualRisk: null,
+          offenceRisk: false,
+          postCodeRisk: null,
+          falseLimbRisk: null,
+          migratedRisk: null,
+          rangeRisk: null,
+          reportRisk: null,
+          orderStartDate: null,
+          orderEndDate: null,
+          orderType: null,
+          orderTypeDescription: null,
+          orderTypeDetail: null,
+          wearingWristPid: null,
+          notifyingOrganisationDetailsName: null,
+          responsibleOrganisation: null,
+          responsibleOrganisationDetailsRegion: null,
+        },
+      })
 
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
-      summaryPage.gridButton('Order details').click()
+      summaryPage.subNavigationLink('Order details').click()
       Page.verifyOnPage(OrderDetailsPage, { legacySubjectId })
     })
 
     it('Contains visits details button and navigates to expected page', () => {
-      cy.task('stubDatastoreGetVisitDetails')
+      cy.task('stubDatastoreGetVisitDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
 
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
-      summaryPage.gridButton('Visit details').click()
+      summaryPage.subNavigationLink('Visit details').click()
       Page.verifyOnPage(VisitDetailsPage, { legacySubjectId })
     })
 
     it('Contains equipment details button and navigates to expected page', () => {
-      cy.task('stubDatastoreGetEquipmentDetails')
+      cy.task('stubDatastoreGetEquipmentDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
 
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
-      summaryPage.gridButton('Equipment details').click()
+      summaryPage.subNavigationLink('Equipment details').click()
       Page.verifyOnPage(EquipmentDetailsPage, { legacySubjectId })
     })
 
     it('Contains suspension of visits button and navigates to expected page', () => {
-      cy.task('stubDatastoreGetSuspensionOfVisits')
+      cy.task('stubDatastoreGetSuspensionOfVisits', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
 
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
-      summaryPage.gridButton('Suspension of visits').click()
+      summaryPage.subNavigationLink('Suspension of visits').click()
       Page.verifyOnPage(SuspensionOfVisitsPage, { legacySubjectId })
     })
 
     it('Contains all event history button and navigates to expected page', () => {
-      cy.task('stubDatastoreGetEventHistory')
+      cy.task('stubDatastoreGetMonitoringEvents', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
+      cy.task('stubDatastoreGetIncidentEvents', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
+      cy.task('stubDatastoreGetViolationEvents', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
+      cy.task('stubDatastoreGetContactEvents', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
 
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
-      summaryPage.gridButton('All event history').click()
+      summaryPage.subNavigationLink('All event history').click()
       Page.verifyOnPage(EventHistoryPage, { legacySubjectId })
     })
 
     it('Contains services button and navigates to expected page', () => {
-      cy.task('stubDatastoreGetCurfewTimetable')
+      cy.task('stubDatastoreGetCurfewTimetable', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [],
+      })
 
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
-      summaryPage.gridButton('Services').click()
+      summaryPage.subNavigationLink('Services').click()
       Page.verifyOnPage(CurfewTimetablePage, { legacySubjectId })
     })
   })

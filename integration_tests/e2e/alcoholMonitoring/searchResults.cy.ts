@@ -22,6 +22,15 @@ context('Alcohol monitoring search results', () => {
       Page.verifyOnPage(AlcoholMonitoringSearchResults)
     })
 
+    it('Should render the correct elements ', () => {
+      const page = Page.visit(AlcoholMonitoringSearchResults, {}, { search_id: queryExecutionId })
+
+      page.header.userName.should('contain.text', 'M. Tester')
+      page.header.phaseBanner.should('contain.text', 'dev')
+
+      page.checkIsAccessible()
+    })
+
     describe('Service information banner', () => {
       it('Service information banner renders', () => {
         const searchResultsPage = Page.visit(AlcoholMonitoringSearchResults, {}, { search_id: queryExecutionId })

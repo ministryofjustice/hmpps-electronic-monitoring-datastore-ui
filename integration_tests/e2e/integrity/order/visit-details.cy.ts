@@ -21,6 +21,21 @@ context('Visit details', () => {
     Page.verifyOnPage(VisitDetailsPage, { legacySubjectId })
   })
 
+  it('Should render the correct elements ', () => {
+    cy.task('stubDatastoreGetVisitDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(VisitDetailsPage, { legacySubjectId })
+
+    page.header.userName.should('contain.text', 'M. Tester')
+    page.header.phaseBanner.should('contain.text', 'dev')
+
+    page.checkIsAccessible()
+  })
+
   describe('timeline component', () => {
     it('Renders a suspensions timeline', () => {
       cy.task('stubDatastoreGetVisitDetails', {

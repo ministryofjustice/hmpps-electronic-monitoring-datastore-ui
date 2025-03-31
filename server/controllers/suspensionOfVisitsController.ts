@@ -18,7 +18,7 @@ export default class SuspensionOfVisitsController {
       legacySubjectId,
     })
 
-    const viewModel = SuspensionOfVisitsViewModel.construct(parseInt(legacySubjectId, 10), suspensionOfVisitsData)
+    const viewModel = SuspensionOfVisitsViewModel.construct(parseInt(legacySubjectId, 10), suspensionOfVisitsData || [])
 
     await this.auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
       who: res.locals.user.username,

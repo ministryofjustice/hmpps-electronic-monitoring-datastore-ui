@@ -1,8 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../services/auditService'
 import { AuditService, EmDatastoreOrderDetailsService } from '../services'
-import tabulateRecords from '../utils/tabulateRecords'
-import { formatOrderDetails } from '../models/orderDetails'
 
 export default class OrderDetailsController {
   constructor(
@@ -24,27 +22,8 @@ export default class OrderDetailsController {
         legacySubjectId,
       })
 
-      const { deviceWearerData, orderData } = formatOrderDetails.parse(orderDetails)
-
-      const tabulatedDeviceWearerData = tabulateRecords(
-        {
-          backUrl: `/orders/${legacySubjectId}/summary`,
-          records: deviceWearerData,
-        },
-        'Device wearer data',
-      )
-
-      const tabulatedOrderData = tabulateRecords(
-        {
-          backUrl: `/orders/${legacySubjectId}/summary`,
-          records: orderData,
-        },
-        'Order data',
-      )
-
       res.render('pages/order/details', {
-        deviceWearer: tabulatedDeviceWearerData,
-        orderDetails: tabulatedOrderData,
+        details: orderDetails,
         backUrl: `/orders/${legacySubjectId}/summary`,
       })
     } catch {

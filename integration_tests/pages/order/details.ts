@@ -7,16 +7,11 @@ export default class OrderDetailsPage extends AppPage {
     super('Order details', paths.INTEGRITY_ORDER.DETAILS)
   }
 
-  deviceWearerTable = (): PageElement =>
-    cy.contains('.govuk-table__caption', 'Device wearer data').closest('.govuk-table').find('.govuk-table__body')
+  get deviceWearerDetails(): PageElement {
+    return cy.contains('h2', 'Device wearer data').next('.govuk-summary-list')
+  }
 
-  orderTable = (): PageElement =>
-    cy.contains('.govuk-table__caption', 'Order data').closest('.govuk-table').find('.govuk-table__body')
-
-  tableCell = (cellText): PageElement => cy.get('.govuk-table__cell').contains(cellText).first()
-
-  deviceWearerRowHeaders = (columnHeaderText: string): PageElement =>
-    cy.get('.govuk-table__row').contains(columnHeaderText)
-
-  orderDetailsRowHeaders = (rowHeaderText: string): PageElement => cy.get('.govuk-table__row').contains(rowHeaderText)
+  get orderDetails(): PageElement {
+    return cy.contains('h2', 'Order data').next('.govuk-summary-list')
+  }
 }
