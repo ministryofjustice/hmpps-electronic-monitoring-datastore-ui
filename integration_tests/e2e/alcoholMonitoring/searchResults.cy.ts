@@ -102,7 +102,7 @@ context('Alcohol monitoring search results', () => {
     })
 
     it('is reachable', () => {
-      cy.visit(`/alcohol-monitoring/orders?search_id=${queryExecutionId}`)
+      cy.visit(`/alcohol-monitoring?search_id=${queryExecutionId}`)
       Page.verifyOnPage(AlcoholMonitoringSearchResults)
     })
 

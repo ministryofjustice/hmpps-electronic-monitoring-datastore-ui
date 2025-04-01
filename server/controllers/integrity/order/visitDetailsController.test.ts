@@ -51,7 +51,7 @@ describe('VisitDetailsController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       visitDetails: [] as VisitDetails[],
       legacySubjectId: testOrderId,
     }
@@ -69,7 +69,7 @@ describe('VisitDetailsController', () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       visitDetails: [
         {
           isoDateTime: eventDateTime,

@@ -54,7 +54,7 @@ describe('EventsController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       events: [] as (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[],
       legacySubjectId: testOrderId,
     }
@@ -73,7 +73,7 @@ describe('EventsController', () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       events: [
         {
           isoDateTime: eventDateTime,
@@ -107,7 +107,7 @@ describe('EventsController', () => {
     const eventDateTime = '2023-03-03T03:03:03'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       events: [
         {
           isoDateTime: eventDateTime,
@@ -141,7 +141,7 @@ describe('EventsController', () => {
     const eventDateTime = '2023-03-03T03:03:03'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       events: [
         {
           isoDateTime: eventDateTime,

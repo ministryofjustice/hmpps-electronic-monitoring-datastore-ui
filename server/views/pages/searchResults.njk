@@ -19,10 +19,10 @@
 {% set rows = [] %}
 {% for order in orders %}
   {% set legacySubjectIdHtml %}
-    <a href="/orders/{{ order.legacySubjectId }}/summary">
+    <a href="/integrity/{{ order.legacySubjectId }}/summary">
       {{ order.legacySubjectId }}
     </a>
-  {% endset %} 
+  {% endset %}
 
   {% set nameHtml %}
     {% if (order.firstName or order.lastName) %}
@@ -53,7 +53,7 @@
     {% endif %}
   {% endset %}
 
-  {% set rows = (rows.push( 
+  {% set rows = (rows.push(
     [
       {
         attributes: {'data-sort-value': order.legacySubjectId },

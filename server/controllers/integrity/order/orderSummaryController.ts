@@ -21,7 +21,7 @@ export default class OrderSummaryController {
       userToken: res.locals.user.token,
       legacySubjectId,
     })
-    const backUrl: string = '/orders'
+    const backUrl: string = '/integrity'
     const reports: Reports = {
       orderDetails: true,
       visitDetails: true,

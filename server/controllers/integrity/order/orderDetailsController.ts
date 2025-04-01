@@ -24,7 +24,7 @@ export default class OrderDetailsController {
 
       res.render('pages/order/details', {
         details: orderDetails,
-        backUrl: `/orders/${legacySubjectId}/summary`,
+        backUrl: `/integrity/${legacySubjectId}/summary`,
       })
     } catch {
       res.status(500).send('Error fetching data')

@@ -57,7 +57,7 @@ describe('SuspensionOfVisitsController', () => {
   ): SuspensionOfVisitsViewModel => {
     return {
       legacySubjectId,
-      backUrl: `/orders/${legacySubjectId}/summary`,
+      backUrl: `/integrity/${legacySubjectId}/summary`,
       events,
     }
   }
@@ -90,7 +90,7 @@ describe('SuspensionOfVisitsController', () => {
 
   it('should render the page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       events: [] as SuspensionOfVisitsEvent[],
       legacySubjectId: testOrderId,
     }

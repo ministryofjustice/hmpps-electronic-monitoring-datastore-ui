@@ -98,7 +98,7 @@ describe('OrderDetailsController', () => {
 
       const expectedPageData = {
         details: 'expectedOrderDetails',
-        backUrl: `/orders/${expectedOrderId}/summary`,
+        backUrl: `/integrity/${expectedOrderId}/summary`,
       }
 
       emDatastoreOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)

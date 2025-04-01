@@ -22,7 +22,7 @@ const createViewModelFromApiDto = (legacySubjectId: number, visitDetails: VisitD
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/orders/${legacySubjectId}/summary`,
+  backUrl: `/integrity/${legacySubjectId}/summary`,
 })
 
 const construct = (legacySubjectId: number, events: VisitDetails[] = []): VisitDetailsViewModel => {

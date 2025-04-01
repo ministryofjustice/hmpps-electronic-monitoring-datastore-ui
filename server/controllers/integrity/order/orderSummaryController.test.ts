@@ -88,7 +88,7 @@ describe('OrderController', () => {
       const expectedOrderDetails = 'expectedOrderDetails'
       const expectedPageData = {
         data: expectedOrderDetails,
-        backUrl: '/orders',
+        backUrl: '/integrity',
         reports: {
           orderDetails: true,
           visitDetails: true,

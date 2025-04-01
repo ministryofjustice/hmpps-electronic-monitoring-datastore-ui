@@ -37,7 +37,7 @@ const createViewModelFromApiDto = (
 ): SuspensionOfVisitsViewModel => {
   return {
     legacySubjectId,
-    backUrl: `/orders/${legacySubjectId}/summary`,
+    backUrl: `/integrity/${legacySubjectId}/summary`,
     events: parseEvents(events),
   }
 }

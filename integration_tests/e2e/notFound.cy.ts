@@ -11,12 +11,12 @@ context('Not found', () => {
   })
 
   it('is reachable', () => {
-    cy.visit(`/orders/${orderId}/invalidaddress`, { failOnStatusCode: false })
+    cy.visit(`/integrity/${orderId}/invalidaddress`, { failOnStatusCode: false })
     Page.verifyOnPage(NotFoundErrorPage)
   })
 
   it('Should render the correct elements ', () => {
-    cy.visit(`/orders/${orderId}/invalidaddress`, { failOnStatusCode: false })
+    cy.visit(`/integrity/${orderId}/invalidaddress`, { failOnStatusCode: false })
     const page = Page.verifyOnPage(NotFoundErrorPage)
 
     page.header.userName.should('contain.text', 'M. Tester')

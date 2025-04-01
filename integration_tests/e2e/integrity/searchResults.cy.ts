@@ -102,7 +102,7 @@ context('Integrity search results', () => {
     })
 
     it('is reachable', () => {
-      cy.visit(`/integrity/orders?search_id=${queryExecutionId}`)
+      cy.visit(`/integrity?search_id=${queryExecutionId}`)
       Page.verifyOnPage(IntegritySearchResultsPage)
     })
 

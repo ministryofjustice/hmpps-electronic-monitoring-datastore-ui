@@ -1,20 +1,20 @@
 const paths = {
   START: '/',
-  SEARCH: '/orders',
+  SEARCH: '/search',
 
   INTEGRITY_ORDER: {
-    INDEX: '/integrity/orders',
-    SUMMARY: '/integrity/orders/:legacySubjectId',
-    DETAILS: '/integrity/orders/:legacySubjectId/details',
-    VISIT_DETAILS: '/integrity/orders/:legacySubjectId/visit-details',
-    EQUIPMENT_DETAILS: '/integrity/orders/:legacySubjectId/equipment-details',
-    SUSPENSION_OF_VISITS: '/integrity/orders/:legacySubjectId/suspension-of-visits',
-    EVENT_HISTORY: '/integrity/orders/:legacySubjectId/event-history',
-    CURFEW_TIMETABLE: '/integrity/orders/:legacySubjectId/curfew-timetable',
+    INDEX: '/integrity',
+    SUMMARY: '/integrity/:legacySubjectId',
+    DETAILS: '/integrity/:legacySubjectId/details',
+    VISIT_DETAILS: '/integrity/:legacySubjectId/visit-details',
+    EQUIPMENT_DETAILS: '/integrity/:legacySubjectId/equipment-details',
+    SUSPENSION_OF_VISITS: '/integrity/:legacySubjectId/suspension-of-visits',
+    EVENT_HISTORY: '/integrity/:legacySubjectId/event-history',
+    CURFEW_TIMETABLE: '/integrity/:legacySubjectId/curfew-timetable',
   },
 
   ALCOHOL_MONITORING: {
-    INDEX: '/alcohol-monitoring/orders',
+    INDEX: '/alcohol-monitoring',
   },
 
   CONNECTION_TEST: '/test',

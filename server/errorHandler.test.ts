@@ -28,7 +28,7 @@ describe('GET 404', () => {
 describe('GET 500', () => {
   it('should render content with stack in dev mode', () => {
     return request(app)
-      .get('/integrity/orders/---/details')
+      .get('/integrity/---/details')
       .expect(500)
       .expect('Content-Type', /html/)
       .expect(res => {
@@ -39,7 +39,7 @@ describe('GET 500', () => {
 
   it('should render content without stack in production mode', () => {
     return request(appWithAllRoutes({ production: true }))
-      .get('/integrity/orders/---/curfew-timetable')
+      .get('/integrity/---/curfew-timetable')
       .expect(500)
       .expect('Content-Type', /html/)
       .expect(res => {

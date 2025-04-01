@@ -51,7 +51,7 @@ describe('CurfewTimetableController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       curfewTimetable: [] as CurfewTimetable[],
       legacySubjectId: testOrderId,
     }
@@ -69,7 +69,7 @@ describe('CurfewTimetableController', () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/orders/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}/summary`,
       curfewTimetable: [
         {
           isoDateTime: eventDateTime,
