@@ -1,5 +1,5 @@
 import Page from '../../../pages/page'
-import OrderDetailsPage from '../../../pages/order/details'
+import OrderDetailsPage from '../../../pages/integrity/order/details'
 
 context('Order Details', () => {
   const legacySubjectId = '1232123'
@@ -52,24 +52,31 @@ context('Order Details', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
-    cy.visit(`/integrity/orders/${legacySubjectId}/details`)
-    Page.verifyOnPage(OrderDetailsPage)
+  it('Should display the user name visible in header', () => {
+    const page = Page.visit(OrderDetailsPage, { legacySubjectId })
+    page.header.userName.should('contain.text', 'M. Tester')
+  })
+
+  it('Should display the phase banner in header', () => {
+    const page = Page.visit(OrderDetailsPage, { legacySubjectId })
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
+    const page = Page.visit(OrderDetailsPage, { legacySubjectId })
+
+    page.backButton.should('exist')
+  })
+
+  it('Should be accessible', () => {
+    const page = Page.visit(OrderDetailsPage, { legacySubjectId })
+    page.checkIsAccessible()
   })
 
   describe('Device wearer table', () => {
     it('Renders', () => {
       const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.deviceWearerDetails.should('be.visible')
-    })
-
-    it('Should render the correct elements ', () => {
-      const page = Page.visit(OrderDetailsPage, { legacySubjectId })
-
-      page.header.userName.should('contain.text', 'M. Tester')
-      page.header.phaseBanner.should('contain.text', 'dev')
-
-      page.checkIsAccessible()
     })
 
     it('Includes expected row headers', () => {

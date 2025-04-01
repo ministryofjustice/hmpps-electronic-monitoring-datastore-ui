@@ -1,5 +1,5 @@
 import Page from '../../../pages/page'
-import CurfewTimetablePage from '../../../pages/order/curfewTimetable'
+import CurfewTimetablePage from '../../../pages/integrity/order/curfewTimetable'
 
 context('Crufew Timetable', () => {
   const legacySubjectId = '1232123'
@@ -10,18 +10,7 @@ context('Crufew Timetable', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
-    cy.task('stubDatastoreGetCurfewTimetable', {
-      httpStatus: 200,
-      legacySubjectId,
-      body: [],
-    })
-
-    cy.visit(`/integrity/orders/${legacySubjectId}/curfew-timetable`)
-    Page.verifyOnPage(CurfewTimetablePage)
-  })
-
-  it('Should render the correct elements ', () => {
+  it('Should display the user name visible in header', () => {
     cy.task('stubDatastoreGetCurfewTimetable', {
       httpStatus: 200,
       legacySubjectId,
@@ -29,10 +18,39 @@ context('Crufew Timetable', () => {
     })
 
     const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
-
     page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+  })
 
+  it('Should display the phase banner in header', () => {
+    cy.task('stubDatastoreGetCurfewTimetable', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
+    cy.task('stubDatastoreGetCurfewTimetable', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
+    page.backButton.should('exist')
+  })
+
+  it('Should be accessible', () => {
+    cy.task('stubDatastoreGetCurfewTimetable', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
     page.checkIsAccessible()
   })
 

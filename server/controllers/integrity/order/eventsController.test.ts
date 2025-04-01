@@ -1,19 +1,19 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import AuditService from '../services/auditService'
-import EmDatastoreEventsService from '../services/emDatastoreEventsService'
+import AuditService from '../../../services/auditService'
+import EmDatastoreEventsService from '../../../services/emDatastoreEventsService'
 import EventsController from './eventsController'
 // eslint-disable-next-line import/no-named-as-default
-import EventsViewModel from '../models/view-models/events'
-import { TimelineEventModel } from '../models/view-models/TimelineEvent'
-import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
-import { MonitoringEvent, MonitoringEventModel } from '../models/monitoringEvents'
-import { IncidentEvent, IncidentEventModel } from '../models/incidentEvents'
-import { ContactEvent, ContactEventModel } from '../models/contactEvents'
-import { ViolationEvent } from '../models/violationEvents'
+import EventsViewModel from '../../../models/view-models/events'
+import { TimelineEventModel } from '../../../models/view-models/TimelineEvent'
+import { createMockRequest, createMockResponse } from '../../../testutils/mocks/mockExpress'
+import { MonitoringEvent, MonitoringEventModel } from '../../../models/monitoringEvents'
+import { IncidentEvent, IncidentEventModel } from '../../../models/incidentEvents'
+import { ContactEvent, ContactEventModel } from '../../../models/contactEvents'
+import { ViolationEvent } from '../../../models/violationEvents'
 
-jest.mock('../services/auditService')
-jest.mock('../services/emDatastoreEventsService')
+jest.mock('../../../services/auditService')
+jest.mock('../../../services/emDatastoreEventsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreEventsService = { getEvents: jest.fn() } as unknown as EmDatastoreEventsService

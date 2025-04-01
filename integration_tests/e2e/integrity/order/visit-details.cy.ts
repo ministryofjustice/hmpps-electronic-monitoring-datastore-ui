@@ -1,5 +1,5 @@
 import Page from '../../../pages/page'
-import VisitDetailsPage from '../../../pages/order/visitDetails'
+import VisitDetailsPage from '../../../pages/integrity/order/visitDetails'
 
 context('Visit details', () => {
   const legacySubjectId = '1234567'
@@ -10,18 +10,29 @@ context('Visit details', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
+  it('Should display the user name visible in header', () => {
     cy.task('stubDatastoreGetVisitDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
     })
 
-    cy.visit(`/integrity/orders/${legacySubjectId}/visit-details`)
-    Page.verifyOnPage(VisitDetailsPage, { legacySubjectId })
+    const page = Page.visit(VisitDetailsPage, { legacySubjectId })
+    page.header.userName.should('contain.text', 'J. Smith')
   })
 
-  it('Should render the correct elements ', () => {
+  it('Should display the phase banner in header', () => {
+    cy.task('stubDatastoreGetVisitDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(VisitDetailsPage, { legacySubjectId })
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
     cy.task('stubDatastoreGetVisitDetails', {
       httpStatus: 200,
       legacySubjectId,
@@ -30,9 +41,17 @@ context('Visit details', () => {
 
     const page = Page.visit(VisitDetailsPage, { legacySubjectId })
 
-    page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.backButton.should('exist')
+  })
 
+  it('Should be accessible', () => {
+    cy.task('stubDatastoreGetVisitDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(VisitDetailsPage, { legacySubjectId })
     page.checkIsAccessible()
   })
 

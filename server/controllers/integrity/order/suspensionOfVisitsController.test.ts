@@ -1,17 +1,17 @@
 import { Request, Response } from 'express'
 import session, { SessionData } from 'express-session'
-import AuditService from '../services/auditService'
-import EmDatastoreSuspensionOfVisitsService from '../services/emDatastoreSuspensionOfVisitsService'
+import AuditService from '../../../services/auditService'
+import EmDatastoreSuspensionOfVisitsService from '../../../services/emDatastoreSuspensionOfVisitsService'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
-import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import { createMockRequest, createMockResponse } from '../../../testutils/mocks/mockExpress'
+import { SuspensionOfVisitsEvent } from '../../../models/suspensionOfVisits'
 import SuspensionOfVisitsView, {
   SuspensionOfVisitsViewEvent,
   SuspensionOfVisitsViewModel,
-} from '../models/view-models/suspensionOfVisits'
+} from '../../../models/view-models/suspensionOfVisits'
 
-jest.mock('../services/auditService')
-jest.mock('../services/emDatastoreOrderSummaryService')
+jest.mock('../../../services/auditService')
+jest.mock('../../../services/emDatastoreOrderSummaryService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreSuspensionOfVisitsService = {

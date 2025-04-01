@@ -1,5 +1,5 @@
 import Page from '../../pages/page'
-import AlcoholMonitoringSearchResults from '../../pages/alcoholMonitoringSearchResults'
+import AlcoholMonitoringSearchResults from '../../pages/alcoholMonitoring/searchResults'
 import orders from '../../../server/data/mockData/orders'
 
 context('Alcohol monitoring search results', () => {

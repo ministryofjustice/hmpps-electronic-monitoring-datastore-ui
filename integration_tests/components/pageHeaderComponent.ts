@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import PageElement from '../PageElement'
+import PageElement from '../pages/PageElement'
 
 export default class PageHeaderComponent {
   private elementCacheId: string = uuidv4()

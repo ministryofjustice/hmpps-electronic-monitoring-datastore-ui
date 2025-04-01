@@ -1,11 +1,11 @@
 import Page from '../../../pages/page'
-import SummaryPage from '../../../pages/order/summary'
-import OrderDetailsPage from '../../../pages/order/details'
-import VisitDetailsPage from '../../../pages/order/visitDetails'
-import EquipmentDetailsPage from '../../../pages/order/equipmentDetails'
-import SuspensionOfVisitsPage from '../../../pages/order/suspensionOfVisits'
-import EventHistoryPage from '../../../pages/order/eventHistory'
-import CurfewTimetablePage from '../../../pages/order/curfewTimetable'
+import SummaryPage from '../../../pages/integrity/order/summary'
+import OrderDetailsPage from '../../../pages/integrity/order/details'
+import VisitDetailsPage from '../../../pages/integrity/order/visitDetails'
+import EquipmentDetailsPage from '../../../pages/integrity/order/equipmentDetails'
+import SuspensionOfVisitsPage from '../../../pages/integrity/order/suspensionOfVisits'
+import EventHistoryPage from '../../../pages/integrity/order/eventHistory'
+import CurfewTimetablePage from '../../../pages/integrity/order/curfewTimetable'
 
 context('Order Information', () => {
   const legacySubjectId = '1234567'
@@ -47,17 +47,24 @@ context('Order Information', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
-    cy.visit(`/integrity/orders/${legacySubjectId}`)
-    Page.verifyOnPage(SummaryPage)
+  it('Should display the user name visible in header', () => {
+    const page = Page.visit(SummaryPage, { legacySubjectId })
+    page.header.userName.should('contain.text', 'M. Tester')
   })
 
-  it('Should render the correct elements ', () => {
+  it('Should display the phase banner in header', () => {
+    const page = Page.visit(SummaryPage, { legacySubjectId })
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
     const page = Page.visit(SummaryPage, { legacySubjectId })
 
-    page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.backButton.should('exist')
+  })
 
+  it('Should be accessible', () => {
+    const page = Page.visit(SummaryPage, { legacySubjectId })
     page.checkIsAccessible()
   })
 

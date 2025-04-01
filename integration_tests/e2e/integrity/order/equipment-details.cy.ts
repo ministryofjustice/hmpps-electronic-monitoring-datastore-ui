@@ -1,5 +1,5 @@
 import Page from '../../../pages/page'
-import EquipmentDetailsPage from '../../../pages/order/equipmentDetails'
+import EquipmentDetailsPage from '../../../pages/integrity/order/equipmentDetails'
 
 context('Equipment Details', () => {
   const legacySubjectId = '1232123'
@@ -10,18 +10,29 @@ context('Equipment Details', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
+  it('Should display the user name visible in header', () => {
     cy.task('stubDatastoreGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
     })
 
-    cy.visit(`/integrity/orders/${legacySubjectId}/equipment-details`)
-    Page.verifyOnPage(EquipmentDetailsPage)
+    const page = Page.visit(EquipmentDetailsPage, { legacySubjectId })
+    page.header.userName.should('contain.text', 'M. Tester')
   })
 
-  it('Should render the correct elements ', () => {
+  it('Should display the phase banner in header', () => {
+    cy.task('stubDatastoreGetEquipmentDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(EquipmentDetailsPage, { legacySubjectId })
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
     cy.task('stubDatastoreGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
@@ -30,9 +41,17 @@ context('Equipment Details', () => {
 
     const page = Page.visit(EquipmentDetailsPage, { legacySubjectId })
 
-    page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.backButton.should('exist')
+  })
 
+  it('Should be accessible', () => {
+    cy.task('stubDatastoreGetEquipmentDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+      body: [],
+    })
+
+    const page = Page.visit(EquipmentDetailsPage, { legacySubjectId })
     page.checkIsAccessible()
   })
 

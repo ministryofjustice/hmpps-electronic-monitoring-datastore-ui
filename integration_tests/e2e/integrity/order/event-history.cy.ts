@@ -1,5 +1,5 @@
 import Page from '../../../pages/page'
-import EventHistoryPage from '../../../pages/order/eventHistory'
+import EventHistoryPage from '../../../pages/integrity/order/eventHistory'
 
 context('Event history', () => {
   const legacySubjectId = 1234567
@@ -100,17 +100,24 @@ context('Event history', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
-    cy.visit(`/integrity/orders/${legacySubjectId}/event-history`)
-    Page.verifyOnPage(EventHistoryPage)
+  it('Should display the user name visible in header', () => {
+    const page = Page.visit(EventHistoryPage, { legacySubjectId })
+    page.header.userName.should('contain.text', 'M. Tester')
   })
 
-  it('Should render the correct elements ', () => {
+  it('Should display the phase banner in header', () => {
+    const page = Page.visit(EventHistoryPage, { legacySubjectId })
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
     const page = Page.visit(EventHistoryPage, { legacySubjectId })
 
-    page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.backButton.should('exist')
+  })
 
+  it('Should be accessible', () => {
+    const page = Page.visit(EventHistoryPage, { legacySubjectId })
     page.checkIsAccessible()
   })
 

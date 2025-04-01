@@ -1,5 +1,5 @@
 import Page from '../../pages/page'
-import IntegritySearchResultsPage from '../../pages/integritySearchResults'
+import IntegritySearchResultsPage from '../../pages/integrity/searchResults'
 import orders from '../../../server/data/mockData/orders'
 
 context('Integrity search results', () => {

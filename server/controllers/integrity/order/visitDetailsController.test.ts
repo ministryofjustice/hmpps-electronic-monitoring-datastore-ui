@@ -1,16 +1,16 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import AuditService from '../services/auditService'
-import EmDatastoreVisitDetailsService from '../services/emDatastoreVisitDetailsService'
+import AuditService from '../../../services/auditService'
+import EmDatastoreVisitDetailsService from '../../../services/emDatastoreVisitDetailsService'
 import VisitDetailsController from './visitDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import VisitDetailsViewModel from '../models/view-models/visitDetails'
-import { TimelineEventModel } from '../models/view-models/TimelineEvent'
-import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
-import { VisitDetails, VisitDetailsModel } from '../models/visitDetails'
+import VisitDetailsViewModel from '../../../models/view-models/visitDetails'
+import { TimelineEventModel } from '../../../models/view-models/TimelineEvent'
+import { createMockRequest, createMockResponse } from '../../../testutils/mocks/mockExpress'
+import { VisitDetails, VisitDetailsModel } from '../../../models/visitDetails'
 
-jest.mock('../services/auditService')
-jest.mock('../services/emDatastoreVisitDetailsService')
+jest.mock('../../../services/auditService')
+jest.mock('../../../services/emDatastoreVisitDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreVisitDetailsService = { getOrderSummary: jest.fn() } as unknown as EmDatastoreVisitDetailsService

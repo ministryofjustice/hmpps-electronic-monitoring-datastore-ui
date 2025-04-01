@@ -1,8 +1,8 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../services/auditService'
-import { AuditService, EmDatastoreEventsService } from '../services'
+import { Page } from '../../../services/auditService'
+import { AuditService, EmDatastoreEventsService } from '../../../services'
 // eslint-disable-next-line import/no-named-as-default
-import EventsViewModel from '../models/view-models/events'
+import EventsViewModel from '../../../models/view-models/events'
 
 export default class EventsController {
   constructor(

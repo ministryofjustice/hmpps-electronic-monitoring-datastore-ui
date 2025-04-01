@@ -1,5 +1,5 @@
 import Page from '../../../pages/page'
-import SuspensionOfVisitsPage from '../../../pages/order/suspensionOfVisits'
+import SuspensionOfVisitsPage from '../../../pages/integrity/order/suspensionOfVisits'
 
 context('Suspensions', () => {
   const legacySubjectId = 1234567
@@ -69,17 +69,24 @@ context('Suspensions', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
-    cy.visit(`/integrity/orders/${legacySubjectId}/suspension-of-visits`)
-    Page.verifyOnPage(SuspensionOfVisitsPage)
+  it('Should display the user name visible in header', () => {
+    const page = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
+    page.header.userName.should('contain.text', 'M. Tester')
   })
 
-  it('Should render the correct elements ', () => {
+  it('Should display the phase banner in header', () => {
+    const page = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
     const page = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
 
-    page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.backButton.should('exist')
+  })
 
+  it('Should be accessible', () => {
+    const page = Page.visit(SuspensionOfVisitsPage, { legacySubjectId })
     page.checkIsAccessible()
   })
 
