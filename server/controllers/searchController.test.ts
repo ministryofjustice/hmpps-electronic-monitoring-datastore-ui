@@ -1,7 +1,7 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import { createMockHmppsAuthClient, createDatastoreClient } from '../data/testUtils/mocks'
-import { AuditService, DatastoreSearchService } from '../services'
+import AuditService from '../services/auditService'
+import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import SearchController from './searchController'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import orders from '../data/mockData/orders'
@@ -11,22 +11,20 @@ import { ParsedSearchFormData, ParsedSearchFormDataModel } from '../models/form-
 import { ErrorMessage, TextField } from '../models/utils'
 
 jest.mock('../services/auditService')
-jest.mock('../services/datastoreSearchService')
+jest.mock('../services/emDatastoreOrderSearchService')
 
 const queryExecutionId = 'query-execution-id'
 const queryExecutionResponse = {
   queryExecutionId,
 }
 
-const hmppsAuthClient = createMockHmppsAuthClient()
-const datastoreClient = createDatastoreClient()
-const datastoreClientFactory = jest.fn()
-datastoreClientFactory.mockResolvedValue(datastoreClient)
-const auditService = {
-  logPageView: jest.fn(),
-} as unknown as AuditService
-
-const datastoreSearchService = new DatastoreSearchService(datastoreClientFactory, hmppsAuthClient)
+const auditService = { logPageView: jest.fn() } as unknown as AuditService
+const emDatastoreOrderSearchService = {
+  isEmptySearch: jest.fn(),
+  validateInput: jest.fn(),
+  submitSearchQuery: jest.fn(),
+  getSearchResults: jest.fn(),
+} as unknown as EmDatastoreOrderSearchService
 
 jest.spyOn(SearchForOrdersViewModel, 'construct')
 jest.spyOn(ParsedSearchFormDataModel, 'parse')
@@ -40,7 +38,7 @@ describe('SearchController', () => {
   describe('SearchPage', () => {
     beforeEach(() => {
       jest.clearAllMocks()
-      searchController = new SearchController(auditService, datastoreSearchService)
+      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
       req = createMockRequest({
         session: {
@@ -139,7 +137,7 @@ describe('SearchController', () => {
 
   describe('SubmitSearchQuery', () => {
     beforeEach(() => {
-      searchController = new SearchController(auditService, datastoreSearchService)
+      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
       req = createMockRequest({
         body: {
@@ -183,7 +181,7 @@ describe('SearchController', () => {
         dobYear: '2021',
       }
 
-      datastoreSearchService.validateInput = jest
+      emDatastoreOrderSearchService.validateInput = jest
         .fn()
         .mockReturnValueOnce([{ field: 'firstName', error: 'Invalid first name' }])
 
@@ -192,7 +190,7 @@ describe('SearchController', () => {
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(parsedFormData)
       expect(req.session.validationErrors).toEqual([{ field: 'firstName', error: 'Invalid first name' }])
-      expect(res.redirect).toHaveBeenCalledWith('search')
+      expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 
     it('should redirect to search with appropriate error when no search data supplied', async () => {
@@ -223,19 +221,19 @@ describe('SearchController', () => {
         dobYear: '',
       }
 
-      datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce(validationErrors)
+      emDatastoreOrderSearchService.validateInput = jest.fn().mockReturnValueOnce(validationErrors)
 
       await searchController.submitSearchQuery(req, res, next)
 
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(parsedFormData)
       expect(req.session.validationErrors).toEqual(validationErrors)
-      expect(res.redirect).toHaveBeenCalledWith('search')
+      expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 
     it('when input is valid, redirects to the results page with the query execution ID as a URL query parameter', async () => {
-      datastoreSearchService.validateInput = jest.fn().mockReturnValueOnce([])
-      datastoreSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionResponse)
+      emDatastoreOrderSearchService.validateInput = jest.fn().mockReturnValueOnce([])
+      emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionResponse)
 
       req.body = {
         searchType: 'integrity',
@@ -250,13 +248,13 @@ describe('SearchController', () => {
       await searchController.submitSearchQuery(req, res, next)
 
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
-      expect(res.redirect).toHaveBeenCalledWith(`search/integrity?search_id=${queryExecutionId}`)
+      expect(res.redirect).toHaveBeenCalledWith(`/integrity?search_id=${queryExecutionId}`)
     })
   })
 
   describe('SearchResultsPage', () => {
     beforeEach(() => {
-      searchController = new SearchController(auditService, datastoreSearchService)
+      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
       req = createMockRequest({
         session: {
@@ -281,7 +279,7 @@ describe('SearchController', () => {
     })
 
     it('should redirect to the search page when no orderExecutionId is submitted', async () => {
-      datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
+      emDatastoreOrderSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)
 
@@ -291,7 +289,7 @@ describe('SearchController', () => {
     it('should render the search results view when a valid orderExecutionId is submitted', async () => {
       const viewModel = [...ordersView]
       req.query.search_id = queryExecutionId
-      datastoreSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
+      emDatastoreOrderSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)
 

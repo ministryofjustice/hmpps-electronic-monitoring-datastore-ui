@@ -2,13 +2,13 @@ import { VisitDetails } from '../visitDetails'
 import { TimelineEventModel } from './TimelineEvent'
 
 export type VisitDetailsViewModel = {
-  orderId: number
+  legacySubjectId: number
   visitDetails: TimelineEventModel[]
   backUrl: string
 }
 
-const createViewModelFromApiDto = (orderId: number, visitDetails: VisitDetails[]): VisitDetailsViewModel => ({
-  orderId,
+const createViewModelFromApiDto = (legacySubjectId: number, visitDetails: VisitDetails[]): VisitDetailsViewModel => ({
+  legacySubjectId,
   visitDetails: visitDetails
     .map(details => {
       const dateTime = details.actualWorkStartDateTime ? new Date(details.actualWorkStartDateTime) : null
@@ -22,11 +22,11 @@ const createViewModelFromApiDto = (orderId: number, visitDetails: VisitDetails[]
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/orders/${orderId}/summary`,
+  backUrl: `/integrity/${legacySubjectId}/summary`,
 })
 
-const construct = (orderId: number, events: VisitDetails[] = []): VisitDetailsViewModel => {
-  return createViewModelFromApiDto(orderId, events)
+const construct = (legacySubjectId: number, events: VisitDetails[] = []): VisitDetailsViewModel => {
+  return createViewModelFromApiDto(legacySubjectId, events)
 }
 
 export default {

@@ -1,6 +1,5 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
-import config from '../../server/config'
 import orders from '../../server/data/mockData/orders'
 import { Order } from '../../server/interfaces/order'
 
@@ -20,8 +19,8 @@ type GetSearchResultsStubOptions = {
 const getSearchResults = (options: GetSearchResultsStubOptions = defaultGetSearchResultsOptions): SuperAgentRequest =>
   stubFor({
     request: {
-      method: 'POST',
-      urlPattern: `/datastore${config.apiEndpoints.searchOrders}/${options.queryExecutionId}`,
+      method: 'GET',
+      url: `/datastore/integrity/orders?queryExecutionId=${options.queryExecutionId}`,
     },
     response: {
       status: options.httpStatus,
@@ -33,7 +32,7 @@ const getSearchResults = (options: GetSearchResultsStubOptions = defaultGetSearc
 // GetOrderDetails
 const defaultGetOrderDetailsOptions = {
   httpStatus: 200,
-  orderId: '1234567',
+  legacySubjectId: '1234567',
   details: {
     specials: 'no',
     legacySubjectId: '1234567',
@@ -74,7 +73,7 @@ const defaultGetOrderDetailsOptions = {
 
 type GetOrderDetailsStubOptions = {
   httpStatus: number
-  orderId?: string
+  legacySubjectId?: string
   details: { [key: string]: string | boolean | null }
 }
 
@@ -82,7 +81,7 @@ const getOrderDetails = (options: GetOrderDetailsStubOptions = defaultGetOrderDe
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getOrderDetails}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/details`,
     },
     response: {
       status: options.httpStatus,
@@ -95,7 +94,7 @@ const getOrderDetails = (options: GetOrderDetailsStubOptions = defaultGetOrderDe
 
 const defaultGetOrderSummaryOptions = {
   httpStatus: 200,
-  orderId: '123456789',
+  legacySubjectId: '123456789',
   events: [] as unknown[],
   keyOrderInformation: {
     specials: 'no',
@@ -125,7 +124,7 @@ const defaultGetOrderSummaryOptions = {
 
 type GetOrderSummaryStubOptions = {
   httpStatus: number
-  orderId?: string
+  legacySubjectId?: string
   events?: unknown[]
   keyOrderInformation?: object
   subjectHistoryReport?: object
@@ -136,7 +135,7 @@ const getOrderSummary = (options: GetOrderSummaryStubOptions = defaultGetOrderSu
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getOrderSummary}/${options.orderId}`,
+      urlPattern: `/datastore/integrity/orders/${options.legacySubjectId}`,
     },
     response: {
       status: options.httpStatus,
@@ -154,7 +153,7 @@ const getOrderSummary = (options: GetOrderSummaryStubOptions = defaultGetOrderSu
 
 const defaultGetSuspensionOfVisitsOptions = {
   httpStatus: 200,
-  orderId: 123456789,
+  legacySubjectId: 123456789,
   events: [
     {
       legacySubjectId: 123456789,
@@ -185,7 +184,7 @@ const defaultGetSuspensionOfVisitsOptions = {
 
 type GetSuspensionOfVisitsStubOptions = {
   httpStatus: number
-  orderId?: number
+  legacySubjectId?: number
   events: { [key: string]: string | number | null }[]
 }
 
@@ -195,7 +194,7 @@ const getSuspensionOfVisits = (
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getSuspensionOfVisits}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/suspension-of-visits`,
     },
     response: {
       status: options.httpStatus,
@@ -206,13 +205,13 @@ const getSuspensionOfVisits = (
 
 const defaultBasicStubOptions = {
   httpStatus: 200,
-  orderId: '123456789',
+  legacySubjectId: '123456789',
   body: [] as unknown[],
 }
 
 type GetBasicStubOptions = {
   httpStatus: number
-  orderId?: string
+  legacySubjectId?: string
   body?: unknown[]
 }
 
@@ -220,7 +219,7 @@ const getCurfewTimetable = (options: GetBasicStubOptions = defaultBasicStubOptio
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getCurfewTimetable}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/curfew-timetable`,
     },
     response: {
       status: options.httpStatus,
@@ -233,7 +232,7 @@ const getEquipmentDetails = (options: GetBasicStubOptions = defaultBasicStubOpti
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getEquipmentDetails}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/equipment-details`,
     },
     response: {
       status: options.httpStatus,
@@ -246,7 +245,7 @@ const getMonitoringEvents = (options: GetBasicStubOptions = defaultBasicStubOpti
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getMonitoringEvents}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/monitoring-events`,
     },
     response: {
       status: options.httpStatus,
@@ -259,7 +258,7 @@ const getContactEvents = (options: GetBasicStubOptions = defaultBasicStubOptions
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getContactEvents}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/contact-events`,
     },
     response: {
       status: options.httpStatus,
@@ -272,7 +271,7 @@ const getIncidentEvents = (options: GetBasicStubOptions = defaultBasicStubOption
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getIncidentEvents}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/incident-events`,
     },
     response: {
       status: options.httpStatus,
@@ -285,7 +284,7 @@ const getViolationEvents = (options: GetBasicStubOptions = defaultBasicStubOptio
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getViolationEvents}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/violation-events`,
     },
     response: {
       status: options.httpStatus,
@@ -298,7 +297,7 @@ const getVisitDetails = (options: GetBasicStubOptions = defaultBasicStubOptions)
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore${config.apiEndpoints.getVisitDetails}/${options.orderId}`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/visit-details`,
     },
     response: {
       status: options.httpStatus,

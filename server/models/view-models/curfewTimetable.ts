@@ -2,13 +2,16 @@ import { CurfewTimetable } from '../curfewTimetable'
 import { TimelineEventModel } from './TimelineEvent'
 
 export type CurfewTimetableViewModel = {
-  orderId: number
+  legacySubjectId: number
   curfewTimetable: TimelineEventModel[]
   backUrl: string
 }
 
-const createViewModelFromApiDto = (orderId: number, curfewTimetable: CurfewTimetable[]): CurfewTimetableViewModel => ({
-  orderId,
+const createViewModelFromApiDto = (
+  legacySubjectId: number,
+  curfewTimetable: CurfewTimetable[],
+): CurfewTimetableViewModel => ({
+  legacySubjectId,
   curfewTimetable: curfewTimetable
     .map(details => {
       const dateTime = details.serviceStartDate ? new Date(details.serviceStartDate) : null
@@ -22,11 +25,11 @@ const createViewModelFromApiDto = (orderId: number, curfewTimetable: CurfewTimet
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/orders/${orderId}/summary`,
+  backUrl: `/integrity/${legacySubjectId}/summary`,
 })
 
-const construct = (orderId: number, events: CurfewTimetable[] = []): CurfewTimetableViewModel => {
-  return createViewModelFromApiDto(orderId, events)
+const construct = (legacySubjectId: number, events: CurfewTimetable[] = []): CurfewTimetableViewModel => {
+  return createViewModelFromApiDto(legacySubjectId, events)
 }
 
 export default {

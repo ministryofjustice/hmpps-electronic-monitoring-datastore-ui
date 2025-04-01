@@ -1,8 +1,10 @@
-import Page, { PageElement } from './page'
+import AppPage from './appPage'
+import PageElement from './PageElement'
+import paths from '../../server/constants/paths'
 
-export default class SearchPage extends Page {
+export default class SearchPage extends AppPage {
   constructor() {
-    super('Search for order details')
+    super('Search for order details', paths.SEARCH)
   }
 
   serviceInformation = (): PageElement => cy.get('.service-information')

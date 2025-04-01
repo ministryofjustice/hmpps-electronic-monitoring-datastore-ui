@@ -1,0 +1,85 @@
+{% extends "../../partials/layout.njk" %}
+
+{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
+
+{% set header = "Key order details" %}
+{% set pageTitle = applicationName + " - " + header %}
+{% set mainClasses = "app-container govuk-body" %}
+{% set backUrl = backUrl %}
+{% set orderInformation = data.keyOrderInformation %}
+
+{% block content %}
+
+  {{ emsServiceInformation() }}
+
+  {{ govukBackLink({
+    text: "back",
+    href: "/search"
+  }) }}
+
+  <h1 class="govuk-heading-l">
+    {{ header }}
+  </h1>
+
+  {{
+    mojSubNavigation({
+      label: "Order navigation",
+      items: [
+        {
+          text: "Order details",
+          href: './' + orderInformation.legacySubjectId + '/details'
+        },
+        {
+          text: "Visit details",
+          href: './' + orderInformation.legacySubjectId + '/visit-details'
+        },
+        {
+          text: "Equipment details",
+          href: './' + orderInformation.legacySubjectId + '/equipment-details'
+        },
+        {
+          text: "Suspension of visits",
+          href: './' + orderInformation.legacySubjectId + '/suspension-of-visits'
+        },
+        {
+          text: "All event history",
+          href: './' + orderInformation.legacySubjectId + '/event-history'
+        },
+        {
+          text: "Services",
+          href: './' + orderInformation.legacySubjectId + '/curfew-timetable'
+        }
+      ]
+    })
+  }}
+
+  <h2 class="govuk-heading-m">Order information</h2>
+
+  {%
+    set primaryAddress = [
+      orderInformation.address1,
+      orderInformation.address2,
+      orderInformation.address3,
+      orderInformation.postcode
+    ] | reject(null) | join('<br>')
+  %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: 'Specials' }, value:  { text: orderInformation.specials } },
+        { key: { text: 'Legacy Subject ID' }, value:  { text: orderInformation.legacySubjectId } },
+        { key: { text: 'Legacy Order ID' }, value:  { text: orderInformation.splegacyOrderIdecials } },
+        { key: { text: 'Name' }, value:  { text: orderInformation.name } },
+        { key: { text: 'Alias' }, value:  { text: orderInformation.alias } },
+        { key: { text: 'Date of birth' }, value:  { text: orderInformation.dateOfBirth } },
+        { key: { text: 'Primary address' }, value:  { html: primaryAddress } },
+        { key: { text: 'Order start date' }, value:  { text: orderInformation.orderStartDate } },
+        { key: { text: 'Order end date' }, value:  { text: orderInformation.orderEndDate } }
+      ]
+    })
+  }}
+
+{% endblock %}

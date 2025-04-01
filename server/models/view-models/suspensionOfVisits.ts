@@ -11,7 +11,7 @@ export type SuspensionOfVisitsViewEvent = {
 }
 
 export type SuspensionOfVisitsViewModel = {
-  orderId: number
+  legacySubjectId: number
   backUrl: string
   events: SuspensionOfVisitsViewEvent[]
 }
@@ -31,16 +31,19 @@ const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewE
       }
     })
 
-const createViewModelFromApiDto = (orderId: number, events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewModel => {
+const createViewModelFromApiDto = (
+  legacySubjectId: number,
+  events: SuspensionOfVisitsEvent[],
+): SuspensionOfVisitsViewModel => {
   return {
-    orderId,
-    backUrl: `/orders/${orderId}/summary`,
+    legacySubjectId,
+    backUrl: `/integrity/${legacySubjectId}/summary`,
     events: parseEvents(events),
   }
 }
 
-const construct = (orderId: number, events: SuspensionOfVisitsEvent[] = []): SuspensionOfVisitsViewModel => {
-  return createViewModelFromApiDto(orderId, events)
+const construct = (legacySubjectId: number, events: SuspensionOfVisitsEvent[] = []): SuspensionOfVisitsViewModel => {
+  return createViewModelFromApiDto(legacySubjectId, events)
 }
 
 export default {

@@ -1,3 +1,12 @@
+const app = window.top
+
+if (!app.document.head.querySelector('[data-hide-command-log-request]')) {
+  const style = app.document.createElement('style')
+  style.innerHTML = '.command-name-request, .command-name-xhr { display: none }'
+  style.setAttribute('data-hide-command-log-request', '')
+  app.document.head.appendChild(style)
+}
+
 declare namespace Cypress {
   interface Chainable {
     /**
@@ -5,5 +14,38 @@ declare namespace Cypress {
      * @example cy.signIn({ failOnStatusCode: boolean })
      */
     signIn(options?: { failOnStatusCode: boolean }): Chainable<AUTWindow>
+
+    /**
+     * Custom command to check accessibility of a page against W3C AA standard.
+     * @example cy.isAccessible()
+     */
+    isAccessible(): Chainable<AUTWindow>
+
+    /**
+     * Custom command to get a form field by label text. Options are passed to the command to get the actual field element
+     * @example cy.getByLabel('My text field')
+     */
+    getByLabel: (
+      label: string | RegExp,
+      options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>,
+    ) => Chainable<JQuery>
+
+    /**
+     * Custom command to get a form fieldset by legend text. Options are passed to the command to get the actual fieldset element
+     * @example cy.getByLegend('Important fields')
+     */
+    getByLegend: (
+      legend: string | RegExp,
+      options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>,
+    ) => Chainable<JQuery>
+
+    /**
+     * Custom command to get a form fieldset by legend text. Options are passed to the command to get the actual fieldset element
+     * @example cy.getBySummaryListKey('Item 1')
+     */
+    getBySummaryListKey: (
+      key: string | RegExp,
+      options?: Partial<Cypress.Loggable & Cypress.Timeoutable & Cypress.Withinable & Cypress.Shadow>,
+    ) => Chainable<JQuery>
   }
 }
