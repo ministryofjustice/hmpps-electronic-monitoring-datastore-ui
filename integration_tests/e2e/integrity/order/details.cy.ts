@@ -73,7 +73,7 @@ context('Order Details', () => {
     page.checkIsAccessible()
   })
 
-  describe('Device wearer table', () => {
+  describe('Device wearer details', () => {
     it('Renders', () => {
       const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.deviceWearerDetails.should('be.visible')
@@ -116,7 +116,7 @@ context('Order Details', () => {
     })
   })
 
-  describe('Order data table', () => {
+  describe('Order details', () => {
     it('Renders', () => {
       const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.orderDetails.should('be.visible')

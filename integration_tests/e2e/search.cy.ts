@@ -8,17 +8,24 @@ context('Search', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
-    cy.visit('/orders')
-    Page.verifyOnPage(SearchPage)
+  it('Should display the user name visible in header', () => {
+    const page = Page.visit(SearchPage)
+    page.header.userName.should('contain.text', 'M. Tester')
   })
 
-  it('Should render the correct elements ', () => {
+  it('Should display the phase banner in header', () => {
+    const page = Page.visit(SearchPage)
+    page.header.phaseBanner.should('contain.text', 'dev')
+  })
+
+  it('Should display the back link', () => {
     const page = Page.visit(SearchPage)
 
-    page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.backButton.should('exist')
+  })
 
+  it('Should be accessible', () => {
+    const page = Page.visit(SearchPage)
     page.checkIsAccessible()
   })
 

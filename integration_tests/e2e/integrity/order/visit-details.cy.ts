@@ -18,7 +18,7 @@ context('Visit details', () => {
     })
 
     const page = Page.visit(VisitDetailsPage, { legacySubjectId })
-    page.header.userName.should('contain.text', 'J. Smith')
+    page.header.userName.should('contain.text', 'M. Tester')
   })
 
   it('Should display the phase banner in header', () => {

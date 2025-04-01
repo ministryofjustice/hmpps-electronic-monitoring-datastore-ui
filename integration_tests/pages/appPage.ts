@@ -11,7 +11,7 @@ export default class AppPage extends Page {
   }
 
   get backButton(): PageElement {
-    return cy.contains('Back')
+    return cy.contains('back')
   }
 
   checkOnPage(): void {
