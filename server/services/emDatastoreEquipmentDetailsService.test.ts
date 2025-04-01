@@ -43,10 +43,22 @@ describe('Equipment Details Service', () => {
       expect(results).toEqual(expectedResult)
     })
 
-    it('should propagate an error if there is an error getting equipment details', async () => {
+    it('should propagate an error if the apiClient rejects with an error', async () => {
       emDatastoreApiClient.getEquipmentDetails.mockRejectedValue(new Error('some error'))
 
-      await expect(equipmentDetailsService.getEquipmentDetails(orderRequest)).rejects.toEqual(new Error('some error'))
+      await expect(equipmentDetailsService.getEquipmentDetails(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of equipment details: some error'),
+      )
+    })
+
+    it('should propagate an error if there is an error thrown by the apiClient', async () => {
+      emDatastoreApiClient.getEquipmentDetails.mockImplementation(() => {
+        throw new Error('some error')
+      })
+
+      await expect(equipmentDetailsService.getEquipmentDetails(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of equipment details: some error'),
+      )
     })
   })
 })

@@ -20,7 +20,7 @@ export default class EmDatastoreOrderSummaryService {
   async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return this.emDatastoreApiClient.getOrderSummary(input)
+      return await this.emDatastoreApiClient.getOrderSummary(input)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving order summary'
       const sanitisedError = getSanitisedError(error)

@@ -20,7 +20,7 @@ export default class EmDatastoreSuspensionOfVisitsService {
   async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return this.emDatastoreApiClient.getSuspensionOfVisits(input)
+      return await this.emDatastoreApiClient.getSuspensionOfVisits(input)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving suspension of visits data'
       const sanitisedError = getSanitisedError(error)

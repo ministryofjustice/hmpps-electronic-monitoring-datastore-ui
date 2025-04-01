@@ -39,11 +39,21 @@ describe('Suspension of visits service', () => {
       expect(results).toEqual(expectedResult)
     })
 
-    it('should propagate an error', async () => {
+    it('should propagate an error if the apiClient rejects with an error', async () => {
       emDatastoreApiClient.getSuspensionOfVisits.mockRejectedValue(new Error('some error'))
 
       await expect(suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)).rejects.toEqual(
-        new Error('some error'),
+        new Error('Error retrieving suspension of visits data: some error'),
+      )
+    })
+
+    it('should propagate an error if there is an error thrown by the apiClient', async () => {
+      emDatastoreApiClient.getSuspensionOfVisits.mockImplementation(() => {
+        throw new Error('some error')
+      })
+
+      await expect(suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving suspension of visits data: some error'),
       )
     })
   })

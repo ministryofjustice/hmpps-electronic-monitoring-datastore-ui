@@ -20,7 +20,7 @@ export default class EmDatastoreEquipmentDetailsService {
   async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return this.emDatastoreApiClient.getEquipmentDetails(input)
+      return await this.emDatastoreApiClient.getEquipmentDetails(input)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of equipment details'
       const sanitisedError = getSanitisedError(error)

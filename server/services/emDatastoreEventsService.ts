@@ -23,7 +23,7 @@ export default class EmDatastoreEventsService {
   async getEvents(input: OrderRequest): Promise<(ContactEvent | IncidentEvent | MonitoringEvent | ViolationEvent)[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return (
+      return await (
         await Promise.all([
           this.emDatastoreApiClient.getMonitoringEvents(input),
           this.emDatastoreApiClient.getIncidentEvents(input),

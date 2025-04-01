@@ -20,7 +20,7 @@ export default class EmDatastoreVisitDetailsService {
   async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return this.emDatastoreApiClient.getVisitDetails(input)
+      return await this.emDatastoreApiClient.getVisitDetails(input)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of visit details'
       const sanitisedError = getSanitisedError(error)

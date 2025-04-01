@@ -66,7 +66,8 @@ export default class EmDatastoreOrderSearchService {
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      const queryExecutionId: QueryExecutionResponse = await this.emDatastoreApiClient.submitSearchQuery(input)
+      const queryExecutionId = await this.emDatastoreApiClient.submitSearchQuery(input)
+
       return queryExecutionId
     } catch (error) {
       const sanitisedError: SanitisedError = getSanitisedError(error)
@@ -79,7 +80,7 @@ export default class EmDatastoreOrderSearchService {
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     try {
       this.emDatastoreApiClient.updateToken(request.userToken)
-      return this.emDatastoreApiClient.getSearchResults(request)
+      return await this.emDatastoreApiClient.getSearchResults(request)
     } catch (error) {
       let userFreindlyMessage = 'Error retrieving search results'
       const sanitisedError = getSanitisedError(error)

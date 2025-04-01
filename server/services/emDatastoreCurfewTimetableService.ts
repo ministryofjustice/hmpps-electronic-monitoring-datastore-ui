@@ -20,7 +20,7 @@ export default class EmDatastoreCurfewTimetableService {
   async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return this.emDatastoreApiClient.getCurfewTimetable(input)
+      return await this.emDatastoreApiClient.getCurfewTimetable(input)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving curfew timetable'
       const sanitisedError = getSanitisedError(error)

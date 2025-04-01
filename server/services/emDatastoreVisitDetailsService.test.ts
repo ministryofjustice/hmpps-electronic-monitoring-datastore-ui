@@ -43,10 +43,22 @@ describe('Visit Details Service', () => {
       expect(results).toEqual(expectedResult)
     })
 
-    it('should propagate an error if there is an error getting visit details', async () => {
+    it('should propagate an error if the apiClient rejects with an error', async () => {
       emDatastoreApiClient.getVisitDetails.mockRejectedValue(new Error('some error'))
 
-      await expect(visitDetailsService.getVisitDetails(orderRequest)).rejects.toEqual(new Error('some error'))
+      await expect(visitDetailsService.getVisitDetails(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of visit details: some error'),
+      )
+    })
+
+    it('should propagate an error if there is an error thrown by the apiClient', async () => {
+      emDatastoreApiClient.getVisitDetails.mockImplementation(() => {
+        throw new Error('some error')
+      })
+
+      await expect(visitDetailsService.getVisitDetails(orderRequest)).rejects.toEqual(
+        new Error('Error retrieving list of visit details: some error'),
+      )
     })
   })
 })
