@@ -51,25 +51,25 @@ describe('CurfewTimetableController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
-      curfewTimetable: [] as CurfewTimetable[],
       legacySubjectId: testOrderId,
+      backUrl: `/integrity/${testOrderId}`,
+      curfewTimetable: [] as CurfewTimetable[],
     }
 
     emDatastoreCurfewTimetableService.getCurfewTimetable = jest.fn().mockResolvedValue([])
 
     await curfewTimetableController.showCurfewTimetable(req, res, next)
 
-    expect(CurfewTimetableViewModel.construct).toHaveBeenCalledWith(testOrderId, [])
+    expect(CurfewTimetableViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
     expect(CurfewTimetableViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/curfew-timetable', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/curfew-timetable', expectedViewModel)
   })
 
   it('should render page with visit details', async () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}`,
       curfewTimetable: [
         {
           isoDateTime: eventDateTime,
@@ -125,6 +125,6 @@ describe('CurfewTimetableController', () => {
     await curfewTimetableController.showCurfewTimetable(req, res, next)
 
     expect(CurfewTimetableViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/curfew-timetable', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/curfew-timetable', expectedViewModel)
   })
 })

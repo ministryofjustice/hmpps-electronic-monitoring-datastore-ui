@@ -23,8 +23,12 @@ export default class CurfewTimetableController {
       legacySubjectId,
     })
 
-    const viewModel = CurfewTimetableModel.construct(parseInt(legacySubjectId, 10), curfewTimetable)
+    const viewModel = CurfewTimetableModel.construct(
+      parseInt(legacySubjectId, 10),
+      `/integrity/${legacySubjectId}`,
+      curfewTimetable,
+    )
 
-    res.render('pages/order/curfew-timetable', viewModel)
+    res.render('pages/integrity/curfew-timetable', viewModel)
   }
 }

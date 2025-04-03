@@ -16,18 +16,15 @@ export default class OrderDetailsController {
 
     const { legacySubjectId } = req.params
 
-    try {
-      const orderDetails = await this.emDatastoreOrderDetailsService.getOrderDetails({
-        userToken: res.locals.user.token,
-        legacySubjectId,
-      })
+    const orderDetails = await this.emDatastoreOrderDetailsService.getOrderDetails({
+      userToken: res.locals.user.token,
+      legacySubjectId,
+    })
 
-      res.render('pages/order/details', {
-        details: orderDetails,
-        backUrl: `/integrity/${legacySubjectId}/summary`,
-      })
-    } catch {
-      res.status(500).send('Error fetching data')
-    }
+    res.render('pages/integrity/details', {
+      legacySubjectId,
+      backUrl: `/integrity/${legacySubjectId}`,
+      details: orderDetails,
+    })
   }
 }

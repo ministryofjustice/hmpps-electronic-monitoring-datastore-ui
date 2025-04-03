@@ -37,7 +37,7 @@ export default class EmDatastoreApiClient {
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     const { queryExecutionId } = request
     return this.restClient.get<Order[]>({
-      path: `/integrity/orders?queryExecutionId=${queryExecutionId}`,
+      path: `/integrity/orders?id=${queryExecutionId}`,
     })
   }
 

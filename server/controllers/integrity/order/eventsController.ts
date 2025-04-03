@@ -23,8 +23,8 @@ export default class EventsController {
       legacySubjectId,
     })
 
-    const viewModel = EventsViewModel.construct(parseInt(legacySubjectId, 10), events)
+    const viewModel = EventsViewModel.construct(parseInt(legacySubjectId, 10), `/integrity/${legacySubjectId}`, events)
 
-    res.render('pages/order/event-history', viewModel)
+    res.render('pages/integrity/event-history', viewModel)
   }
 }

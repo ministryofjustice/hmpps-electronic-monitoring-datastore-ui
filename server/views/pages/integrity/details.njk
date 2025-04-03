@@ -1,27 +1,15 @@
-{% extends "../../partials/layout.njk" %}
+{% extends "../../partials/layout-order.njk" %}
 
-{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-{% set deviceWearerHeading = deviceWearer.heading %}
-{% set orderDetailsHeading = orderDetails.heading %}
-{% set orderDetailsRecords = orderDetails.records %}
-{% set deviceWearerRecords = deviceWearer.records %}
+{% set heading = "Order details" %}
+{% set pageTitle = applicationName + " - " + heading %}
 {% set backUrl = backUrl %}
 
-{% block content %}
+{% set legacySubjectId = details.legacySubjectId %}
 
-  {{ emsServiceInformation() }}
-
-  {{ govukBackLink({
-    text: "back",
-    href: backUrl
-  }) }}
-
-  <h1 class="govuk-heading-l">Order details</h1>
-
-  <h2 class="govuk-heading-m">Device wearer data</h2>
+{% block innerContent %}
+  <h2 class="govuk-heading-m">Device wearer</h2>
 
   {% set offenseRisk = 'Yes' if details.offenceRisk else 'No' %}
   {%
@@ -61,7 +49,7 @@
     })
   }}
 
-  <h2 class="govuk-heading-m">Order data</h2>
+  <h2 class="govuk-heading-m">Order</h2>
 
   {{
     govukSummaryList({
@@ -78,5 +66,4 @@
       ]
     })
   }}
-
 {% endblock %}

@@ -51,7 +51,7 @@ describe('VisitDetailsController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}`,
       visitDetails: [] as VisitDetails[],
       legacySubjectId: testOrderId,
     }
@@ -60,16 +60,16 @@ describe('VisitDetailsController', () => {
 
     await visitDetailsController.showVisitDetails(req, res, next)
 
-    expect(VisitDetailsViewModel.construct).toHaveBeenCalledWith(testOrderId, [])
+    expect(VisitDetailsViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
     expect(VisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/visit-details', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/visit-details', expectedViewModel)
   })
 
   it('should render page with visit details', async () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}`,
       visitDetails: [
         {
           isoDateTime: eventDateTime,
@@ -119,6 +119,6 @@ describe('VisitDetailsController', () => {
     await visitDetailsController.showVisitDetails(req, res, next)
 
     expect(VisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/visit-details', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/visit-details', expectedViewModel)
   })
 })

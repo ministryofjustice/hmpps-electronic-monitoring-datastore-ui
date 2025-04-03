@@ -17,6 +17,7 @@ export type EventsViewModel = {
 
 const createViewModelFromApiDto = (
   legacySubjectId: number,
+  backUrl: string,
   events: (MonitoringEvent | IncidentEvent | ContactEvent)[],
 ): EventsViewModel => ({
   legacySubjectId,
@@ -31,14 +32,15 @@ const createViewModelFromApiDto = (
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/integrity/${legacySubjectId}/summary`,
+  backUrl,
 })
 
 const construct = (
   legacySubjectId: number,
+  backUrl: string,
   events: (MonitoringEvent | IncidentEvent | ContactEvent)[] = [],
 ): EventsViewModel => {
-  return createViewModelFromApiDto(legacySubjectId, events)
+  return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }
 
 export default {

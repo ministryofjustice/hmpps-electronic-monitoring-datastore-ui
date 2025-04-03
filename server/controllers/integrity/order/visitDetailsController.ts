@@ -23,8 +23,12 @@ export default class VisitDetailsController {
       legacySubjectId,
     })
 
-    const viewModel = VisitDetailsModel.construct(parseInt(legacySubjectId, 10), visitDetails)
+    const viewModel = VisitDetailsModel.construct(
+      parseInt(legacySubjectId, 10),
+      `/integrity/${legacySubjectId}`,
+      visitDetails,
+    )
 
-    res.render('pages/order/visit-details', viewModel)
+    res.render('pages/integrity/visit-details', viewModel)
   }
 }

@@ -33,17 +33,22 @@ const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewE
 
 const createViewModelFromApiDto = (
   legacySubjectId: number,
+  backUrl: string,
   events: SuspensionOfVisitsEvent[],
 ): SuspensionOfVisitsViewModel => {
   return {
     legacySubjectId,
-    backUrl: `/integrity/${legacySubjectId}/summary`,
+    backUrl,
     events: parseEvents(events),
   }
 }
 
-const construct = (legacySubjectId: number, events: SuspensionOfVisitsEvent[] = []): SuspensionOfVisitsViewModel => {
-  return createViewModelFromApiDto(legacySubjectId, events)
+const construct = (
+  legacySubjectId: number,
+  backUrl: string,
+  events: SuspensionOfVisitsEvent[] = [],
+): SuspensionOfVisitsViewModel => {
+  return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }
 
 export default {

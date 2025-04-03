@@ -7,7 +7,11 @@ export type VisitDetailsViewModel = {
   backUrl: string
 }
 
-const createViewModelFromApiDto = (legacySubjectId: number, visitDetails: VisitDetails[]): VisitDetailsViewModel => ({
+const createViewModelFromApiDto = (
+  legacySubjectId: number,
+  backUrl: string,
+  visitDetails: VisitDetails[],
+): VisitDetailsViewModel => ({
   legacySubjectId,
   visitDetails: visitDetails
     .map(details => {
@@ -22,11 +26,11 @@ const createViewModelFromApiDto = (legacySubjectId: number, visitDetails: VisitD
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/integrity/${legacySubjectId}/summary`,
+  backUrl,
 })
 
-const construct = (legacySubjectId: number, events: VisitDetails[] = []): VisitDetailsViewModel => {
-  return createViewModelFromApiDto(legacySubjectId, events)
+const construct = (legacySubjectId: number, backUrl: string, events: VisitDetails[] = []): VisitDetailsViewModel => {
+  return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }
 
 export default {

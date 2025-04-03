@@ -2,7 +2,7 @@
 {% from '../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
 
 {% macro equipmentDetails(event) %}
-  <h2 class="govuk-heading-m">HMU</h2>
+  <h3 class="govuk-heading-s">HMU</h3>
 
   {{
     govukSummaryList({
@@ -17,7 +17,7 @@
     })
   }}
 
-  <h2 class="govuk-heading-m">Device</h2>
+  <h3 class="govuk-heading-s">Device</h3>
 
   {{
     govukSummaryList({

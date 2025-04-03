@@ -1,0 +1,21 @@
+{% extends "../../partials/layout-order.njk" %}
+
+{% from "../../components/emsDateFilter.njk" import emsDateFilter %}
+{% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
+{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{% set heading = "All event history" %}
+{% set subHeading = "Violation alerts, monitoring events and contact history" %}
+{% set backUrl = backUrl %}
+
+{% block innerContent %}
+  {% if events | length %}
+    {{ emsDateFilter() }}
+
+    {{ emsEventTimeline(events) }}
+  {% else %}
+    <h3 class="govuk-heading-m no-results-heading">No events found</h3>
+
+    <p class="no-results-message">No events information was found for this order</p>
+  {% endif %}
+{% endblock %}

@@ -1,27 +1,18 @@
-{% extends "../partials/layout.njk" %}
+{% extends "../partials/layout-default.njk" %}
 
-{% set apiOutput = data %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% block content %}
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds-from-desktop">
-            <h1 class="govuk-heading-l">API test page</h1>
-        </div>
-        <div class="govuk-grid-column-two-thirds">
-            <p>
-                This page confirms we have recieved the following data from the API: "{{ apiOutput }}"
-            </p>
-        </div>
-    </div>
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds-from-desktop">
-      {{ govukButton({
-          text: "Back to start page",
-          href: "/",
-          isStartButton: true,
-          classes: "govuk-button--secondary"
-      }) }}
-        </div>
-    </div>
+{% set heading = "API test page" %}
+{% set backUrl = "/" %}
 
+{% block innerContent %}
+  <p class="govuk-body">
+    This page confirms we have recieved the following message from the API:
+  </p>
+
+  <pre><code>{{ data | dump }}</code></pre>
+
+  <p class="govuk-body">
+    <a href="/" class="govuk-link">Go back to the start</a>
+  </p>
 {% endblock %}
