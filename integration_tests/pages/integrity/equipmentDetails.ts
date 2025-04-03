@@ -1,6 +1,6 @@
-import AppPage from '../../appPage'
-import PageElement from '../../PageElement'
-import paths from '../../../../server/constants/paths'
+import AppPage from '../appPage'
+import PageElement from '../PageElement'
+import paths from '../../../server/constants/paths'
 
 export default class EquipmentDetailsPage extends AppPage {
   constructor() {

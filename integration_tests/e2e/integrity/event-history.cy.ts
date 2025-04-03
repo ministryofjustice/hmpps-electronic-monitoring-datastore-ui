@@ -1,5 +1,5 @@
-import Page from '../../../pages/page'
-import EventHistoryPage from '../../../pages/integrity/order/eventHistory'
+import Page from '../../pages/page'
+import EventHistoryPage from '../../pages/integrity/eventHistory'
 
 context('Event history', () => {
   const legacySubjectId = 1234567

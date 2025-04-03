@@ -1,5 +1,5 @@
-import Page from '../../../pages/page'
-import CurfewTimetablePage from '../../../pages/integrity/order/curfewTimetable'
+import Page from '../../pages/page'
+import CurfewTimetablePage from '../../pages/integrity/curfewTimetable'
 
 context('Crufew Timetable', () => {
   const legacySubjectId = '1232123'
