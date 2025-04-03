@@ -20,7 +20,7 @@ const getSearchResults = (options: GetSearchResultsStubOptions = defaultGetSearc
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/integrity/orders?queryExecutionId=${options.queryExecutionId}`,
+      url: `/datastore/integrity/orders?id=${options.queryExecutionId}`,
     },
     response: {
       status: options.httpStatus,
