@@ -17,7 +17,7 @@ const paths = {
     INDEX: '/alcohol-monitoring',
   },
 
-  CONNECTION_TEST: '/test',
+  CONNECTION_TEST: '/test-api',
 }
 
 export default paths
