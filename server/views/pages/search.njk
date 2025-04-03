@@ -21,7 +21,7 @@
         <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
         
         {# TODO: Remove environment flag when AM is ready for deployment to preprod & prod #}
-        {% if (environmentName == 'dev') %}
+        {% if (environmentName | upper == 'DEV' ) %}
           {{ govukRadios({
             classes: "govuk-radios--small",
             name: "searchType",
