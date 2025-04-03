@@ -1,8 +1,8 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../../services/auditService'
-import { AuditService, EmDatastoreCurfewTimetableService } from '../../../services'
+import { Page } from '../../services/auditService'
+import { AuditService, EmDatastoreCurfewTimetableService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import CurfewTimetableModel from '../../../models/view-models/curfewTimetable'
+import CurfewTimetableModel from '../../models/view-models/curfewTimetable'
 
 export default class CurfewTimetableController {
   constructor(

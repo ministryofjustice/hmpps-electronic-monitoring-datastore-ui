@@ -1,8 +1,8 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../../services/auditService'
-import { AuditService, EmDatastoreVisitDetailsService } from '../../../services'
+import { Page } from '../../services/auditService'
+import { AuditService, EmDatastoreVisitDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import VisitDetailsModel from '../../../models/view-models/visitDetails'
+import VisitDetailsModel from '../../models/view-models/visitDetails'
 
 export default class VisitDetailsController {
   constructor(

@@ -1,7 +1,7 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../../services/auditService'
-import { AuditService, EmDatastoreOrderSummaryService } from '../../../services'
-import { Reports } from '../../../interfaces/orderInformation'
+import { Page } from '../../services/auditService'
+import { AuditService, EmDatastoreOrderSummaryService } from '../../services'
+import { Reports } from '../../interfaces/orderInformation'
 
 export default class OrderSummaryController {
   constructor(

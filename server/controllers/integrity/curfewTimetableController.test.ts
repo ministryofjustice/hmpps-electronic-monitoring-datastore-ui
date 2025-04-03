@@ -1,16 +1,16 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import AuditService from '../../../services/auditService'
-import EmDatastoreCurfewTimetableService from '../../../services/emDatastoreCurfewTimetableService'
+import AuditService from '../../services/auditService'
+import EmDatastoreCurfewTimetableService from '../../services/emDatastoreCurfewTimetableService'
 import CurfewTimetableController from './curfewTimetableController'
 // eslint-disable-next-line import/no-named-as-default
-import CurfewTimetableViewModel from '../../../models/view-models/curfewTimetable'
-import { TimelineEventModel } from '../../../models/view-models/TimelineEvent'
-import { createMockRequest, createMockResponse } from '../../../testutils/mocks/mockExpress'
-import { CurfewTimetable, CurfewTimetableModel } from '../../../models/curfewTimetable'
+import CurfewTimetableViewModel from '../../models/view-models/curfewTimetable'
+import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
+import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
+import { CurfewTimetable, CurfewTimetableModel } from '../../models/curfewTimetable'
 
-jest.mock('../../../services/auditService')
-jest.mock('../../../services/emDatastoreCurfewTimetableService')
+jest.mock('../../services/auditService')
+jest.mock('../../services/emDatastoreCurfewTimetableService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreCurfewTimetableService = { getEvents: jest.fn() } as unknown as EmDatastoreCurfewTimetableService
