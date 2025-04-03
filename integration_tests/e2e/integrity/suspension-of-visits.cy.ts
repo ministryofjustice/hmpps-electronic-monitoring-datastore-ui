@@ -1,5 +1,5 @@
-import Page from '../../../pages/page'
-import SuspensionOfVisitsPage from '../../../pages/integrity/order/suspensionOfVisits'
+import Page from '../../pages/page'
+import SuspensionOfVisitsPage from '../../pages/integrity/suspensionOfVisits'
 
 context('Suspensions', () => {
   const legacySubjectId = 1234567
