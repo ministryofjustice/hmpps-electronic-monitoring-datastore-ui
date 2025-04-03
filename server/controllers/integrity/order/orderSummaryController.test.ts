@@ -103,7 +103,7 @@ describe('OrderController', () => {
 
       await controller.orderSummary(req, res, next)
 
-      expect(res.render).toHaveBeenCalledWith('pages/order/summary', expectedPageData)
+      expect(res.render).toHaveBeenCalledWith('pages/integrity/summary', expectedPageData)
     })
   })
 })

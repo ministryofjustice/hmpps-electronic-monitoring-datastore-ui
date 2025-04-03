@@ -18,13 +18,17 @@ export default class SuspensionOfVisitsController {
       legacySubjectId,
     })
 
-    const viewModel = SuspensionOfVisitsViewModel.construct(parseInt(legacySubjectId, 10), suspensionOfVisitsData || [])
+    const viewModel = SuspensionOfVisitsViewModel.construct(
+      parseInt(legacySubjectId, 10),
+      `/integrity/${legacySubjectId}`,
+      suspensionOfVisitsData || [],
+    )
 
     await this.auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })
 
-    res.render('pages/order/suspension-of-visits', viewModel)
+    res.render('pages/integrity/suspension-of-visits', viewModel)
   }
 }

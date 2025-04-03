@@ -43,7 +43,7 @@ export default function setupAuthentication() {
 
   router.get('/autherror', (req, res) => {
     res.status(401)
-    return res.render('autherror')
+    return res.render('pages/error-pages/401')
   })
 
   router.get('/sign-in', passport.authenticate('oauth2'))

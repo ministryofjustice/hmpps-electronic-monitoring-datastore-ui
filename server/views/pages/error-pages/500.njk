@@ -1,24 +1,13 @@
-{% extends "../../partials/layout.njk" %}
+{% extends "../../partials/layout-default.njk" %}
 
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
-{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% set heading = "Sorry, there is a problem with the service" %}
+{% set pageTitle = "Problem with the service" %}
+{% set backUrl = "/" %}
 
-{% set pageTitle = applicationName + " - Problem with the service" %}
-{% set mainClasses = "app-container govuk-body" %}
-{% set searchUrl = "/search" %}
-
-{% block content %}
-  {{ emsServiceInformation() }}
-
-  {{ govukBackLink({
-    text: "back",
-    href: "/"
-  }) }}
-
-  <h1 class="govuk-heading-l">
-    Sorry, there is a problem with the service
-  </h1>
-
-  <p class="govuk-body">Try again later.</p>
+{% block innerContent %}
+  {% if stack %}
+    <pre><code>{{ stack }}</code></pre>
+  {% else %}
+    <p class="govuk-body">Try again later.</p>
+  {% endif %}
 {% endblock %}

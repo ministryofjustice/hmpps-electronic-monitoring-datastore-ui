@@ -25,4 +25,4 @@ export const initialiseName = (fullName?: string): string | null => {
 }
 
 export const makePageTitle = ({ pageHeading, hasErrors }: { pageHeading: string; hasErrors: boolean }) =>
-  `${hasErrors ? 'Error: ' : ''}${pageHeading} - ${config.applicationName}`
+  `${hasErrors ? 'Error: ' : ''}${pageHeading}`

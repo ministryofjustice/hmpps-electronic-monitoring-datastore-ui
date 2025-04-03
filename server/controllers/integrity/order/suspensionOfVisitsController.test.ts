@@ -57,7 +57,7 @@ describe('SuspensionOfVisitsController', () => {
   ): SuspensionOfVisitsViewModel => {
     return {
       legacySubjectId,
-      backUrl: `/integrity/${legacySubjectId}/summary`,
+      backUrl: `/integrity/${legacySubjectId}`,
       events,
     }
   }
@@ -90,7 +90,7 @@ describe('SuspensionOfVisitsController', () => {
 
   it('should render the page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
+      backUrl: `/integrity/${testOrderId}`,
       events: [] as SuspensionOfVisitsEvent[],
       legacySubjectId: testOrderId,
     }
@@ -98,9 +98,13 @@ describe('SuspensionOfVisitsController', () => {
 
     await controller.showSuspensionOfVisits(req, res, next)
 
-    expect(SuspensionOfVisitsView.construct).toHaveBeenCalledWith(testOrderId, expectedViewModel.events)
+    expect(SuspensionOfVisitsView.construct).toHaveBeenCalledWith(
+      testOrderId,
+      `/integrity/${testOrderId}`,
+      expectedViewModel.events,
+    )
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/suspension-of-visits', expectedViewModel)
   })
 
   it('should render the page with suspension of visits events', async () => {
@@ -116,7 +120,7 @@ describe('SuspensionOfVisitsController', () => {
     await controller.showSuspensionOfVisits(req, res, next)
 
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
-    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewData)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/suspension-of-visits', expectedViewData)
   })
 
   it('should order suspension of visits events by requestedDate', async () => {
@@ -150,6 +154,6 @@ describe('SuspensionOfVisitsController', () => {
     await controller.showSuspensionOfVisits(req, res, next)
 
     expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
-    expect(res.render).toHaveBeenCalledWith('pages/order/suspension-of-visits', expectedViewData)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/suspension-of-visits', expectedViewData)
   })
 })

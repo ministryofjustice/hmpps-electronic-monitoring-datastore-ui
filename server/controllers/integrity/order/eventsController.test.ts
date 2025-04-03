@@ -54,18 +54,18 @@ describe('EventsController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
-      events: [] as (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[],
       legacySubjectId: testOrderId,
+      backUrl: `/integrity/${testOrderId}`,
+      events: [] as (MonitoringEvent | IncidentEvent | ContactEvent | ViolationEvent)[],
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([])
 
     await eventsController.showHistory(req, res, next)
 
-    expect(EventsViewModel.construct).toHaveBeenCalledWith(testOrderId, [])
+    expect(EventsViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
     expect(EventsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/event-history', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 
   it('should render page with monitoring events', async () => {
@@ -73,7 +73,8 @@ describe('EventsController', () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
+      legacySubjectId: testOrderId,
+      backUrl: `/integrity/${testOrderId}`,
       events: [
         {
           isoDateTime: eventDateTime,
@@ -83,7 +84,6 @@ describe('EventsController', () => {
           properties: {},
         } as TimelineEventModel,
       ],
-      legacySubjectId: testOrderId,
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
@@ -99,7 +99,7 @@ describe('EventsController', () => {
     await eventsController.showHistory(req, res, next)
 
     expect(EventsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/event-history', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 
   it('should render page with incident events', async () => {
@@ -107,7 +107,8 @@ describe('EventsController', () => {
     const eventDateTime = '2023-03-03T03:03:03'
 
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
+      legacySubjectId: testOrderId,
+      backUrl: `/integrity/${testOrderId}`,
       events: [
         {
           isoDateTime: eventDateTime,
@@ -117,7 +118,6 @@ describe('EventsController', () => {
           properties: {},
         } as TimelineEventModel,
       ],
-      legacySubjectId: testOrderId,
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
@@ -133,7 +133,7 @@ describe('EventsController', () => {
     await eventsController.showHistory(req, res, next)
 
     expect(EventsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/event-history', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 
   it('should render page with contact events', async () => {
@@ -141,7 +141,8 @@ describe('EventsController', () => {
     const eventDateTime = '2023-03-03T03:03:03'
 
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}/summary`,
+      legacySubjectId: testOrderId,
+      backUrl: `/integrity/${testOrderId}`,
       events: [
         {
           isoDateTime: eventDateTime,
@@ -151,7 +152,6 @@ describe('EventsController', () => {
           properties: {},
         } as TimelineEventModel,
       ],
-      legacySubjectId: testOrderId,
     }
 
     emDatastoreEventsService.getEvents = jest.fn().mockResolvedValue([
@@ -167,6 +167,6 @@ describe('EventsController', () => {
     await eventsController.showHistory(req, res, next)
 
     expect(EventsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/order/event-history', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 })

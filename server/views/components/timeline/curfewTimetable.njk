@@ -35,7 +35,7 @@
     })
   }}
 
-  <h2 class="govuk-heading-m">Curfew schedule</h2>
+  <h3 class="govuk-heading-s">Curfew schedule</h3>
   {% set curfewSchedule %}{{ safeGovukTime(event.properties.curfewStartDate) }} - {{ safeGovukTime(event.properties.curfewEndDate) }}{% endset %}
 
   {{

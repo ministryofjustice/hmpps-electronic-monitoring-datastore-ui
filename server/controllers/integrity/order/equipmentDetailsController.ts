@@ -23,8 +23,12 @@ export default class EquipmentDetailsController {
       legacySubjectId,
     })
 
-    const viewModel = EquipmentDetailsModel.construct(parseInt(legacySubjectId, 10), equipmentDetails)
+    const viewModel = EquipmentDetailsModel.construct(
+      parseInt(legacySubjectId, 10),
+      `/integrity/${legacySubjectId}`,
+      equipmentDetails,
+    )
 
-    res.render('pages/order/equipment-details', viewModel)
+    res.render('pages/integrity/equipment-details', viewModel)
   }
 }

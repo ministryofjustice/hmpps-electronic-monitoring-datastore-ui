@@ -1,0 +1,20 @@
+{% extends "../../partials/layout-order.njk" %}
+
+{% from "../../components/emsDateFilter.njk" import emsDateFilter %}
+{% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
+{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{% set heading = "Equipment details" %}
+{% set backUrl = backUrl %}
+
+{% block innerContent %}
+  {% if equipmentDetails | length %}
+    {{ emsDateFilter() }}
+
+    {{ emsEventTimeline(equipmentDetails) }}
+  {% else %}
+    <h3 class="govuk-heading-m no-results-heading">No {{ heading | lower }} found</h3>
+
+    <p class="no-results-message">No {{ heading | lower }} information was found for this order</p>
+  {% endif %}
+{% endblock %}

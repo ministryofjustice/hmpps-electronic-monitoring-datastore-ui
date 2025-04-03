@@ -75,15 +75,12 @@ describe('OrderDetailsController', () => {
       expect(emDatastoreOrderDetailsService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
-    it(`returns correct error when getOrderDetails fails`, async () => {
+    it(`returns correct error when orderDetailsService fails`, async () => {
       emDatastoreOrderDetailsService.getOrderDetails = jest.fn().mockImplementation(() => {
-        throw new Error('Error message')
+        throw new Error('Expected error message')
       })
 
-      await controller.orderDetails(req, res, next)
-
-      expect(res.status).toHaveBeenCalledWith(500)
-      expect(res.send).toHaveBeenCalledWith('Error fetching data')
+      await expect(controller.orderDetails(req, res, next)).rejects.toThrow('Expected error message')
     })
 
     it(`renders the page with appropriate data`, async () => {
@@ -97,15 +94,16 @@ describe('OrderDetailsController', () => {
       })
 
       const expectedPageData = {
+        legacySubjectId: expectedOrderId,
+        backUrl: `/integrity/${expectedOrderId}`,
         details: 'expectedOrderDetails',
-        backUrl: `/integrity/${expectedOrderId}/summary`,
       }
 
       emDatastoreOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
       await controller.orderDetails(req, res, next)
 
-      expect(res.render).toHaveBeenCalledWith('pages/order/details', expectedPageData)
+      expect(res.render).toHaveBeenCalledWith('pages/integrity/details', expectedPageData)
     })
   })
 })

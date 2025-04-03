@@ -85,7 +85,7 @@ describe('EM Datastore API Client', () => {
   describe('getSearchResults', () => {
     it('should return a list of orders from the API', async () => {
       fakeClient
-        .get(`/integrity/orders?queryExecutionId=${queryExecutionId}`)
+        .get(`/integrity/orders?id=${queryExecutionId}`)
         .matchHeader('Authorization', `Bearer ${token}`)
         .reply(200, orders)
 
@@ -98,7 +98,7 @@ describe('EM Datastore API Client', () => {
 
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
       fakeClient
-        .get(`/integrity/orders?queryExecutionId=${queryExecutionId}`)
+        .get(`/integrity/orders?id=${queryExecutionId}`)
         .matchHeader('Authorization', `Bearer ${token}`)
         .reply(401)
 

@@ -30,6 +30,6 @@ export default class OrderSummaryController {
       allEventHistory: true,
       services: true,
     }
-    res.render('pages/order/summary', { data: orderInformation, backUrl, reports })
+    res.render('pages/integrity/summary', { legacySubjectId, data: orderInformation, backUrl, reports })
   }
 }
