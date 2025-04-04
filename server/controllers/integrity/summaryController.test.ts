@@ -12,7 +12,7 @@ jest.mock('../../services/emDatastoreOrderSummaryService')
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreOrderSummaryService = { getOrderSummary: jest.fn() } as unknown as EmDatastoreOrderSummaryService
 
-describe('OrderController', () => {
+describe('Integrity summary Controller', () => {
   let controller: OrderSummaryController
   let req: Request
   let res: Response

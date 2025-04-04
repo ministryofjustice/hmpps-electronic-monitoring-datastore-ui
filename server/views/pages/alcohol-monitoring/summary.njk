@@ -1,0 +1,39 @@
+{% extends "../../partials/layout-order.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set heading = "Key order details" %}
+{% set pageTitle = applicationName + " - " + heading %}
+{% set backUrl = backUrl %}
+
+{% set orderInformation = data.keyOrderInformation %}
+{% set legacySubjectId = orderInformation.legacySubjectId %}
+
+{% block innerContent %}
+  <h2 class="govuk-heading-m">Order information</h2>
+
+  {%
+    set primaryAddress = [
+      orderInformation.address1,
+      orderInformation.address2,
+      orderInformation.address3,
+      orderInformation.postcode
+    ] | reject(null) | join('<br>')
+  %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: 'Specials' }, value:  { text: orderInformation.specials } },
+        { key: { text: 'Legacy Subject ID' }, value:  { text: orderInformation.legacySubjectId } },
+        { key: { text: 'Legacy Order ID' }, value:  { text: orderInformation.splegacyOrderIdecials } },
+        { key: { text: 'Name' }, value:  { text: orderInformation.name } },
+        { key: { text: 'Alias' }, value:  { text: orderInformation.alias } },
+        { key: { text: 'Date of birth' }, value:  { text: orderInformation.dateOfBirth } },
+        { key: { text: 'Primary address' }, value:  { html: primaryAddress } },
+        { key: { text: 'Order start date' }, value:  { text: orderInformation.orderStartDate } },
+        { key: { text: 'Order end date' }, value:  { text: orderInformation.orderEndDate } }
+      ]
+    })
+  }}
+
+{% endblock %}
