@@ -131,6 +131,59 @@ describe('EM Datastore API Client', () => {
     })
   })
 
+  describe('getAlcoholMonitoringSummary', () => {
+    it('should fetch the summary with correct parameters', async () => {
+      const expectedResult = {
+        keyOrderInformation: {
+          specials: 'No',
+          legacySubjectId: orderInfo.legacySubjectId,
+          legacyOrderId: '7654321',
+          name: 'John Smith',
+          alias: 'Zeno',
+          dateOfBirth: '01-02-1980',
+          address1: '1 Primary Street',
+          address2: 'Sutton',
+          address3: 'London',
+          postcode: 'ABC 123',
+          orderStartDate: '01-02-2012',
+          orderEndDate: '03-04-2013',
+        },
+        subjectHistoryReport: {
+          reportUrl: '#',
+          name: '1234567',
+          createdOn: '01-02-2020',
+          time: '0900',
+        },
+        documents: {
+          pageSize: 0,
+          orderDocuments: [] as unknown[],
+        },
+      }
+
+      fakeClient.get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}`).reply(200, expectedResult)
+
+      const result = await emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      const orderInfoWithNullToken: OrderRequest = {
+        legacySubjectId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/alcohol-monitoring/orders/${orderInfoWithNullToken.legacySubjectId}`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfoWithNullToken)).rejects.toThrow(
+        'Unauthorized',
+      )
+    })
+  })
+
   describe('getMonitoringEvents', () => {
     it('should fetch monitoring events with correct parameters', async () => {
       const fakeResponse = [] as MonitoringEvent[]
