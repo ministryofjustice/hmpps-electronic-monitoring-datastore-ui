@@ -8,10 +8,10 @@ export default class OrderDetailsPage extends AppPage {
   }
 
   get deviceWearerDetails(): PageElement {
-    return cy.contains('h2', 'Device wearer data').next('.govuk-summary-list')
+    return cy.contains('h2', 'Device wearer').next('.govuk-summary-list')
   }
 
   get orderDetails(): PageElement {
-    return cy.contains('h2', 'Order data').next('.govuk-summary-list')
+    return cy.contains('h2', 'Order').next('.govuk-summary-list')
   }
 }

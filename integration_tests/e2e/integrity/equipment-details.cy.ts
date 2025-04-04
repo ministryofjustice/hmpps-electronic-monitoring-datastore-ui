@@ -29,7 +29,7 @@ context('Equipment Details', () => {
     })
 
     const page = Page.visit(EquipmentDetailsPage, { legacySubjectId })
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.header.phaseBanner.should('contain.text', 'DEV')
   })
 
   it('Should display the back link', () => {

@@ -54,7 +54,7 @@ context('Order Information', () => {
 
   it('Should display the phase banner in header', () => {
     const page = Page.visit(SummaryPage, { legacySubjectId })
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.header.phaseBanner.should('contain.text', 'DEV')
   })
 
   it('Should display the back link', () => {
