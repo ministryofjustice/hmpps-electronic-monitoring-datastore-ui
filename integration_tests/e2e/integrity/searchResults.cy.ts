@@ -24,7 +24,7 @@ context('Integrity search results', () => {
 
     it('Should display the phase banner in header', () => {
       const page = Page.visit(IntegritySearchResultsPage, {}, { search_id: queryExecutionId })
-      page.header.phaseBanner.should('contain.text', 'dev')
+      page.header.phaseBanner.should('contain.text', 'DEV')
     })
 
     it('Should display the back link', () => {

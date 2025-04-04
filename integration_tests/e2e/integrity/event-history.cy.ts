@@ -107,7 +107,7 @@ context('Event history', () => {
 
   it('Should display the phase banner in header', () => {
     const page = Page.visit(EventHistoryPage, { legacySubjectId })
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.header.phaseBanner.should('contain.text', 'DEV')
   })
 
   it('Should display the back link', () => {
