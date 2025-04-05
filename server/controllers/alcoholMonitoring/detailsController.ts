@@ -1,11 +1,11 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, IntegrityDetailsService } from '../../services'
+import { AuditService, AlcoholMonitoringDetailsService } from '../../services'
 
 export default class OrderDetailsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly integrityDetailsService: IntegrityDetailsService,
+    private readonly alcoholMonitoringDetailsService: AlcoholMonitoringDetailsService,
   ) {}
 
   details: RequestHandler = async (req: Request, res: Response) => {
@@ -16,14 +16,14 @@ export default class OrderDetailsController {
 
     const { legacySubjectId } = req.params
 
-    const orderDetails = await this.integrityDetailsService.getDetails({
+    const orderDetails = await this.alcoholMonitoringDetailsService.getDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
     })
 
-    res.render('pages/integrity/details', {
+    res.render('pages/alcohol-monitoring/details', {
       legacySubjectId,
-      backUrl: `/integrity/${legacySubjectId}`,
+      backUrl: `/alcohol-monitoring/${legacySubjectId}`,
       details: orderDetails,
     })
   }

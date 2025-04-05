@@ -4,7 +4,6 @@ import orders from './mockData/orders'
 import config from '../config'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
-import mockOrderInformation from './mockData/orderInformation'
 import { MonitoringEvent } from '../models/monitoringEvents'
 import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
@@ -106,13 +105,38 @@ describe('EM Datastore API Client', () => {
     })
   })
 
-  describe('getOrderSummary', () => {
-    it('should fetch order summary with correct parameters', async () => {
-      const expectedResult = mockOrderInformation
+  describe('getIntegritySummary', () => {
+    it('should fetch the summary with correct parameters', async () => {
+      const expectedResult = {
+        keyOrderInformation: {
+          specials: 'No',
+          legacySubjectId: orderInfo.legacySubjectId,
+          legacyOrderId: '7654321',
+          name: 'John Smith',
+          alias: 'Zeno',
+          dateOfBirth: '01-02-1980',
+          address1: '1 Primary Street',
+          address2: 'Sutton',
+          address3: 'London',
+          postcode: 'ABC 123',
+          orderStartDate: '01-02-2012',
+          orderEndDate: '03-04-2013',
+        },
+        subjectHistoryReport: {
+          reportUrl: '#',
+          name: '1234567',
+          createdOn: '01-02-2020',
+          time: '0900',
+        },
+        documents: {
+          pageSize: 0,
+          orderDocuments: [] as unknown[],
+        },
+      }
 
       fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getOrderSummary(orderInfo)
+      const result = await emDatastoreApiClient.getIntegritySummary(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -127,7 +151,7 @@ describe('EM Datastore API Client', () => {
       nock(config.apis.emDatastoreApi.url).get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getOrderSummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getIntegritySummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -179,6 +203,90 @@ describe('EM Datastore API Client', () => {
 
       // Expect the method call to throw due to unauthorized access
       await expect(emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfoWithNullToken)).rejects.toThrow(
+        'Unauthorized',
+      )
+    })
+  })
+
+  describe('getIntegrityDetail', () => {
+    it('should fetch the details with correct parameters', async () => {
+      const expectedResult = {
+        specials: 'No',
+        legacySubjectId: orderInfo.legacySubjectId,
+        legacyOrderId: '7654321',
+        firstName: 'John',
+        lastName: 'Smith',
+        alias: 'Zeno',
+        dateOfBirth: '01-02-1980',
+        address1: '1 Primary Street',
+        address2: 'Sutton',
+        address3: 'London',
+        postcode: 'ABC 123',
+        orderStartDate: '01-02-2012',
+        orderEndDate: '03-04-2013',
+      }
+
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/details`).reply(200, expectedResult)
+
+      const result = await emDatastoreApiClient.getIntegrityDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        legacySubjectId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/details`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(emDatastoreApiClient.getIntegrityDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+    })
+  })
+
+  describe('getAlcoholMonitoringDetail', () => {
+    it('should fetch the details with correct parameters', async () => {
+      const expectedResult = {
+        specials: 'No',
+        legacySubjectId: orderInfo.legacySubjectId,
+        legacyOrderId: '7654321',
+        firstName: 'John',
+        lastName: 'Smith',
+        alias: 'Zeno',
+        dateOfBirth: '01-02-1980',
+        address1: '1 Primary Street',
+        address2: 'Sutton',
+        address3: 'London',
+        postcode: 'ABC 123',
+        orderStartDate: '01-02-2012',
+        orderEndDate: '03-04-2013',
+      }
+
+      fakeClient.get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/details`).reply(200, expectedResult)
+
+      const result = await emDatastoreApiClient.getAlcoholMonitoringDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('handles null user tokens correctly by expecting Unauthorized', async () => {
+      // Create orderInfo with userToken explicitly set to null
+      const orderInfoWithNullToken: OrderRequest = {
+        legacySubjectId: '123',
+        userToken: null,
+      }
+
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/alcohol-monitoring/orders/${orderInfoWithNullToken.legacySubjectId}/details`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(emDatastoreApiClient.getAlcoholMonitoringDetails(orderInfoWithNullToken)).rejects.toThrow(
         'Unauthorized',
       )
     })

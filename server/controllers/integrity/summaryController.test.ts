@@ -1,8 +1,7 @@
-import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import AuditService, { Page } from '../../services/auditService'
-import EmDatastoreOrderSummaryService from '../../services/integrity/summaryService'
-import OrderSummaryController from './summaryController'
+import { IntegritySummaryService } from '../../services'
+import IntegritySummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
 
@@ -10,39 +9,25 @@ jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/summaryService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const emDatastoreOrderSummaryService = { getOrderSummary: jest.fn() } as unknown as EmDatastoreOrderSummaryService
+const integritySummaryService = { getSummary: jest.fn() } as unknown as IntegritySummaryService
 
 describe('Integrity summary Controller', () => {
-  let controller: OrderSummaryController
+  let controller: IntegritySummaryController
   let req: Request
   let res: Response
   const next = jest.fn()
 
   it(`constructs the system under test and mocks appropriately`, () => {
-    controller = new OrderSummaryController(auditService, emDatastoreOrderSummaryService)
+    controller = new IntegritySummaryController(auditService, integritySummaryService)
     expect(controller).not.toBeNull()
   })
 
-  describe('OrderSummary', () => {
+  describe('Summary', () => {
     beforeEach(() => {
       jest.clearAllMocks()
-      controller = new OrderSummaryController(auditService, emDatastoreOrderSummaryService)
+      controller = new IntegritySummaryController(auditService, integritySummaryService)
 
       req = createMockRequest({
-        session: {
-          id: 'mock-session-id',
-          cookie: { originalMaxAge: 3600000 } as session.Cookie,
-          regenerate: jest.fn(),
-          destroy: jest.fn(),
-          reload: jest.fn(),
-          save: jest.fn(),
-          touch: jest.fn(),
-          resetMaxAge: jest.fn(),
-          returnTo: '/return',
-          nowInMinutes: 12345,
-          validationErrors: [],
-          formData: {},
-        } as session.Session & Partial<SessionData>,
         id: 'fakeId',
       })
 
@@ -53,7 +38,7 @@ describe('Integrity summary Controller', () => {
     it(`logs hitting the page`, async () => {
       const expectedLogData = { who: 'fakeUserName', correlationId: 'fakeId' }
 
-      controller.orderSummary(req, res, next)
+      controller.summary(req, res, next)
 
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_INFORMATION_PAGE, expectedLogData)
     })
@@ -71,17 +56,17 @@ describe('Integrity summary Controller', () => {
         },
       })
 
-      await controller.orderSummary(req, res, next)
+      await controller.summary(req, res, next)
 
-      expect(emDatastoreOrderSummaryService.getOrderSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
+      expect(integritySummaryService.getSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
     it(`returns correct error when orderService fails`, async () => {
-      emDatastoreOrderSummaryService.getOrderSummary = jest.fn().mockImplementation(() => {
+      integritySummaryService.getSummary = jest.fn().mockImplementation(() => {
         throw new Error('Expected error message')
       })
 
-      await expect(controller.orderSummary(req, res, next)).rejects.toThrow('Expected error message')
+      await expect(controller.summary(req, res, next)).rejects.toThrow('Expected error message')
     })
 
     it(`renders the page with appropriate data`, async () => {
@@ -99,9 +84,9 @@ describe('Integrity summary Controller', () => {
         },
       }
 
-      emDatastoreOrderSummaryService.getOrderSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      integritySummaryService.getSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
-      await controller.orderSummary(req, res, next)
+      await controller.summary(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/integrity/summary', expectedPageData)
     })

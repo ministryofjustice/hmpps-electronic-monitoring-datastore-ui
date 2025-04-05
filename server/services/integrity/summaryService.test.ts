@@ -35,27 +35,27 @@ describe('Order summary service', () => {
     const expectedResult = {} as OrderInformation
 
     it('should return empty data from the client', async () => {
-      emDatastoreApiClient.getOrderSummary.mockResolvedValue(emptyResponse)
+      emDatastoreApiClient.getIntegritySummary.mockResolvedValue(emptyResponse)
 
-      const results = await emDatastoreOrderSummaryService.getOrderSummary(orderRequest)
+      const results = await emDatastoreOrderSummaryService.getSummary(orderRequest)
 
       expect(results).toEqual(expectedResult)
     })
 
     it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.getOrderSummary.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getIntegritySummary.mockRejectedValue(new Error('some error'))
 
-      await expect(emDatastoreOrderSummaryService.getOrderSummary(orderRequest)).rejects.toEqual(
+      await expect(emDatastoreOrderSummaryService.getSummary(orderRequest)).rejects.toEqual(
         new Error('Error retrieving order summary: some error'),
       )
     })
 
     it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.getOrderSummary.mockImplementation(() => {
+      emDatastoreApiClient.getIntegritySummary.mockImplementation(() => {
         throw new Error('some error')
       })
 
-      await expect(emDatastoreOrderSummaryService.getOrderSummary(orderRequest)).rejects.toEqual(
+      await expect(emDatastoreOrderSummaryService.getSummary(orderRequest)).rejects.toEqual(
         new Error('Error retrieving order summary: some error'),
       )
     })

@@ -7,8 +7,8 @@ import { Page } from '../services/auditService'
 import SearchController from '../controllers/searchController'
 
 // integrity orders
-import OrderSummaryController from '../controllers/integrity/summaryController'
-import OrderDetailsController from '../controllers/integrity/detailsController'
+import IntegritySummaryController from '../controllers/integrity/summaryController'
+import IntegrityDetailsController from '../controllers/integrity/detailsController'
 import EventsController from '../controllers/integrity/eventsController'
 import SuspensionOfVisitsController from '../controllers/integrity/suspensionOfVisitsController'
 import EquipmentDetailsController from '../controllers/integrity/equipmentDetailsController'
@@ -18,13 +18,15 @@ import ConnectionTestController from '../controllers/connectionTestController'
 
 // alcohol monitoring orders
 import AmSummaryController from '../controllers/alcoholMonitoring/summaryController'
+import AmDetailsController from '../controllers/alcoholMonitoring/detailsController'
 import { Services } from '../services'
 
 export default function routes({
   auditService,
   emDatastoreOrderSearchService,
-  emDatastoreOrderDetailsService,
-  emDatastoreOrderSummaryService,
+  integrityDetailsService,
+  alcoholMonitoringDetailsService,
+  integritySummaryService,
   alcoholMonitoringSummaryService,
   emDatastoreEventsService,
   emDatastoreSuspensionOfVisitsService,
@@ -41,8 +43,8 @@ export default function routes({
   const searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
   // integrity
-  const orderSummaryController = new OrderSummaryController(auditService, emDatastoreOrderSummaryService)
-  const orderDetailsController = new OrderDetailsController(auditService, emDatastoreOrderDetailsService)
+  const orderSummaryController = new IntegritySummaryController(auditService, integritySummaryService)
+  const orderDetailsController = new IntegrityDetailsController(auditService, integrityDetailsService)
   const eventsController = new EventsController(auditService, emDatastoreEventsService)
   const suspensionOfVisitsController = new SuspensionOfVisitsController(
     auditService,
@@ -54,6 +56,7 @@ export default function routes({
 
   // alcohol monitoring
   const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringSummaryService)
+  const amDetailsController = new AmDetailsController(auditService, alcoholMonitoringDetailsService)
 
   get(paths.START, async (req, res, next) => {
     await auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -69,8 +72,8 @@ export default function routes({
   get(paths.ALCOHOL_MONITORING.INDEX, searchController.searchResultsPage)
 
   // integrity
-  get(paths.INTEGRITY_ORDER.SUMMARY, orderSummaryController.orderSummary)
-  get(paths.INTEGRITY_ORDER.DETAILS, orderDetailsController.orderDetails)
+  get(paths.INTEGRITY_ORDER.SUMMARY, orderSummaryController.summary)
+  get(paths.INTEGRITY_ORDER.DETAILS, orderDetailsController.details)
   get(paths.INTEGRITY_ORDER.EVENT_HISTORY, eventsController.showHistory)
   get(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, suspensionOfVisitsController.showSuspensionOfVisits)
   get(paths.INTEGRITY_ORDER.VISIT_DETAILS, visitDetailsController.showVisitDetails)
@@ -78,7 +81,8 @@ export default function routes({
   get(paths.INTEGRITY_ORDER.CURFEW_TIMETABLE, curfewTimetableController.showCurfewTimetable)
 
   // alcohol monitoring
-  get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.orderSummary)
+  get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.summary)
+  get(paths.ALCOHOL_MONITORING.DETAILS, amDetailsController.details)
 
   return router
 }

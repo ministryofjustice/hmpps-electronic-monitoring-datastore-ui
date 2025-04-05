@@ -47,7 +47,7 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getOrderSummary(input: OrderRequest): Promise<OrderInformation> {
+  async getIntegritySummary(input: OrderRequest): Promise<OrderInformation> {
     const { legacySubjectId } = input
     return this.restClient.get<OrderInformation>({
       path: `/integrity/orders/${legacySubjectId}`,
@@ -61,10 +61,17 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getOrderDetails(input: OrderRequest): Promise<OrderDetails> {
+  async getIntegrityDetails(input: OrderRequest): Promise<OrderDetails> {
     const { legacySubjectId } = input
     return this.restClient.get<OrderDetails>({
       path: `/integrity/orders/${legacySubjectId}/details`,
+    })
+  }
+
+  async getAlcoholMonitoringDetails(input: OrderRequest): Promise<OrderDetails> {
+    const { legacySubjectId } = input
+    return this.restClient.get<OrderDetails>({
+      path: `/alcohol-monitoring/orders/${legacySubjectId}/details`,
     })
   }
 

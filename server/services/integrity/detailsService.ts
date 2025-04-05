@@ -1,13 +1,12 @@
-import logger from '../../logger'
-import getSanitisedError from '../sanitisedError'
+import logger from '../../../logger'
+import getSanitisedError from '../../sanitisedError'
 
-import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import { HmppsAuthClient, RestClientBuilder } from '../data'
+import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
 
-import { OrderRequest } from '../types/OrderRequest'
-import { OrderDetails } from '../interfaces/orderDetails'
+import { OrderRequest } from '../../types/OrderRequest'
+import { OrderDetails } from '../../interfaces/orderDetails'
 
-export default class EmDatastoreOrderDetailsService {
+export default class IntegrityDetailsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -17,10 +16,10 @@ export default class EmDatastoreOrderDetailsService {
     this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialised')
   }
 
-  async getOrderDetails(input: OrderRequest): Promise<OrderDetails> {
+  async getDetails(input: OrderRequest): Promise<OrderDetails> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return await await this.emDatastoreApiClient.getOrderDetails(input)
+      return await this.emDatastoreApiClient.getIntegrityDetails(input)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving order details'
       const sanitisedError = getSanitisedError(error)
