@@ -2,7 +2,6 @@ import { type RequestHandler, Router } from 'express'
 import paths from '../constants/paths'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
-import { AlcoholMonitoringSummaryService, type Services } from '../services'
 import { Page } from '../services/auditService'
 
 import SearchController from '../controllers/searchController'
@@ -19,6 +18,7 @@ import ConnectionTestController from '../controllers/connectionTestController'
 
 // alcohol monitoring orders
 import AmSummaryController from '../controllers/alcoholMonitoring/summaryController'
+import { Services } from '../services'
 
 export default function routes({
   auditService,
@@ -53,7 +53,7 @@ export default function routes({
   const curfewTimetableController = new CurfewTimetableController(auditService, emDatastoreCurfewTimetableService)
 
   // alcohol monitoring
-  const amOrderSummaryController = new AmSummaryController(auditService, alcoholMonitoringSummaryService)
+  const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringSummaryService)
 
   get(paths.START, async (req, res, next) => {
     await auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -78,7 +78,7 @@ export default function routes({
   get(paths.INTEGRITY_ORDER.CURFEW_TIMETABLE, curfewTimetableController.showCurfewTimetable)
 
   // alcohol monitoring
-  get(paths.ALCOHOL_MONITORING.SUMMARY, amOrderSummaryController.orderSummary)
+  get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.orderSummary)
 
   return router
 }
