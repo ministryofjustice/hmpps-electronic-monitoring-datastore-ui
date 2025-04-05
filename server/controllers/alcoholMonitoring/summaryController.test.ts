@@ -41,7 +41,7 @@ describe('Alcohol monitoring summary Controller', () => {
     it(`logs hitting the page`, async () => {
       const expectedLogData = { who: 'fakeUserName', correlationId: 'fakeId' }
 
-      await controller.orderSummary(req, res, next)
+      await controller.summary(req, res, next)
 
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_INFORMATION_PAGE, expectedLogData)
     })
@@ -52,7 +52,7 @@ describe('Alcohol monitoring summary Controller', () => {
         legacySubjectId: expectedOrderId,
       }
 
-      await controller.orderSummary(req, res, next)
+      await controller.summary(req, res, next)
 
       expect(alcoholMonitoringSummaryService.getSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
@@ -62,7 +62,7 @@ describe('Alcohol monitoring summary Controller', () => {
         throw new Error('Expected error message')
       })
 
-      await expect(controller.orderSummary(req, res, next)).rejects.toThrow('Expected error message')
+      await expect(controller.summary(req, res, next)).rejects.toThrow('Expected error message')
     })
 
     it(`renders the page with appropriate data`, async () => {
@@ -83,7 +83,7 @@ describe('Alcohol monitoring summary Controller', () => {
 
       alcoholMonitoringSummaryService.getSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
-      await controller.orderSummary(req, res, next)
+      await controller.summary(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/summary', expectedPageData)
     })

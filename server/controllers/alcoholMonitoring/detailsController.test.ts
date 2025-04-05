@@ -1,31 +1,31 @@
 import { Request, Response } from 'express'
 import AuditService, { Page } from '../../services/auditService'
-import IntegrityDetailsService from '../../services/integrity/detailsService'
-import IntegrityDetailsController from './detailsController'
+import AlcoholMonitoringDetailsService from '../../services/alcoholMonitoring/detailsService'
+import AlcoholMonitoringDetailsController from './detailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/integrity/detailsService')
+jest.mock('../../services/alcoholMonitoring/detailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const integrityDetailsService = { getDetails: jest.fn() } as unknown as IntegrityDetailsService
+const alcoholMonitoringDetailsService = { getDetails: jest.fn() } as unknown as AlcoholMonitoringDetailsService
 
-describe('IntegrityDetailsController', () => {
-  let controller: IntegrityDetailsController
+describe('AlcoholMonitoringDetailsController', () => {
+  let controller: AlcoholMonitoringDetailsController
   let req: Request
   let res: Response
   const next = jest.fn()
 
   it(`constructs the system under test and mocks appropriately`, () => {
-    controller = new IntegrityDetailsController(auditService, integrityDetailsService)
+    controller = new AlcoholMonitoringDetailsController(auditService, alcoholMonitoringDetailsService)
     expect(controller).not.toBeNull()
   })
 
   describe('Details', () => {
     beforeEach(() => {
       jest.clearAllMocks()
-      controller = new IntegrityDetailsController(auditService, integrityDetailsService)
+      controller = new AlcoholMonitoringDetailsController(auditService, alcoholMonitoringDetailsService)
 
       req = createMockRequest({
         id: 'fakeId',
@@ -55,15 +55,13 @@ describe('IntegrityDetailsController', () => {
         },
       })
 
-      integrityDetailsService.getDetails = jest.fn().mockResolvedValueOnce({})
-
       await controller.details(req, res, next)
 
-      expect(integrityDetailsService.getDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
+      expect(alcoholMonitoringDetailsService.getDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
     it(`returns correct error when orderDetailsService fails`, async () => {
-      integrityDetailsService.getDetails = jest.fn().mockImplementation(() => {
+      alcoholMonitoringDetailsService.getDetails = jest.fn().mockImplementation(() => {
         throw new Error('Expected error message')
       })
 
@@ -82,15 +80,15 @@ describe('IntegrityDetailsController', () => {
 
       const expectedPageData = {
         legacySubjectId: expectedOrderId,
-        backUrl: `/integrity/${expectedOrderId}`,
-        details: 'expectedOrderDetails',
+        backUrl: `/alcohol-monitoring/${expectedOrderId}`,
+        details: expectedOrderDetails,
       }
 
-      integrityDetailsService.getDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      alcoholMonitoringDetailsService.getDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
       await controller.details(req, res, next)
 
-      expect(res.render).toHaveBeenCalledWith('pages/integrity/details', expectedPageData)
+      expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/details', expectedPageData)
     })
   })
 })

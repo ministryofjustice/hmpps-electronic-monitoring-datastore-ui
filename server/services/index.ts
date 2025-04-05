@@ -4,7 +4,8 @@ import EmDatastoreConnectionService from './emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
 import IntegritySummaryService from './integrity/summaryService'
 import AlcoholMonitoringSummaryService from './alcoholMonitoring/summaryService'
-import EmDatastoreOrderDetailsService from './emDatastoreOrderDetailsService'
+import IntegrityDetailsService from './integrity/detailsService'
+import AlcoholMonitoringDetailsService from './alcoholMonitoring/detailsService'
 import EmDatastoreEventsService from './emDatastoreEventsService'
 import EmDatastoreSuspensionOfVisitsService from './emDatastoreSuspensionOfVisitsService'
 import EmDatastoreEquipmentDetailsService from './emDatastoreEquipmentDetailsService'
@@ -17,11 +18,13 @@ export const services = () => {
   const auditService = new AuditService(hmppsAuditClient)
   const emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClientFactory, hmppsAuthClient)
   const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const emDatastoreOrderDetailsService = new EmDatastoreOrderDetailsService(
+
+  const integrityDetailsService = new IntegrityDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const alcoholMonitoringDetailsService = new AlcoholMonitoringDetailsService(
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
-  const emDatastoreOrderSummaryService = new IntegritySummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const integritySummaryService = new IntegritySummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
   const alcoholMonitoringSummaryService = new AlcoholMonitoringSummaryService(
     emDatastoreApiClientFactory,
     hmppsAuthClient,
@@ -48,8 +51,9 @@ export const services = () => {
     applicationInfo,
     auditService,
     emDatastoreConnectionService,
-    emDatastoreOrderDetailsService,
-    emDatastoreOrderSummaryService,
+    integrityDetailsService,
+    alcoholMonitoringDetailsService,
+    integritySummaryService,
     alcoholMonitoringSummaryService,
     emDatastoreOrderSearchService,
     emDatastoreEventsService,
@@ -65,7 +69,8 @@ export {
   AuditService,
   EmDatastoreConnectionService,
   EmDatastoreOrderSearchService,
-  EmDatastoreOrderDetailsService,
+  IntegrityDetailsService,
+  AlcoholMonitoringDetailsService,
   IntegritySummaryService,
   AlcoholMonitoringSummaryService,
   EmDatastoreEventsService,

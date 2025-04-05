@@ -9,7 +9,7 @@ export default class OrderSummaryController {
     private readonly emDatastoreOrderSummaryService: IntegritySummaryService,
   ) {}
 
-  orderSummary: RequestHandler = async (req: Request, res: Response) => {
+  summary: RequestHandler = async (req: Request, res: Response) => {
     await this.auditService.logPageView(Page.ORDER_INFORMATION_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
@@ -17,7 +17,7 @@ export default class OrderSummaryController {
 
     const { legacySubjectId } = req.params
 
-    const orderInformation = await this.emDatastoreOrderSummaryService.getOrderSummary({
+    const orderInformation = await this.emDatastoreOrderSummaryService.getSummary({
       userToken: res.locals.user.token,
       legacySubjectId,
     })
