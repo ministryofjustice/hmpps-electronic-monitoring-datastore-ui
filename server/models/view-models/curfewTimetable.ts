@@ -9,6 +9,7 @@ export type CurfewTimetableViewModel = {
 
 const createViewModelFromApiDto = (
   legacySubjectId: number,
+  backUrl: string,
   curfewTimetable: CurfewTimetable[],
 ): CurfewTimetableViewModel => ({
   legacySubjectId,
@@ -25,11 +26,15 @@ const createViewModelFromApiDto = (
       } as TimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
-  backUrl: `/integrity/${legacySubjectId}/summary`,
+  backUrl,
 })
 
-const construct = (legacySubjectId: number, events: CurfewTimetable[] = []): CurfewTimetableViewModel => {
-  return createViewModelFromApiDto(legacySubjectId, events)
+const construct = (
+  legacySubjectId: number,
+  backUrl: string,
+  events: CurfewTimetable[] = [],
+): CurfewTimetableViewModel => {
+  return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }
 
 export default {

@@ -1,0 +1,17 @@
+
+
+{% set heading = "Sorry, but you are not authorised" %}
+{% set pageTitle = "Authorisation Error" %}
+{% set backUrl = "/" %}
+
+{% block innerContent %}
+  <p class="govuk-body">You are not authorised to use this application.</p>
+
+  <p class="govuk-body">
+    Please, <a class="govuk-link" href="/sign-in">Sign in</a> with different credentials that will have the correct authorisation.
+  </p>
+
+  <p class="govuk-body">
+    Contact support if you are still having issues.
+  </p>
+{% endblock %}

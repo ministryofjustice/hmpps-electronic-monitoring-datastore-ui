@@ -32,8 +32,8 @@ describe('GET 500', () => {
       .expect(500)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).not.toContain('Sorry, there is a problem with the service')
-        expect(res.text).toContain('Error fetching data')
+        expect(res.text).not.toContain('Try again later')
+        expect(res.text).toContain('TypeError')
       })
   })
 
@@ -43,8 +43,8 @@ describe('GET 500', () => {
       .expect(500)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Sorry, there is a problem with the service')
-        expect(res.text).not.toContain('Error fetching data')
+        expect(res.text).toContain('Try again later')
+        expect(res.text).not.toContain('TypeError')
       })
   })
 })

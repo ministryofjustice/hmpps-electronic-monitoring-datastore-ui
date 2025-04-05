@@ -16,7 +16,7 @@ export default class ConnectionTestController {
 
     const { token } = res.locals.user
     const apiResult: JSON = await this.emDatastoreConnectionService.test(token)
-    const viewModel = { data: JSON.stringify(apiResult) }
+    const viewModel = { data: apiResult }
     res.render('pages/apiTest', viewModel)
   }
 }

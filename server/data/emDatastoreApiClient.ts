@@ -37,7 +37,7 @@ export default class EmDatastoreApiClient {
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     const { queryExecutionId } = request
     return this.restClient.get<Order[]>({
-      path: `/integrity/orders?queryExecutionId=${queryExecutionId}`,
+      path: `/integrity/orders?id=${queryExecutionId}`,
     })
   }
 
@@ -51,6 +51,13 @@ export default class EmDatastoreApiClient {
     const { legacySubjectId } = input
     return this.restClient.get<OrderInformation>({
       path: `/integrity/orders/${legacySubjectId}`,
+    })
+  }
+
+  async getAlcoholMonitoringSummary(input: OrderRequest): Promise<OrderInformation> {
+    const { legacySubjectId } = input
+    return this.restClient.get<OrderInformation>({
+      path: `/alcohol-monitoring/orders/${legacySubjectId}`,
     })
   }
 

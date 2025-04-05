@@ -1,10 +1,11 @@
 import { dataAccess } from '../data'
 import AuditService from './auditService'
-import EmDatastoreOrderDetailsService from './emDatastoreOrderDetailsService'
-import EmDatastoreOrderSummaryService from './emDatastoreOrderSummaryService'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
-import EmDatastoreEventsService from './emDatastoreEventsService'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
+import IntegritySummaryService from './integrity/summaryService'
+import AlcoholMonitoringSummaryService from './alcoholMonitoring/summaryService'
+import EmDatastoreOrderDetailsService from './emDatastoreOrderDetailsService'
+import EmDatastoreEventsService from './emDatastoreEventsService'
 import EmDatastoreSuspensionOfVisitsService from './emDatastoreSuspensionOfVisitsService'
 import EmDatastoreEquipmentDetailsService from './emDatastoreEquipmentDetailsService'
 import EmDatastoreVisitDetailsService from './emDatastoreVisitDetailsService'
@@ -20,7 +21,8 @@ export const services = () => {
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
-  const emDatastoreOrderSummaryService = new EmDatastoreOrderSummaryService(
+  const emDatastoreOrderSummaryService = new IntegritySummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const alcoholMonitoringSummaryService = new AlcoholMonitoringSummaryService(
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
@@ -48,6 +50,7 @@ export const services = () => {
     emDatastoreConnectionService,
     emDatastoreOrderDetailsService,
     emDatastoreOrderSummaryService,
+    alcoholMonitoringSummaryService,
     emDatastoreOrderSearchService,
     emDatastoreEventsService,
     emDatastoreSuspensionOfVisitsService,
@@ -63,7 +66,8 @@ export {
   EmDatastoreConnectionService,
   EmDatastoreOrderSearchService,
   EmDatastoreOrderDetailsService,
-  EmDatastoreOrderSummaryService,
+  IntegritySummaryService,
+  AlcoholMonitoringSummaryService,
   EmDatastoreEventsService,
   EmDatastoreSuspensionOfVisitsService,
   EmDatastoreEquipmentDetailsService,

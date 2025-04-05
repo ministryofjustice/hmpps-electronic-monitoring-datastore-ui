@@ -28,7 +28,7 @@ context('Sign In', () => {
   it('Phase banner visible in header', () => {
     cy.signIn()
     const indexPage = Page.verifyOnPage(StartPage)
-    indexPage.header.phaseBanner.contains('dev')
+    indexPage.header.phaseBanner.contains('DEV')
   })
 
   it('User can sign out', () => {

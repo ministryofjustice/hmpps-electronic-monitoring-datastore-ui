@@ -218,7 +218,7 @@
       {% if environmentName %}
         <div class="govuk-phase-banner">
           {{ govukTag({
-            text: environmentName,
+            text: environmentName | upper,
             classes: environmentNameColour,
             attributes: { "data-qa": "header-phase-banner" }
           }) }}

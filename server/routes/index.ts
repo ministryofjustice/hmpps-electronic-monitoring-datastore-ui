@@ -2,24 +2,30 @@ import { type RequestHandler, Router } from 'express'
 import paths from '../constants/paths'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
-import type { Services } from '../services'
 import { Page } from '../services/auditService'
 
 import SearchController from '../controllers/searchController'
-import OrderDetailsController from '../controllers/integrity/order/orderDetailsController'
-import OrderSummaryController from '../controllers/integrity/order/orderSummaryController'
-import EventsController from '../controllers/integrity/order/eventsController'
-import SuspensionOfVisitsController from '../controllers/integrity/order/suspensionOfVisitsController'
-import EquipmentDetailsController from '../controllers/integrity/order/equipmentDetailsController'
-import VisitDetailsController from '../controllers/integrity/order/visitDetailsController'
-import CurfewTimetableController from '../controllers/integrity/order/curfewTimetableController'
+
+// integrity orders
+import OrderSummaryController from '../controllers/integrity/summaryController'
+import OrderDetailsController from '../controllers/integrity/detailsController'
+import EventsController from '../controllers/integrity/eventsController'
+import SuspensionOfVisitsController from '../controllers/integrity/suspensionOfVisitsController'
+import EquipmentDetailsController from '../controllers/integrity/equipmentDetailsController'
+import VisitDetailsController from '../controllers/integrity/visitDetailsController'
+import CurfewTimetableController from '../controllers/integrity/curfewTimetableController'
 import ConnectionTestController from '../controllers/connectionTestController'
+
+// alcohol monitoring orders
+import AmSummaryController from '../controllers/alcoholMonitoring/summaryController'
+import { Services } from '../services'
 
 export default function routes({
   auditService,
   emDatastoreOrderSearchService,
   emDatastoreOrderDetailsService,
   emDatastoreOrderSummaryService,
+  alcoholMonitoringSummaryService,
   emDatastoreEventsService,
   emDatastoreSuspensionOfVisitsService,
   emDatastoreEquipmentDetailsService,
@@ -33,8 +39,10 @@ export default function routes({
 
   const connectionTestController = new ConnectionTestController(auditService, emDatastoreConnectionService)
   const searchController = new SearchController(auditService, emDatastoreOrderSearchService)
-  const orderDetailsController = new OrderDetailsController(auditService, emDatastoreOrderDetailsService)
+
+  // integrity
   const orderSummaryController = new OrderSummaryController(auditService, emDatastoreOrderSummaryService)
+  const orderDetailsController = new OrderDetailsController(auditService, emDatastoreOrderDetailsService)
   const eventsController = new EventsController(auditService, emDatastoreEventsService)
   const suspensionOfVisitsController = new SuspensionOfVisitsController(
     auditService,
@@ -43,6 +51,9 @@ export default function routes({
   const equipmentDetailsController = new EquipmentDetailsController(auditService, emDatastoreEquipmentDetailsService)
   const visitDetailsController = new VisitDetailsController(auditService, emDatastoreVisitDetailsService)
   const curfewTimetableController = new CurfewTimetableController(auditService, emDatastoreCurfewTimetableService)
+
+  // alcohol monitoring
+  const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringSummaryService)
 
   get(paths.START, async (req, res, next) => {
     await auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -57,6 +68,7 @@ export default function routes({
   get(paths.INTEGRITY_ORDER.INDEX, searchController.searchResultsPage)
   get(paths.ALCOHOL_MONITORING.INDEX, searchController.searchResultsPage)
 
+  // integrity
   get(paths.INTEGRITY_ORDER.SUMMARY, orderSummaryController.orderSummary)
   get(paths.INTEGRITY_ORDER.DETAILS, orderDetailsController.orderDetails)
   get(paths.INTEGRITY_ORDER.EVENT_HISTORY, eventsController.showHistory)
@@ -64,6 +76,9 @@ export default function routes({
   get(paths.INTEGRITY_ORDER.VISIT_DETAILS, visitDetailsController.showVisitDetails)
   get(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, equipmentDetailsController.showEquipmentDetails)
   get(paths.INTEGRITY_ORDER.CURFEW_TIMETABLE, curfewTimetableController.showCurfewTimetable)
+
+  // alcohol monitoring
+  get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.orderSummary)
 
   return router
 }

@@ -1,0 +1,70 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{% block beforeContent %}
+  {% if backUrl %}
+    {{ govukBackLink({
+      text: (backText if backText or "back"),
+      href: backUrl
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {{ emsServiceInformation() }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {{
+        mojSubNavigation({
+          label: "Order navigation",
+          items: [
+            {
+              text: "Order summary",
+              href: '/integrity/' + legacySubjectId
+            },
+            {
+              text: "Order details",
+              href: '/integrity/' + legacySubjectId + '/details'
+            },
+            {
+              text: "Visit details",
+              href: '/integrity/' + legacySubjectId + '/visit-details'
+            },
+            {
+              text: "Equipment details",
+              href: '/integrity/' + legacySubjectId + '/equipment-details'
+            },
+            {
+              text: "Suspension of visits",
+              href: '/integrity/' + legacySubjectId + '/suspension-of-visits'
+            },
+            {
+              text: "All event history",
+              href: '/integrity/' + legacySubjectId + '/event-history'
+            },
+            {
+              text: "Services",
+              href: '/integrity/' + legacySubjectId + '/curfew-timetable'
+            }
+          ]
+        })
+      }}
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ heading }}</h1>
+      {% if subHeading %}
+        <p class="govuk-body">{{ subHeading }}</p>
+      {% endif %}
+
+      {% block innerContent %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}

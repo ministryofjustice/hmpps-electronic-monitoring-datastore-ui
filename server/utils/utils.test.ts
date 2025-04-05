@@ -32,11 +32,11 @@ describe('initialise name', () => {
 describe('makePageTitle', () => {
   it('suffixes the supplied heading with the app name', () => {
     const title = makePageTitle({ pageHeading: 'Search for order details', hasErrors: false })
-    expect(title).toEqual('Search for order details - Electronic Monitoring Datastore')
+    expect(title).toEqual('Search for order details')
   })
 
   it('prefixes the title if there are errors', () => {
     const title = makePageTitle({ pageHeading: 'Search for order details', hasErrors: true })
-    expect(title).toEqual('Error: Search for order details - Electronic Monitoring Datastore')
+    expect(title).toEqual('Error: Search for order details')
   })
 })

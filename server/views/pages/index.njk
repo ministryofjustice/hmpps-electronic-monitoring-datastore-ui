@@ -1,27 +1,24 @@
-{% extends "../partials/layout.njk" %}
+{% extends "../partials/layout-default.njk" %}
 
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% set pageTitle = applicationName + " - Home" %}
-{% set mainClasses = "app-container govuk-body" %}
+{% set heading = applicationName %}
 {% set searchUrl = "/search" %}
 
-{% block content %}
-  <h1 class="govuk-heading-l">Electronic Monitoring Datastore</h1>
+{% block innerContent %}
+  <p>Use this service for CMT users to search historial electronic monitoring data.</p>
 
-  <div class="govuk-grid-column-two-thirds">
-    <p>Use this service for CMT users to search historial electronic monitoring data.</p>
-
+  <div class="govuk-button-group">
     {{ govukButton({
-        text: "Go to search page",
-        href: searchUrl,
-        isStartButton: true
+      text: "Go to search page",
+      href: searchUrl,
+      isStartButton: true
     }) }}
 
-    {% if (environmentName == 'dev') %}
+    {% if (environmentName | upper == 'DEV') %}
       {{ govukButton({
         text: "Test API connection",
-        href: "/test-api",
+        href: "/test",
         isStartButton: true,
         classes: "govuk-button--secondary"
       }) }}

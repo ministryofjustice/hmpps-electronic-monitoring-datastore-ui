@@ -15,6 +15,7 @@ const paths = {
 
   ALCOHOL_MONITORING: {
     INDEX: '/alcohol-monitoring',
+    SUMMARY: '/alcohol-monitoring/:legacySubjectId',
   },
 
   CONNECTION_TEST: '/test',

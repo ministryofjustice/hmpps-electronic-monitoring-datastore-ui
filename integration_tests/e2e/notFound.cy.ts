@@ -10,18 +10,28 @@ context('Not found', () => {
     cy.signIn()
   })
 
-  it('is reachable', () => {
+  it('Should display the user name visible in header', () => {
     cy.visit(`/integrity/${orderId}/invalidaddress`, { failOnStatusCode: false })
-    Page.verifyOnPage(NotFoundErrorPage)
+    const page = Page.verifyOnPage(NotFoundErrorPage)
+    page.header.userName.should('contain.text', 'M. Tester')
   })
 
-  it('Should render the correct elements ', () => {
+  it('Should display the phase banner in header', () => {
+    cy.visit(`/integrity/${orderId}/invalidaddress`, { failOnStatusCode: false })
+    const page = Page.verifyOnPage(NotFoundErrorPage)
+    page.header.phaseBanner.should('contain.text', 'DEV')
+  })
+
+  it('Should display the back link', () => {
     cy.visit(`/integrity/${orderId}/invalidaddress`, { failOnStatusCode: false })
     const page = Page.verifyOnPage(NotFoundErrorPage)
 
-    page.header.userName.should('contain.text', 'M. Tester')
-    page.header.phaseBanner.should('contain.text', 'dev')
+    page.backButton.should('exist')
+  })
 
+  it('Should be accessible', () => {
+    cy.visit(`/integrity/${orderId}/invalidaddress`, { failOnStatusCode: false })
+    const page = Page.verifyOnPage(NotFoundErrorPage)
     page.checkIsAccessible()
   })
 })

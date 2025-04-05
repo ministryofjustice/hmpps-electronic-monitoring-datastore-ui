@@ -1,5 +1,3 @@
-import config from '../config'
-
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -25,4 +23,4 @@ export const initialiseName = (fullName?: string): string | null => {
 }
 
 export const makePageTitle = ({ pageHeading, hasErrors }: { pageHeading: string; hasErrors: boolean }) =>
-  `${hasErrors ? 'Error: ' : ''}${pageHeading} - ${config.applicationName}`
+  `${hasErrors ? 'Error: ' : ''}${pageHeading}`
