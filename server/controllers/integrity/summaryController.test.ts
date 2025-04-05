@@ -1,13 +1,13 @@
 import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import AuditService, { Page } from '../../services/auditService'
-import EmDatastoreOrderSummaryService from '../../services/emDatastoreOrderSummaryService'
+import EmDatastoreOrderSummaryService from '../../services/integrity/summaryService'
 import OrderSummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/emDatastoreOrderSummaryService')
+jest.mock('../../services/integrity/summaryService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreOrderSummaryService = { getOrderSummary: jest.fn() } as unknown as EmDatastoreOrderSummaryService

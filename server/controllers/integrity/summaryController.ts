@@ -1,12 +1,12 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, EmDatastoreOrderSummaryService } from '../../services'
+import { AuditService, IntegritySummaryService } from '../../services'
 import { Reports } from '../../interfaces/orderInformation'
 
 export default class OrderSummaryController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly emDatastoreOrderSummaryService: EmDatastoreOrderSummaryService,
+    private readonly emDatastoreOrderSummaryService: IntegritySummaryService,
   ) {}
 
   orderSummary: RequestHandler = async (req: Request, res: Response) => {

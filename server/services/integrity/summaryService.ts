@@ -1,11 +1,10 @@
-import logger from '../../logger'
-import getSanitisedError from '../sanitisedError'
+import logger from '../../../logger'
+import getSanitisedError from '../../sanitisedError'
 
-import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import { HmppsAuthClient, RestClientBuilder } from '../data'
+import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
 
-import { OrderRequest } from '../types/OrderRequest'
-import { OrderInformation } from '../interfaces/orderInformation'
+import { OrderRequest } from '../../types/OrderRequest'
+import { OrderInformation } from '../../interfaces/orderInformation'
 
 export default class EmDatastoreOrderSummaryService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient

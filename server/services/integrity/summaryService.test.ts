@@ -1,11 +1,11 @@
-import EmDatastoreOrderSummaryService from './emDatastoreOrderSummaryService'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
+import EmDatastoreOrderSummaryService from './summaryService'
+import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
-import { OrderRequest } from '../types/OrderRequest'
-import { OrderInformation } from '../interfaces/orderInformation'
+import { OrderRequest } from '../../types/OrderRequest'
+import { OrderInformation } from '../../interfaces/orderInformation'
 
-jest.mock('../data/hmppsAuthClient')
-jest.mock('../data/emDatastoreApiClient')
+jest.mock('../../data/hmppsAuthClient')
+jest.mock('../../data/emDatastoreApiClient')
 
 describe('Order summary service', () => {
   const token = 'fake-token-value'

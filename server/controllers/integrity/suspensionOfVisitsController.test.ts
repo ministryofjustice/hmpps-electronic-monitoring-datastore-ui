@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import session, { SessionData } from 'express-session'
 import AuditService from '../../services/auditService'
 import EmDatastoreSuspensionOfVisitsService from '../../services/emDatastoreSuspensionOfVisitsService'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
@@ -11,7 +10,7 @@ import SuspensionOfVisitsView, {
 } from '../../models/view-models/suspensionOfVisits'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/emDatastoreOrderSummaryService')
+jest.mock('../../services/integrity/summaryService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreSuspensionOfVisitsService = {
@@ -68,20 +67,6 @@ describe('SuspensionOfVisitsController', () => {
     controller = new SuspensionOfVisitsController(auditService, emDatastoreSuspensionOfVisitsService)
 
     req = createMockRequest({
-      session: {
-        id: 'mock-session-id',
-        cookie: { originalMaxAge: 3600000 } as session.Cookie,
-        regenerate: jest.fn(),
-        destroy: jest.fn(),
-        reload: jest.fn(),
-        save: jest.fn(),
-        touch: jest.fn(),
-        resetMaxAge: jest.fn(),
-        returnTo: '/return',
-        nowInMinutes: 12345,
-        validationErrors: [],
-        formData: {},
-      } as session.Session & Partial<SessionData>,
       params: { legacySubjectId: `${testOrderId}` },
     })
 

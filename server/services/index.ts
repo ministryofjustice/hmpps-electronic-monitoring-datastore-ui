@@ -2,7 +2,7 @@ import { dataAccess } from '../data'
 import AuditService from './auditService'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
-import EmDatastoreOrderSummaryService from './emDatastoreOrderSummaryService'
+import IntegritySummaryService from './integrity/summaryService'
 import AlcoholMonitoringSummaryService from './alcoholMonitoring/summaryService'
 import EmDatastoreOrderDetailsService from './emDatastoreOrderDetailsService'
 import EmDatastoreEventsService from './emDatastoreEventsService'
@@ -21,10 +21,7 @@ export const services = () => {
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
-  const emDatastoreOrderSummaryService = new EmDatastoreOrderSummaryService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
+  const emDatastoreOrderSummaryService = new IntegritySummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
   const alcoholMonitoringSummaryService = new AlcoholMonitoringSummaryService(
     emDatastoreApiClientFactory,
     hmppsAuthClient,
@@ -69,7 +66,7 @@ export {
   EmDatastoreConnectionService,
   EmDatastoreOrderSearchService,
   EmDatastoreOrderDetailsService,
-  EmDatastoreOrderSummaryService,
+  IntegritySummaryService,
   AlcoholMonitoringSummaryService,
   EmDatastoreEventsService,
   EmDatastoreSuspensionOfVisitsService,
