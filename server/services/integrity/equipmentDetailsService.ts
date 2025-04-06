@@ -1,13 +1,13 @@
-import logger from '../../logger'
-import getSanitisedError from '../sanitisedError'
+import logger from '../../../logger'
+import getSanitisedError from '../../sanitisedError'
 
-import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import { HmppsAuthClient, RestClientBuilder } from '../data'
+import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import { HmppsAuthClient, RestClientBuilder } from '../../data'
 
-import { OrderRequest } from '../types/OrderRequest'
-import { EquipmentDetails } from '../models/equipmentDetails'
+import { OrderRequest } from '../../types/OrderRequest'
+import { EquipmentDetails } from '../../models/equipmentDetails'
 
-export default class EmDatastoreEquipmentDetailsService {
+export default class IntegrityEquipmentDetailsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -20,7 +20,7 @@ export default class EmDatastoreEquipmentDetailsService {
   async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
-      return await this.emDatastoreApiClient.getEquipmentDetails(input)
+      return await this.emDatastoreApiClient.getIntegrityEquipmentDetails(input)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of equipment details'
       const sanitisedError = getSanitisedError(error)

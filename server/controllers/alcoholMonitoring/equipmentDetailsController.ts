@@ -1,13 +1,13 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, IntegrityEquipmentDetailsService } from '../../services'
+import { AuditService, AlcoholMonitoringEquipmentDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
 import EquipmentDetailsModel from '../../models/view-models/equipmentDetails'
 
-export default class IntegrityEquipmentDetailsController {
+export default class AlcoholMonitoringEquipmentDetailsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly integrityEquipmentDetailsService: IntegrityEquipmentDetailsService,
+    private readonly alcoholMonitoringEquipmentDetailsService: AlcoholMonitoringEquipmentDetailsService,
   ) {}
 
   showEquipmentDetails: RequestHandler = async (req: Request, res: Response) => {
@@ -18,17 +18,17 @@ export default class IntegrityEquipmentDetailsController {
 
     const { legacySubjectId } = req.params
 
-    const equipmentDetails = await this.integrityEquipmentDetailsService.getEquipmentDetails({
+    const equipmentDetails = await this.alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
     })
 
     const viewModel = EquipmentDetailsModel.construct(
       parseInt(legacySubjectId, 10),
-      `/integrity/${legacySubjectId}`,
+      `/alcohol-monitoring/${legacySubjectId}`,
       equipmentDetails,
     )
 
-    res.render('pages/integrity/equipment-details', viewModel)
+    res.render('pages/alcohol-monitoring/equipment-details', viewModel)
   }
 }

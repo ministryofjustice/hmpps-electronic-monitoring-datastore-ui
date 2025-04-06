@@ -3,10 +3,10 @@ import { Page } from '../../services/auditService'
 import { AuditService, IntegritySummaryService } from '../../services'
 import { Reports } from '../../interfaces/orderInformation'
 
-export default class OrderSummaryController {
+export default class IntegritySummaryController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly emDatastoreOrderSummaryService: IntegritySummaryService,
+    private readonly integritySummaryService: IntegritySummaryService,
   ) {}
 
   summary: RequestHandler = async (req: Request, res: Response) => {
@@ -17,7 +17,7 @@ export default class OrderSummaryController {
 
     const { legacySubjectId } = req.params
 
-    const orderInformation = await this.emDatastoreOrderSummaryService.getSummary({
+    const orderInformation = await this.integritySummaryService.getSummary({
       userToken: res.locals.user.token,
       legacySubjectId,
     })

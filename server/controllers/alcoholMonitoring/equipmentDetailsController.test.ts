@@ -1,8 +1,7 @@
-import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import AuditService from '../../services/auditService'
-import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
-import IntegrityEquipmentDetailsController from './equipmentDetailsController'
+import AlcoholMonitoringEquipmentDetailsService from '../../services/alcoholMonitoring/equipmentDetailsService'
+import AlcoholMonitoringEquipmentDetailsController from './equipmentDetailsController'
 // eslint-disable-next-line import/no-named-as-default
 import EquipmentDetailsViewModel from '../../models/view-models/equipmentDetails'
 import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
@@ -10,15 +9,17 @@ import { createMockRequest, createMockResponse } from '../../testutils/mocks/moc
 import { EquipmentDetails, EquipmentDetailsModel } from '../../models/equipmentDetails'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/integrity/equipmentDetailsService')
+jest.mock('../../services/alcoholMonitoring/equipmentDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const emDatastoreEquipmentDetailsService = { getEvents: jest.fn() } as unknown as IntegrityEquipmentDetailsService
+const alcoholMonitoringEquipmentDetailsService = {
+  getEquipmentDetails: jest.fn(),
+} as unknown as AlcoholMonitoringEquipmentDetailsService
 
 jest.spyOn(EquipmentDetailsViewModel, 'construct')
 
 describe('EquipmentDetailsController', () => {
-  let equipmentDetailsController: IntegrityEquipmentDetailsController
+  let alcoholMonitoringEquipmentDetailsController: AlcoholMonitoringEquipmentDetailsController
   let req: Request
   let res: Response
   const next = jest.fn()
@@ -26,26 +27,12 @@ describe('EquipmentDetailsController', () => {
   const testOrderId = 123456789
 
   beforeEach(() => {
-    equipmentDetailsController = new IntegrityEquipmentDetailsController(
+    alcoholMonitoringEquipmentDetailsController = new AlcoholMonitoringEquipmentDetailsController(
       auditService,
-      emDatastoreEquipmentDetailsService,
+      alcoholMonitoringEquipmentDetailsService,
     )
 
     req = createMockRequest({
-      session: {
-        id: 'mock-session-id',
-        cookie: { originalMaxAge: 3600000 } as session.Cookie,
-        regenerate: jest.fn(),
-        destroy: jest.fn(),
-        reload: jest.fn(),
-        save: jest.fn(),
-        touch: jest.fn(),
-        resetMaxAge: jest.fn(),
-        returnTo: '/return',
-        nowInMinutes: 12345,
-        validationErrors: [],
-        formData: {},
-      } as session.Session & Partial<SessionData>,
       params: { legacySubjectId: `${testOrderId}` },
     })
 
@@ -54,25 +41,29 @@ describe('EquipmentDetailsController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}`,
+      backUrl: `/alcohol-monitoring/${testOrderId}`,
       equipmentDetails: [] as EquipmentDetails[],
       legacySubjectId: testOrderId,
     }
 
-    emDatastoreEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([])
+    alcoholMonitoringEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([])
 
-    await equipmentDetailsController.showEquipmentDetails(req, res, next)
+    await alcoholMonitoringEquipmentDetailsController.showEquipmentDetails(req, res, next)
 
-    expect(EquipmentDetailsViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
+    expect(EquipmentDetailsViewModel.construct).toHaveBeenCalledWith(
+      testOrderId,
+      `/alcohol-monitoring/${testOrderId}`,
+      [],
+    )
     expect(EquipmentDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/integrity/equipment-details', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/equipment-details', expectedViewModel)
   })
 
   it('should render page with equipment details', async () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
     const expectedViewModel = {
-      backUrl: `/integrity/${testOrderId}`,
+      backUrl: `/alcohol-monitoring/${testOrderId}`,
       equipmentDetails: [
         {
           isoDateTime: eventDateTime,
@@ -100,7 +91,7 @@ describe('EquipmentDetailsController', () => {
       legacySubjectId: testOrderId,
     }
 
-    emDatastoreEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([
+    alcoholMonitoringEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([
       EquipmentDetailsModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,
@@ -119,9 +110,9 @@ describe('EquipmentDetailsController', () => {
       }),
     ])
 
-    await equipmentDetailsController.showEquipmentDetails(req, res, next)
+    await alcoholMonitoringEquipmentDetailsController.showEquipmentDetails(req, res, next)
 
     expect(EquipmentDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
-    expect(res.render).toHaveBeenCalledWith('pages/integrity/equipment-details', expectedViewModel)
+    expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/equipment-details', expectedViewModel)
   })
 })
