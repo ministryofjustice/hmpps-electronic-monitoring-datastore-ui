@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityDetailsService } from '../../services'
 
-export default class OrderDetailsController {
+export default class IntegrityDetailsController {
   constructor(
     private readonly auditService: AuditService,
     private readonly integrityDetailsService: IntegrityDetailsService,

@@ -103,10 +103,17 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+  async getIntegrityEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
     const { legacySubjectId } = input
     return this.restClient.get<EquipmentDetails[]>({
       path: `/integrity/orders/${legacySubjectId}/equipment-details`,
+    })
+  }
+
+  async getAlcoholMonitoringEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+    const { legacySubjectId } = input
+    return this.restClient.get<EquipmentDetails[]>({
+      path: `/alcohol-monitoring/orders/${legacySubjectId}/equipment-details`,
     })
   }
 

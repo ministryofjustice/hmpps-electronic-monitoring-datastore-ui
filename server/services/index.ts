@@ -8,7 +8,8 @@ import IntegrityDetailsService from './integrity/detailsService'
 import AlcoholMonitoringDetailsService from './alcoholMonitoring/detailsService'
 import EmDatastoreEventsService from './emDatastoreEventsService'
 import EmDatastoreSuspensionOfVisitsService from './emDatastoreSuspensionOfVisitsService'
-import EmDatastoreEquipmentDetailsService from './emDatastoreEquipmentDetailsService'
+import IntegrityEquipmentDetailsService from './integrity/equipmentDetailsService'
+import AlcoholMonitoringEquipmentDetailsService from './alcoholMonitoring/equipmentDetailsService'
 import EmDatastoreVisitDetailsService from './emDatastoreVisitDetailsService'
 import EmDatastoreCurfewTimetableService from './emDatastoreCurfewTimetableService'
 
@@ -34,7 +35,11 @@ export const services = () => {
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
-  const emDatastoreEquipmentDetailsService = new EmDatastoreEquipmentDetailsService(
+  const integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
+  const alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
@@ -58,7 +63,8 @@ export const services = () => {
     emDatastoreOrderSearchService,
     emDatastoreEventsService,
     emDatastoreSuspensionOfVisitsService,
-    emDatastoreEquipmentDetailsService,
+    integrityEquipmentDetailsService,
+    alcoholMonitoringEquipmentDetailsService,
     emDatastoreVisitDetailsService,
     emDatastoreCurfewTimetableService,
   }
@@ -75,7 +81,8 @@ export {
   AlcoholMonitoringSummaryService,
   EmDatastoreEventsService,
   EmDatastoreSuspensionOfVisitsService,
-  EmDatastoreEquipmentDetailsService,
+  IntegrityEquipmentDetailsService,
+  AlcoholMonitoringEquipmentDetailsService,
   EmDatastoreVisitDetailsService,
   EmDatastoreCurfewTimetableService,
 }
