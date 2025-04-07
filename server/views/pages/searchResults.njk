@@ -17,8 +17,9 @@
 
 {% set rows = [] %}
 {% for order in orders %}
+  {% set resultsPath = "alcohol-monitoring" if order.dataType == "am" else "integrity" %}
   {% set legacySubjectIdHtml %}
-    <a href="/integrity/{{ order.legacySubjectId }}">
+    <a href="/{{ resultsPath }}/{{ order.legacySubjectId }}">
       {{ order.legacySubjectId }}
     </a>
   {% endset %}
@@ -77,6 +78,10 @@
       {
         attributes: { 'data-sort-value': order.sortOrderEndDate },
         text: safeGovukDate(order.orderEndDate)
+      },
+      {
+        attributes: {'data-sort-value': order | dump },
+        html: order | dump
       }
     ]
   ), rows) %}
