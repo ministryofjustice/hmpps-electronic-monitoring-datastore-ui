@@ -492,9 +492,7 @@ describe('EM Datastore API Client', () => {
         },
       ]
 
-      fakeClient
-        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/equipment-details`)
-        .reply(200, expectedResult)
+      fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo)
 
@@ -504,9 +502,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch list of equipment details', async () => {
       const expectedResult: AlcoholMonitoringEquipmentDetail[] = []
 
-      fakeClient
-        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/equipment-details`)
-        .reply(200, expectedResult)
+      fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo)
 
@@ -515,7 +511,7 @@ describe('EM Datastore API Client', () => {
 
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
       nock(config.apis.emDatastoreApi.url)
-        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/equipment-details`)
+        .get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
