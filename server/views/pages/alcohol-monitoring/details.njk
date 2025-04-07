@@ -1,6 +1,7 @@
-{% extends "../../partials/layout-order.njk" %}
+{% extends "../../partials/layout-alcohol-monitoring-order.njk" %}
 
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDate %}
 
 {% set heading = "Order details" %}
 {% set pageTitle = applicationName + " - " + heading %}
@@ -14,37 +15,23 @@
   {% set offenseRisk = 'Yes' if details.offenceRisk else 'No' %}
   {%
     set primaryAddress = [
-      details.primaryAddressLine1,
-      details.primaryAddressLine2,
-      details.primaryAddressLine3,
-      details.primaryAddressPostCode
+      details.address1,
+      details.address2,
+      details.address3,
+      details.postcode
     ] | reject(null) | join('<br>')
   %}
   {{
     govukSummaryList({
       rows: [
-        { key: { text: 'Specials' }, value:  { text: details.specials } },
         { key: { text: 'Legacy subject ID' }, value:  { text: details.legacySubjectId } },
         { key: { text: 'Legacy order ID' }, value:  { text: details.legacyOrderId } },
         { key: { text: 'First name' }, value:  { text: details.firstName } },
         { key: { text: 'Last name' }, value:  { text: details.lastName } },
         { key: { text: 'Alias' }, value:  { text: details.alias } },
-        { key: { text: 'Date of birth' }, value:  { text: details.dateOfBirth } },
-        { key: { text: 'Adult/child' }, value:  { text: details.adultOrChild } },
         { key: { text: 'Legacy sex' }, value:  { text: details.sex } },
-        { key: { text: 'Contact' }, value:  { text: details.contact } },
         { key: { text: 'Primary address' }, value:  { html: primaryAddress } },
-        { key: { text: 'Phone/mobile number' }, value:  { text: details.phoneOrMobileNumber } },
-        { key: { text: 'PPO' }, value:  { text: details.ppo } },
-        { key: { text: 'MAPPA' }, value:  { text: details.mappa } },
-        { key: { text: 'Technical bail' }, value:  { text: details.technicalBail } },
-        { key: { text: 'Manual risk' }, value:  { text: details.manualRisk } },
-        { key: { text: 'Offence risk' }, value:  { text: offenseRisk } },
-        { key: { text: 'Postcode risk' }, value:  { text: details.postCodeRisk } },
-        { key: { text: 'False limb risk' }, value:  { text: details.falseLimbRisk } },
-        { key: { text: 'Migrated risk' }, value:  { text: details.migratedRisk } },
-        { key: { text: 'Range risk' }, value:  { text: details.rangeRisk } },
-        { key: { text: 'Report risk' }, value:  { text: details.reportRisk } }
+        { key: { text: 'Phone/mobile number' }, value:  { text: details.phoneOrMobileNumber } }
       ]
     })
   }}
@@ -54,15 +41,16 @@
   {{
     govukSummaryList({
       rows: [
-        { key: { text: 'Order start date' }, value: { text: details.orderStartDate } },
-        { key: { text: 'Order end date' }, value: { text: details.orderEndDate } },
+        { key: { text: 'Order start date' }, value: { text: safeGovukDate(details.orderStartDate) } },
+        { key: { text: 'Order end date' }, value: { text: safeGovukDate(details.orderEndDate) } },
         { key: { text: 'Order type' }, value: { text: details.orderType } },
         { key: { text: 'Order type description' }, value: { text: details.orderTypeDescription } },
-        { key: { text: 'Order type detail' }, value: { text: details.orderTypeDetail } },
-        { key: { text: 'Wearing wrist PID' }, value: { text: details.wearingWristPid } },
-        { key: { text: 'Notifying organisation name' }, value: { text: details.notifyingOrganisationDetailsName } },
-        { key: { text: 'Responsible organisation' }, value: { text: details.responsibleOrganisation } },
-        { key: { text: 'Responsible organisation region' }, value: { text: details.responsibleOrganisationDetailsRegion } }
+        { key: { text: 'Order end outcome' }, value: { text: details.orderEndOutcome } },
+        { key: { text: 'Special instructions' }, value: { text: details.specialInstructions } },
+        { key: { text: 'Enforceable condition' }, value: { text: details.enforceableCondition } },
+        { key: { text: 'Tag at sourced' }, value: { text: details.tagAtSource } },
+        { key: { text: 'Responsible organisation phone number' }, value: { text: responsibleOrganisationPhoneNumber.responsibleOrganisation } },
+        { key: { text: 'Responsible organisation email' }, value: { text: details.responsibleOrganisationEmail } }
       ]
     })
   }}

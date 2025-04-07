@@ -1,6 +1,7 @@
-{% extends "../../partials/layout-order.njk" %}
+{% extends "../../partials/layout-integrity-order.njk" %}
 
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDate %}
 
 {% set heading = "Order details" %}
 {% set pageTitle = applicationName + " - " + heading %}
@@ -29,7 +30,7 @@
         { key: { text: 'First name' }, value:  { text: details.firstName } },
         { key: { text: 'Last name' }, value:  { text: details.lastName } },
         { key: { text: 'Alias' }, value:  { text: details.alias } },
-        { key: { text: 'Date of birth' }, value:  { text: details.dateOfBirth } },
+        { key: { text: 'Date of birth' }, value:  { text: safeGovukDate(details.dateOfBirth) } },
         { key: { text: 'Adult/child' }, value:  { text: details.adultOrChild } },
         { key: { text: 'Legacy sex' }, value:  { text: details.sex } },
         { key: { text: 'Contact' }, value:  { text: details.contact } },
@@ -54,8 +55,8 @@
   {{
     govukSummaryList({
       rows: [
-        { key: { text: 'Order start date' }, value: { text: details.orderStartDate } },
-        { key: { text: 'Order end date' }, value: { text: details.orderEndDate } },
+        { key: { text: 'Order start date' }, value: { text: safeGovukDate(details.orderStartDate) } },
+        { key: { text: 'Order end date' }, value: { text: safeGovukDate(details.orderEndDate) } },
         { key: { text: 'Order type' }, value: { text: details.orderType } },
         { key: { text: 'Order type description' }, value: { text: details.orderTypeDescription } },
         { key: { text: 'Order type detail' }, value: { text: details.orderTypeDetail } },

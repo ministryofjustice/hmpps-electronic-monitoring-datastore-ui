@@ -1,0 +1,66 @@
+{% extends "../partials/layout.njk" %}
+
+{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
+{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+
+{% block beforeContent %}
+  {% if backUrl %}
+    {{ govukBackLink({
+      text: (backText if backText or "back"),
+      href: backUrl
+    }) }}
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+  {{ emsServiceInformation() }}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-full">
+      {{
+        mojSubNavigation({
+          label: "Order navigation",
+          items: [
+            {
+              text: "Order summary",
+              href: '/alcohol-monitoring/' + legacySubjectId
+            },
+            {
+              text: "Order details",
+              href: '/alcohol-monitoring/' + legacySubjectId + '/details'
+            },
+            {
+              text: "Visit details",
+              href: '/alcohol-monitoring/' + legacySubjectId + '/visit-details'
+            },
+            {
+              text: "Equipment details",
+              href: '/alcohol-monitoring/' + legacySubjectId + '/equipment-details'
+            },
+            {
+              text: "All event history",
+              href: '/alcohol-monitoring/' + legacySubjectId + '/event-history'
+            },
+            {
+              text: "Services",
+              href: '/alcohol-monitoring/' + legacySubjectId + '/service-details'
+            }
+          ]
+        })
+      }}
+    </div>
+  </div>
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l">{{ heading }}</h1>
+      {% if subHeading %}
+        <p class="govuk-body">{{ subHeading }}</p>
+      {% endif %}
+
+      {% block innerContent %}{% endblock %}
+    </div>
+  </div>
+{% endblock %}
