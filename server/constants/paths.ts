@@ -3,7 +3,7 @@ const paths = {
   SEARCH: '/search',
 
   INTEGRITY_ORDER: {
-    INDEX: '/integrity',
+    SEARCH_RESULTS: '/integrity',
     SUMMARY: '/integrity/:legacySubjectId',
     DETAILS: '/integrity/:legacySubjectId/details',
     VISIT_DETAILS: '/integrity/:legacySubjectId/visit-details',
@@ -14,7 +14,7 @@ const paths = {
   },
 
   ALCOHOL_MONITORING: {
-    INDEX: '/alcohol-monitoring',
+    SEARCH_RESULTS: '/alcohol-monitoring',
     SUMMARY: '/alcohol-monitoring/:legacySubjectId',
     DETAILS: '/alcohol-monitoring/:legacySubjectId/details',
     VISIT_DETAILS: '/alcohol-monitoring/:legacySubjectId/visit-details',

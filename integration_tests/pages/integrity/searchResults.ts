@@ -4,7 +4,7 @@ import paths from '../../../server/constants/paths'
 
 export default class IntegritySearchResultsPage extends AppPage {
   constructor() {
-    super('Search results', paths.INTEGRITY_ORDER.INDEX)
+    super('Search results', paths.INTEGRITY_ORDER.SEARCH_RESULTS)
   }
 
   override checkOnPage(): void {

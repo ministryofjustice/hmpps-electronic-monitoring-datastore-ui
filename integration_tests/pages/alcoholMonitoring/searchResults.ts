@@ -4,7 +4,7 @@ import paths from '../../../server/constants/paths'
 
 export default class AlcoholMonitoringSearchResultsPage extends AppPage {
   constructor() {
-    super('Search results', paths.ALCOHOL_MONITORING.INDEX)
+    super('Search results', paths.ALCOHOL_MONITORING.SEARCH_RESULTS)
   }
 
   override checkOnPage(): void {
