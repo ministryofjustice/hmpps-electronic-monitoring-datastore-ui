@@ -1,7 +1,7 @@
 {% extends "../../partials/layout-integrity-order.njk" %}
 
 {% from "../../components/emsDateFilter.njk" import emsDateFilter %}
-{% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
+{% from "../../components/eventTimeline.njk" import eventTimeline %}
 {% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
 
 {% set heading = "Equipment details" %}
@@ -11,7 +11,7 @@
   {% if equipmentDetails | length %}
     {{ emsDateFilter() }}
 
-    {{ emsEventTimeline(equipmentDetails) }}
+    {{ eventTimeline(equipmentDetails) }}
   {% else %}
     <h3 class="govuk-heading-m no-results-heading">No {{ heading | lower }} found</h3>
 

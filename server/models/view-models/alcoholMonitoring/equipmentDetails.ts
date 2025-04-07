@@ -15,7 +15,8 @@ const createViewModelFromApiDto = (
   legacySubjectId,
   equipmentDetails: equipmentDetails
     .map(details => {
-      const dateTime = details.deviceInstalledDateTime ? new Date(details.deviceInstalledDateTime) : null
+      const relevantDate = details.deviceInstalledDateTime || details.hmuInstallDateTime
+      const dateTime = relevantDate ? new Date(relevantDate) : null
 
       return {
         legacySubjectId: details.legacySubjectId,
@@ -27,7 +28,9 @@ const createViewModelFromApiDto = (
         properties: details,
       } as TimelineEventModel
     })
-    .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
+    .sort((a, b) => {
+      return a.dateTime.getTime() - b.dateTime.getTime()
+    }),
   backUrl,
 })
 

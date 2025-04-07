@@ -117,7 +117,7 @@ export default class EmDatastoreApiClient {
   async getAlcoholMonitoringEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetail[]> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringEquipmentDetail[]>({
-      path: `/alcohol-monitoring/orders/${legacySubjectId}/equipment-details`,
+      path: `/alcohol-monitoring/${legacySubjectId}/equipment-details`,
     })
   }
 

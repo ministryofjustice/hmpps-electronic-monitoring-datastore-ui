@@ -1,0 +1,20 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukDateTime %}
+
+{% macro alcoholMonitoringEquipmentDetails(event) %}
+  <h3 class="govuk-heading-s">Device</h3>
+
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Device type" }, value: { text: event.properties.deviceType } },
+        { key: { text: "Device serial number" }, value: { text: event.properties.deviceSerialNumber } },
+        { key: { text: "Device address type" }, value: { text: event.properties.deviceAddressType } },
+        { key: { text: "Leg fitting" }, value: { text: event.properties.legFitting } },
+        { key: { text: "Device installed date time" }, value: { text: safeGovukDateTime(event.properties.deviceInstalledDateTime) } },
+        { key: { text: "Device removed date time" }, value: { text: safeGovukDateTime(event.properties.deviceInstalledDateTime) } },
+        { key: { text: "HMU install date time" }, value: { text: safeGovukDateTime(event.properties.hmuInstallDateTime) } }
+      ]
+    })
+  }}
+{% endmacro %}
