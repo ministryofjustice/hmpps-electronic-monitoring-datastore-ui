@@ -5,7 +5,7 @@ import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { OrderInformation } from '../../interfaces/orderInformation'
+import { AlcoholMonitoringOrderSummary } from '../../models/alcoholMonitoring/orderSummary'
 
 export default class AlcoholMonitoringSummaryService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
@@ -15,7 +15,7 @@ export default class AlcoholMonitoringSummaryService {
     private readonly hmppsAuthClient: HmppsAuthClient,
   ) {}
 
-  async getSummary(input: OrderRequest): Promise<OrderInformation> {
+  async getSummary(input: OrderRequest): Promise<AlcoholMonitoringOrderSummary> {
     try {
       return await this.emDatastoreApiClientFactory(input.userToken).getAlcoholMonitoringSummary(input)
     } catch (error) {

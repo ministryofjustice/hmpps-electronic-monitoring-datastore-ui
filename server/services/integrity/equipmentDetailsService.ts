@@ -5,7 +5,7 @@ import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { EquipmentDetails } from '../../models/equipmentDetails'
+import { IntegrityEquipmentDetails } from '../../models/integrity/equipmentDetails'
 
 export default class IntegrityEquipmentDetailsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
@@ -17,7 +17,7 @@ export default class IntegrityEquipmentDetailsService {
     this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
-  async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+  async getEquipmentDetails(input: OrderRequest): Promise<IntegrityEquipmentDetails[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
       return await this.emDatastoreApiClient.getIntegrityEquipmentDetails(input)

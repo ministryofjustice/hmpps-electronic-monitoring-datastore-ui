@@ -1,4 +1,4 @@
-export interface OrderDetails {
+export interface IndegrityOrderDetails {
   legacySubjectId: string
   legacyOrderId: string
   firstName: string | null

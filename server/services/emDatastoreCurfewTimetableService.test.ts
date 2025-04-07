@@ -2,7 +2,7 @@ import EmDatastoreCurfewTimetableService from './emDatastoreCurfewTimetableServi
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
 
 import { OrderRequest } from '../types/OrderRequest'
-import { CurfewTimetable } from '../models/curfewTimetable'
+import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
 
 jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/emDatastoreApiClient')
@@ -31,12 +31,12 @@ describe('Visit Details Service', () => {
       legacySubjectId: '123',
     }
 
-    const curfewTimetableResponse = [] as CurfewTimetable[]
+    const curfewTimetableResponse = [] as IntegrityServiceDetail[]
 
-    const expectedResult = [] as CurfewTimetable[]
+    const expectedResult = [] as IntegrityServiceDetail[]
 
     it('should return data from the client', async () => {
-      emDatastoreApiClient.getCurfewTimetable.mockResolvedValue(curfewTimetableResponse)
+      emDatastoreApiClient.getIntegrityServiceDetails.mockResolvedValue(curfewTimetableResponse)
 
       const results = await curfewTimetableService.getCurfewTimetable(orderRequest)
 
@@ -44,7 +44,7 @@ describe('Visit Details Service', () => {
     })
 
     it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.getCurfewTimetable.mockRejectedValue(new Error('some error'))
+      emDatastoreApiClient.getIntegrityServiceDetails.mockRejectedValue(new Error('some error'))
 
       await expect(curfewTimetableService.getCurfewTimetable(orderRequest)).rejects.toEqual(
         new Error('Error retrieving curfew timetable: some error'),
@@ -52,7 +52,7 @@ describe('Visit Details Service', () => {
     })
 
     it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.getCurfewTimetable.mockImplementation(() => {
+      emDatastoreApiClient.getIntegrityServiceDetails.mockImplementation(() => {
         throw new Error('some error')
       })
 

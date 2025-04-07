@@ -1,4 +1,4 @@
-import { CurfewTimetable } from '../curfewTimetable'
+import { IntegrityServiceDetail } from '../integrity/serviceDetail'
 import { TimelineEventModel } from './TimelineEvent'
 
 export type CurfewTimetableViewModel = {
@@ -10,7 +10,7 @@ export type CurfewTimetableViewModel = {
 const createViewModelFromApiDto = (
   legacySubjectId: number,
   backUrl: string,
-  curfewTimetable: CurfewTimetable[],
+  curfewTimetable: IntegrityServiceDetail[],
 ): CurfewTimetableViewModel => ({
   legacySubjectId,
   curfewTimetable: curfewTimetable
@@ -32,7 +32,7 @@ const createViewModelFromApiDto = (
 const construct = (
   legacySubjectId: number,
   backUrl: string,
-  events: CurfewTimetable[] = [],
+  events: IntegrityServiceDetail[] = [],
 ): CurfewTimetableViewModel => {
   return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }

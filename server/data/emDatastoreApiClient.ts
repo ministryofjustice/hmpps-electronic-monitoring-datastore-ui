@@ -4,15 +4,19 @@ import { Order } from '../interfaces/order'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
-import { OrderDetails } from '../interfaces/orderDetails'
-import { OrderInformation } from '../interfaces/orderInformation'
+import { IntegrityOrderSummary } from '../interfaces/integrity/orderSummary'
+import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
+import { IndegrityOrderDetails } from '../interfaces/integrity/orderDetails'
+import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
 import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
 import { MonitoringEvent } from '../models/monitoringEvents'
 import { ViolationEvent } from '../models/violationEvents'
-import { EquipmentDetails } from '../models/equipmentDetails'
+import { IntegrityEquipmentDetails } from '../models/integrity/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetail } from '../models/alcoholMonitoring/equipmentDetails'
 import { VisitDetails } from '../models/visitDetails'
-import { CurfewTimetable } from '../models/curfewTimetable'
+import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
+import { AlcoholMonitoringServiceDetail } from '../models/alcoholMonitoring/serviceDetail'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 export default class EmDatastoreApiClient {
@@ -47,30 +51,30 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getIntegritySummary(input: OrderRequest): Promise<OrderInformation> {
+  async getIntegritySummary(input: OrderRequest): Promise<IntegrityOrderSummary> {
     const { legacySubjectId } = input
-    return this.restClient.get<OrderInformation>({
+    return this.restClient.get<IntegrityOrderSummary>({
       path: `/integrity/orders/${legacySubjectId}`,
     })
   }
 
-  async getAlcoholMonitoringSummary(input: OrderRequest): Promise<OrderInformation> {
+  async getAlcoholMonitoringSummary(input: OrderRequest): Promise<AlcoholMonitoringOrderSummary> {
     const { legacySubjectId } = input
-    return this.restClient.get<OrderInformation>({
+    return this.restClient.get<AlcoholMonitoringOrderSummary>({
       path: `/alcohol-monitoring/orders/${legacySubjectId}`,
     })
   }
 
-  async getIntegrityDetails(input: OrderRequest): Promise<OrderDetails> {
+  async getIntegrityDetails(input: OrderRequest): Promise<IndegrityOrderDetails> {
     const { legacySubjectId } = input
-    return this.restClient.get<OrderDetails>({
+    return this.restClient.get<IndegrityOrderDetails>({
       path: `/integrity/orders/${legacySubjectId}/details`,
     })
   }
 
-  async getAlcoholMonitoringDetails(input: OrderRequest): Promise<OrderDetails> {
+  async getAlcoholMonitoringDetails(input: OrderRequest): Promise<AlcoholMonitoringOrderDetails> {
     const { legacySubjectId } = input
-    return this.restClient.get<OrderDetails>({
+    return this.restClient.get<AlcoholMonitoringOrderDetails>({
       path: `/alcohol-monitoring/orders/${legacySubjectId}/details`,
     })
   }
@@ -103,16 +107,16 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getIntegrityEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+  async getIntegrityEquipmentDetails(input: OrderRequest): Promise<IntegrityEquipmentDetails[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<EquipmentDetails[]>({
+    return this.restClient.get<IntegrityEquipmentDetails[]>({
       path: `/integrity/orders/${legacySubjectId}/equipment-details`,
     })
   }
 
-  async getAlcoholMonitoringEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+  async getAlcoholMonitoringEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetail[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<EquipmentDetails[]>({
+    return this.restClient.get<AlcoholMonitoringEquipmentDetail[]>({
       path: `/alcohol-monitoring/orders/${legacySubjectId}/equipment-details`,
     })
   }
@@ -131,10 +135,17 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getCurfewTimetable(input: OrderRequest): Promise<CurfewTimetable[]> {
+  async getIntegrityServiceDetails(input: OrderRequest): Promise<IntegrityServiceDetail[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<CurfewTimetable[]>({
+    return this.restClient.get<IntegrityServiceDetail[]>({
       path: `/integrity/orders/${legacySubjectId}/curfew-timetable`,
+    })
+  }
+
+  async getAlcoholMonitoringServiceDetails(input: OrderRequest): Promise<AlcoholMonitoringServiceDetail[]> {
+    const { legacySubjectId } = input
+    return this.restClient.get<AlcoholMonitoringServiceDetail[]>({
+      path: `/alcohol-monitoring/orders/${legacySubjectId}/service-details`,
     })
   }
 }

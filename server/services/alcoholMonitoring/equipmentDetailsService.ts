@@ -5,7 +5,7 @@ import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import { HmppsAuthClient, RestClientBuilder } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { EquipmentDetails } from '../../models/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetail } from '../../models/alcoholMonitoring/equipmentDetails'
 
 export default class AlcoholMonitoringEquipmentDetailsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
@@ -17,7 +17,7 @@ export default class AlcoholMonitoringEquipmentDetailsService {
     this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
-  async getEquipmentDetails(input: OrderRequest): Promise<EquipmentDetails[]> {
+  async getEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetail[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
       return await this.emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(input)

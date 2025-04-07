@@ -1,6 +1,6 @@
-import { OrderInformation } from '../../interfaces/orderInformation'
+import { IntegrityOrderSummary } from '../../interfaces/integrity/orderSummary'
 
-const orderInformation: OrderInformation = {
+const orderInformation: IntegrityOrderSummary = {
   keyOrderInformation: {
     specials: 'No',
     legacySubjectId: '1234567',

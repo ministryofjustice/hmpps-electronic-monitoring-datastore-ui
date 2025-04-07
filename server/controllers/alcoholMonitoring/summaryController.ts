@@ -1,7 +1,7 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringSummaryService } from '../../services'
-import { Reports } from '../../interfaces/orderInformation'
+import { Reports } from '../../interfaces/integrity/orderSummary'
 
 export default class AlcoholMonitoringSummaryController {
   constructor(

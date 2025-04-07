@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityEquipmentDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import EquipmentDetailsModel from '../../models/view-models/equipmentDetails'
+import EquipmentDetailsModel from '../../models/view-models/integrity/equipmentDetails'
 
 export default class IntegrityEquipmentDetailsController {
   constructor(

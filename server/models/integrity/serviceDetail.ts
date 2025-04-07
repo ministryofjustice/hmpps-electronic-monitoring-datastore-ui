@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const CurfewTimetableModel = z.object({
+export const IntegrityServiceDetailModel = z.object({
   legacySubjectId: z.number(),
   serviceId: z.number().nullable(),
   serviceAddress1: z.string().nullable(),
@@ -20,4 +20,4 @@ export const CurfewTimetableModel = z.object({
   sunday: z.number().nullable(),
 })
 
-export type CurfewTimetable = z.infer<typeof CurfewTimetableModel>
+export type IntegrityServiceDetail = z.infer<typeof IntegrityServiceDetailModel>
