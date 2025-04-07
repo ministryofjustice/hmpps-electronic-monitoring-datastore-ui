@@ -1,13 +1,13 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, IntegrityVisitDetailsService } from '../../services'
+import { AuditService, AlcoholMonitoringVisitDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityVisitDetailsModel from '../../models/view-models/integrity/visitDetails'
+import AlcoholMonitoringVisitDetailsModel from '../../models/view-models/alcoholMonitoring/visitDetails'
 
-export default class IntegrityVisitDetailsController {
+export default class AlcoholMonitoringVisitDetailsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly visitDetailsService: IntegrityVisitDetailsService,
+    private readonly visitDetailsService: AlcoholMonitoringVisitDetailsService,
   ) {}
 
   showVisitDetails: RequestHandler = async (req: Request, res: Response) => {
@@ -23,12 +23,12 @@ export default class IntegrityVisitDetailsController {
       legacySubjectId,
     })
 
-    const viewModel = IntegrityVisitDetailsModel.construct(
-      parseInt(legacySubjectId, 10),
-      `/integrity/${legacySubjectId}`,
+    const viewModel = AlcoholMonitoringVisitDetailsModel.construct(
+      legacySubjectId,
+      `/alcohol-monitoring/${legacySubjectId}`,
       visitDetails,
     )
 
-    res.render('pages/integrity/visit-details', viewModel)
+    res.render('pages/alcohol-monitoring/visit-details', viewModel)
   }
 }

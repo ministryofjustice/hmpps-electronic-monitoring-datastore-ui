@@ -14,7 +14,8 @@ import { MonitoringEvent } from '../models/monitoringEvents'
 import { ViolationEvent } from '../models/violationEvents'
 import { IntegrityEquipmentDetails } from '../models/integrity/equipmentDetails'
 import { AlcoholMonitoringEquipmentDetail } from '../models/alcoholMonitoring/equipmentDetails'
-import { VisitDetails } from '../models/visitDetails'
+import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
+import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
 import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
 import { AlcoholMonitoringServiceDetail } from '../models/alcoholMonitoring/serviceDetail'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
@@ -121,10 +122,17 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getVisitDetails(input: OrderRequest): Promise<VisitDetails[]> {
+  async getIntegrityVisitDetails(input: OrderRequest): Promise<IntegrityVisitDetails[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<VisitDetails[]>({
+    return this.restClient.get<IntegrityVisitDetails[]>({
       path: `/integrity/orders/${legacySubjectId}/visit-details`,
+    })
+  }
+
+  async getAlcoholMonitoringVisitDetails(input: OrderRequest): Promise<AlcoholMonitoringVisitDetails[]> {
+    const { legacySubjectId } = input
+    return this.restClient.get<AlcoholMonitoringVisitDetails[]>({
+      path: `/alcohol-monitoring/${legacySubjectId}/visit-details`,
     })
   }
 

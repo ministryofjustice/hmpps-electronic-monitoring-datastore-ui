@@ -13,13 +13,14 @@ import IntegrityDetailsController from '../controllers/integrity/detailsControll
 import EventsController from '../controllers/integrity/eventsController'
 import SuspensionOfVisitsController from '../controllers/integrity/suspensionOfVisitsController'
 import IntegrityEquipmentDetailsController from '../controllers/integrity/equipmentDetailsController'
-import VisitDetailsController from '../controllers/integrity/visitDetailsController'
+import IntegrityVisitDetailsController from '../controllers/integrity/visitDetailsController'
 import CurfewTimetableController from '../controllers/integrity/curfewTimetableController'
 
 // alcohol monitoring orders
 import AmSummaryController from '../controllers/alcoholMonitoring/summaryController'
 import AmDetailsController from '../controllers/alcoholMonitoring/detailsController'
 import AmEquipmentDetailsController from '../controllers/alcoholMonitoring/equipmentDetailsController'
+import AmVisitDetailsController from '../controllers/alcoholMonitoring/visitDetailsController'
 
 import { Services } from '../services'
 
@@ -33,12 +34,13 @@ export default function routes({
   emDatastoreEventsService,
   emDatastoreSuspensionOfVisitsService,
   integrityEquipmentDetailsService,
-  emDatastoreVisitDetailsService,
+  integrityVisitDetailsService,
   emDatastoreCurfewTimetableService,
 
   alcoholMonitoringSummaryService,
   alcoholMonitoringDetailsService,
   alcoholMonitoringEquipmentDetailsService,
+  alcoholMonitoringVisitDetailsService,
 }: Services): Router {
   const router = Router()
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -59,7 +61,11 @@ export default function routes({
     auditService,
     integrityEquipmentDetailsService,
   )
-  const visitDetailsController = new VisitDetailsController(auditService, emDatastoreVisitDetailsService)
+  const integrityVisitDetailsController = new IntegrityVisitDetailsController(
+    auditService,
+    integrityVisitDetailsService,
+  )
+  const amVisitDetailsController = new AmVisitDetailsController(auditService, alcoholMonitoringVisitDetailsService)
   const curfewTimetableController = new CurfewTimetableController(auditService, emDatastoreCurfewTimetableService)
 
   // alcohol monitoring
@@ -88,7 +94,7 @@ export default function routes({
   get(paths.INTEGRITY_ORDER.DETAILS, integrityDetailsController.details)
   get(paths.INTEGRITY_ORDER.EVENT_HISTORY, eventsController.showHistory)
   get(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, suspensionOfVisitsController.showSuspensionOfVisits)
-  get(paths.INTEGRITY_ORDER.VISIT_DETAILS, visitDetailsController.showVisitDetails)
+  get(paths.INTEGRITY_ORDER.VISIT_DETAILS, integrityVisitDetailsController.showVisitDetails)
   get(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, integrityEquipmentDetailsController.showEquipmentDetails)
   get(paths.INTEGRITY_ORDER.CURFEW_TIMETABLE, curfewTimetableController.showCurfewTimetable)
 
@@ -96,6 +102,7 @@ export default function routes({
   get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.summary)
   get(paths.ALCOHOL_MONITORING.DETAILS, amDetailsController.details)
   get(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, amEquipmentDetailsController.showEquipmentDetails)
+  get(paths.ALCOHOL_MONITORING.VISIT_DETAILS, amVisitDetailsController.showVisitDetails)
 
   return router
 }

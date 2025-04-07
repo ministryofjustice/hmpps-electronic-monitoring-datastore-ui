@@ -1,0 +1,24 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukDateTime %}
+
+{% macro alcoholMonitoringVisitDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Visit ID" }, value: { text: event.properties.visitId } },
+        { key: { text: "Visit types" }, value: { text: event.properties.visitType } },
+        { key: { text: "Visit attempt" }, value: { text: event.properties.visitAttempt } },
+        { key: { text: "Date visit raised" }, value: { text: safeGovukDate(event.properties.dateVisitRaised) } },
+        { key: { text: "Visit address" }, value: { text: event.properties.visitAddress } },
+        { key: { text: "Vist notes" }, value: { text: event.properties.visitNotes } },
+        { key: { text: "Visit outcome" }, value: { text: event.properties.visitOutcome } },
+        { key: { text: "Actual work start datetime" }, value: { text: safeGovukDateTime(event.properties.actualWorkStartDateTime) } },
+        { key: { text: "Actual work end datetime" }, value: { text: safeGovukDateTime(event.properties.actualWorkEndDateTime) } },
+        { key: { text: "Visit rejection reason" }, value: { text: event.properties.visitRejectionReason } },
+        { key: { text: "Visit rejection description" }, value: { text: event.properties.visitRejectionDescription } },
+        { key: { text: "Visit cancel reason" }, value: { text: event.properties.visitCancelReason } },
+        { key: { text: "Visit cancel description" }, value: { text: event.properties.visitCancelDescription } }
+      ]
+    })
+  }}
+{% endmacro %}

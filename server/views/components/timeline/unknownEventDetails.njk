@@ -16,6 +16,10 @@
     ), entryRecords) %}
   {% endfor %}
 
+
+  {{ event | dump}}
+
+
   {{
     govukSummaryList({
       rows: entryRecords

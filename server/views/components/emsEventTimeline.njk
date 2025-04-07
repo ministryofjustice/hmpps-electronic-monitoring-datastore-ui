@@ -5,12 +5,13 @@
 {% from "../components/timeline/violationEventDetails.njk" import violationEventDetails %}
 {% from "../components/timeline/integrity/equipmentDetails.njk" import integrityEquipmentDetails %}
 {% from "../components/timeline/alcoholMonitoring/equipmentDetails.njk" import alcoholMonitoringEquipmentDetails %}
-{% from "../components/timeline/visitDetails.njk" import visitDetails %}
+{% from "../components/timeline/integrity/visitDetails.njk" import integrityVisitDetails %}
+{% from "../components/timeline/alcoholMonitoring/visitDetails.njk" import alcoholMonitoringVisitDetails %}
 {% from "../components/timeline/suspensionOfVisitsDetails.njk" import suspensionOfVisitsDetails %}
 {% from "../components/timeline/curfewTimetable.njk" import curfewTimetable %}
 {% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
 
-{% macro eventTimeline(events) %}
+{% macro emsEventTimeline(events) %}
   {% set timelineItems = [] %}
   {% for timestamp, events in events | groupby("dateTime") %}
     {% for event in events %}
@@ -34,7 +35,10 @@
         {% set eventDetails = alcoholMonitoringEquipmentDetails(event) %}
       {% elif event.eventType == "visit-details" %}
         {% set eventLabel = event.properties.visitType %}
-        {% set eventDetails = visitDetails(event) %}
+        {% set eventDetails = integrityVisitDetails(event) %}
+      {% elif event.eventType == "am-visit-details" %}
+        {% set eventLabel = event.properties.visitType %}
+        {% set eventDetails = alcoholMonitoringVisitDetails(event) %}
       {% elif event.eventType == "curfew-timetable" %}
         {% set eventLabel = "Service" %}
         {% set eventDetails = curfewTimetable(event) %}
