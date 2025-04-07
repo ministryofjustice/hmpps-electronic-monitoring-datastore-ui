@@ -5,6 +5,68 @@
 {% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 
+{% if orderType == "alcohol-monitoring" %}
+  {% set navigationItems = [
+    {
+      text: "Order summary",
+      href: '/alcohol-monitoring/' + legacySubjectId
+    },
+    {
+      text: "Order details",
+      href: '/alcohol-monitoring/' + legacySubjectId + '/details'
+    },
+    {
+      text: "Visit details",
+      href: '/alcohol-monitoring/' + legacySubjectId + '/visit-details'
+    },
+    {
+      text: "Equipment details",
+      href: '/alcohol-monitoring/' + legacySubjectId + '/equipment-details'
+    },
+    {
+      text: "Services",
+      href: '/alcohol-monitoring/' + legacySubjectId + '/curfew-timetable'
+    },
+    {
+      text: "All event history",
+      href: '/alcohol-monitoring/' + legacySubjectId + '/event-history'
+    }
+  ] %}
+{% endif %}
+
+{% if orderType == "integrity" %}
+  {% set navigationItems =  [
+    {
+      text: "Order summary",
+      href: '/integrity/' + legacySubjectId
+    },
+    {
+      text: "Order details",
+      href: '/integrity/' + legacySubjectId + '/details'
+    },
+    {
+      text: "Visit details",
+      href: '/integrity/' + legacySubjectId + '/visit-details'
+    },
+    {
+      text: "Equipment details",
+      href: '/integrity/' + legacySubjectId + '/equipment-details'
+    },
+    {
+      text: "Suspension of visits",
+      href: '/integrity/' + legacySubjectId + '/suspension-of-visits'
+    },
+    {
+      text: "Services",
+      href: '/integrity/' + legacySubjectId + '/curfew-timetable'
+    },
+    {
+      text: "All event history",
+      href: '/integrity/' + legacySubjectId + '/event-history'
+    }
+  ] %}
+{% endif %}
+
 {% block beforeContent %}
   {% if backUrl %}
     {{ govukBackLink({
@@ -15,43 +77,16 @@
 {% endblock %}
 
 {% block content %}
-  {{ emsServiceInformation() }}
+{% include "partials/navigation/orderNavigationItems.njk" %}
+{% set navigationItems = orderNavigationItems[orderType] %}
 
+  {{ emsServiceInformation() }}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-full">
       {{
         mojSubNavigation({
           label: "Order navigation",
-          items: [
-            {
-              text: "Order summary",
-              href: '/integrity/' + legacySubjectId
-            },
-            {
-              text: "Order details",
-              href: '/integrity/' + legacySubjectId + '/details'
-            },
-            {
-              text: "Visit details",
-              href: '/integrity/' + legacySubjectId + '/visit-details'
-            },
-            {
-              text: "Equipment details",
-              href: '/integrity/' + legacySubjectId + '/equipment-details'
-            },
-            {
-              text: "Suspension of visits",
-              href: '/integrity/' + legacySubjectId + '/suspension-of-visits'
-            },
-            {
-              text: "All event history",
-              href: '/integrity/' + legacySubjectId + '/event-history'
-            },
-            {
-              text: "Services",
-              href: '/integrity/' + legacySubjectId + '/curfew-timetable'
-            }
-          ]
+          items: navigationItems
         })
       }}
     </div>
