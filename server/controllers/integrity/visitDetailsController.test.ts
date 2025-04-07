@@ -1,24 +1,22 @@
-import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
-import AuditService from '../../services/auditService'
-import EmDatastoreVisitDetailsService from '../../services/emDatastoreVisitDetailsService'
-import VisitDetailsController from './visitDetailsController'
+import { AuditService, IntegrityVisitDetailsService } from '../../services'
+import IntegrityVisitDetailsController from './visitDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import VisitDetailsViewModel from '../../models/view-models/visitDetails'
+import IntegrityVisitDetailsViewModel from '../../models/view-models/integrity/visitDetails'
 import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { VisitDetails, VisitDetailsModel } from '../../models/visitDetails'
+import { IntegrityVisitDetails, IntegrityVisitDetailsModel } from '../../models/integrity/visitDetails'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/emDatastoreVisitDetailsService')
+jest.mock('../../services/integrity/visitDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const emDatastoreVisitDetailsService = { getOrderSummary: jest.fn() } as unknown as EmDatastoreVisitDetailsService
+const emDatastoreVisitDetailsService = { getOrderSummary: jest.fn() } as unknown as IntegrityVisitDetailsService
 
-jest.spyOn(VisitDetailsViewModel, 'construct')
+jest.spyOn(IntegrityVisitDetailsViewModel, 'construct')
 
-describe('VisitDetailsController', () => {
-  let visitDetailsController: VisitDetailsController
+describe('IntegrityVisitDetailsController', () => {
+  let integrityVisitDetailsController: IntegrityVisitDetailsController
   let req: Request
   let res: Response
   const next = jest.fn()
@@ -26,23 +24,9 @@ describe('VisitDetailsController', () => {
   const testOrderId = 123456789
 
   beforeEach(() => {
-    visitDetailsController = new VisitDetailsController(auditService, emDatastoreVisitDetailsService)
+    integrityVisitDetailsController = new IntegrityVisitDetailsController(auditService, emDatastoreVisitDetailsService)
 
     req = createMockRequest({
-      session: {
-        id: 'mock-session-id',
-        cookie: { originalMaxAge: 3600000 } as session.Cookie,
-        regenerate: jest.fn(),
-        destroy: jest.fn(),
-        reload: jest.fn(),
-        save: jest.fn(),
-        touch: jest.fn(),
-        resetMaxAge: jest.fn(),
-        returnTo: '/return',
-        nowInMinutes: 12345,
-        validationErrors: [],
-        formData: {},
-      } as session.Session & Partial<SessionData>,
       params: { legacySubjectId: `${testOrderId}` },
     })
 
@@ -52,16 +36,16 @@ describe('VisitDetailsController', () => {
   it('should render page with no data', async () => {
     const expectedViewModel = {
       backUrl: `/integrity/${testOrderId}`,
-      visitDetails: [] as VisitDetails[],
+      visitDetails: [] as IntegrityVisitDetails[],
       legacySubjectId: testOrderId,
     }
 
     emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([])
 
-    await visitDetailsController.showVisitDetails(req, res, next)
+    await integrityVisitDetailsController.showVisitDetails(req, res, next)
 
-    expect(VisitDetailsViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
-    expect(VisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityVisitDetailsViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
+    expect(IntegrityVisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/visit-details', expectedViewModel)
   })
 
@@ -98,7 +82,7 @@ describe('VisitDetailsController', () => {
     }
 
     emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([
-      VisitDetailsModel.parse({
+      IntegrityVisitDetailsModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,
         address: {
@@ -116,9 +100,9 @@ describe('VisitDetailsController', () => {
       }),
     ])
 
-    await visitDetailsController.showVisitDetails(req, res, next)
+    await integrityVisitDetailsController.showVisitDetails(req, res, next)
 
-    expect(VisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityVisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/visit-details', expectedViewModel)
   })
 })

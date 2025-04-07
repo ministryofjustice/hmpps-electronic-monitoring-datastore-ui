@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const VisitAddressDetailsModel = z.object({
+export const IntegrityVisitAddressDetailsModel = z.object({
   addressLine1: z.string().nullable(),
   addressLine2: z.string().nullable(),
   addressLine3: z.string().nullable(),
@@ -8,10 +8,10 @@ export const VisitAddressDetailsModel = z.object({
   postcode: z.string().nullable(),
 })
 
-export const VisitDetailsModel = z.object({
+export const IntegrityVisitDetailsModel = z.object({
   legacyOrderId: z.number(),
   legacySubjectId: z.number(),
-  address: VisitAddressDetailsModel.nullable(),
+  address: IntegrityVisitAddressDetailsModel.nullable(),
   actualWorkStartDateTime: z.string(),
   actualWorkEndDateTime: z.string().nullable(),
   visitNotes: z.string().nullable(),
@@ -19,5 +19,5 @@ export const VisitDetailsModel = z.object({
   visitOutcome: z.string().nullable(),
 })
 
-export type VisitDetails = z.infer<typeof VisitDetailsModel>
-export type VisitAddressDetails = z.infer<typeof VisitAddressDetailsModel>
+export type IntegrityVisitDetails = z.infer<typeof IntegrityVisitDetailsModel>
+export type IntegrityVisitAddressDetails = z.infer<typeof IntegrityVisitAddressDetailsModel>

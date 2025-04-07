@@ -1,7 +1,7 @@
-import { VisitDetails } from '../visitDetails'
-import { TimelineEventModel } from './TimelineEvent'
+import { IntegrityVisitDetails } from '../../integrity/visitDetails'
+import { TimelineEventModel } from '../TimelineEvent'
 
-export type VisitDetailsViewModel = {
+export type IntegrityVisitDetailsViewModel = {
   legacySubjectId: number
   visitDetails: TimelineEventModel[]
   backUrl: string
@@ -10,8 +10,8 @@ export type VisitDetailsViewModel = {
 const createViewModelFromApiDto = (
   legacySubjectId: number,
   backUrl: string,
-  visitDetails: VisitDetails[],
-): VisitDetailsViewModel => ({
+  visitDetails: IntegrityVisitDetails[],
+): IntegrityVisitDetailsViewModel => ({
   legacySubjectId,
   visitDetails: visitDetails
     .map(details => {
@@ -29,7 +29,11 @@ const createViewModelFromApiDto = (
   backUrl,
 })
 
-const construct = (legacySubjectId: number, backUrl: string, events: VisitDetails[] = []): VisitDetailsViewModel => {
+const construct = (
+  legacySubjectId: number,
+  backUrl: string,
+  events: IntegrityVisitDetails[] = [],
+): IntegrityVisitDetailsViewModel => {
   return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }
 

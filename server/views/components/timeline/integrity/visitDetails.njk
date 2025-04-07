@@ -1,7 +1,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from '../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
 
-{% macro visitDetails(event) %}
+{% macro integrityVisitDetails(event) %}
   {% set addressHtml %}
     {% if (event.properties.address) %}
       <p class="govuk-body">
