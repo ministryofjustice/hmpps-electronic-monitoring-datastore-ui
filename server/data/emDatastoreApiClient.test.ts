@@ -8,9 +8,11 @@ import { MonitoringEvent } from '../models/monitoringEvents'
 import { ContactEvent } from '../models/contactEvents'
 import { IncidentEvent } from '../models/incidentEvents'
 import { ViolationEvent } from '../models/violationEvents'
-import { EquipmentDetails } from '../models/equipmentDetails'
+import { IntegrityEquipmentDetails } from '../models/integrity/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetail } from '../models/alcoholMonitoring/equipmentDetails'
 import { VisitDetails } from '../models/visitDetails'
-import { CurfewTimetable } from '../models/curfewTimetable'
+import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
+import { AlcoholMonitoringServiceDetail } from '../models/alcoholMonitoring/serviceDetail'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
@@ -450,11 +452,11 @@ describe('EM Datastore API Client', () => {
 
       const result = await emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfo)
 
-      expect(result).toEqual(expectedResult as EquipmentDetails[])
+      expect(result).toEqual(expectedResult as IntegrityEquipmentDetails[])
     })
 
     it('should fetch list of equipment details', async () => {
-      const expectedResult = [] as EquipmentDetails[]
+      const expectedResult = [] as IntegrityEquipmentDetails[]
 
       fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
@@ -483,10 +485,10 @@ describe('EM Datastore API Client', () => {
 
   describe('getAlcoholMonitoringEquipmentDetails', () => {
     it('should fetch list of equipment details', async () => {
-      const expectedResult = [
+      const expectedResult: AlcoholMonitoringEquipmentDetail[] = [
         {
-          legacySubjectId: 123,
-          legacyOrderId: 321,
+          legacySubjectId: '123',
+          legacyOrderId: '321',
         },
       ]
 
@@ -496,11 +498,11 @@ describe('EM Datastore API Client', () => {
 
       const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo)
 
-      expect(result).toEqual(expectedResult as EquipmentDetails[])
+      expect(result).toEqual(expectedResult)
     })
 
     it('should fetch list of equipment details', async () => {
-      const expectedResult = [] as EquipmentDetails[]
+      const expectedResult: AlcoholMonitoringEquipmentDetail[] = []
 
       fakeClient
         .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/equipment-details`)
@@ -512,20 +514,12 @@ describe('EM Datastore API Client', () => {
     })
 
     it('handles null user tokens correctly by expecting Unauthorized', async () => {
-      // Create orderInfo with userToken explicitly set to null
-      const orderInfoWithNullToken: OrderRequest = {
-        legacySubjectId: '123',
-        userToken: null,
-      }
-
       nock(config.apis.emDatastoreApi.url)
-        .get(`/alcohol-monitoring/orders/${orderInfoWithNullToken.legacySubjectId}/equipment-details`)
+        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/equipment-details`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfoWithNullToken)).rejects.toThrow(
-        'Unauthorized',
-      )
+      await expect(emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -583,8 +577,8 @@ describe('EM Datastore API Client', () => {
     })
   })
 
-  describe('getCurfewTimetable', () => {
-    it('should fetch all curfew timetables', async () => {
+  describe('getIntegrityServiceDetails', () => {
+    it('should fetch all service details', async () => {
       const expectedResult = [
         {
           legacySubjectId: 123,
@@ -605,21 +599,21 @@ describe('EM Datastore API Client', () => {
           saturday: 6,
           sunday: 7,
         },
-      ] as CurfewTimetable[]
+      ] as IntegrityServiceDetail[]
 
       fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/curfew-timetable`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getCurfewTimetable(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo)
 
-      expect(result).toEqual(expectedResult as CurfewTimetable[])
+      expect(result).toEqual(expectedResult as IntegrityServiceDetail[])
     })
 
-    it('should fetch an empty list of curfew timetables', async () => {
-      const expectedResult = [] as CurfewTimetable[]
+    it('should fetch an empty list of service details', async () => {
+      const expectedResult = [] as IntegrityServiceDetail[]
 
       fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/curfew-timetable`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getCurfewTimetable(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo)
 
       expect(result).toEqual(expectedResult)
     })
@@ -636,7 +630,74 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getCurfewTimetable(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getIntegrityServiceDetails(orderInfoWithNullToken)).rejects.toThrow(
+        'Unauthorized',
+      )
+    })
+  })
+
+  describe('getAlcoholMonitoringServiceDetails', () => {
+    it('should fetch a list of one service detail item', async () => {
+      const expectedResult: AlcoholMonitoringServiceDetail[] = [
+        {
+          legacySubjectId: '123',
+          legacyOrderId: '321',
+        },
+      ]
+
+      fakeClient
+        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
+        .reply(200, expectedResult)
+
+      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch a list of multiple service detail items', async () => {
+      const expectedResult: AlcoholMonitoringServiceDetail[] = [
+        {
+          legacySubjectId: '123',
+          legacyOrderId: '321',
+        },
+        {
+          legacySubjectId: '456',
+          legacyOrderId: '654',
+        },
+        {
+          legacySubjectId: '789',
+          legacyOrderId: '987',
+        },
+      ]
+
+      fakeClient
+        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
+        .reply(200, expectedResult)
+
+      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch an empty list of service details', async () => {
+      const expectedResult: AlcoholMonitoringServiceDetail[] = []
+
+      fakeClient
+        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
+        .reply(200, expectedResult)
+
+      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('Does not catch unauthorised errors from API', async () => {
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
+        .reply(401)
+
+      // Expect the method call to throw due to unauthorized access
+      await expect(emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)).rejects.toThrow('Unauthorized')
     })
   })
 })

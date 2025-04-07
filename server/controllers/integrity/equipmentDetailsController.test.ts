@@ -4,10 +4,10 @@ import AuditService from '../../services/auditService'
 import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
 import IntegrityEquipmentDetailsController from './equipmentDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import EquipmentDetailsViewModel from '../../models/view-models/equipmentDetails'
+import EquipmentDetailsViewModel from '../../models/view-models/integrity/equipmentDetails'
 import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { EquipmentDetails, EquipmentDetailsModel } from '../../models/equipmentDetails'
+import { IntegrityEquipmentDetails, IntegrityEquipmentDetailsModel } from '../../models/integrity/equipmentDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/equipmentDetailsService')
@@ -55,7 +55,7 @@ describe('EquipmentDetailsController', () => {
   it('should render page with no data', async () => {
     const expectedViewModel = {
       backUrl: `/integrity/${testOrderId}`,
-      equipmentDetails: [] as EquipmentDetails[],
+      equipmentDetails: [] as IntegrityEquipmentDetails[],
       legacySubjectId: testOrderId,
     }
 
@@ -101,7 +101,7 @@ describe('EquipmentDetailsController', () => {
     }
 
     emDatastoreEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([
-      EquipmentDetailsModel.parse({
+      IntegrityEquipmentDetailsModel.parse({
         legacySubjectId: testOrderId,
         legacyOrderId: testOrderId,
         pid: {

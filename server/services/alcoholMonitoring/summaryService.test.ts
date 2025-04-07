@@ -2,7 +2,7 @@ import AlcoholMonitoringSummaryService from './summaryService'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { OrderInformation } from '../../interfaces/orderInformation'
+import { AlcoholMonitoringOrderSummary } from '../../models/alcoholMonitoring/orderSummary'
 
 jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../data/emDatastoreApiClient')
@@ -31,8 +31,8 @@ describe('Alcohol monitoring summary service', () => {
       legacySubjectId: '123',
     }
 
-    const emptyResponse = {} as OrderInformation
-    const expectedResult = {} as OrderInformation
+    const emptyResponse = {} as AlcoholMonitoringOrderSummary
+    const expectedResult = {} as AlcoholMonitoringOrderSummary
 
     it('should return empty data from the client', async () => {
       emDatastoreApiClient.getAlcoholMonitoringSummary.mockResolvedValue(emptyResponse)

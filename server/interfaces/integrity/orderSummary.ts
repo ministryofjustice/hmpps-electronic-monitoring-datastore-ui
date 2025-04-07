@@ -43,7 +43,7 @@ export interface Reports {
   services: boolean
 }
 
-export interface OrderInformation {
+export interface IntegrityOrderSummary {
   keyOrderInformation: KeyOrderInformation
   subjectHistoryReport: SubjectHistoryReport
   documents: {

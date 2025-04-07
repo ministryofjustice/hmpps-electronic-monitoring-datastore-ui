@@ -4,7 +4,7 @@ import getSanitisedError from '../../sanitisedError'
 import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { OrderDetails } from '../../interfaces/orderDetails'
+import { IndegrityOrderDetails } from '../../interfaces/integrity/orderDetails'
 
 export default class IntegrityDetailsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
@@ -16,7 +16,7 @@ export default class IntegrityDetailsService {
     this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialised')
   }
 
-  async getDetails(input: OrderRequest): Promise<OrderDetails> {
+  async getDetails(input: OrderRequest): Promise<IndegrityOrderDetails> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
       return await this.emDatastoreApiClient.getIntegrityDetails(input)

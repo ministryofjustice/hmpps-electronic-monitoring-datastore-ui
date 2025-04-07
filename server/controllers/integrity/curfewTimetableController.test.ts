@@ -7,7 +7,7 @@ import CurfewTimetableController from './curfewTimetableController'
 import CurfewTimetableViewModel from '../../models/view-models/curfewTimetable'
 import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { CurfewTimetable, CurfewTimetableModel } from '../../models/curfewTimetable'
+import { IntegrityServiceDetail, IntegrityServiceDetailModel } from '../../models/integrity/serviceDetail'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/emDatastoreCurfewTimetableService')
@@ -53,7 +53,7 @@ describe('CurfewTimetableController', () => {
     const expectedViewModel = {
       legacySubjectId: testOrderId,
       backUrl: `/integrity/${testOrderId}`,
-      curfewTimetable: [] as CurfewTimetable[],
+      curfewTimetable: [] as IntegrityServiceDetail[],
     }
 
     emDatastoreCurfewTimetableService.getCurfewTimetable = jest.fn().mockResolvedValue([])
@@ -101,7 +101,7 @@ describe('CurfewTimetableController', () => {
     }
 
     emDatastoreCurfewTimetableService.getCurfewTimetable = jest.fn().mockResolvedValue([
-      CurfewTimetableModel.parse({
+      IntegrityServiceDetailModel.parse({
         legacySubjectId: testOrderId,
         serviceId: 321,
         serviceAddress1: 'address line 1',
