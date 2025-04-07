@@ -186,7 +186,7 @@ describe('EM Datastore API Client', () => {
         },
       }
 
-      fakeClient.get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}`).reply(200, expectedResult)
+      fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/information`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfo)
 
@@ -200,7 +200,7 @@ describe('EM Datastore API Client', () => {
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/alcohol-monitoring/orders/${orderInfoWithNullToken.legacySubjectId}`)
+        .get(`/alcohol-monitoring/${orderInfoWithNullToken.legacySubjectId}/information`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
