@@ -78,10 +78,6 @@
       {
         attributes: { 'data-sort-value': order.sortOrderEndDate },
         text: safeGovukDate(order.orderEndDate)
-      },
-      {
-        attributes: {'data-sort-value': order | dump },
-        html: order | dump
       }
     ]
   ), rows) %}
