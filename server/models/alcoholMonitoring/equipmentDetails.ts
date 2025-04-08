@@ -10,7 +10,7 @@ export const AlcoholMonitoringEquipmentDetailModel = z.object({
   deviceInstalledDateTime: z.string().nullable(),
   deviceRemovedDateTime: z.string().nullable(),
   hmuInstallDateTime: z.string().nullable(),
-  hmuUninstallDateTime: z.string().nullable(),
+  hmuRemovedDateTime: z.string().nullable(),
 })
 
 export type AlcoholMonitoringEquipmentDetail = z.infer<typeof AlcoholMonitoringEquipmentDetailModel>
