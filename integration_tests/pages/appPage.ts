@@ -1,7 +1,7 @@
 import Page from './page'
 import PageElement from './PageElement'
 
-import PageHeaderComponent from '../components/pageHeaderComponent'
+import PageHeaderComponent from './components/pageHeaderComponent'
 
 export default class AppPage extends Page {
   header = new PageHeaderComponent()
