@@ -11,7 +11,7 @@ export default class AlcoholMonitoringVisitDetailsController {
   ) {}
 
   showVisitDetails: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.VISIT_DETAILS_PAGE, {
+    await this.auditService.logPageView(Page.AM_VISIT_DETAILS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })

@@ -1,7 +1,7 @@
 import { IntegrityEquipmentDetails } from '../../integrity/equipmentDetails'
 import { TimelineEventModel } from '../TimelineEvent'
 
-export type EquipmentDetailsViewModel = {
+export type IntegrityEquipmentDetailsViewModel = {
   legacySubjectId: number
   equipmentDetails: TimelineEventModel[]
   backUrl: string
@@ -11,7 +11,7 @@ const createViewModelFromApiDto = (
   legacySubjectId: number,
   backUrl: string,
   equipmentDetails: IntegrityEquipmentDetails[],
-): EquipmentDetailsViewModel => ({
+): IntegrityEquipmentDetailsViewModel => ({
   legacySubjectId,
   equipmentDetails: equipmentDetails
     .map(details => {
@@ -33,7 +33,7 @@ const construct = (
   legacySubjectId: number,
   backUrl: string,
   events: IntegrityEquipmentDetails[] = [],
-): EquipmentDetailsViewModel => {
+): IntegrityEquipmentDetailsViewModel => {
   return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }
 

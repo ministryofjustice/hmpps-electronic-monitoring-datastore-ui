@@ -5,7 +5,7 @@ import VisitDetailsPage from '../../pages/integrity/visitDetails'
 import EquipmentDetailsPage from '../../pages/integrity/equipmentDetails'
 import SuspensionOfVisitsPage from '../../pages/integrity/suspensionOfVisits'
 import EventHistoryPage from '../../pages/integrity/eventHistory'
-import CurfewTimetablePage from '../../pages/integrity/curfewTimetable'
+import ServiceDetailsPage from '../../pages/integrity/serviceDetails'
 
 context('Order Information', () => {
   const legacySubjectId = '1234567'
@@ -212,7 +212,7 @@ context('Order Information', () => {
 
       const summaryPage = Page.visit(SummaryPage, { legacySubjectId })
       summaryPage.subNavigationLink('Services').click()
-      Page.verifyOnPage(CurfewTimetablePage, { legacySubjectId })
+      Page.verifyOnPage(ServiceDetailsPage, { legacySubjectId })
     })
   })
 })

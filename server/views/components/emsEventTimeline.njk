@@ -8,7 +8,8 @@
 {% from "../components/timeline/integrity/visitDetails.njk" import integrityVisitDetails %}
 {% from "../components/timeline/alcoholMonitoring/visitDetails.njk" import alcoholMonitoringVisitDetails %}
 {% from "../components/timeline/suspensionOfVisitsDetails.njk" import suspensionOfVisitsDetails %}
-{% from "../components/timeline/curfewTimetable.njk" import curfewTimetable %}
+{% from "../components/timeline/integrity/serviceDetails.njk" import integrityServiceDetails %}
+{% from "../components/timeline/alcoholMonitoring/serviceDetails.njk" import alcoholMonitoringServiceDetails %}
 {% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
 
 {% macro emsEventTimeline(events) %}
@@ -39,9 +40,12 @@
       {% elif event.eventType == "am-visit-details" %}
         {% set eventLabel = event.properties.visitType %}
         {% set eventDetails = alcoholMonitoringVisitDetails(event) %}
-      {% elif event.eventType == "curfew-timetable" %}
+      {% elif event.eventType == "service-details" %}
         {% set eventLabel = "Service" %}
-        {% set eventDetails = curfewTimetable(event) %}
+        {% set eventDetails = integrityServiceDetails(event) %}
+      {% elif event.eventType == "am-service-details" %}
+        {% set eventLabel = "Service" %}
+        {% set eventDetails = alcoholMonitoringServiceDetails(event) %}
       {% elif event.eventType == "suspension-of-visits" %}
         {% set eventLabel = "Suspension of visits" %}
         {% set eventDetails = suspensionOfVisitsDetails(event) %}

@@ -1,19 +1,19 @@
-import { IntegrityServiceDetail } from '../integrity/serviceDetail'
-import { TimelineEventModel } from './TimelineEvent'
+import { IntegrityServiceDetail } from '../../integrity/serviceDetail'
+import { TimelineEventModel } from '../TimelineEvent'
 
-export type CurfewTimetableViewModel = {
+export type IntegrityServiceDetailsViewModel = {
   legacySubjectId: number
-  curfewTimetable: TimelineEventModel[]
+  serviceDetails: TimelineEventModel[]
   backUrl: string
 }
 
 const createViewModelFromApiDto = (
   legacySubjectId: number,
   backUrl: string,
-  curfewTimetable: IntegrityServiceDetail[],
-): CurfewTimetableViewModel => ({
+  serviceDetails: IntegrityServiceDetail[],
+): IntegrityServiceDetailsViewModel => ({
   legacySubjectId,
-  curfewTimetable: curfewTimetable
+  serviceDetails: serviceDetails
     .map(details => {
       const dateTime = details.serviceStartDate ? new Date(details.serviceStartDate) : null
 
@@ -21,7 +21,7 @@ const createViewModelFromApiDto = (
         isoDateTime: details.serviceStartDate,
         dateTime,
         date: dateTime?.toDateString(),
-        eventType: 'curfew-timetable',
+        eventType: 'service-details',
         properties: details,
       } as TimelineEventModel
     })
@@ -32,9 +32,9 @@ const createViewModelFromApiDto = (
 const construct = (
   legacySubjectId: number,
   backUrl: string,
-  events: IntegrityServiceDetail[] = [],
-): CurfewTimetableViewModel => {
-  return createViewModelFromApiDto(legacySubjectId, backUrl, events)
+  serviceDetails: IntegrityServiceDetail[] = [],
+): IntegrityServiceDetailsViewModel => {
+  return createViewModelFromApiDto(legacySubjectId, backUrl, serviceDetails)
 }
 
 export default {

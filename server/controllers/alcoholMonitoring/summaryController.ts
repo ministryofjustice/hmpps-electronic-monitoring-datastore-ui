@@ -10,7 +10,7 @@ export default class AlcoholMonitoringSummaryController {
   ) {}
 
   summary: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.ORDER_INFORMATION_PAGE, {
+    await this.auditService.logPageView(Page.AM_ORDER_SUMMARY_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })

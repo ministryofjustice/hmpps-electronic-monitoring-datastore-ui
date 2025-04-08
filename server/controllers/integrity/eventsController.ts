@@ -11,7 +11,7 @@ export default class EventsController {
   ) {}
 
   showHistory: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.EVENT_HISTORY_PAGE, {
+    await this.auditService.logPageView(Page.INTEGRITY_EVENT_HISTORY_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })

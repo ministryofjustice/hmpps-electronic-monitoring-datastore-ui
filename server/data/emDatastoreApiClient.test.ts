@@ -701,9 +701,7 @@ describe('EM Datastore API Client', () => {
         },
       ]
 
-      fakeClient
-        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
-        .reply(200, expectedResult)
+      fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
 
@@ -726,9 +724,7 @@ describe('EM Datastore API Client', () => {
         },
       ]
 
-      fakeClient
-        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
-        .reply(200, expectedResult)
+      fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
 
@@ -738,9 +734,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch an empty list of service details', async () => {
       const expectedResult: AlcoholMonitoringServiceDetail[] = []
 
-      fakeClient
-        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
-        .reply(200, expectedResult)
+      fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
 
@@ -748,9 +742,7 @@ describe('EM Datastore API Client', () => {
     })
 
     it('Does not catch unauthorised errors from API', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/alcohol-monitoring/orders/${orderInfo.legacySubjectId}/service-details`)
-        .reply(401)
+      nock(config.apis.emDatastoreApi.url).get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
       await expect(emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)).rejects.toThrow('Unauthorized')

@@ -11,7 +11,7 @@ export default class IntegrityEquipmentDetailsController {
   ) {}
 
   showEquipmentDetails: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.EQUIPMENT_DETAILS_PAGE, {
+    await this.auditService.logPageView(Page.INTEGRITY_EQUIPMENT_DETAILS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })
