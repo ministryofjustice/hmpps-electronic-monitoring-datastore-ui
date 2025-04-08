@@ -17,9 +17,8 @@
 
 {% set rows = [] %}
 {% for order in orders %}
-  {% set resultsPath = "alcohol-monitoring" if order.dataType == "am" else "integrity" %}
   {% set legacySubjectIdHtml %}
-    <a href="/{{ resultsPath }}/{{ order.legacySubjectId }}">
+    <a href="/{{ orderType }}/{{ order.legacySubjectId }}">
       {{ order.legacySubjectId }}
     </a>
   {% endset %}

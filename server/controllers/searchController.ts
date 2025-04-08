@@ -74,6 +74,7 @@ export default class SearchController {
       correlationId: req.id,
     })
 
+    const { orderType } = req.params
     const queryExecutionId = req.query.search_id as string
 
     if (!queryExecutionId) {
@@ -98,6 +99,6 @@ export default class SearchController {
 
     const viewModel = SearchResultsViewModel.construct(orders)
 
-    res.render('pages/searchResults', { viewModel })
+    res.render('pages/searchResults', { viewModel, orderType })
   }
 }
