@@ -1,5 +1,7 @@
 import AppPage from '../appPage'
 import PageElement from '../PageElement'
+import SearchResultsComponent from '../components/searchResultsComponent'
+import PaginationComponent from '../components/paginationComponent'
 import paths from '../../../server/constants/paths'
 
 export default class IntegritySearchResultsPage extends AppPage {
@@ -7,31 +9,23 @@ export default class IntegritySearchResultsPage extends AppPage {
     super('Search results', paths.INTEGRITY_ORDER.INDEX)
   }
 
-  override checkOnPage(): void {
-    cy.get('h1').contains('Search results')
+  get returnToSearchButton(): PageElement {
+    return cy.contains('Return to search page')
   }
 
-  noResultsHeader = (): PageElement => cy.get('.no-results-header')
+  get serviceInformation(): PageElement {
+    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
+  }
 
-  noResultsMessage = (): PageElement => cy.get('.no-results-message')
+  get backButton(): PageElement {
+    return cy.contains('back to search form')
+  }
 
-  returnToSearchButton = (): PageElement => cy.get('.return-to-search-button')
+  get results(): SearchResultsComponent {
+    return new SearchResultsComponent()
+  }
 
-  serviceInformation = (): PageElement => cy.get('.service-information')
-
-  serviceInformationText = (): PageElement => cy.get('.service-information').children('.govuk-warning-text__text')
-
-  resultsTable = (): PageElement => cy.get('.search-results-table')
-
-  subjectIdHeader = (): PageElement => cy.get('.subject-id-header')
-
-  nameHeader = (): PageElement => cy.get('.name-header')
-
-  dateOfBirthHeader = (): PageElement => cy.get('.date-of-birth-header')
-
-  orderStartDateHeader = (): PageElement => cy.get('.order-start-date-header')
-
-  orderEndDateHeader = (): PageElement => cy.get('.order-end-date-header')
-
-  pagination = (): PageElement => cy.get('.moj-pagination')
+  get pagination(): PaginationComponent {
+    return new PaginationComponent()
+  }
 }
