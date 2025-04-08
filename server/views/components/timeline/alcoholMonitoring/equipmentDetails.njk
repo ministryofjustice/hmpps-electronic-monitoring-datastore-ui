@@ -12,8 +12,9 @@
         { key: { text: "Device address type" }, value: { text: event.properties.deviceAddressType } },
         { key: { text: "Leg fitting" }, value: { text: event.properties.legFitting } },
         { key: { text: "Device installed date time" }, value: { text: safeGovukDateTime(event.properties.deviceInstalledDateTime) } },
-        { key: { text: "Device removed date time" }, value: { text: safeGovukDateTime(event.properties.deviceInstalledDateTime) } },
+        { key: { text: "Device removed date time" }, value: { text: safeGovukDateTime(event.properties.deviceRemovedDateTime) } },
         { key: { text: "HMU install date time" }, value: { text: safeGovukDateTime(event.properties.hmuInstallDateTime) } }
+        { key: { text: "HMU removed date time" }, value: { text: safeGovukDateTime(event.properties.hmuRemovedDateTime) } }
       ]
     })
   }}
