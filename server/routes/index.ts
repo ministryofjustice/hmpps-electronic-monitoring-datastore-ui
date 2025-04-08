@@ -95,8 +95,14 @@ export default function routes({
 
   get(paths.SEARCH, searchController.searchPage)
   post(paths.SEARCH, searchController.submitSearchQuery)
-  get(paths.INTEGRITY_ORDER.INDEX, searchController.searchResultsPage)
-  get(paths.ALCOHOL_MONITORING.INDEX, searchController.searchResultsPage)
+  get(paths.INTEGRITY_ORDER.INDEX, (req, res, next) => {
+    req.params.orderType = 'integrity'
+    searchController.searchResultsPage(req, res, next)
+  })
+  get(paths.ALCOHOL_MONITORING.INDEX, (req, res, next) => {
+    req.params.orderType = 'alcohol-monitoring'
+    searchController.searchResultsPage(req, res, next)
+  })
 
   // integrity
   get(paths.INTEGRITY_ORDER.SUMMARY, integritySummaryController.summary)
