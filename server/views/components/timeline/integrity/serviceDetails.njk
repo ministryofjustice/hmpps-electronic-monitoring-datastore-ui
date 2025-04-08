@@ -1,7 +1,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from '../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
 
-{% macro curfewTimetable(event) %}
+{% macro integrityServiceDetails(event) %}
   {% set addressHtml %}
     {% if (event.properties.serviceAddress1 or event.properties.serviceAddress2 or event.properties.serviceAddress3 or event.properties.serviceAddressPostcode ) %}
     <p class="govuk-body">

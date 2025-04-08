@@ -40,7 +40,7 @@ describe('Integrity summary Controller', () => {
 
       controller.summary(req, res, next)
 
-      expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_INFORMATION_PAGE, expectedLogData)
+      expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_ORDER_SUMMARY_PAGE, expectedLogData)
     })
 
     it(`calls the DatastoreOrderService for data using the correct legacySubjectId parameter`, async () => {

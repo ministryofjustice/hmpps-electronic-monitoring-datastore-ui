@@ -24,7 +24,7 @@ export default class SuspensionOfVisitsController {
       suspensionOfVisitsData || [],
     )
 
-    await this.auditService.logPageView(Page.SUSPENSION_OF_VISITS_PAGE, {
+    await this.auditService.logPageView(Page.INTEGRITY_SUSPENSION_OF_VISITS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })

@@ -43,7 +43,7 @@ describe('Alcohol monitoring summary Controller', () => {
 
       await controller.summary(req, res, next)
 
-      expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_INFORMATION_PAGE, expectedLogData)
+      expect(auditService.logPageView).toHaveBeenCalledWith(Page.AM_ORDER_SUMMARY_PAGE, expectedLogData)
     })
 
     it(`calls the service for data using the correct legacySubjectId parameter`, async () => {

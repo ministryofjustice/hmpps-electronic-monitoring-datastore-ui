@@ -39,7 +39,7 @@ describe('GET 500', () => {
 
   it('should render content without stack in production mode', () => {
     return request(appWithAllRoutes({ production: true }))
-      .get('/integrity/---/curfew-timetable')
+      .get('/integrity/---/service-details')
       .expect(500)
       .expect('Content-Type', /html/)
       .expect(res => {

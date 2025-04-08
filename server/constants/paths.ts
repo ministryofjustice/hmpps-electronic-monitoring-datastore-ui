@@ -10,7 +10,7 @@ const paths = {
     EQUIPMENT_DETAILS: '/integrity/:legacySubjectId/equipment-details',
     SUSPENSION_OF_VISITS: '/integrity/:legacySubjectId/suspension-of-visits',
     EVENT_HISTORY: '/integrity/:legacySubjectId/event-history',
-    CURFEW_TIMETABLE: '/integrity/:legacySubjectId/curfew-timetable',
+    SERVICE_DETAILS: '/integrity/:legacySubjectId/service-details',
   },
 
   ALCOHOL_MONITORING: {
@@ -19,9 +19,8 @@ const paths = {
     DETAILS: '/alcohol-monitoring/:legacySubjectId/details',
     VISIT_DETAILS: '/alcohol-monitoring/:legacySubjectId/visit-details',
     EQUIPMENT_DETAILS: '/alcohol-monitoring/:legacySubjectId/equipment-details',
-    SUSPENSION_OF_VISITS: '/alcohol-monitoring/:legacySubjectId/suspension-of-visits',
     EVENT_HISTORY: '/alcohol-monitoring/:legacySubjectId/event-history',
-    CURFEW_TIMETABLE: '/alcohol-monitoring/:legacySubjectId/curfew-timetable',
+    SERVICE_DETAILS: '/alcohol-monitoring/:legacySubjectId/service-details',
   },
 
   CONNECTION_TEST: '/test',

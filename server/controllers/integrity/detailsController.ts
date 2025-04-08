@@ -9,7 +9,7 @@ export default class IntegrityDetailsController {
   ) {}
 
   details: RequestHandler = async (req: Request, res: Response) => {
-    await this.auditService.logPageView(Page.ORDER_DETAILS_PAGE, {
+    await this.auditService.logPageView(Page.INTEGRITY_ORDER_DETAILS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
     })

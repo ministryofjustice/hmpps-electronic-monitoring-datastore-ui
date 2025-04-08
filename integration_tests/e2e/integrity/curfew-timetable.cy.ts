@@ -1,5 +1,5 @@
 import Page from '../../pages/page'
-import CurfewTimetablePage from '../../pages/integrity/curfewTimetable'
+import ServiceDetailsPage from '../../pages/integrity/serviceDetails'
 
 context('Crufew Timetable', () => {
   const legacySubjectId = '1232123'
@@ -17,7 +17,7 @@ context('Crufew Timetable', () => {
       body: [],
     })
 
-    const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
+    const page = Page.visit(ServiceDetailsPage, { legacySubjectId })
     page.header.userName.should('contain.text', 'M. Tester')
   })
 
@@ -28,7 +28,7 @@ context('Crufew Timetable', () => {
       body: [],
     })
 
-    const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
+    const page = Page.visit(ServiceDetailsPage, { legacySubjectId })
     page.header.phaseBanner.should('contain.text', 'DEV')
   })
 
@@ -39,7 +39,7 @@ context('Crufew Timetable', () => {
       body: [],
     })
 
-    const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
+    const page = Page.visit(ServiceDetailsPage, { legacySubjectId })
     page.backButton.should('exist')
   })
 
@@ -50,7 +50,7 @@ context('Crufew Timetable', () => {
       body: [],
     })
 
-    const page = Page.visit(CurfewTimetablePage, { legacySubjectId })
+    const page = Page.visit(ServiceDetailsPage, { legacySubjectId })
     page.checkIsAccessible()
   })
 
@@ -62,7 +62,7 @@ context('Crufew Timetable', () => {
         body: [],
       })
 
-      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
+      const curfewTimetablePage = Page.visit(ServiceDetailsPage, { legacySubjectId })
       curfewTimetablePage.noResultsHeading.should('be.visible')
       curfewTimetablePage.noResultsMessage.should('be.visible')
     })
@@ -94,7 +94,7 @@ context('Crufew Timetable', () => {
         ],
       })
 
-      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
+      const curfewTimetablePage = Page.visit(ServiceDetailsPage, { legacySubjectId })
       curfewTimetablePage.noResultsHeading.should('not.exist')
       curfewTimetablePage.noResultsMessage.should('not.exist')
     })
@@ -108,7 +108,7 @@ context('Crufew Timetable', () => {
         body: [],
       })
 
-      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
+      const curfewTimetablePage = Page.visit(ServiceDetailsPage, { legacySubjectId })
       curfewTimetablePage.curfewTimetable.should('not.exist')
     })
 
@@ -139,7 +139,7 @@ context('Crufew Timetable', () => {
         ],
       })
 
-      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
+      const curfewTimetablePage = Page.visit(ServiceDetailsPage, { legacySubjectId })
       curfewTimetablePage.curfewTimetable.should('be.visible')
       curfewTimetablePage.curfewTimetableItems.should('have.length', 1)
       curfewTimetablePage.getCurfewTimetableItem(0).contains('Service ID 321')
@@ -191,7 +191,7 @@ context('Crufew Timetable', () => {
         ],
       })
 
-      const curfewTimetablePage = Page.visit(CurfewTimetablePage, { legacySubjectId })
+      const curfewTimetablePage = Page.visit(ServiceDetailsPage, { legacySubjectId })
       curfewTimetablePage.curfewTimetable.should('be.visible')
       curfewTimetablePage.curfewTimetableItems.should('have.length', 2)
       curfewTimetablePage.getCurfewTimetableItem(0).contains('Service ID 321')

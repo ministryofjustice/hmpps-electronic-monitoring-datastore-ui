@@ -8,10 +8,10 @@
 {% set backUrl = backUrl %}
 
 {% block innerContent %}
-  {% if curfewTimetable | length %}
+  {% if serviceDetails | length %}
     {{ emsDateFilter() }}
 
-    {{ emsEventTimeline(curfewTimetable) }}
+    {{ emsEventTimeline(serviceDetails) }}
   {% else %}
     <h3 class="govuk-heading-m no-results-heading">No {{ heading | lower }} found</h3>
 
