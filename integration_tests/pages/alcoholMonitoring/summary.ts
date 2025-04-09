@@ -5,7 +5,7 @@ import SummaryListComponent from '../components/summaryListComponent'
 
 export default class OrderSummaryPage extends AppPage {
   constructor() {
-    super('Key order details', paths.INTEGRITY_ORDER.SUMMARY, 'Order information')
+    super('Key order details', paths.ALCOHOL_MONITORING.SUMMARY, 'Order information')
   }
 
   get serviceInformation(): PageElement {

@@ -11,7 +11,7 @@ context('Visit details', () => {
   })
 
   it('Should display the user name visible in header', () => {
-    cy.task('stubDatastoreGetVisitDetails', {
+    cy.task('stubIntegrityGetVisitDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -22,7 +22,7 @@ context('Visit details', () => {
   })
 
   it('Should display the phase banner in header', () => {
-    cy.task('stubDatastoreGetVisitDetails', {
+    cy.task('stubIntegrityGetVisitDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -33,7 +33,7 @@ context('Visit details', () => {
   })
 
   it('Should display the back link', () => {
-    cy.task('stubDatastoreGetVisitDetails', {
+    cy.task('stubIntegrityGetVisitDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -45,7 +45,7 @@ context('Visit details', () => {
   })
 
   it('Should be accessible', () => {
-    cy.task('stubDatastoreGetVisitDetails', {
+    cy.task('stubIntegrityGetVisitDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -57,7 +57,7 @@ context('Visit details', () => {
 
   describe('timeline component', () => {
     it('Renders a suspensions timeline', () => {
-      cy.task('stubDatastoreGetVisitDetails', {
+      cy.task('stubIntegrityGetVisitDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -86,7 +86,7 @@ context('Visit details', () => {
 
   describe('Visit details timeline item', () => {
     it('First table includes expected column headers', () => {
-      cy.task('stubDatastoreGetVisitDetails', {
+      cy.task('stubIntegrityGetVisitDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -122,7 +122,7 @@ context('Visit details', () => {
     })
 
     it('Second table includes expected column headers', () => {
-      cy.task('stubDatastoreGetVisitDetails', {
+      cy.task('stubIntegrityGetVisitDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [

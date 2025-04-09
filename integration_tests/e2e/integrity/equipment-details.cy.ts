@@ -11,7 +11,7 @@ context('Equipment Details', () => {
   })
 
   it('Should display the user name visible in header', () => {
-    cy.task('stubDatastoreGetEquipmentDetails', {
+    cy.task('stubIntegrityGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -22,7 +22,7 @@ context('Equipment Details', () => {
   })
 
   it('Should display the phase banner in header', () => {
-    cy.task('stubDatastoreGetEquipmentDetails', {
+    cy.task('stubIntegrityGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -33,7 +33,7 @@ context('Equipment Details', () => {
   })
 
   it('Should display the back link', () => {
-    cy.task('stubDatastoreGetEquipmentDetails', {
+    cy.task('stubIntegrityGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -45,7 +45,7 @@ context('Equipment Details', () => {
   })
 
   it('Should be accessible', () => {
-    cy.task('stubDatastoreGetEquipmentDetails', {
+    cy.task('stubIntegrityGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -57,7 +57,7 @@ context('Equipment Details', () => {
 
   describe('No results message', () => {
     it('Renders when no timetable entries have been found', () => {
-      cy.task('stubDatastoreGetEquipmentDetails', {
+      cy.task('stubIntegrityGetEquipmentDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [],
@@ -69,7 +69,7 @@ context('Equipment Details', () => {
     })
 
     it('Does not render when a timetable entry has been found', () => {
-      cy.task('stubDatastoreGetEquipmentDetails', {
+      cy.task('stubIntegrityGetEquipmentDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -99,7 +99,7 @@ context('Equipment Details', () => {
 
   describe('Timetables', () => {
     it('Does not render when no timetable entries have been found', () => {
-      cy.task('stubDatastoreGetEquipmentDetails', {
+      cy.task('stubIntegrityGetEquipmentDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [],
@@ -110,7 +110,7 @@ context('Equipment Details', () => {
     })
 
     it('Renders when one timetable entry have been found', () => {
-      cy.task('stubDatastoreGetEquipmentDetails', {
+      cy.task('stubIntegrityGetEquipmentDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -140,7 +140,7 @@ context('Equipment Details', () => {
     })
 
     it('Renders when multiple timetable entries have been found', () => {
-      cy.task('stubDatastoreGetEquipmentDetails', {
+      cy.task('stubIntegrityGetEquipmentDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -187,7 +187,7 @@ context('Equipment Details', () => {
     })
 
     it('Renders empty details when no Device is present', () => {
-      cy.task('stubDatastoreGetEquipmentDetails', {
+      cy.task('stubIntegrityGetEquipmentDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -211,7 +211,7 @@ context('Equipment Details', () => {
     })
 
     it('Renders empty details when no HMU Device is present', () => {
-      cy.task('stubDatastoreGetEquipmentDetails', {
+      cy.task('stubIntegrityGetEquipmentDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [

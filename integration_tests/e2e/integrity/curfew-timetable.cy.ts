@@ -11,7 +11,7 @@ context('Crufew Timetable', () => {
   })
 
   it('Should display the user name visible in header', () => {
-    cy.task('stubDatastoreGetServiceDetails', {
+    cy.task('stubIntegrityGetServiceDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -22,7 +22,7 @@ context('Crufew Timetable', () => {
   })
 
   it('Should display the phase banner in header', () => {
-    cy.task('stubDatastoreGetServiceDetails', {
+    cy.task('stubIntegrityGetServiceDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -33,7 +33,7 @@ context('Crufew Timetable', () => {
   })
 
   it('Should display the back link', () => {
-    cy.task('stubDatastoreGetServiceDetails', {
+    cy.task('stubIntegrityGetServiceDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -44,7 +44,7 @@ context('Crufew Timetable', () => {
   })
 
   it('Should be accessible', () => {
-    cy.task('stubDatastoreGetServiceDetails', {
+    cy.task('stubIntegrityGetServiceDetails', {
       httpStatus: 200,
       legacySubjectId,
       body: [],
@@ -56,7 +56,7 @@ context('Crufew Timetable', () => {
 
   describe('No results message', () => {
     it('Renders when no timetable entries have been found', () => {
-      cy.task('stubDatastoreGetServiceDetails', {
+      cy.task('stubIntegrityGetServiceDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [],
@@ -68,7 +68,7 @@ context('Crufew Timetable', () => {
     })
 
     it('Does not render when a timetable entry has been found', () => {
-      cy.task('stubDatastoreGetServiceDetails', {
+      cy.task('stubIntegrityGetServiceDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -102,7 +102,7 @@ context('Crufew Timetable', () => {
 
   describe('Timetables', () => {
     it('Does not render when no timetable entries have been found', () => {
-      cy.task('stubDatastoreGetServiceDetails', {
+      cy.task('stubIntegrityGetServiceDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [],
@@ -113,7 +113,7 @@ context('Crufew Timetable', () => {
     })
 
     it('Renders when one timetable entry has been found', () => {
-      cy.task('stubDatastoreGetServiceDetails', {
+      cy.task('stubIntegrityGetServiceDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [
@@ -146,7 +146,7 @@ context('Crufew Timetable', () => {
     })
 
     it('Renders when multiple timetable entries have been found', () => {
-      cy.task('stubDatastoreGetServiceDetails', {
+      cy.task('stubIntegrityGetServiceDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [

@@ -1,9 +1,9 @@
 import z from 'zod'
 
-export const orderDetails = z.object({
+export const OrderDetailsModel = z.object({
   specials: z.string(),
-  legacySubjectId: z.string(),
-  legacyOrderId: z.string(),
+  legacySubjectId: z.number(),
+  legacyOrderId: z.number(),
   firstName: z.string().nullable(),
   lastName: z.string().nullable(),
   alias: z.string().nullable(),
@@ -38,4 +38,6 @@ export const orderDetails = z.object({
   responsibleOrganisationDetailsRegion: z.string().nullable(),
 })
 
-export default orderDetails
+export type OrderDetails = z.infer<typeof OrderDetailsModel>
+
+export default OrderDetailsModel
