@@ -2,9 +2,8 @@ import type { Express } from 'express'
 import request from 'supertest'
 import paths from '../constants/paths'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
-import AuditService, { Page } from '../services/auditService'
-import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
-import { EmDatastoreConnectionService } from '../services'
+import { Page } from '../services/auditService'
+import { AuditService, EmDatastoreOrderSearchService, EmDatastoreConnectionService } from '../services'
 
 jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreOrderSearchService')

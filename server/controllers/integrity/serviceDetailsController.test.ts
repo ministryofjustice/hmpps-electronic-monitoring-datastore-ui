@@ -3,7 +3,7 @@ import { AuditService, IntegrityServiceDetailsService } from '../../services'
 import IntegrityServiceDetailsController from './serviceDetailsController'
 // eslint-disable-next-line import/no-named-as-default
 import IntegrityServiceDetailsViewModel from '../../models/view-models/integrity/serviceDetails'
-import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
+import { IntegrityTimelineEventModel } from '../../models/integrity/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { IntegrityServiceDetail } from '../../models/integrity/serviceDetail'
 
@@ -88,7 +88,7 @@ describe('IntegrityServiceDetailsController', () => {
           date: new Date(eventDateTime).toDateString(),
           eventType: 'service-details',
           properties: serviceDetails,
-        } as TimelineEventModel,
+        } as IntegrityTimelineEventModel,
       ],
       legacySubjectId: testOrderId,
     }

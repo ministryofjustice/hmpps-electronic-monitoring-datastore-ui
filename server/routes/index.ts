@@ -10,18 +10,19 @@ import SearchController from '../controllers/searchController'
 // integrity orders
 import IntegritySummaryController from '../controllers/integrity/summaryController'
 import IntegrityDetailsController from '../controllers/integrity/detailsController'
-import EventsController from '../controllers/integrity/eventsController'
-import SuspensionOfVisitsController from '../controllers/integrity/suspensionOfVisitsController'
 import IntegrityEquipmentDetailsController from '../controllers/integrity/equipmentDetailsController'
 import IntegrityVisitDetailsController from '../controllers/integrity/visitDetailsController'
 import IntegrityServiceDetailsController from '../controllers/integrity/serviceDetailsController'
+import IntegrityEventHistoryController from '../controllers/integrity/eventHistoryController'
+import SuspensionOfVisitsController from '../controllers/integrity/suspensionOfVisitsController'
 
 // alcohol monitoring orders
 import AmSummaryController from '../controllers/alcoholMonitoring/summaryController'
 import AmDetailsController from '../controllers/alcoholMonitoring/detailsController'
 import AmEquipmentDetailsController from '../controllers/alcoholMonitoring/equipmentDetailsController'
 import AmVisitDetailsController from '../controllers/alcoholMonitoring/visitDetailsController'
-import AlcoholMonitoringServiceDetailsController from '../controllers/alcoholMonitoring/serviceDetailsController'
+import AmServiceDetailsController from '../controllers/alcoholMonitoring/serviceDetailsController'
+import AmEventHistoryController from '../controllers/alcoholMonitoring/eventHistoryController'
 
 import { Services } from '../services'
 
@@ -32,17 +33,18 @@ export default function routes({
 
   integritySummaryService,
   integrityDetailsService,
-  emDatastoreEventsService,
-  emDatastoreSuspensionOfVisitsService,
   integrityEquipmentDetailsService,
   integrityVisitDetailsService,
   integrityServiceDetailsService,
+  integrityEventHistoryService,
+  emDatastoreSuspensionOfVisitsService,
 
   alcoholMonitoringSummaryService,
   alcoholMonitoringDetailsService,
   alcoholMonitoringEquipmentDetailsService,
   alcoholMonitoringVisitDetailsService,
   alcoholMonitoringServiceDetailsService,
+  alcoholMonitoringEventHistoryService,
 }: Services): Router {
   const router = Router()
   const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
@@ -54,11 +56,6 @@ export default function routes({
   // integrity
   const integritySummaryController = new IntegritySummaryController(auditService, integritySummaryService)
   const integrityDetailsController = new IntegrityDetailsController(auditService, integrityDetailsService)
-  const eventsController = new EventsController(auditService, emDatastoreEventsService)
-  const suspensionOfVisitsController = new SuspensionOfVisitsController(
-    auditService,
-    emDatastoreSuspensionOfVisitsService,
-  )
   const integrityEquipmentDetailsController = new IntegrityEquipmentDetailsController(
     auditService,
     integrityEquipmentDetailsService,
@@ -71,6 +68,14 @@ export default function routes({
     auditService,
     integrityServiceDetailsService,
   )
+  const integrityEventHistoryController = new IntegrityEventHistoryController(
+    auditService,
+    integrityEventHistoryService,
+  )
+  const suspensionOfVisitsController = new SuspensionOfVisitsController(
+    auditService,
+    emDatastoreSuspensionOfVisitsService,
+  )
 
   // alcohol monitoring
   const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringSummaryService)
@@ -80,10 +85,11 @@ export default function routes({
     alcoholMonitoringEquipmentDetailsService,
   )
   const amVisitDetailsController = new AmVisitDetailsController(auditService, alcoholMonitoringVisitDetailsService)
-  const amServiceDetailsController = new AlcoholMonitoringServiceDetailsController(
+  const amServiceDetailsController = new AmServiceDetailsController(
     auditService,
     alcoholMonitoringServiceDetailsService,
   )
+  const amEventHistoryController = new AmEventHistoryController(auditService, alcoholMonitoringEventHistoryService)
 
   get(paths.START, async (req, res, next) => {
     await auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
@@ -95,30 +101,31 @@ export default function routes({
 
   get(paths.SEARCH, searchController.searchPage)
   post(paths.SEARCH, searchController.submitSearchQuery)
+
+  // integrity
   get(paths.INTEGRITY_ORDER.INDEX, (req, res, next) => {
     req.params.orderType = 'integrity'
     searchController.searchResultsPage(req, res, next)
   })
+  get(paths.INTEGRITY_ORDER.SUMMARY, integritySummaryController.summary)
+  get(paths.INTEGRITY_ORDER.DETAILS, integrityDetailsController.details)
+  get(paths.INTEGRITY_ORDER.VISIT_DETAILS, integrityVisitDetailsController.showVisitDetails)
+  get(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, integrityEquipmentDetailsController.showEquipmentDetails)
+  get(paths.INTEGRITY_ORDER.SERVICE_DETAILS, integrityServiceDetailsController.showServiceDetails)
+  get(paths.INTEGRITY_ORDER.EVENT_HISTORY, integrityEventHistoryController.showEventHistory)
+  get(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, suspensionOfVisitsController.showSuspensionOfVisits)
+
+  // alcohol monitoring
   get(paths.ALCOHOL_MONITORING.INDEX, (req, res, next) => {
     req.params.orderType = 'alcohol-monitoring'
     searchController.searchResultsPage(req, res, next)
   })
-
-  // integrity
-  get(paths.INTEGRITY_ORDER.SUMMARY, integritySummaryController.summary)
-  get(paths.INTEGRITY_ORDER.DETAILS, integrityDetailsController.details)
-  get(paths.INTEGRITY_ORDER.EVENT_HISTORY, eventsController.showHistory)
-  get(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, suspensionOfVisitsController.showSuspensionOfVisits)
-  get(paths.INTEGRITY_ORDER.VISIT_DETAILS, integrityVisitDetailsController.showVisitDetails)
-  get(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, integrityEquipmentDetailsController.showEquipmentDetails)
-  get(paths.INTEGRITY_ORDER.SERVICE_DETAILS, integrityServiceDetailsController.showServiceDetails)
-
-  // alcohol monitoring
   get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.summary)
   get(paths.ALCOHOL_MONITORING.DETAILS, amDetailsController.details)
   get(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, amEquipmentDetailsController.showEquipmentDetails)
   get(paths.ALCOHOL_MONITORING.VISIT_DETAILS, amVisitDetailsController.showVisitDetails)
   get(paths.ALCOHOL_MONITORING.SERVICE_DETAILS, amServiceDetailsController.showServiceDetails)
+  get(paths.ALCOHOL_MONITORING.EVENT_HISTORY, amEventHistoryController.showEventHistory)
 
   return router
 }

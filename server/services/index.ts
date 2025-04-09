@@ -6,7 +6,8 @@ import IntegritySummaryService from './integrity/summaryService'
 import AlcoholMonitoringSummaryService from './alcoholMonitoring/summaryService'
 import IntegrityDetailsService from './integrity/detailsService'
 import AlcoholMonitoringDetailsService from './alcoholMonitoring/detailsService'
-import EmDatastoreEventsService from './emDatastoreEventsService'
+import IntegrityEventHistoryService from './integrity/eventHistoryService'
+import AlcoholMonitoringEventHistoryService from './alcoholMonitoring/eventHistoryService'
 import EmDatastoreSuspensionOfVisitsService from './emDatastoreSuspensionOfVisitsService'
 import IntegrityEquipmentDetailsService from './integrity/equipmentDetailsService'
 import AlcoholMonitoringEquipmentDetailsService from './alcoholMonitoring/equipmentDetailsService'
@@ -32,7 +33,11 @@ export const services = () => {
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
-  const emDatastoreEventsService = new EmDatastoreEventsService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(
+    emDatastoreApiClientFactory,
+    hmppsAuthClient,
+  )
   const emDatastoreSuspensionOfVisitsService = new EmDatastoreSuspensionOfVisitsService(
     emDatastoreApiClientFactory,
     hmppsAuthClient,
@@ -68,7 +73,8 @@ export const services = () => {
     integritySummaryService,
     alcoholMonitoringSummaryService,
     emDatastoreOrderSearchService,
-    emDatastoreEventsService,
+    integrityEventHistoryService,
+    alcoholMonitoringEventHistoryService,
     emDatastoreSuspensionOfVisitsService,
     integrityEquipmentDetailsService,
     alcoholMonitoringEquipmentDetailsService,
@@ -88,7 +94,8 @@ export {
   AlcoholMonitoringDetailsService,
   IntegritySummaryService,
   AlcoholMonitoringSummaryService,
-  EmDatastoreEventsService,
+  IntegrityEventHistoryService,
+  AlcoholMonitoringEventHistoryService,
   EmDatastoreSuspensionOfVisitsService,
   IntegrityEquipmentDetailsService,
   AlcoholMonitoringEquipmentDetailsService,

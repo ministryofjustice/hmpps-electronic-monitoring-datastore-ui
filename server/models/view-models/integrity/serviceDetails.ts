@@ -1,9 +1,9 @@
 import { IntegrityServiceDetail } from '../../integrity/serviceDetail'
-import { TimelineEventModel } from '../TimelineEvent'
+import { IntegrityTimelineEventModel } from '../../integrity/TimelineEvent'
 
 export type IntegrityServiceDetailsViewModel = {
   legacySubjectId: number
-  serviceDetails: TimelineEventModel[]
+  serviceDetails: IntegrityTimelineEventModel[]
   backUrl: string
 }
 
@@ -23,7 +23,7 @@ const createViewModelFromApiDto = (
         date: dateTime?.toDateString(),
         eventType: 'service-details',
         properties: details,
-      } as TimelineEventModel
+      } as IntegrityTimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
   backUrl,

@@ -4,7 +4,7 @@ import AlcoholMonitoringEquipmentDetailsService from '../../services/alcoholMoni
 import AlcoholMonitoringEquipmentDetailsController from './equipmentDetailsController'
 // eslint-disable-next-line import/no-named-as-default
 import EquipmentDetailsViewModel from '../../models/view-models/alcoholMonitoring/equipmentDetails'
-import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
+import { AlcoholMonitoringTimelineEventModel } from '../../models/alcoholMonitoring/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { AlcoholMonitoringEquipmentDetail } from '../../models/alcoholMonitoring/equipmentDetails'
 
@@ -74,7 +74,7 @@ describe('EquipmentDetailsController', () => {
             legacySubjectId: testOrderId,
             legacyOrderId: testOrderId,
           },
-        } as TimelineEventModel,
+        } as AlcoholMonitoringTimelineEventModel,
       ],
       legacySubjectId: testOrderId,
     }
