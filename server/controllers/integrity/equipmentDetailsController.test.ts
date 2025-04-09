@@ -5,7 +5,7 @@ import IntegrityEquipmentDetailsService from '../../services/integrity/equipment
 import IntegrityEquipmentDetailsController from './equipmentDetailsController'
 // eslint-disable-next-line import/no-named-as-default
 import EquipmentDetailsViewModel from '../../models/view-models/integrity/equipmentDetails'
-import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
+import { IntegrityTimelineEventModel } from '../../models/integrity/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { IntegrityEquipmentDetails, IntegrityEquipmentDetailsModel } from '../../models/integrity/equipmentDetails'
 
@@ -95,7 +95,7 @@ describe('EquipmentDetailsController', () => {
               removedDateTime: null,
             },
           },
-        } as TimelineEventModel,
+        } as IntegrityTimelineEventModel,
       ],
       legacySubjectId: testOrderId,
     }

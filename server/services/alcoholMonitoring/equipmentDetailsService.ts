@@ -1,8 +1,7 @@
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
-import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import { HmppsAuthClient, RestClientBuilder } from '../../data'
+import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { AlcoholMonitoringEquipmentDetail } from '../../models/alcoholMonitoring/equipmentDetails'

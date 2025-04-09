@@ -3,7 +3,7 @@ import { AuditService, AlcoholMonitoringVisitDetailsService } from '../../servic
 import AlcoholMonitoringVisitDetailsController from './visitDetailsController'
 // eslint-disable-next-line import/no-named-as-default
 import AlcoholMonitoringVisitDetailsViewModel from '../../models/view-models/alcoholMonitoring/visitDetails'
-import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
+import { AlcoholMonitoringTimelineEventModel } from '../../models/alcoholMonitoring/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import {
   AlcoholMonitoringVisitDetails,
@@ -91,7 +91,7 @@ describe('AlcoholMonitoringVisitDetailsController', () => {
           date: new Date(eventDateTime).toDateString(),
           eventType: 'am-visit-details',
           properties: visitDetails,
-        } as TimelineEventModel,
+        } as AlcoholMonitoringTimelineEventModel,
       ],
       legacySubjectId: testOrderId,
     }

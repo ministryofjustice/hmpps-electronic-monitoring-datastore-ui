@@ -1,9 +1,9 @@
 import { AlcoholMonitoringServiceDetail } from '../../alcoholMonitoring/serviceDetail'
-import { TimelineEventModel } from '../TimelineEvent'
+import { AlcoholMonitoringTimelineEventModel } from '../../alcoholMonitoring/TimelineEvent'
 
 export type AlcoholMonitoringServiceDetailsViewModel = {
   legacySubjectId: string
-  serviceDetails: TimelineEventModel[]
+  serviceDetails: AlcoholMonitoringTimelineEventModel[]
   backUrl: string
 }
 
@@ -23,7 +23,7 @@ const createViewModelFromApiDto = (
         date: dateTime?.toDateString(),
         eventType: 'am-service-details',
         properties: details,
-      } as TimelineEventModel
+      } as AlcoholMonitoringTimelineEventModel
     })
     .sort((a, b) => a.dateTime.getTime() - b.dateTime.getTime()),
   backUrl,

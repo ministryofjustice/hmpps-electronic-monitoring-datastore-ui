@@ -4,21 +4,26 @@ import { Order } from '../interfaces/order'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
+
 import { IntegrityOrderSummary } from '../interfaces/integrity/orderSummary'
-import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
 import { IndegrityOrderDetails } from '../interfaces/integrity/orderDetails'
-import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
-import { ContactEvent } from '../models/contactEvents'
-import { IncidentEvent } from '../models/incidentEvents'
-import { MonitoringEvent } from '../models/monitoringEvents'
-import { ViolationEvent } from '../models/violationEvents'
 import { IntegrityEquipmentDetails } from '../models/integrity/equipmentDetails'
-import { AlcoholMonitoringEquipmentDetail } from '../models/alcoholMonitoring/equipmentDetails'
 import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
-import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
 import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
-import { AlcoholMonitoringServiceDetail } from '../models/alcoholMonitoring/serviceDetail'
+import { IntegrityContactEvent } from '../models/integrity/contactEvents'
+import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
+import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
+import { IntegrityViolationEvent } from '../models/integrity/violationEvents'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+
+import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
+import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
+import { AlcoholMonitoringEquipmentDetail } from '../models/alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
+import { AlcoholMonitoringServiceDetail } from '../models/alcoholMonitoring/serviceDetail'
+import { AlcoholMonitoringContactEvent } from '../models/alcoholMonitoring/contactEvents'
+import { AlcoholMonitoringIncidentEvent } from '../models/alcoholMonitoring/incidentEvents'
+import { AlcoholMonitoringViolationEvent } from '../models/alcoholMonitoring/violationEvents'
 
 export default class EmDatastoreApiClient {
   private restClient: RestClient
@@ -80,31 +85,52 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getMonitoringEvents(input: OrderRequest): Promise<MonitoringEvent[]> {
+  async getIntegrityMonitoringEvents(input: OrderRequest): Promise<IntegrityMonitoringEvent[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<MonitoringEvent[]>({
+    return this.restClient.get<IntegrityMonitoringEvent[]>({
       path: `/integrity/orders/${legacySubjectId}/monitoring-events`,
     })
   }
 
-  async getIncidentEvents(input: OrderRequest): Promise<IncidentEvent[]> {
+  async getIntegrityIncidentEvents(input: OrderRequest): Promise<IntegrityIncidentEvent[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<IncidentEvent[]>({
+    return this.restClient.get<IntegrityIncidentEvent[]>({
       path: `/integrity/orders/${legacySubjectId}/incident-events`,
     })
   }
 
-  async getViolationEvents(input: OrderRequest): Promise<ViolationEvent[]> {
+  async getAlcoholMonitoringIncidentEvents(input: OrderRequest): Promise<AlcoholMonitoringIncidentEvent[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<ViolationEvent[]>({
+    return this.restClient.get<AlcoholMonitoringIncidentEvent[]>({
+      path: `/alcohol-monitoring/${legacySubjectId}/incident-events`,
+    })
+  }
+
+  async getIntegrityViolationEvents(input: OrderRequest): Promise<IntegrityViolationEvent[]> {
+    const { legacySubjectId } = input
+    return this.restClient.get<IntegrityViolationEvent[]>({
       path: `/integrity/orders/${legacySubjectId}/violation-events`,
     })
   }
 
-  async getContactEvents(input: OrderRequest): Promise<ContactEvent[]> {
+  async getAlcoholMonitoringViolationEvents(input: OrderRequest): Promise<AlcoholMonitoringViolationEvent[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<ContactEvent[]>({
+    return this.restClient.get<AlcoholMonitoringViolationEvent[]>({
+      path: `/alcohol-monitoring/${legacySubjectId}/violation-events`,
+    })
+  }
+
+  async getIntegrityContactEvents(input: OrderRequest): Promise<IntegrityContactEvent[]> {
+    const { legacySubjectId } = input
+    return this.restClient.get<IntegrityContactEvent[]>({
       path: `/integrity/orders/${legacySubjectId}/contact-events`,
+    })
+  }
+
+  async getAlcoholMonitoringContactEvents(input: OrderRequest): Promise<AlcoholMonitoringContactEvent[]> {
+    const { legacySubjectId } = input
+    return this.restClient.get<AlcoholMonitoringContactEvent[]>({
+      path: `/alcohol-monitoring/${legacySubjectId}/contact-events`,
     })
   }
 

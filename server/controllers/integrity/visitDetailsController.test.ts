@@ -3,7 +3,7 @@ import { AuditService, IntegrityVisitDetailsService } from '../../services'
 import IntegrityVisitDetailsController from './visitDetailsController'
 // eslint-disable-next-line import/no-named-as-default
 import IntegrityVisitDetailsViewModel from '../../models/view-models/integrity/visitDetails'
-import { TimelineEventModel } from '../../models/view-models/TimelineEvent'
+import { IntegrityTimelineEventModel } from '../../models/integrity/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { IntegrityVisitDetails, IntegrityVisitDetailsModel } from '../../models/integrity/visitDetails'
 
@@ -76,7 +76,7 @@ describe('IntegrityVisitDetailsController', () => {
             visitType: 'TEST_VISIT_TYPE',
             visitOutcome: 'TEST_OUTCOME',
           },
-        } as TimelineEventModel,
+        } as IntegrityTimelineEventModel,
       ],
       legacySubjectId: testOrderId,
     }
