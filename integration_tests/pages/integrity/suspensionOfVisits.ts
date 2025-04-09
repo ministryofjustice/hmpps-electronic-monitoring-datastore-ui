@@ -12,4 +12,6 @@ export default class SuspensionOfVisitsPage extends AppPage {
   timelineItems = (): PageElement => cy.get('.moj-timeline__item')
 
   itemTableHeaders = (headerText: string): PageElement => cy.get('.govuk-summary-list__key').contains(headerText)
+
+  subNavigationLink = (buttonText: string): PageElement => cy.get('.moj-sub-navigation__link').contains(buttonText)
 }

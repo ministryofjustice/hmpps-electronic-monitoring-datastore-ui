@@ -14,4 +14,6 @@ export default class OrderDetailsPage extends AppPage {
   get orderDetails(): PageElement {
     return cy.contains('h2', 'Order').next('.govuk-summary-list')
   }
+
+  subNavigationLink = (buttonText: string): PageElement => cy.get('.moj-sub-navigation__link').contains(buttonText)
 }

@@ -8,7 +8,7 @@ context('Event history', () => {
     cy.task('reset')
     cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-    cy.task('stubDatastoreGetMonitoringEvents', {
+    cy.task('stubIntegrityGetMonitoringEvents', {
       httpStatus: 200,
       legacySubjectId,
       body: [
@@ -23,7 +23,7 @@ context('Event history', () => {
       ],
     })
 
-    cy.task('stubDatastoreGetIncidentEvents', {
+    cy.task('stubIntegrityGetIncidentEvents', {
       httpStatus: 200,
       legacySubjectId,
       body: [
@@ -38,7 +38,7 @@ context('Event history', () => {
       ],
     })
 
-    cy.task('stubDatastoreGetContactEvents', {
+    cy.task('stubIntegrityGetContactEvents', {
       httpStatus: 200,
       legacySubjectId,
       body: [
@@ -59,7 +59,7 @@ context('Event history', () => {
       ],
     })
 
-    cy.task('stubDatastoreGetViolationEvents', {
+    cy.task('stubIntegrityGetViolationEvents', {
       httpStatus: 200,
       legacySubjectId,
       body: [
