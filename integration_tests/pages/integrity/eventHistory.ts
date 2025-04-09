@@ -18,4 +18,6 @@ export default class EventHistoryPage extends AppPage {
   getTimelineItem(index: number): PageElement {
     return cy.get('.moj-timeline').find('.moj-timeline__item').eq(index)
   }
+
+  subNavigationLink = (buttonText: string): PageElement => cy.get('.moj-sub-navigation__link').contains(buttonText)
 }

@@ -1,7 +1,7 @@
 import Page from './page'
 import PageElement from './PageElement'
 
-import PageHeaderComponent from '../components/pageHeaderComponent'
+import PageHeaderComponent from './components/pageHeaderComponent'
 
 export default class AppPage extends Page {
   header = new PageHeaderComponent()
@@ -11,7 +11,7 @@ export default class AppPage extends Page {
   }
 
   get backButton(): PageElement {
-    return cy.contains('back')
+    return cy.contains('Back')
   }
 
   checkOnPage(): void {

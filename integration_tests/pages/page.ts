@@ -1,3 +1,5 @@
+export type PageElement = Cypress.Chainable<JQuery>
+
 const extractParamsAndArgs = (args: unknown[]) => {
   let params: object = {}
   let query: object = {}
