@@ -1,0 +1,23 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
+
+{% macro alcoholMonitoringContactEventDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Contact channel" }, value: { text: event.properties.channel } },
+        { key: { text: "Contact date" }, value: { text: safeGovukDate(event.properties.contactDateTime) } },
+        { key: { text: "Contact time" }, value: { text: safeGovukTime(event.properties.contactDateTime) } },
+        { key: { text: "Reason for contact" }, value: { text: event.properties.reasonForContact } },
+        { key: { text: "Outcome of contact" }, value: { text: event.properties.outcomeOfContact } },
+        { key: { text: "Visit ID" }, value: { text: event.properties.visitId } },
+        { key: { text: "Visit required" }, value: { text: event.properties.visitRequired } },
+        { key: { text: "Inbound or outbound" }, value: { text: event.properties.inboundOrOutbound } },
+        { key: { text: "From to" }, value: { text: event.properties.fromTo } },
+        { key: { text: "Subject consent withdrawn" }, value: { text: event.properties.subjectConsentWithdrawn } },
+        { key: { text: "Call outcome" }, value: { text: event.properties.callOutcome } },
+        { key: { text: "Statement" }, value: { text: event.properties.statement } }
+      ]
+    })
+  }}
+{% endmacro %}

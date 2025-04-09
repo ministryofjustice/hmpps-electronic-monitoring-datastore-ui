@@ -1,0 +1,25 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukTime, safeGovukDate %}
+
+{% macro alcoholMonitoringViolationEventDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Enforcement ID" }, value: { text: event.properties.enforcementId } },
+        { key: { text: "Non-compliance reason" }, value: { text: event.properties.nonComplianceReason } },
+        { key: { text: "Non-compliance date" }, value: { text: safeGovukDate(event.properties.nonComplianceDateTime) } },
+        { key: { text: "Non-compliance time" }, value: { text: safeGovukTime(event.properties.nonComplianceDateTime) } },
+        { key: { text: "Violation alert ID" }, value: { text: event.properties.violationAlertId } },
+        { key: { text: "Violation alert description" }, value: { text: event.properties.violationAlertDescription } },
+        { key: { text: "Violation event notification date" }, value: { text: safeGovukDate(event.properties.violationEventNotificationDateTime) } },
+        { key: { text: "Violation event notification time" }, value: { text: safeGovukTime(event.properties.violationEventNotificationDateTime) } },
+        { key: { text: "Action taken EMS" }, value: { text: event.properties.actionTakenEms } },
+        { key: { text: "Non-compliance outcome" }, value: { text: event.properties.nonComplianceOutcome } },
+        { key: { text: "Non-compliance resolved" }, value: { text: event.properties.nonComplianceResolved } },
+        { key: { text: "Date resolved" }, value: { text: safeGovukDate(event.properties.dateResolved) } },
+        { key: { text: "Open/closed" }, value: { text: event.properties.openClosed } },
+        { key: { text: "Visit required" }, value: { text: event.properties.visitRequired } }
+      ]
+    })
+  }}
+{% endmacro %}
