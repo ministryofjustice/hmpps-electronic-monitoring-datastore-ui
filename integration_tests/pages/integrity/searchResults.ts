@@ -28,4 +28,6 @@ export default class IntegritySearchResultsPage extends AppPage {
   get pagination(): PaginationComponent {
     return new PaginationComponent()
   }
+
+  subNavigationLink = (buttonText: string): PageElement => cy.get('.moj-sub-navigation__link').contains(buttonText)
 }

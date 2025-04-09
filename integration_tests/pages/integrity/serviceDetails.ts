@@ -26,4 +26,6 @@ export default class ServiceDetailsPage extends AppPage {
   get noResultsMessage(): PageElement {
     return cy.get('.no-results-message')
   }
+
+  subNavigationLink = (buttonText: string): PageElement => cy.get('.moj-sub-navigation__link').contains(buttonText)
 }

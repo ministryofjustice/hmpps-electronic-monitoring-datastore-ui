@@ -8,7 +8,7 @@ context('Order Details', () => {
     cy.task('reset')
     cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-    cy.task('stubDatastoreGetOrderDetails', {
+    cy.task('stubIntegrityGetOrderDetails', {
       httpStatus: 200,
       legacySubjectId,
       details: {
