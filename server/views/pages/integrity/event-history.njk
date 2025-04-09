@@ -9,10 +9,10 @@
 {% set backUrl = backUrl %}
 
 {% block innerContent %}
-  {% if events | length %}
+  {% if eventHistory | length %}
     {{ emsDateFilter() }}
 
-    {{ emsEventTimeline(events) }}
+    {{ emsEventTimeline(eventHistory) }}
   {% else %}
     <h3 class="govuk-heading-m no-results-heading">No events found</h3>
 
