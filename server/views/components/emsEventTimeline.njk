@@ -1,15 +1,21 @@
 {% from "moj/components/timeline/macro.njk" import mojTimeline %}
-{% from "../components/timeline/contactEventDetails.njk" import contactEventDetails %}
-{% from "../components/timeline/monitoringEventDetails.njk" import monitoringEventDetails %}
-{% from "../components/timeline/incidentEventDetails.njk" import incidentEventDetails %}
-{% from "../components/timeline/violationEventDetails.njk" import violationEventDetails %}
+
+{% from "../components/timeline/integrity/contactEventDetails.njk" import integrityContactEventDetails %}
+{% from "../components/timeline/integrity/monitoringEventDetails.njk" import integrityMonitoringEventDetails %}
+{% from "../components/timeline/integrity/incidentEventDetails.njk" import integrityIncidentEventDetails %}
+{% from "../components/timeline/integrity/violationEventDetails.njk" import integrityViolationEventDetails %}
 {% from "../components/timeline/integrity/equipmentDetails.njk" import integrityEquipmentDetails %}
-{% from "../components/timeline/alcoholMonitoring/equipmentDetails.njk" import alcoholMonitoringEquipmentDetails %}
 {% from "../components/timeline/integrity/visitDetails.njk" import integrityVisitDetails %}
-{% from "../components/timeline/alcoholMonitoring/visitDetails.njk" import alcoholMonitoringVisitDetails %}
-{% from "../components/timeline/suspensionOfVisitsDetails.njk" import suspensionOfVisitsDetails %}
 {% from "../components/timeline/integrity/serviceDetails.njk" import integrityServiceDetails %}
+{% from "../components/timeline/integrity/suspensionOfVisitsDetails.njk" import integritySuspensionOfVisitsDetails %}
+
+{% from "../components/timeline/alcoholMonitoring/contactEventDetails.njk" import alcoholMonitoringContactEventDetails %}
+{% from "../components/timeline/alcoholMonitoring/incidentEventDetails.njk" import alcoholMonitoringIncidentEventDetails %}
+{% from "../components/timeline/alcoholMonitoring/violationEventDetails.njk" import alcoholMonitoringViolationEventDetails %}
+{% from "../components/timeline/alcoholMonitoring/equipmentDetails.njk" import alcoholMonitoringEquipmentDetails %}
+{% from "../components/timeline/alcoholMonitoring/visitDetails.njk" import alcoholMonitoringVisitDetails %}
 {% from "../components/timeline/alcoholMonitoring/serviceDetails.njk" import alcoholMonitoringServiceDetails %}
+
 {% from "../components/timeline/unknownEventDetails.njk" import unknownEventDetails %}
 
 {% macro emsEventTimeline(events) %}
@@ -18,16 +24,25 @@
     {% for event in events %}
       {% if event.eventType == "contact" %}
         {% set eventLabel = "Contact event" %}
-        {% set eventDetails = contactEventDetails(event) %}
+        {% set eventDetails = integrityContactEventDetails(event) %}
+      {% elif event.eventType == "am-contact" %}
+        {% set eventLabel = "Contact event" %}
+        {% set eventDetails = alcoholMonitoringContactEventDetails(event) %}
       {% elif event.eventType == "monitoring" %}
         {% set eventLabel = "Monitoring event" %}
-        {% set eventDetails = monitoringEventDetails(event) %}
+        {% set eventDetails = integrityMonitoringEventDetails(event) %}
       {% elif event.eventType == "incident" %}
         {% set eventLabel = "Incident event" %}
-        {% set eventDetails = incidentEventDetails(event) %}
+        {% set eventDetails = integrityIncidentEventDetails(event) %}
+      {% elif event.eventType == "am-incident" %}
+        {% set eventLabel = "Incident event" %}
+        {% set eventDetails = alcoholMonitoringIncidentEventDetails(event) %}
       {% elif event.eventType == "violation" %}
         {% set eventLabel = "Violation event" %}
-        {% set eventDetails = violationEventDetails(event) %}
+        {% set eventDetails = integrityViolationEventDetails(event) %}
+      {% elif event.eventType == "am-violation" %}
+        {% set eventLabel = "Violation event" %}
+        {% set eventDetails = alcoholMonitoringViolationEventDetails(event) %}
       {% elif event.eventType == "equipment-details" %}
         {% set eventLabel = "Equipment details" %}
         {% set eventDetails = integrityEquipmentDetails(event) %}
@@ -48,7 +63,7 @@
         {% set eventDetails = alcoholMonitoringServiceDetails(event) %}
       {% elif event.eventType == "suspension-of-visits" %}
         {% set eventLabel = "Suspension of visits" %}
-        {% set eventDetails = suspensionOfVisitsDetails(event) %}
+        {% set eventDetails = integritySuspensionOfVisitsDetails(event) %}
       {% else %}
         {% set eventLabel = "Unrecognised event" %}
         {% set eventDetails = unknownEventDetails(event) %}

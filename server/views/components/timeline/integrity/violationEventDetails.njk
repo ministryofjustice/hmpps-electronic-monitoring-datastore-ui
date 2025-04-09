@@ -1,7 +1,7 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from '../../components/safeDateFormatters.njk' import safeGovukTime, safeGovukDate %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukTime, safeGovukDate %}
 
-{% macro violationEventDetails(event) %}
+{% macro integrityViolationEventDetails(event) %}
   {{
     govukSummaryList({
       rows: [

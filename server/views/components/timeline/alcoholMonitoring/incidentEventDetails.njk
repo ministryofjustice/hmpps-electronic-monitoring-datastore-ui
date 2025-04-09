@@ -1,0 +1,21 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../../components/safeDateFormatters.njk' import safeGovukDate, safeGovukTime %}
+
+{% macro alcoholMonitoringIncidentEventDetails(event) %}
+  {{
+    govukSummaryList({
+      rows: [
+        { key: { text: "Violation alert type" }, value: { text: event.properties.violationAlertType } },
+        { key: { text: "Violation alert ID" }, value: { text: event.properties.violationAlertId } },
+        { key: { text: "Violation alert date" }, value: { text: safeGovukDate(event.properties.violationAlertDateTime) } },
+        { key: { text: "Violation alert time" }, value: { text: safeGovukTime(event.properties.violationAlertDateTime) } },
+        { key: { text: "Violation alert response action" }, value: { text: event.properties.violationAlertResponseAction } },
+        { key: { text: "Visit required" }, value: { text: event.properties.visitRequired } },
+        { key: { text: "Probation interaction required" }, value: { text: event.properties.probationInteractionRequired } },
+        { key: { text: "AMS interaction required" }, value: { text: event.properties.amsInteractionRequired } },
+        { key: { text: "Multiple alerts" }, value: { text: event.properties.multipleAlerts } },
+        { key: { text: "Additional alerts" }, value: { text: event.properties.additionalAlerts } }
+      ]
+    })
+  }}
+{% endmacro %}
