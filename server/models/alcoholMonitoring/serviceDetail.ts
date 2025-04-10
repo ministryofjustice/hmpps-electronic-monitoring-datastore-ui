@@ -2,7 +2,6 @@ import z from 'zod'
 
 export const AlcoholMonitoringServiceDetailModel = z.object({
   legacySubjectId: z.string(),
-  legacyOrderId: z.string(),
   serviceStartDate: z.string().nullable(),
   serviceEndDate: z.string().nullable(),
   serviceAddress: z.string().nullable(),

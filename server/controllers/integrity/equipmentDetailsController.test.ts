@@ -81,7 +81,6 @@ describe('EquipmentDetailsController', () => {
           eventType: 'equipment-details',
           properties: {
             legacySubjectId: testOrderId,
-            legacyOrderId: testOrderId,
             pid: {
               id: 'pid_id',
               equipmentCategoryDescription: 'pid category',
@@ -103,7 +102,6 @@ describe('EquipmentDetailsController', () => {
     emDatastoreEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([
       IntegrityEquipmentDetailsModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         pid: {
           id: 'pid_id',
           equipmentCategoryDescription: 'pid category',

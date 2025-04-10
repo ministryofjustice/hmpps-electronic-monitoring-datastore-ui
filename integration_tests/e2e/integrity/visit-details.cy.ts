@@ -62,7 +62,6 @@ context('Visit details', () => {
         legacySubjectId,
         body: [
           {
-            legacyOrderId: 123,
             legacySubjectId: 321,
             address: {
               addressLine1: 'address line 1',
@@ -92,7 +91,6 @@ context('Visit details', () => {
         legacySubjectId,
         body: [
           {
-            legacyOrderId: 123,
             legacySubjectId: 321,
             address: {
               addressLine1: 'address line 1',
@@ -129,7 +127,6 @@ context('Visit details', () => {
         legacySubjectId,
         body: [
           {
-            legacyOrderId: 123,
             legacySubjectId: 321,
             address: {
               addressLine1: 'address line 1',
@@ -145,7 +142,6 @@ context('Visit details', () => {
             visitOutcome: 'TEST_OUTCOME',
           },
           {
-            legacyOrderId: 123,
             legacySubjectId: 321,
             address: {
               addressLine1: 'address line 5',

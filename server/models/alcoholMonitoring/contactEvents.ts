@@ -15,7 +15,6 @@ export const AlcoholMonitoringContactEventDetailsModel = z.object({
 })
 
 export const AlcoholMonitoringContactEventModel = z.object({
-  legacyOrderId: z.number(),
   legacySubjectId: z.number(),
   type: z.string(),
   dateTime: z.string(),

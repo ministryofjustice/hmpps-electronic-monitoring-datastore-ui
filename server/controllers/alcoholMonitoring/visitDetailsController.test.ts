@@ -66,7 +66,6 @@ describe('AlcoholMonitoringVisitDetailsController', () => {
 
     const visitDetails = AlcoholMonitoringVisitDetailsModel.parse({
       legacySubjectId: testOrderId,
-      legacyOrderId: testOrderId,
       visitId: '300',
       visitType: 'visit type',
       visitAttempt: 'attempt 1',

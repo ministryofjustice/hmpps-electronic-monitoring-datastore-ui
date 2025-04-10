@@ -13,7 +13,6 @@ context('Event history', () => {
       legacySubjectId,
       body: [
         {
-          legacyOrderId: legacySubjectId,
           legacySubjectId,
           type: 'monitoring',
           dateTime: '2022-02-02T01:03:03',
@@ -29,7 +28,6 @@ context('Event history', () => {
       legacySubjectId,
       body: [
         {
-          legacyOrderId: legacySubjectId,
           legacySubjectId,
           type: 'incident',
           dateTime: '2022-02-02T01:06:06',
@@ -45,7 +43,6 @@ context('Event history', () => {
       legacySubjectId,
       body: [
         {
-          legacyOrderId: legacySubjectId,
           legacySubjectId,
           type: 'contact',
           dateTime: '2022-02-03T01:09:09',
@@ -67,7 +64,6 @@ context('Event history', () => {
       legacySubjectId,
       body: [
         {
-          legacyOrderId: legacySubjectId,
           legacySubjectId,
           type: 'violation',
           dateTime: '2022-02-03T01:12:12',

@@ -6,7 +6,6 @@ export const IntegrityMonitoringEventDetailsModel = z.object({
 })
 
 export const IntegrityMonitoringEventModel = z.object({
-  legacyOrderId: z.number(),
   legacySubjectId: z.number(),
   type: z.string(),
   dateTime: z.string(),

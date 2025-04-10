@@ -20,7 +20,6 @@ const createViewModelFromApiDto = (
 
       return {
         legacySubjectId: details.legacySubjectId,
-        legacyOrderId: details.legacyOrderId,
         isoDateTime: details.deviceInstalledDateTime,
         dateTime,
         date: dateTime?.toDateString(),

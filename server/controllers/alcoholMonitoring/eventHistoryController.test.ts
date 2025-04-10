@@ -108,7 +108,6 @@ describe('AlcoholMonitoringEventHistoryController', () => {
     alcoholMonitoringEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
       AlcoholMonitoringViolationEventModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
         details,
@@ -154,7 +153,6 @@ describe('AlcoholMonitoringEventHistoryController', () => {
     alcoholMonitoringEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
       AlcoholMonitoringIncidentEventModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
         details,
@@ -202,7 +200,6 @@ describe('AlcoholMonitoringEventHistoryController', () => {
     alcoholMonitoringEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
       AlcoholMonitoringContactEventModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
         details,

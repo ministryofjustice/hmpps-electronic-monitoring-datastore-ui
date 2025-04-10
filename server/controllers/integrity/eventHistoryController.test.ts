@@ -78,7 +78,6 @@ describe('IntegrityEventHistoryController', () => {
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
       IntegrityMonitoringEventModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
         details: {},
@@ -112,7 +111,6 @@ describe('IntegrityEventHistoryController', () => {
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
       IntegrityViolationEventModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
         details: {},
@@ -146,7 +144,6 @@ describe('IntegrityEventHistoryController', () => {
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
       IntegrityIncidentEventModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
         details: {},
@@ -188,7 +185,6 @@ describe('IntegrityEventHistoryController', () => {
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
       IntegrityContactEventModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
         details: {
