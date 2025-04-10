@@ -750,7 +750,7 @@ describe('EM Datastore API Client', () => {
         },
       ] as IntegrityServiceDetail[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/curfew-timetable`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo)
 
@@ -760,7 +760,7 @@ describe('EM Datastore API Client', () => {
     it('should fetch an empty list of service details', async () => {
       const expectedResult = [] as IntegrityServiceDetail[]
 
-      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/curfew-timetable`).reply(200, expectedResult)
+      fakeClient.get(`/integrity/orders/${orderInfo.legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo)
 
@@ -775,7 +775,7 @@ describe('EM Datastore API Client', () => {
       }
 
       nock(config.apis.emDatastoreApi.url)
-        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/curfew-timetable`)
+        .get(`/integrity/orders/${orderInfoWithNullToken.legacySubjectId}/service-details`)
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access

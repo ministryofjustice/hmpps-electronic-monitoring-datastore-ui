@@ -215,11 +215,11 @@ type GetBasicStubOptions = {
   body?: unknown[]
 }
 
-const getCurfewTimetable = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
+const getServiceDetails = (options: GetBasicStubOptions = defaultBasicStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/integrity/orders/${options.legacySubjectId}/curfew-timetable`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/service-details`,
     },
     response: {
       status: options.httpStatus,
@@ -314,7 +314,7 @@ export default {
   stubDatastoreGetContactEvents: getContactEvents,
   stubDatastoreGetOrderSummary: getOrderSummary,
   stubDatastoreGetSuspensionOfVisits: getSuspensionOfVisits,
-  stubDatastoreGetCurfewTimetable: getCurfewTimetable,
+  stubDatastoreGetServiceDetails: getServiceDetails,
   stubDatastoreGetEquipmentDetails: getEquipmentDetails,
   stubDatastoreGetViolationEvents: getViolationEvents,
   stubDatastoreGetVisitDetails: getVisitDetails,
