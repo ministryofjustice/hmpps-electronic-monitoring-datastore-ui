@@ -204,7 +204,7 @@ context('Order Information', () => {
     })
 
     it('Contains services button and navigates to expected page', () => {
-      cy.task('stubDatastoreGetCurfewTimetable', {
+      cy.task('stubDatastoreGetServiceDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: [],

@@ -172,7 +172,7 @@ export default class EmDatastoreApiClient {
   async getIntegrityServiceDetails(input: OrderRequest): Promise<IntegrityServiceDetail[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityServiceDetail[]>({
-      path: `/integrity/orders/${legacySubjectId}/curfew-timetable`,
+      path: `/integrity/orders/${legacySubjectId}/service-details`,
     })
   }
 

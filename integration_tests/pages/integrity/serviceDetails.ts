@@ -7,15 +7,15 @@ export default class ServiceDetailsPage extends AppPage {
     super('Services', paths.INTEGRITY_ORDER.SERVICE_DETAILS)
   }
 
-  get curfewTimetable(): PageElement {
+  get serviceDetails(): PageElement {
     return cy.get('.moj-timeline')
   }
 
-  get curfewTimetableItems(): PageElement {
+  get serviceDetailsItems(): PageElement {
     return cy.get('.moj-timeline').find('.moj-timeline__item')
   }
 
-  getCurfewTimetableItem(index: number): PageElement {
+  getServiceDetailsItem(index: number): PageElement {
     return cy.get('.moj-timeline').find('.moj-timeline__item').eq(index)
   }
 
