@@ -65,14 +65,12 @@ describe('EquipmentDetailsController', () => {
       equipmentDetails: [
         {
           legacySubjectId: testOrderId,
-          legacyOrderId: testOrderId,
           isoDateTime: undefined,
           dateTime: null,
           date: undefined,
           eventType: 'am-equipment-details',
           properties: {
             legacySubjectId: testOrderId,
-            legacyOrderId: testOrderId,
           },
         } as AlcoholMonitoringTimelineEventModel,
       ],
@@ -82,7 +80,6 @@ describe('EquipmentDetailsController', () => {
     const expectedResponse = [
       {
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
       },
     ]
 

@@ -62,7 +62,6 @@ describe('IntegrityVisitDetailsController', () => {
           eventType: 'visit-details',
           properties: {
             legacySubjectId: testOrderId,
-            legacyOrderId: testOrderId,
             address: {
               addressLine1: 'address line 1',
               addressLine2: 'address line 2',
@@ -84,7 +83,6 @@ describe('IntegrityVisitDetailsController', () => {
     emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([
       IntegrityVisitDetailsModel.parse({
         legacySubjectId: testOrderId,
-        legacyOrderId: testOrderId,
         address: {
           addressLine1: 'address line 1',
           addressLine2: 'address line 2',

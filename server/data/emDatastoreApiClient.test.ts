@@ -542,7 +542,6 @@ describe('EM Datastore API Client', () => {
       const expectedResult = [
         {
           legacySubjectId: 123,
-          legacyOrderId: 321,
         },
       ]
 
@@ -586,7 +585,6 @@ describe('EM Datastore API Client', () => {
       const expectedResult: AlcoholMonitoringEquipmentDetail[] = [
         {
           legacySubjectId: '123',
-          legacyOrderId: '321',
         },
       ]
 
@@ -622,7 +620,6 @@ describe('EM Datastore API Client', () => {
       const expectedResult = [
         {
           legacySubjectId: 123,
-          legacyOrderId: 321,
           address: {
             addressLine1: 'address line 1',
             addressLine2: 'address line 2',
@@ -678,7 +675,6 @@ describe('EM Datastore API Client', () => {
       const expectedResult = [
         {
           legacySubjectId: '123',
-          legacyOrderId: '',
           visitId: '300',
           visitType: 'visit type',
           visitAttempt: 'attempt 1',
@@ -794,7 +790,6 @@ describe('EM Datastore API Client', () => {
       const expectedResult: AlcoholMonitoringServiceDetail[] = [
         {
           legacySubjectId: '123',
-          legacyOrderId: '321',
         },
       ]
 
@@ -809,15 +804,12 @@ describe('EM Datastore API Client', () => {
       const expectedResult: AlcoholMonitoringServiceDetail[] = [
         {
           legacySubjectId: '123',
-          legacyOrderId: '321',
         },
         {
           legacySubjectId: '456',
-          legacyOrderId: '654',
         },
         {
           legacySubjectId: '789',
-          legacyOrderId: '987',
         },
       ]
 

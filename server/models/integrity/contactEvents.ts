@@ -11,7 +11,6 @@ export const IntegrityContactEventDetailsModel = z.object({
 })
 
 export const IntegrityContactEventModel = z.object({
-  legacyOrderId: z.number(),
   legacySubjectId: z.number(),
   type: z.string(),
   dateTime: z.string(),
