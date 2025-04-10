@@ -20,7 +20,7 @@ const createViewModelFromApiDto = (
 
       return {
         legacySubjectId: details.legacySubjectId,
-        isoDateTime: details.deviceInstalledDateTime,
+        isoDateTime: details.deviceInstalledDateTime || details.hmuInstallDateTime,
         dateTime,
         date: dateTime?.toDateString(),
         eventType: 'am-equipment-details',
