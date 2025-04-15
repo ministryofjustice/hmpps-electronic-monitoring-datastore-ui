@@ -1,57 +1,39 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { OrderDetails } from '../../../../server/models/orderDetails'
+import { AlcoholMonitoringOrderDetails } from '../../../../server/models/alcoholMonitoring/orderDetails'
 
-const defaultGetOrderDetailsOptions = {
-  httpStatus: 200,
-  legacySubjectId: 1234567,
-  details: {
-    specials: 'no',
-    legacySubjectId: 1234567,
-    legacyOrderId: 1234567,
-    firstName: null,
-    lastName: null,
-    alias: null,
-    dateOfBirth: null,
-    adultOrChild: null,
-    sex: null,
-    contact: null,
-    primaryAddressLine1: null,
-    primaryAddressLine2: null,
-    primaryAddressLine3: null,
-    primaryAddressPostCode: null,
-    phoneOrMobileNumber: null,
-    ppo: null,
-    mappa: null,
-    technicalBail: null,
-    manualRisk: null,
-    offenceRisk: false,
-    postCodeRisk: null,
-    falseLimbRisk: null,
-    migratedRisk: null,
-    rangeRisk: null,
-    reportRisk: null,
-    orderStartDate: null,
-    orderEndDate: null,
-    orderType: null,
-    orderTypeDescription: null,
-    orderTypeDetail: null,
-    wearingWristPid: null,
-    notifyingOrganisationDetailsName: null,
-    responsibleOrganisation: null,
-    responsibleOrganisationDetailsRegion: null,
-  } as OrderDetails,
-} as GetOrderDetailsStubOptions
+const defaultOrderDetails = {
+  legacySubjectId: 'AA12345',
+  legacyOrderId: '1234567',
+  firstName: 'John',
+  lastName: 'Smith',
+  alias: 'Zeno',
+  dateOfBirth: '1980-02-01T00:00:00',
+  sex: 'Sex',
+  specialInstructions: 'Special instructions',
+  phoneNumber: '09876543210',
+  address1: '1 Primary Street',
+  address2: 'Sutton',
+  address3: 'London',
+  postcode: 'ABC 123',
+  orderStartDate: '2012-02-01T00:00:00',
+  orderEndDate: '2013-04-03T00:00:00',
+  enforceableCondition: 'Enforceable condition',
+  orderType: 'Community',
+  orderTypeDescription: '',
+  orderEndOutcome: '',
+  responsibleOrganisationPhoneNumber: '01234567890',
+  responsibleOrganisationEmail: 'a@b.c',
+  tagAtSource: '',
+} as AlcoholMonitoringOrderDetails
 
 type GetOrderDetailsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
-  details: OrderDetails
+  legacySubjectId: number
+  body?: AlcoholMonitoringOrderDetails
 }
 
-export const stubAlcoholMonitoringGetOrderDetails = (
-  options: GetOrderDetailsStubOptions = defaultGetOrderDetailsOptions,
-): SuperAgentRequest =>
+export const stubAlcoholMonitoringGetOrderDetails = (options: GetOrderDetailsStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -60,7 +42,13 @@ export const stubAlcoholMonitoringGetOrderDetails = (
     response: {
       status: options.httpStatus,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: options.httpStatus === 200 ? options.details : null,
+      jsonBody:
+        options.httpStatus === 200
+          ? options.body || {
+              ...defaultOrderDetails,
+              legacySubjectId: options.legacySubjectId,
+            }
+          : null,
     },
   })
 

@@ -3,7 +3,7 @@ import PageElement from '../PageElement'
 import paths from '../../../server/constants/paths'
 import SummaryListComponent from '../components/summaryListComponent'
 
-export default class OrderSummaryPage extends AppPage {
+export default class AlcoholMonitoringOrderSummaryPage extends AppPage {
   constructor() {
     super('Key order details', paths.ALCOHOL_MONITORING.SUMMARY, 'Order information')
   }

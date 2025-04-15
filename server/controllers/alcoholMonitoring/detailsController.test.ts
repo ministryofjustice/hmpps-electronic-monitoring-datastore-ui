@@ -70,7 +70,30 @@ describe('AlcoholMonitoringDetailsController', () => {
 
     it(`renders the page with appropriate data`, async () => {
       const expectedOrderId = 'testId'
-      const expectedOrderDetails = 'expectedOrderDetails'
+      const mockOrderDetails = {
+        legacySubjectId: expectedOrderId,
+        legacyOrderId: expectedOrderId,
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        alias: 'an old tv show',
+        dateOfBirth: '1950-01-01T00:00:00',
+        sex: 'Sex',
+        specialInstructions: 'Special instructions',
+        phoneNumber: '09876543210',
+        address1: '123 Fourth Street',
+        address2: 'Fiveton',
+        address3: 'Sixbury',
+        postcode: '7AB 8CD',
+        orderStartDate: '2010-01-01T00:00:00',
+        orderEndDate: '2030-01-01T00:00:00',
+        enforceableCondition: 'Enforceable condition',
+        orderType: 'Community',
+        orderTypeDescription: 'lovely and green',
+        orderEndOutcome: 'A good outcome',
+        responsibleOrganisationPhoneNumber: '01234567890',
+        responsibleOrganisationEmail: 'a@b.c',
+        tagAtSource: 'no',
+      }
 
       req = createMockRequest({
         params: {
@@ -81,10 +104,35 @@ describe('AlcoholMonitoringDetailsController', () => {
       const expectedPageData = {
         legacySubjectId: expectedOrderId,
         backUrl: `/alcohol-monitoring/${expectedOrderId}`,
-        details: expectedOrderDetails,
+        deviceWearerDetails: {
+          legacySubjectId: expectedOrderId,
+          legacyOrderId: expectedOrderId,
+          firstName: 'Testopher',
+          lastName: 'Fakesmith',
+          alias: 'an old tv show',
+          dateOfBirth: '1950-01-01T00:00:00',
+          legacySex: 'Sex',
+          phoneOrMobileNumber: '09876543210',
+          primaryAddressLine1: '123 Fourth Street',
+          primaryAddressLine2: 'Fiveton',
+          primaryAddressLine3: 'Sixbury',
+          primaryAddressPostcode: '7AB 8CD',
+        },
+        orderDetails: {
+          orderStartDate: '2010-01-01T00:00:00',
+          orderEndDate: '2030-01-01T00:00:00',
+          enforceableCondition: 'Enforceable condition',
+          orderType: 'Community',
+          orderTypeDescription: 'lovely and green',
+          orderEndOutcome: 'A good outcome',
+          responsibleOrganisationPhoneNumber: '01234567890',
+          responsibleOrganisationEmail: 'a@b.c',
+          tagAtSource: 'no',
+          specialInstructions: 'Special instructions',
+        },
       }
 
-      alcoholMonitoringDetailsService.getDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      alcoholMonitoringDetailsService.getDetails = jest.fn().mockResolvedValueOnce(mockOrderDetails)
 
       await controller.details(req, res, next)
 
