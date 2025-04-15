@@ -27,12 +27,18 @@ export const stubAlcoholMonitoringGetOrderSummary = (options: GetOrderSummaryStu
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore/alcohol-monitoring/${options.legacySubjectId}/information`,
+      url: `/datastore/alcohol-monitoring/${options.legacySubjectId}/information`,
     },
     response: {
       status: options.httpStatus,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: options.httpStatus === 200 ? options.body || defaultOrderSummary : null,
+      jsonBody:
+        options.httpStatus === 200
+          ? options.body || {
+              ...defaultOrderSummary,
+              legacySubjectId: options.legacySubjectId,
+            }
+          : null,
     },
   })
 

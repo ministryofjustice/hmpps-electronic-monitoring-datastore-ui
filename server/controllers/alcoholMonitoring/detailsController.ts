@@ -1,6 +1,8 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringDetailsService } from '../../services'
+// eslint-disable-next-line import/no-named-as-default
+import AlcoholMonitoringOrderDetailsModel from '../../models/view-models/alcoholMonitoring/orderDetails'
 
 export default class OrderDetailsController {
   constructor(
@@ -21,10 +23,12 @@ export default class OrderDetailsController {
       legacySubjectId,
     })
 
-    res.render('pages/alcohol-monitoring/details', {
+    const viewModel = AlcoholMonitoringOrderDetailsModel.construct(
       legacySubjectId,
-      backUrl: `/alcohol-monitoring/${legacySubjectId}`,
-      details: orderDetails,
-    })
+      `/alcohol-monitoring/${legacySubjectId}`,
+      orderDetails,
+    )
+
+    res.render('pages/alcohol-monitoring/details', viewModel)
   }
 }
