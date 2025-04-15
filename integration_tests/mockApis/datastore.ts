@@ -2,7 +2,6 @@ export { stubIntegrityGetSearchResults } from './datastore/integrity/getSearchRe
 
 export { stubIntegrityGetOrderSummary } from './datastore/integrity/getOrderSummary'
 export { stubIntegrityGetOrderDetails } from './datastore/integrity/getOrderDetails'
-export { stubIntegrityGetSuspensionOfVisits } from './datastore/integrity/getSuspensionOfVisits'
 export { stubIntegrityGetEquipmentDetails } from './datastore/integrity/getEquipmentDetails'
 export { stubIntegrityGetMonitoringEvents } from './datastore/integrity/getMonitoringEvents'
 export { stubIntegrityGetContactEvents } from './datastore/integrity/getContactEvents'
@@ -10,5 +9,14 @@ export { stubIntegrityGetIncidentEvents } from './datastore/integrity/getInciden
 export { stubIntegrityGetViolationEvents } from './datastore/integrity/getViolationEvents'
 export { stubIntegrityGetVisitDetails } from './datastore/integrity/getVisitDetails'
 export { stubIntegrityGetServiceDetails } from './datastore/integrity/getServiceDetails'
+export { stubIntegrityGetSuspensionOfVisits } from './datastore/integrity/getSuspensionOfVisits'
 
 export { stubAlcoholMonitoringGetOrderSummary } from './datastore/alcoholMonitoring/getOrderSummary'
+export { stubAlcoholMonitoringGetOrderDetails } from './datastore/alcoholMonitoring/getOrderDetails'
+// export { stubAlcoholMonitoringGetEquipmentDetails } from './datastore/alcoholMonitoring/getEquipmentDetails'
+// export { stubAlcoholMonitoringGetMonitoringEvents } from './datastore/alcoholMonitoring/getMonitoringEvents'
+// export { stubAlcoholMonitoringGetContactEvents } from './datastore/alcoholMonitoring/getContactEvents'
+// export { stubAlcoholMonitoringGetIncidentEvents } from './datastore/alcoholMonitoring/getIncidentEvents'
+// export { stubAlcoholMonitoringGetViolationEvents } from './datastore/alcoholMonitoring/getViolationEvents'
+// export { stubAlcoholMonitoringGetVisitDetails } from './datastore/alcoholMonitoring/getVisitDetails'
+// export { stubAlcoholMonitoringGetServiceDetails } from './datastore/alcoholMonitoring/getServiceDetails'
