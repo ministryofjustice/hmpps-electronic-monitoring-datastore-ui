@@ -15,16 +15,21 @@ export default class SummaryListComponent {
 
   shouldNotExist() {
     this.element.should('not.exist')
+    this.list.should('not.exist')
   }
 
   shouldBeVisible() {
     this.element.should('exist')
+    this.list.should('exist')
     this.element.should('be.visible')
+    this.list.should('be.visible')
   }
 
   shouldNotBeVisible() {
     this.element.should('exist')
+    this.list.should('exist')
     this.element.should('not.be.visible')
+    this.list.should('not.be.visible')
   }
 
   shouldHaveItem(key: string, value: string) {

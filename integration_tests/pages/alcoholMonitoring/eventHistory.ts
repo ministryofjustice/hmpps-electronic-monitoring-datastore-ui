@@ -7,6 +7,10 @@ export default class EventHistoryPage extends AppPage {
     super('All event history', paths.ALCOHOL_MONITORING.EVENT_HISTORY)
   }
 
+  get serviceInformation(): PageElement {
+    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
+  }
+
   get timeline(): PageElement {
     return cy.get('.moj-timeline')
   }
