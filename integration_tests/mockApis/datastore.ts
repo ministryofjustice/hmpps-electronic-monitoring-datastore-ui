@@ -18,5 +18,5 @@ export { stubAlcoholMonitoringGetOrderDetails } from './datastore/alcoholMonitor
 // export { stubAlcoholMonitoringGetContactEvents } from './datastore/alcoholMonitoring/getContactEvents'
 // export { stubAlcoholMonitoringGetIncidentEvents } from './datastore/alcoholMonitoring/getIncidentEvents'
 // export { stubAlcoholMonitoringGetViolationEvents } from './datastore/alcoholMonitoring/getViolationEvents'
-// export { stubAlcoholMonitoringGetVisitDetails } from './datastore/alcoholMonitoring/getVisitDetails'
+export { stubAlcoholMonitoringGetVisitDetails } from './datastore/alcoholMonitoring/getVisitDetails'
 // export { stubAlcoholMonitoringGetServiceDetails } from './datastore/alcoholMonitoring/getServiceDetails'
