@@ -7,6 +7,10 @@ export default class EquipmentDetailsPage extends AppPage {
     super('Equipment details', paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS)
   }
 
+  get serviceInformation(): PageElement {
+    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
+  }
+
   get timeline(): PageElement {
     return cy.get('.moj-timeline')
   }
