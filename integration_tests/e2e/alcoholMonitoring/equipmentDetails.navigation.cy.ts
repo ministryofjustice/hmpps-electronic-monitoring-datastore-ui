@@ -45,6 +45,18 @@ context('Alcohol monitoring Equipment details navigation', () => {
     Page.verifyOnPage(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
   })
 
+  it('Contains visits details button and navigates to expected page', () => {
+    cy.task('stubAlcoholMonitoringGetVisitDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+    })
+
+    const summaryPage = Page.visit(AlcoholMonitoringEquipmentDetailsPage, { legacySubjectId })
+
+    summaryPage.subNavigationLink('Visit details').click()
+    Page.verifyOnPage(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+  })
+
   it('Contains equipment details button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetEquipmentDetails', {
       httpStatus: 200,
