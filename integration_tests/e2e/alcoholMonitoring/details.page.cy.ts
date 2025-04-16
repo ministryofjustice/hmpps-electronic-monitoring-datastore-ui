@@ -137,7 +137,7 @@ context('Alcohol Monitoring Order Details', () => {
       page.orderDetails.shouldHaveItem('Special instructions', 'Special instructions')
       page.orderDetails.shouldHaveItem('Enforceable condition', 'Enforceable condition')
       page.orderDetails.shouldHaveItem('Tag at sourced', 'no')
-      page.orderDetails.shouldHaveItem('Responsible organisation phone number', '')
+      page.orderDetails.shouldHaveItem('Responsible organisation phone number', '01234567890')
       page.orderDetails.shouldHaveItem('Responsible organisation email', 'a@b.c')
     })
   })
