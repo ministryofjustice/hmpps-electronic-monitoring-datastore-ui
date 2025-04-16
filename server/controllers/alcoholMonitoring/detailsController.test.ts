@@ -72,7 +72,6 @@ describe('AlcoholMonitoringDetailsController', () => {
       const expectedOrderId = 'testId'
       const mockOrderDetails = {
         legacySubjectId: expectedOrderId,
-        legacyOrderId: expectedOrderId,
         firstName: 'Testopher',
         lastName: 'Fakesmith',
         alias: 'an old tv show',
@@ -106,7 +105,6 @@ describe('AlcoholMonitoringDetailsController', () => {
         backUrl: `/alcohol-monitoring/${expectedOrderId}`,
         deviceWearerDetails: {
           legacySubjectId: expectedOrderId,
-          legacyOrderId: expectedOrderId,
           firstName: 'Testopher',
           lastName: 'Fakesmith',
           alias: 'an old tv show',

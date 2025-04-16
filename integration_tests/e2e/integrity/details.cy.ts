@@ -14,7 +14,6 @@ context('Order Details', () => {
       details: {
         specials: 'no',
         legacySubjectId,
-        legacyOrderId: legacySubjectId,
         firstName: null,
         lastName: null,
         alias: null,
@@ -84,7 +83,6 @@ context('Order Details', () => {
       orderDetailsPage.deviceWearerDetails.within($summary => {
         cy.wrap($summary).getBySummaryListKey('Specials').contains('no')
         cy.wrap($summary).getBySummaryListKey('Legacy subject ID').contains(legacySubjectId)
-        cy.wrap($summary).getBySummaryListKey('Legacy order ID').contains(legacySubjectId)
 
         cy.wrap($summary).getBySummaryListKey('First name').should('be.visible')
         cy.wrap($summary).getBySummaryListKey('Last name').should('be.visible')

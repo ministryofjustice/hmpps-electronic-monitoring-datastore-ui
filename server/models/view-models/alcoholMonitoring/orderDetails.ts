@@ -2,7 +2,6 @@ import { AlcoholMonitoringOrderDetails } from '../../alcoholMonitoring/orderDeta
 
 export type AlcoholMonitoringDeviceWearer = {
   legacySubjectId: string
-  legacyOrderId: string
   firstName?: string
   lastName?: string
   alias?: string
@@ -43,7 +42,6 @@ const createViewModelFromApiDto = (
   legacySubjectId,
   deviceWearerDetails: {
     legacySubjectId: orderDetails.legacySubjectId,
-    legacyOrderId: orderDetails.legacyOrderId,
     firstName: orderDetails.firstName,
     lastName: orderDetails.lastName,
     alias: orderDetails.alias,

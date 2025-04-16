@@ -59,7 +59,6 @@ context('Alcohol Monitoring Order Summary', () => {
         legacySubjectId,
         body: {
           legacySubjectId,
-          legacyOrderId: legacySubjectId,
           firstName: 'Testopher',
           lastName: 'Fakesmith',
           alias: 'an old tv show',
@@ -76,7 +75,6 @@ context('Alcohol Monitoring Order Summary', () => {
       const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
 
       page.summaryDetails.shouldHaveItem('Legacy Subject ID', legacySubjectId)
-      page.summaryDetails.shouldHaveItem('Legacy Order ID', legacySubjectId)
       page.summaryDetails.shouldHaveItem('Name', 'Testopher Fakesmith')
       page.summaryDetails.shouldHaveItem('Alias', 'an old tv show')
       page.summaryDetails.shouldHaveItem('Date of birth', '1 January 1950')
@@ -92,7 +90,6 @@ context('Alcohol Monitoring Order Summary', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
           } as AlcoholMonitoringOrderSummary,
         ],
       })

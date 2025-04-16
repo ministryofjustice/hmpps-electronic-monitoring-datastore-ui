@@ -4,7 +4,6 @@ import { AlcoholMonitoringVisitDetails } from '../../../../server/models/alcohol
 
 const defaultVisitDetails: AlcoholMonitoringVisitDetails = {
   legacySubjectId: 'AAMR1234567',
-  legacyOrderId: 'OMR1234',
   visitId: '300',
   visitType: 'visit type',
   visitAttempt: 'attempt 1',

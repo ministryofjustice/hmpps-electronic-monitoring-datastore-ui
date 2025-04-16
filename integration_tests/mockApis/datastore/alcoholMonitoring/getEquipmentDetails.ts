@@ -4,7 +4,6 @@ import { AlcoholMonitoringEquipmentDetails } from '../../../../server/models/alc
 
 const defaultEquipmentDetails: AlcoholMonitoringEquipmentDetails = {
   legacySubjectId: 'AAMR123',
-  legacyOrderId: 'OMR321',
   deviceType: 'tag',
   deviceSerialNumber: '740',
   deviceAddressType: 'secondary',

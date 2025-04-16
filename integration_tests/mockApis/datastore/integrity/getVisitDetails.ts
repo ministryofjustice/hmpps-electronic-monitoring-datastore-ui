@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { MonitoringEvents } from '../../../../server/models/monitoringEvents'
+import { IntegrityVisitDetails } from '../../../../server/models/integrity/visitDetails'
 
 const defaultVisitDetailsStubOptions = {
   httpStatus: 200,
@@ -11,7 +11,7 @@ const defaultVisitDetailsStubOptions = {
 type GetVisitDetailsStubOptions = {
   httpStatus: number
   legacySubjectId?: number
-  body?: MonitoringEvents[]
+  body?: IntegrityVisitDetails[]
 }
 
 export const stubIntegrityGetVisitDetails = (

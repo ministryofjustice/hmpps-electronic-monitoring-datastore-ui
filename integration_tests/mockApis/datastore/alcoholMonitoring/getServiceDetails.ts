@@ -4,7 +4,6 @@ import { AlcoholMonitoringServiceDetails } from '../../../../server/models/alcoh
 
 const defaultServiceDetails: AlcoholMonitoringServiceDetails = {
   legacySubjectId: 'AAMR123',
-  legacyOrderId: 'OMR321',
   serviceStartDate: '2001-01-01T00:00:00',
   serviceEndDate: '2002-02-02T00:00:00',
   serviceAddress: 'service address',

@@ -64,7 +64,6 @@ context('Alcohol Monitoring service details', () => {
         body: [
           {
             legacySubjectId: 'AAMR123',
-            legacyOrderId: 'OMR321',
             serviceStartDate: '2001-01-01T00:00:00',
             serviceEndDate: '2002-02-02T00:00:00',
             serviceAddress: 'service address',
@@ -87,7 +86,6 @@ context('Alcohol Monitoring service details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             serviceStartDate: '2001-01-01T00:00:00',
             serviceEndDate: '2002-02-02T00:00:00',
             serviceAddress: 'service address',
@@ -122,7 +120,6 @@ context('Alcohol Monitoring service details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             serviceStartDate: '2001-01-01T00:00:00',
             serviceEndDate: '2002-02-02T00:00:00',
             serviceAddress: 'service address',
@@ -133,7 +130,6 @@ context('Alcohol Monitoring service details', () => {
           } as AlcoholMonitoringServiceDetails,
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             serviceStartDate: '2001-01-02T00:00:00',
             serviceEndDate: '2002-02-03T00:00:00',
             serviceAddress: 'service address',
@@ -168,7 +164,6 @@ context('Alcohol Monitoring service details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
           } as AlcoholMonitoringServiceDetails,
         ],
       })

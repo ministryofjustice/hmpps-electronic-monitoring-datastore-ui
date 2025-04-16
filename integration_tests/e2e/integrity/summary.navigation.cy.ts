@@ -20,7 +20,6 @@ context('Integrity Order summary navigation', () => {
       keyOrderInformation: {
         specials: 'no',
         legacySubjectId,
-        legacyOrderId: legacySubjectId,
         name: 'Testopher Fakesmith',
         alias: 'an old tv show',
         dateOfBirth: '1950-01-01',
@@ -43,7 +42,6 @@ context('Integrity Order summary navigation', () => {
       details: {
         specials: 'no',
         legacySubjectId,
-        legacyOrderId: legacySubjectId,
         firstName: null,
         lastName: null,
         alias: null,
