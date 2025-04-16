@@ -4,10 +4,19 @@ import { v4 as uuidv4 } from 'uuid'
 import { PageElement } from '../page'
 
 class TimelineItemDescriptionComponent {
-  private elementCacheId: string = uuidv4()
+  private elementCacheId: string
 
-  constructor(private readonly description: PageElement) {
-    description.as(`${this.elementCacheId}-element`)
+  private className = '.moj-timeline__description'
+
+  constructor(private readonly timelineItem: PageElement) {
+    if (!this.elementCacheId) {
+      this.elementCacheId = uuidv4()
+
+      timelineItem.then($timelineItem => {
+        const $el = $timelineItem.find(this.className)
+        return cy.wrap($el.length ? $el : undefined, { log: false }).as(`${this.elementCacheId}-element`)
+      })
+    }
   }
 
   protected get element(): PageElement {
@@ -60,10 +69,17 @@ class TimelineItemDescriptionComponent {
 }
 
 class TimelineItem {
-  private elementCacheId: string = uuidv4()
+  private elementCacheId: string
 
-  constructor(row: PageElement) {
-    row.as(`${this.elementCacheId}-element`)
+  constructor(row: PageElement, index: number) {
+    if (!this.elementCacheId) {
+      this.elementCacheId = uuidv4()
+
+      row.then($timelineItems => {
+        const $el = $timelineItems.eq(index)
+        return cy.wrap($el.length ? $el : undefined, { log: false }).as(`${this.elementCacheId}-element`)
+      })
+    }
   }
 
   protected get element(): PageElement {
@@ -71,7 +87,7 @@ class TimelineItem {
   }
 
   get description(): TimelineItemDescriptionComponent {
-    return new TimelineItemDescriptionComponent(this.element.find('.moj-timeline__description'))
+    return new TimelineItemDescriptionComponent(this.element)
   }
 
   // Helpers
@@ -91,11 +107,11 @@ class TimelineItem {
   }
 
   shouldHaveTitle(title: string) {
-    this.element.contains('h2', title)
+    this.element.find('.moj-timeline__title').should('have.text', title)
   }
 
   shouldHaveDate(date: string) {
-    this.element.contains('time', date)
+    this.element.find('.moj-timeline__date time').should('have.text', date)
   }
 }
 
@@ -124,7 +140,7 @@ export default class timelineComponent {
   }
 
   item(index: number): TimelineItem {
-    return new TimelineItem(this.items.eq(index, { log: false }))
+    return new TimelineItem(this.items, index)
   }
 
   // Helpers

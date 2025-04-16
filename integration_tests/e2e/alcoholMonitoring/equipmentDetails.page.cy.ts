@@ -166,5 +166,23 @@ context('Alcohol Monitoring equipment details', () => {
       page.timeline.item(1).description.shouldHaveItem('HMU install date time', '2 January 2001 at 1:10am')
       page.timeline.item(1).description.shouldHaveItem('HMU removed date time', '3 February 2002 at 2:20am')
     })
+
+    it('Details can be empty and still display', () => {
+      cy.task('stubAlcoholMonitoringGetEquipmentDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [
+          {
+            legacySubjectId: 'AAMR321',
+            legacyOrderId: 'OMR123',
+          } as AlcoholMonitoringEquipmentDetails,
+        ],
+      })
+
+      const page = Page.visit(AlcoholMonitoringEquipmentDetailsPage, { legacySubjectId })
+
+      page.timeline.shouldHaveCount(1)
+      page.timeline.item(0).shouldBeVisible()
+    })
   })
 })

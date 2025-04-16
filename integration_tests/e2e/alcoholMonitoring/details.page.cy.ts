@@ -8,17 +8,19 @@ import { AlcoholMonitoringOrderDetails } from '../../../server/models/alcoholMon
 context('Alcohol Monitoring Order Details', () => {
   const legacySubjectId = '1234567'
 
+  beforeEach(() => {
+    cy.task('reset')
+    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+
+    cy.signIn()
+  })
+
   describe('General page content', () => {
     beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
       cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
       })
-
-      cy.signIn()
     })
 
     it('can see their user name', () => {
@@ -54,11 +56,26 @@ context('Alcohol Monitoring Order Details', () => {
     })
   })
 
-  describe('Order information details', () => {
-    beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+  describe('Order details', () => {
+    it('Details can be empty and still display', () => {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [
+          {
+            legacySubjectId: 'AAMR321',
+            legacyOrderId: 'OMR123',
+          } as AlcoholMonitoringOrderDetails,
+        ],
+      })
 
+      const page = Page.visit(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
+
+      page.deviceWearerDetails.shouldBeVisible()
+      page.deviceWearerDetails.shouldBeVisible()
+    })
+
+    it('Display the device wearers details', () => {
       cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
@@ -70,28 +87,14 @@ context('Alcohol Monitoring Order Details', () => {
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01T00:00:00',
           sex: 'Sex',
-          specialInstructions: 'Special instructions',
           phoneNumber: '09876543210',
           address1: '123 Fourth Street',
           address2: 'Fiveton',
           address3: 'Sixbury',
           postcode: '7AB 8CD',
-          orderStartDate: '2010-01-01T00:00:00',
-          orderEndDate: '2030-01-01T00:00:00',
-          enforceableCondition: 'Enforceable condition',
-          orderType: 'Community',
-          orderTypeDescription: 'lovely and green',
-          orderEndOutcome: 'A good outcome',
-          responsibleOrganisationPhoneNumber: '01234567890',
-          responsibleOrganisationEmail: 'a@b.c',
-          tagAtSource: 'no',
         } as AlcoholMonitoringOrderDetails,
       })
 
-      cy.signIn()
-    })
-
-    it('Display the device wearers details', () => {
       const page = Page.visit(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
 
       page.deviceWearerDetails.shouldHaveItem('Legacy subject ID', legacySubjectId)
@@ -105,18 +108,37 @@ context('Alcohol Monitoring Order Details', () => {
     })
 
     it('Displays the order details', () => {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: {
+          legacySubjectId,
+          legacyOrderId: legacySubjectId,
+          orderStartDate: '2010-01-01T00:00:00',
+          specialInstructions: 'Special instructions',
+          orderEndDate: '2030-01-01T00:00:00',
+          enforceableCondition: 'Enforceable condition',
+          orderType: 'Community',
+          orderTypeDescription: 'lovely and green',
+          orderEndOutcome: 'A good outcome',
+          responsibleOrganisationPhoneNumber: '01234567890',
+          responsibleOrganisationEmail: 'a@b.c',
+          tagAtSource: 'no',
+        } as AlcoholMonitoringOrderDetails,
+      })
+
       const page = Page.visit(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
 
-      page.deviceWearerDetails.shouldHaveItem('Order start date', '1 January 2010')
-      page.deviceWearerDetails.shouldHaveItem('Order end date', '1 January 2030')
-      page.deviceWearerDetails.shouldHaveItem('Order type', 'Community')
-      page.deviceWearerDetails.shouldHaveItem('Order type description', 'lovely and green')
-      page.deviceWearerDetails.shouldHaveItem('Order end outcome', 'A good outcome')
-      page.deviceWearerDetails.shouldHaveItem('Special instructions', 'Special instructions')
-      page.deviceWearerDetails.shouldHaveItem('Enforceable condition', 'Enforceable condition')
-      page.deviceWearerDetails.shouldHaveItem('Tag at sourced', 'no')
-      page.deviceWearerDetails.shouldHaveItem('Responsible organisation phone number', '')
-      page.deviceWearerDetails.shouldHaveItem('Responsible organisation email', 'a@b.c')
+      page.orderDetails.shouldHaveItem('Order start date', '1 January 2010')
+      page.orderDetails.shouldHaveItem('Order end date', '1 January 2030')
+      page.orderDetails.shouldHaveItem('Order type', 'Community')
+      page.orderDetails.shouldHaveItem('Order type description', 'lovely and green')
+      page.orderDetails.shouldHaveItem('Order end outcome', 'A good outcome')
+      page.orderDetails.shouldHaveItem('Special instructions', 'Special instructions')
+      page.orderDetails.shouldHaveItem('Enforceable condition', 'Enforceable condition')
+      page.orderDetails.shouldHaveItem('Tag at sourced', 'no')
+      page.orderDetails.shouldHaveItem('Responsible organisation phone number', '')
+      page.orderDetails.shouldHaveItem('Responsible organisation email', 'a@b.c')
     })
   })
 })
