@@ -36,7 +36,7 @@ export default class SummaryListComponent {
     return this.list
       .contains('.govuk-summary-list__key', key, { log: false })
       .siblings('.govuk-summary-list__value', { log: false })
-      .should('contain.text', value)
+      .then($item => cy.wrap($item.text().trim().replace(/\s+/g, ' ')).should('equal', value))
   }
 
   shouldHaveItems(items: Array<{ key: string; value: string }>) {
@@ -44,7 +44,11 @@ export default class SummaryListComponent {
   }
 
   shouldNotHaveItem(key: string) {
-    return this.list.should('not.contain.text', key)
+    return this.list.then($items => {
+      $items.each((_, $el) => {
+        cy.wrap($el.innerText.trim().replace(/\s+/g, ' ')).should('not.equal', key)
+      })
+    })
   }
 
   shouldNotHaveItems(keys: Array<string>) {

@@ -4,11 +4,15 @@ import AlcoholMonitoringSearchResultsPage from '../../pages/alcoholMonitoring/se
 context('Alcohol monitoring search results', () => {
   const queryExecutionId = 'query-execution-id'
 
+  beforeEach(() => {
+    cy.task('reset')
+    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+
+    cy.signIn()
+  })
+
   describe('When one result is found', () => {
     beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
       cy.task('stubIntegrityGetSearchResults', {
         queryExecutionId,
         httpStatus: 200,
@@ -30,13 +34,11 @@ context('Alcohol monitoring search results', () => {
           },
         ],
       })
-
-      cy.signIn()
     })
 
     it('Displays the correct headers', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.results.shouldHaveHeaders([
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveHeaders([
         'Legacy subject ID',
         'Name',
         'Address',
@@ -47,9 +49,11 @@ context('Alcohol monitoring search results', () => {
     })
 
     it('Displays the result', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
 
-      searchResultsPage.results.shouldHaveResults([
+      page.results.shouldHaveCount(1)
+
+      page.results.shouldHaveResults([
         [
           'AAMR100',
           'AMY SMITH',
@@ -62,16 +66,13 @@ context('Alcohol monitoring search results', () => {
     })
 
     it('The pagination component is not displayed', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldNotBeVisible()
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.shouldNotBeVisible()
     })
   })
 
   describe('When less than 10 results are found', () => {
     beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
       cy.task('stubIntegrityGetSearchResults', {
         queryExecutionId,
         httpStatus: 200,
@@ -108,13 +109,11 @@ context('Alcohol monitoring search results', () => {
           },
         ],
       })
-
-      cy.signIn()
     })
 
     it('Displays the correct headers', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.results.shouldHaveHeaders([
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveHeaders([
         'Legacy subject ID',
         'Name',
         'Address',
@@ -125,9 +124,11 @@ context('Alcohol monitoring search results', () => {
     })
 
     it('Displays all the results', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
 
-      searchResultsPage.results.shouldHaveResults([
+      page.results.shouldHaveCount(2)
+
+      page.results.shouldHaveResults([
         [
           'AAMR100',
           'AMY SMITH',
@@ -140,16 +141,13 @@ context('Alcohol monitoring search results', () => {
     })
 
     it('The pagination component is not displayed', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldNotBeVisible()
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.shouldNotBeVisible()
     })
   })
 
   describe('When more than 10 results are found', () => {
     beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
       cy.task('stubIntegrityGetSearchResults', {
         queryExecutionId,
         httpStatus: 200,
@@ -326,13 +324,11 @@ context('Alcohol monitoring search results', () => {
           },
         ],
       })
-
-      cy.signIn()
     })
 
     it('Displays the correct headers', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.results.shouldHaveHeaders([
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveHeaders([
         'Legacy subject ID',
         'Name',
         'Address',
@@ -342,10 +338,12 @@ context('Alcohol monitoring search results', () => {
       ])
     })
 
-    it('Displays all the results', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+    it('Displays the first 10 results', () => {
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
 
-      searchResultsPage.results.shouldHaveResults([
+      page.results.shouldHaveCount(12)
+
+      page.results.shouldHaveResults([
         [
           '30000',
           'EMMA SMITH Alias: Socrates',
@@ -430,58 +428,101 @@ context('Alcohol monitoring search results', () => {
     })
 
     it('Pagination is displayed', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldBeVisible()
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.shouldBeVisible()
     })
 
     it('Summary is displayed', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldShowSummary(1, 10, 12)
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.shouldShowSummary(1, 10, 12)
     })
 
     it('Highlights first page', () => {
-      const searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldShowActivePage(1)
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.shouldShowActivePage(1)
     })
 
     it('Can navigate to second page', () => {
-      let searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.pageLink(2).click()
+      let page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.pageLink(2).click()
 
-      searchResultsPage = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldShowSummary(11, 12, 12)
-      searchResultsPage.pagination.shouldShowActivePage(2)
+      page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveCount(12)
+      page.pagination.shouldShowSummary(11, 12, 12)
+      page.pagination.shouldShowActivePage(2)
     })
 
     it('Can navigate to next page', () => {
-      let searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.nextLink.click()
+      let page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.nextLink.click()
 
-      searchResultsPage = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldShowSummary(11, 12, 12)
-      searchResultsPage.pagination.shouldShowActivePage(2)
+      page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveCount(12)
+      page.pagination.shouldShowSummary(11, 12, 12)
+      page.pagination.shouldShowActivePage(2)
     })
 
     it('Can navigate back to first page', () => {
-      let searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.pageLink(2).click()
+      let page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveCount(12)
+      page.pagination.pageLink(2).click()
 
-      searchResultsPage = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.pageLink(1).click()
+      page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveCount(12)
+      page.pagination.pageLink(1).click()
 
-      searchResultsPage = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldShowActivePage(1)
+      page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveCount(12)
+      page.pagination.shouldShowActivePage(1)
     })
 
     it('Can navigate back to previous page', () => {
-      let searchResultsPage = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.nextLink.click()
+      let page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.nextLink.click()
 
-      searchResultsPage = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.previousLink.click()
+      page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.previousLink.click()
 
-      searchResultsPage = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      searchResultsPage.pagination.shouldShowActivePage(1)
+      page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.shouldShowActivePage(1)
+    })
+  })
+
+  describe('When the result has minimal details', () => {
+    beforeEach(() => {
+      cy.task('stubIntegrityGetSearchResults', {
+        queryExecutionId,
+        httpStatus: 200,
+        results: [
+          {
+            legacySubjectId: 'AAMR100',
+            legacyOrderId: 'OMR1000',
+          },
+        ],
+      })
+    })
+
+    it('Displays the correct headers', () => {
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveHeaders([
+        'Legacy subject ID',
+        'Name',
+        'Address',
+        'Date of birth',
+        'Order start date',
+        'Order end date',
+      ])
+    })
+
+    it('Displays the result', () => {
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+
+      page.results.shouldHaveResults([['AAMR100', '', '', '', '', '']])
+    })
+
+    it('The pagination component is not displayed', () => {
+      const page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.pagination.shouldNotBeVisible()
     })
   })
 })
