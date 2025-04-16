@@ -2,7 +2,7 @@ import AlcoholMonitoringEquipmentDetailsService from './equipmentDetailsService'
 import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { AlcoholMonitoringEquipmentDetail } from '../../models/alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetails } from '../../models/alcoholMonitoring/equipmentDetails'
 
 jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../data/emDatastoreApiClient')
@@ -34,9 +34,9 @@ describe('Integrity Equipment Details Service', () => {
       legacySubjectId: '123',
     }
 
-    const equipmentDetailsResponse = [] as AlcoholMonitoringEquipmentDetail[]
+    const equipmentDetailsResponse = [] as AlcoholMonitoringEquipmentDetails[]
 
-    const expectedResult = [] as AlcoholMonitoringEquipmentDetail[]
+    const expectedResult = [] as AlcoholMonitoringEquipmentDetails[]
 
     it('should return data from the client', async () => {
       emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails.mockResolvedValue(equipmentDetailsResponse)

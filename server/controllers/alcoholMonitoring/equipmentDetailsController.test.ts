@@ -6,7 +6,7 @@ import AlcoholMonitoringEquipmentDetailsController from './equipmentDetailsContr
 import EquipmentDetailsViewModel from '../../models/view-models/alcoholMonitoring/equipmentDetails'
 import { AlcoholMonitoringTimelineEventModel } from '../../models/alcoholMonitoring/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { AlcoholMonitoringEquipmentDetail } from '../../models/alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetails } from '../../models/alcoholMonitoring/equipmentDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/equipmentDetailsService')
@@ -42,7 +42,7 @@ describe('EquipmentDetailsController', () => {
   it('should render page with no data', async () => {
     const expectedViewModel = {
       backUrl: `/alcohol-monitoring/${testOrderId}`,
-      equipmentDetails: [] as AlcoholMonitoringEquipmentDetail[],
+      equipmentDetails: [] as AlcoholMonitoringEquipmentDetails[],
       legacySubjectId: testOrderId,
     }
 

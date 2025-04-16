@@ -18,9 +18,9 @@ import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 
 import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
-import { AlcoholMonitoringEquipmentDetail } from '../models/alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetails } from '../models/alcoholMonitoring/equipmentDetails'
 import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
-import { AlcoholMonitoringServiceDetail } from '../models/alcoholMonitoring/serviceDetail'
+import { AlcoholMonitoringServiceDetails } from '../models/alcoholMonitoring/serviceDetails'
 import { AlcoholMonitoringContactEvent } from '../models/alcoholMonitoring/contactEvents'
 import { AlcoholMonitoringIncidentEvent } from '../models/alcoholMonitoring/incidentEvents'
 import { AlcoholMonitoringViolationEvent } from '../models/alcoholMonitoring/violationEvents'
@@ -141,9 +141,9 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getAlcoholMonitoringEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetail[]> {
+  async getAlcoholMonitoringEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetails[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<AlcoholMonitoringEquipmentDetail[]>({
+    return this.restClient.get<AlcoholMonitoringEquipmentDetails[]>({
       path: `/alcohol-monitoring/${legacySubjectId}/equipment-details`,
     })
   }
@@ -176,9 +176,9 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getAlcoholMonitoringServiceDetails(input: OrderRequest): Promise<AlcoholMonitoringServiceDetail[]> {
+  async getAlcoholMonitoringServiceDetails(input: OrderRequest): Promise<AlcoholMonitoringServiceDetails[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<AlcoholMonitoringServiceDetail[]>({
+    return this.restClient.get<AlcoholMonitoringServiceDetails[]>({
       path: `/alcohol-monitoring/${legacySubjectId}/services`,
     })
   }

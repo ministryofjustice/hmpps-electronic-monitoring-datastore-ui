@@ -4,7 +4,7 @@ import getSanitisedError from '../../sanitisedError'
 import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { AlcoholMonitoringServiceDetail } from '../../models/alcoholMonitoring/serviceDetail'
+import { AlcoholMonitoringServiceDetails } from '../../models/alcoholMonitoring/serviceDetails'
 
 export default class AlcoholMonitoringServiceDetailService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
@@ -16,7 +16,7 @@ export default class AlcoholMonitoringServiceDetailService {
     this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
-  async getServiceDetails(input: OrderRequest): Promise<AlcoholMonitoringServiceDetail[]> {
+  async getServiceDetails(input: OrderRequest): Promise<AlcoholMonitoringServiceDetails[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
       return await this.emDatastoreApiClient.getAlcoholMonitoringServiceDetails(input)

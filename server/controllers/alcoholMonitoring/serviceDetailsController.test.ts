@@ -5,7 +5,7 @@ import AlcoholMonitoringServiceDetailsController from './serviceDetailsControlle
 import AlcoholMonitoringServiceDetailsViewModel from '../../models/view-models/alcoholMonitoring/serviceDetails'
 import { AlcoholMonitoringTimelineEventModel } from '../../models/alcoholMonitoring/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { AlcoholMonitoringServiceDetail } from '../../models/alcoholMonitoring/serviceDetail'
+import { AlcoholMonitoringServiceDetails } from '../../models/alcoholMonitoring/serviceDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/serviceDetailsService')
@@ -42,7 +42,7 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
     const expectedViewModel = {
       legacySubjectId: testOrderId,
       backUrl: `/alcohol-monitoring/${testOrderId}`,
-      serviceDetails: [] as AlcoholMonitoringServiceDetail[],
+      serviceDetails: [] as AlcoholMonitoringServiceDetails[],
     }
 
     alcoholMonitoringServiceDetailsService.getServiceDetails = jest.fn().mockResolvedValue([])
