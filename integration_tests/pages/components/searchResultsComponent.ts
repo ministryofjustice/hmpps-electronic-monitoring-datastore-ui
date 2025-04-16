@@ -29,7 +29,10 @@ class SearchResultRow {
   }
 
   shouldHaveValue(index: number, value: string) {
-    this.element.find('.govuk-table__cell', { log: false }).eq(index, { log: false }).contains(value)
+    this.element
+      .find('.govuk-table__cell', { log: false })
+      .eq(index, { log: false })
+      .then($item => cy.wrap($item.text().trim().replace(/\s+/g, ' ')).should('equal', value))
   }
 
   shouldHaveValues(values: string[]) {

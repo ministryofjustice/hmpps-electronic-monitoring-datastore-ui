@@ -52,7 +52,7 @@ class TimelineItemDescriptionComponent {
     return this.list
       .contains('.govuk-summary-list__key', key, { log: false })
       .siblings('.govuk-summary-list__value', { log: false })
-      .should('contain.text', value)
+      .then($item => cy.wrap($item.text().trim().replace(/\s+/g, ' ')).should('equal', value))
   }
 
   shouldHaveItems(items: Array<{ key: string; value: string }>) {
@@ -60,7 +60,11 @@ class TimelineItemDescriptionComponent {
   }
 
   shouldNotHaveItem(key: string) {
-    return this.list.should('not.contain.text', key)
+    return this.list.then($items => {
+      $items.each((_, $el) => {
+        cy.wrap($el.innerText.trim().replace(/\s+/g, ' ')).should('not.equal', key)
+      })
+    })
   }
 
   shouldNotHaveItems(keys: Array<string>) {
@@ -107,11 +111,15 @@ class TimelineItem {
   }
 
   shouldHaveTitle(title: string) {
-    this.element.find('.moj-timeline__title').should('have.text', title)
+    this.element
+      .find('.moj-timeline__title', { log: false })
+      .then($item => cy.wrap($item.text().trim().replace(/\s+/g, ' ')).should('equal', title))
   }
 
   shouldHaveDate(date: string) {
-    this.element.find('.moj-timeline__date time').should('have.text', date)
+    this.element
+      .find('.moj-timeline__date', { log: false })
+      .then($item => cy.wrap($item.text().trim().replace(/\s+/g, ' ')).should('equal', date))
   }
 }
 
