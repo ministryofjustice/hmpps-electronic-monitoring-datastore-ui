@@ -64,7 +64,6 @@ context('Alcohol Monitoring Visit Details', () => {
         body: [
           {
             legacySubjectId: 'AAMR123',
-            legacyOrderId: 'OMR321',
             visitId: '300',
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 1',
@@ -93,7 +92,6 @@ context('Alcohol Monitoring Visit Details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             visitId: '301',
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 2',
@@ -139,7 +137,6 @@ context('Alcohol Monitoring Visit Details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             visitId: '302',
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 3',
@@ -156,7 +153,6 @@ context('Alcohol Monitoring Visit Details', () => {
           } as AlcoholMonitoringVisitDetails,
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             visitId: '303',
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 4',
@@ -203,7 +199,6 @@ context('Alcohol Monitoring Visit Details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
           } as AlcoholMonitoringVisitDetails,
         ],
       })

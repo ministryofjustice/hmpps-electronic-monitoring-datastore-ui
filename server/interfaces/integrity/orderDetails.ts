@@ -1,6 +1,5 @@
 export interface IndegrityOrderDetails {
   legacySubjectId: string
-  legacyOrderId: string
   firstName: string | null
   lastName: string | null
   alias: string | null

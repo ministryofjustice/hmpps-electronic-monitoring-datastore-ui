@@ -3,7 +3,6 @@ import z from 'zod'
 export const OrderDetailsModel = z.object({
   specials: z.string(),
   legacySubjectId: z.number(),
-  legacyOrderId: z.number(),
   firstName: z.string().nullable(),
   lastName: z.string().nullable(),
   alias: z.string().nullable(),

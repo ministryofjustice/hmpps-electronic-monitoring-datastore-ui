@@ -1,7 +1,7 @@
 import Page from '../../pages/page'
 import ServiceDetailsPage from '../../pages/integrity/serviceDetails'
 
-context('Crufew Timetable', () => {
+context('Service details', () => {
   const legacySubjectId = '1232123'
 
   beforeEach(() => {

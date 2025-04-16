@@ -1,7 +1,6 @@
 export interface KeyOrderInformation {
   specials: string
   legacySubjectId: number
-  legacyOrderId: number
   name: string
   alias: string | null
   dateOfBirth: string

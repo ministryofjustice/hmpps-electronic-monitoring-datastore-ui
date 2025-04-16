@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { MonitoringEvents } from '../../../../server/models/monitoringEvents'
+import { IntegrityMonitoringEvent } from '../../../../server/models/integrity/monitoringEvents'
 
 const defaultMonitoringEventsStubOptions = {
   httpStatus: 200,
@@ -11,7 +11,7 @@ const defaultMonitoringEventsStubOptions = {
 type GetMonitoringEventsStubOptions = {
   httpStatus: number
   legacySubjectId?: number
-  body?: MonitoringEvents[]
+  body?: IntegrityMonitoringEvent[]
 }
 
 export const stubIntegrityGetMonitoringEvents = (

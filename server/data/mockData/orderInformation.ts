@@ -4,7 +4,6 @@ const orderInformation: IntegrityOrderSummary = {
   keyOrderInformation: {
     specials: 'No',
     legacySubjectId: 1234567,
-    legacyOrderId: 7654321,
     name: 'John Smith',
     alias: 'Zeno',
     dateOfBirth: '01-02-1980',

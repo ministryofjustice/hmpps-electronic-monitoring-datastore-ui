@@ -64,7 +64,6 @@ context('Alcohol Monitoring equipment details', () => {
         body: [
           {
             legacySubjectId: 'AAMR123',
-            legacyOrderId: 'OMR321',
             deviceType: 'tag',
             deviceSerialNumber: '740',
             deviceAddressType: 'secondary',
@@ -88,7 +87,6 @@ context('Alcohol Monitoring equipment details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             deviceType: 'tag',
             deviceSerialNumber: '740',
             deviceAddressType: 'secondary',
@@ -125,7 +123,6 @@ context('Alcohol Monitoring equipment details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             deviceType: 'tag',
             deviceSerialNumber: '740',
             deviceAddressType: 'secondary',
@@ -137,7 +134,6 @@ context('Alcohol Monitoring equipment details', () => {
           } as AlcoholMonitoringEquipmentDetails,
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
             deviceType: 'tag',
             deviceSerialNumber: '760',
             deviceAddressType: 'tertiary',
@@ -174,7 +170,6 @@ context('Alcohol Monitoring equipment details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
           } as AlcoholMonitoringEquipmentDetails,
         ],
       })

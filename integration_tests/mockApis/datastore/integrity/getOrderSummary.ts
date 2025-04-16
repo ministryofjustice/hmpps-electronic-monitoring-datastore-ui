@@ -12,7 +12,6 @@ const defaultGetOrderSummaryOptions = {
   keyOrderInformation: {
     specials: 'no',
     legacySubjectId: 1234567,
-    legacyOrderId: 123456789,
     name: 'Testopher Fakesmith',
     alias: 'an old tv show',
     dateOfBirth: '1950-01-01',

@@ -20,7 +20,7 @@ export const stubIntegrityGetServiceDetails = (
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/integrity/orders/${options.legacySubjectId}/curfew-timetable`,
+      url: `/datastore/integrity/orders/${options.legacySubjectId}/service-details`,
     },
     response: {
       status: options.httpStatus,

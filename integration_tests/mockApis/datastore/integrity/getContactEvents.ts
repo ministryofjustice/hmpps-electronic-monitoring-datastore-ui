@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { ContactEvent } from '../../../../server/models/contactEvents'
+import { IntegrityContactEvent } from '../../../../server/models/integrity/contactEvents'
 
 const defaultContactEventsStubOptions = {
   httpStatus: 200,
@@ -11,7 +11,7 @@ const defaultContactEventsStubOptions = {
 type GetContactEventsStubOptions = {
   httpStatus: number
   legacySubjectId?: number
-  body?: ContactEvent[]
+  body?: IntegrityContactEvent[]
 }
 
 export const stubIntegrityGetContactEvents = (

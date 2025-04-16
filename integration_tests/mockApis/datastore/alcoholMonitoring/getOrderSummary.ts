@@ -4,7 +4,6 @@ import { AlcoholMonitoringOrderSummary } from '../../../../server/models/alcohol
 
 const defaultOrderSummary: AlcoholMonitoringOrderSummary = {
   legacySubjectId: 'AAMR1234567',
-  legacyOrderId: 'OMR1234',
   firstName: 'Testopher',
   lastName: 'Fakesmith',
   alias: 'an old tv show',

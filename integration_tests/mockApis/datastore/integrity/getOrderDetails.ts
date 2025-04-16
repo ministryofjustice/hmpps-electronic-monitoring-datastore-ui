@@ -8,7 +8,6 @@ const defaultGetOrderDetailsOptions = {
   details: {
     specials: 'no',
     legacySubjectId: 1234567,
-    legacyOrderId: 1234567,
     firstName: null,
     lastName: null,
     alias: null,

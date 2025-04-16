@@ -114,7 +114,6 @@ describe('EM Datastore API Client', () => {
         keyOrderInformation: {
           specials: 'No',
           legacySubjectId: orderInfo.legacySubjectId,
-          legacyOrderId: '7654321',
           name: 'John Smith',
           alias: 'Zeno',
           dateOfBirth: '01-02-1980',
@@ -164,7 +163,6 @@ describe('EM Datastore API Client', () => {
         keyOrderInformation: {
           specials: 'No',
           legacySubjectId: orderInfo.legacySubjectId,
-          legacyOrderId: '7654321',
           name: 'John Smith',
           alias: 'Zeno',
           dateOfBirth: '01-02-1980',
@@ -216,7 +214,6 @@ describe('EM Datastore API Client', () => {
       const expectedResult = {
         specials: 'No',
         legacySubjectId: orderInfo.legacySubjectId,
-        legacyOrderId: '7654321',
         firstName: 'John',
         lastName: 'Smith',
         alias: 'Zeno',
@@ -257,7 +254,6 @@ describe('EM Datastore API Client', () => {
       const expectedResult = {
         specials: 'No',
         legacySubjectId: orderInfo.legacySubjectId,
-        legacyOrderId: '7654321',
         firstName: 'John',
         lastName: 'Smith',
         alias: 'Zeno',

@@ -64,7 +64,6 @@ context('Alcohol Monitoring Order Details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
-            legacyOrderId: 'OMR123',
           } as AlcoholMonitoringOrderDetails,
         ],
       })
@@ -81,7 +80,6 @@ context('Alcohol Monitoring Order Details', () => {
         legacySubjectId,
         body: {
           legacySubjectId,
-          legacyOrderId: legacySubjectId,
           firstName: 'Testopher',
           lastName: 'Fakesmith',
           alias: 'an old tv show',
@@ -98,7 +96,6 @@ context('Alcohol Monitoring Order Details', () => {
       const page = Page.visit(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
 
       page.deviceWearerDetails.shouldHaveItem('Legacy subject ID', legacySubjectId)
-      page.deviceWearerDetails.shouldHaveItem('Legacy order ID', legacySubjectId)
       page.deviceWearerDetails.shouldHaveItem('First name', 'Testopher')
       page.deviceWearerDetails.shouldHaveItem('Last name', 'Fakesmith')
       page.deviceWearerDetails.shouldHaveItem('Alias', 'an old tv show')
@@ -113,7 +110,6 @@ context('Alcohol Monitoring Order Details', () => {
         legacySubjectId,
         body: {
           legacySubjectId,
-          legacyOrderId: legacySubjectId,
           orderStartDate: '2010-01-01T00:00:00',
           specialInstructions: 'Special instructions',
           orderEndDate: '2030-01-01T00:00:00',

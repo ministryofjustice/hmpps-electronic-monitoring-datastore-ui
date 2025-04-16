@@ -20,7 +20,6 @@ context('Alcohol monitoring search results', () => {
           {
             dataType: 'integrity',
             legacySubjectId: 100,
-            legacyOrderId: 1000,
             firstName: 'Amy',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -80,7 +79,6 @@ context('Alcohol monitoring search results', () => {
           {
             dataType: 'integrity',
             legacySubjectId: 100,
-            legacyOrderId: 1000,
             firstName: 'Amy',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -95,7 +93,6 @@ context('Alcohol monitoring search results', () => {
           {
             dataType: 'integrity',
             legacySubjectId: 200,
-            legacyOrderId: 2000,
             firstName: 'Bill',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -163,7 +160,6 @@ context('Alcohol monitoring search results', () => {
           {
             dataType: 'integrity',
             legacySubjectId: 100,
-            legacyOrderId: 1000,
             firstName: 'Amy',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -178,7 +174,6 @@ context('Alcohol monitoring search results', () => {
           {
             dataType: 'integrity',
             legacySubjectId: 200,
-            legacyOrderId: 2000,
             firstName: 'Bill',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -504,7 +499,6 @@ context('Alcohol monitoring search results', () => {
         results: [
           {
             legacySubjectId: 'AAMR100',
-            legacyOrderId: 'OMR1000',
           },
         ],
       })

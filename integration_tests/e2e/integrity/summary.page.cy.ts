@@ -16,7 +16,6 @@ context('Integrity Order Summary', () => {
         keyOrderInformation: {
           specials: 'no',
           legacySubjectId,
-          legacyOrderId: legacySubjectId,
           name: 'Testopher Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
@@ -71,7 +70,6 @@ context('Integrity Order Summary', () => {
         keyOrderInformation: {
           specials: 'no',
           legacySubjectId,
-          legacyOrderId: legacySubjectId,
           name: 'Testopher Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
@@ -92,7 +90,6 @@ context('Integrity Order Summary', () => {
 
       summaryPage.summaryDetails.shouldHaveItem('Specials', 'no')
       summaryPage.summaryDetails.shouldHaveItem('Legacy Subject ID', legacySubjectId)
-      summaryPage.summaryDetails.shouldHaveItem('Legacy Order ID', legacySubjectId)
       summaryPage.summaryDetails.shouldHaveItem('Name', 'Testopher Fakesmith')
       summaryPage.summaryDetails.shouldHaveItem('Alias', 'an old tv show')
       summaryPage.summaryDetails.shouldHaveItem('Date of birth', '1 January 1950')
