@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const AlcoholMonitoringServiceDetailModel = z.object({
+export const AlcoholMonitoringServiceDetailsModel = z.object({
   legacySubjectId: z.string(),
   serviceStartDate: z.string().nullable(),
   serviceEndDate: z.string().nullable(),
@@ -11,4 +11,4 @@ export const AlcoholMonitoringServiceDetailModel = z.object({
   deviceSerialNumber: z.string().nullable(),
 })
 
-export type AlcoholMonitoringServiceDetail = z.infer<typeof AlcoholMonitoringServiceDetailModel>
+export type AlcoholMonitoringServiceDetails = z.infer<typeof AlcoholMonitoringServiceDetailsModel>

@@ -1,4 +1,4 @@
-import { AlcoholMonitoringEquipmentDetail } from '../../alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetails } from '../../alcoholMonitoring/equipmentDetails'
 import { AlcoholMonitoringTimelineEventModel } from '../../alcoholMonitoring/TimelineEvent'
 
 export type AlcoholMonitoringEquipmentDetailsViewModel = {
@@ -10,7 +10,7 @@ export type AlcoholMonitoringEquipmentDetailsViewModel = {
 const createViewModelFromApiDto = (
   legacySubjectId: string,
   backUrl: string,
-  equipmentDetails: AlcoholMonitoringEquipmentDetail[],
+  equipmentDetails: AlcoholMonitoringEquipmentDetails[],
 ): AlcoholMonitoringEquipmentDetailsViewModel => ({
   legacySubjectId,
   equipmentDetails: equipmentDetails
@@ -36,7 +36,7 @@ const createViewModelFromApiDto = (
 const construct = (
   legacySubjectId: string,
   backUrl: string,
-  equipmentDetails: AlcoholMonitoringEquipmentDetail[] = [],
+  equipmentDetails: AlcoholMonitoringEquipmentDetails[] = [],
 ): AlcoholMonitoringEquipmentDetailsViewModel => {
   return createViewModelFromApiDto(legacySubjectId, backUrl, equipmentDetails)
 }

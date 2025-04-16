@@ -6,7 +6,7 @@ import AlcoholMonitoringEquipmentDetailsPage from '../../pages/alcoholMonitoring
 import AlcoholMonitoringEventHistoryPage from '../../pages/alcoholMonitoring/eventHistory'
 import AlcoholMonitoringServiceDetailsPage from '../../pages/alcoholMonitoring/serviceDetails'
 
-context('Alcohol monitoring Order details navigation', () => {
+context('Alcohol monitoring Visit details navigation', () => {
   const legacySubjectId = '1234567'
 
   beforeEach(() => {
@@ -45,7 +45,7 @@ context('Alcohol monitoring Order details navigation', () => {
     Page.verifyOnPage(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
   })
 
-  it.skip('Contains equipment details button and navigates to expected page', () => {
+  it('Contains equipment details button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
@@ -81,7 +81,7 @@ context('Alcohol monitoring Order details navigation', () => {
     Page.verifyOnPage(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
   })
 
-  it.skip('Contains services button and navigates to expected page', () => {
+  it('Contains services button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetServiceDetails', {
       httpStatus: 200,
       legacySubjectId,

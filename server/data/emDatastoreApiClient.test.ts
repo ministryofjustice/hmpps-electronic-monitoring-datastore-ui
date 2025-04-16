@@ -6,11 +6,11 @@ import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 import { IntegrityEquipmentDetails } from '../models/integrity/equipmentDetails'
-import { AlcoholMonitoringEquipmentDetail } from '../models/alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetails } from '../models/alcoholMonitoring/equipmentDetails'
 import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
 import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
 import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
-import { AlcoholMonitoringServiceDetail } from '../models/alcoholMonitoring/serviceDetail'
+import { AlcoholMonitoringServiceDetails } from '../models/alcoholMonitoring/serviceDetails'
 import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
 import { IntegrityContactEvent } from '../models/integrity/contactEvents'
@@ -582,7 +582,7 @@ describe('EM Datastore API Client', () => {
 
   describe('getAlcoholMonitoringEquipmentDetails', () => {
     it('should fetch list of equipment details', async () => {
-      const expectedResult: AlcoholMonitoringEquipmentDetail[] = [
+      const expectedResult: AlcoholMonitoringEquipmentDetails[] = [
         {
           legacySubjectId: '123',
         },
@@ -596,7 +596,7 @@ describe('EM Datastore API Client', () => {
     })
 
     it('should fetch list of equipment details', async () => {
-      const expectedResult: AlcoholMonitoringEquipmentDetail[] = []
+      const expectedResult: AlcoholMonitoringEquipmentDetails[] = []
 
       fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
@@ -787,7 +787,7 @@ describe('EM Datastore API Client', () => {
 
   describe('getAlcoholMonitoringServiceDetails', () => {
     it('should fetch a list of one service detail item', async () => {
-      const expectedResult: AlcoholMonitoringServiceDetail[] = [
+      const expectedResult: AlcoholMonitoringServiceDetails[] = [
         {
           legacySubjectId: '123',
         },
@@ -801,7 +801,7 @@ describe('EM Datastore API Client', () => {
     })
 
     it('should fetch a list of multiple service detail items', async () => {
-      const expectedResult: AlcoholMonitoringServiceDetail[] = [
+      const expectedResult: AlcoholMonitoringServiceDetails[] = [
         {
           legacySubjectId: '123',
         },
@@ -821,7 +821,7 @@ describe('EM Datastore API Client', () => {
     })
 
     it('should fetch an empty list of service details', async () => {
-      const expectedResult: AlcoholMonitoringServiceDetail[] = []
+      const expectedResult: AlcoholMonitoringServiceDetails[] = []
 
       fakeClient.get(`/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(200, expectedResult)
 

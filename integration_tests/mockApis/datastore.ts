@@ -13,10 +13,10 @@ export { stubIntegrityGetSuspensionOfVisits } from './datastore/integrity/getSus
 
 export { stubAlcoholMonitoringGetOrderSummary } from './datastore/alcoholMonitoring/getOrderSummary'
 export { stubAlcoholMonitoringGetOrderDetails } from './datastore/alcoholMonitoring/getOrderDetails'
-// export { stubAlcoholMonitoringGetEquipmentDetails } from './datastore/alcoholMonitoring/getEquipmentDetails'
+export { stubAlcoholMonitoringGetEquipmentDetails } from './datastore/alcoholMonitoring/getEquipmentDetails'
 // export { stubAlcoholMonitoringGetMonitoringEvents } from './datastore/alcoholMonitoring/getMonitoringEvents'
 // export { stubAlcoholMonitoringGetContactEvents } from './datastore/alcoholMonitoring/getContactEvents'
 // export { stubAlcoholMonitoringGetIncidentEvents } from './datastore/alcoholMonitoring/getIncidentEvents'
 // export { stubAlcoholMonitoringGetViolationEvents } from './datastore/alcoholMonitoring/getViolationEvents'
 export { stubAlcoholMonitoringGetVisitDetails } from './datastore/alcoholMonitoring/getVisitDetails'
-// export { stubAlcoholMonitoringGetServiceDetails } from './datastore/alcoholMonitoring/getServiceDetails'
+export { stubAlcoholMonitoringGetServiceDetails } from './datastore/alcoholMonitoring/getServiceDetails'

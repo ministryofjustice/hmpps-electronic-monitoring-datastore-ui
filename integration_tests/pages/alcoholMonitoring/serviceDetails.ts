@@ -1,6 +1,7 @@
 import AppPage from '../appPage'
 import PageElement from '../PageElement'
 import paths from '../../../server/constants/paths'
+import TimelineComponent from '../components/timelineComponent'
 
 export default class ServiceDetailsPage extends AppPage {
   constructor() {
@@ -11,16 +12,8 @@ export default class ServiceDetailsPage extends AppPage {
     return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
   }
 
-  get curfewTimetable(): PageElement {
-    return cy.get('.moj-timeline')
-  }
-
-  get curfewTimetableItems(): PageElement {
-    return cy.get('.moj-timeline').find('.moj-timeline__item')
-  }
-
-  getCurfewTimetableItem(index: number): PageElement {
-    return cy.get('.moj-timeline').find('.moj-timeline__item').eq(index)
+  get timeline(): TimelineComponent {
+    return new TimelineComponent()
   }
 
   get noResultsHeading(): PageElement {

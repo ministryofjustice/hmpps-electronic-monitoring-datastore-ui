@@ -33,7 +33,7 @@ context('Alcohol monitoring Order details navigation', () => {
     Page.verifyOnPage(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
   })
 
-  it.skip('Contains visits details button and navigates to expected page', () => {
+  it('Contains visits details button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetVisitDetails', {
       httpStatus: 200,
       legacySubjectId,
@@ -45,7 +45,7 @@ context('Alcohol monitoring Order details navigation', () => {
     Page.verifyOnPage(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
   })
 
-  it.skip('Contains equipment details button and navigates to expected page', () => {
+  it('Contains equipment details button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetEquipmentDetails', {
       httpStatus: 200,
       legacySubjectId,
@@ -81,7 +81,7 @@ context('Alcohol monitoring Order details navigation', () => {
     Page.verifyOnPage(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
   })
 
-  it.skip('Contains services button and navigates to expected page', () => {
+  it('Contains services button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetServiceDetails', {
       httpStatus: 200,
       legacySubjectId,
