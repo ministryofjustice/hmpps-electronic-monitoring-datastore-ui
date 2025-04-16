@@ -112,7 +112,7 @@ export default class timelineComponent {
 
       cy.get('body', { log: false }).then($body => {
         const $el = $body.find(this.className)
-        cy.wrap($el.length ? $el : undefined, { log: false }).as(`${this.elementCacheId}-element`)
+        return cy.wrap($el.length ? $el : undefined, { log: false }).as(`${this.elementCacheId}-element`)
       })
     }
 
@@ -141,5 +141,9 @@ export default class timelineComponent {
   shouldNotBeVisible() {
     this.element.should('exist')
     this.element.should('not.be.visible')
+  }
+
+  shouldHaveCount(numberOfItems: number) {
+    this.items.should('have.length', numberOfItems)
   }
 }
