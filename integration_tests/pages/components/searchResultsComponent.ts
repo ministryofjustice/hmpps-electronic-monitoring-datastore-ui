@@ -102,4 +102,8 @@ export default class SearchResultsComponent {
   shouldHaveResults(results: Array<Array<string>>) {
     results.forEach((columns, index) => this.shouldHaveResult(index, columns))
   }
+
+  shouldHaveCount(numberOfResults: number) {
+    this.results.should('have.length', numberOfResults)
+  }
 }
