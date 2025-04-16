@@ -137,6 +137,14 @@ context('Alcohol monitoring search results', () => {
           '8 February 2019',
           '8 February 2020',
         ],
+        [
+          'AAMR200',
+          'BILL SMITH Alias: Plato',
+          'First line of address Second line of address Third line of address Postcode',
+          '1 January 1971',
+          '8 February 2020',
+          '8 February 2021',
+        ],
       ])
     })
 
