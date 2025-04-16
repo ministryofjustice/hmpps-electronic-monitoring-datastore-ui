@@ -8,18 +8,20 @@ import { AlcoholMonitoringOrderSummary } from '../../../server/models/alcoholMon
 context('Alcohol Monitoring Order Summary', () => {
   const legacySubjectId = '1234567'
 
+  beforeEach(() => {
+    cy.task('reset')
+    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+
+    cy.signIn()
+  })
+
   describe('General page content', () => {
     beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
       cy.task('stubAlcoholMonitoringGetOrderSummary', {
         httpStatus: 200,
         legacySubjectId,
         body: {} as AlcoholMonitoringOrderSummary,
       })
-
-      cy.signIn()
     })
 
     it('can see their user name', () => {
@@ -50,11 +52,8 @@ context('Alcohol Monitoring Order Summary', () => {
     })
   })
 
-  describe('Order information details', () => {
-    beforeEach(() => {
-      cy.task('reset')
-      cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
+  describe('Order information', () => {
+    it('Displays a summary of the order', () => {
       cy.task('stubAlcoholMonitoringGetOrderSummary', {
         httpStatus: 200,
         legacySubjectId,
@@ -74,20 +73,33 @@ context('Alcohol Monitoring Order Summary', () => {
         } as AlcoholMonitoringOrderSummary,
       })
 
-      cy.signIn()
+      const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
+
+      page.summaryDetails.shouldHaveItem('Legacy Subject ID', legacySubjectId)
+      page.summaryDetails.shouldHaveItem('Legacy Order ID', legacySubjectId)
+      page.summaryDetails.shouldHaveItem('Name', 'Testopher Fakesmith')
+      page.summaryDetails.shouldHaveItem('Alias', 'an old tv show')
+      page.summaryDetails.shouldHaveItem('Date of birth', '1 January 1950')
+      page.summaryDetails.shouldHaveItem('Primary address', '123 Fourth StreetFivetonSixbury7AB 8CD')
+      page.summaryDetails.shouldHaveItem('Order start date', '1 January 2010')
+      page.summaryDetails.shouldHaveItem('Order end date', '1 January 2030')
     })
 
-    it('Display a summary of the order', () => {
-      const summaryPage = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
+    it('Summary can be empty and still display', () => {
+      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [
+          {
+            legacySubjectId: 'AAMR321',
+            legacyOrderId: 'OMR123',
+          } as AlcoholMonitoringOrderSummary,
+        ],
+      })
 
-      summaryPage.summaryDetails.shouldHaveItem('Legacy Subject ID', legacySubjectId)
-      summaryPage.summaryDetails.shouldHaveItem('Legacy Order ID', legacySubjectId)
-      summaryPage.summaryDetails.shouldHaveItem('Name', 'Testopher Fakesmith')
-      summaryPage.summaryDetails.shouldHaveItem('Alias', 'an old tv show')
-      summaryPage.summaryDetails.shouldHaveItem('Date of birth', '1 January 1950')
-      summaryPage.summaryDetails.shouldHaveItem('Primary address', '123 Fourth StreetFivetonSixbury7AB 8CD')
-      summaryPage.summaryDetails.shouldHaveItem('Order start date', '1 January 2010')
-      summaryPage.summaryDetails.shouldHaveItem('Order end date', '1 January 2030')
+      const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
+
+      page.summaryDetails.shouldBeVisible()
     })
   })
 })

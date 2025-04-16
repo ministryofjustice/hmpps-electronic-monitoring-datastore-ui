@@ -160,5 +160,22 @@ context('Alcohol Monitoring service details', () => {
       page.timeline.item(1).description.shouldHaveItem('HMU serial number', 'hmu-04')
       page.timeline.item(1).description.shouldHaveItem('Device serial number', 'device-04')
     })
+
+    it('Details can be empty and still display', () => {
+      cy.task('stubAlcoholMonitoringGetServiceDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [
+          {
+            legacySubjectId: 'AAMR321',
+            legacyOrderId: 'OMR123',
+          } as AlcoholMonitoringServiceDetails,
+        ],
+      })
+
+      const page = Page.visit(AlcoholMonitoringServiceDetailsPage, { legacySubjectId })
+
+      page.timeline.item(0).shouldBeVisible()
+    })
   })
 })

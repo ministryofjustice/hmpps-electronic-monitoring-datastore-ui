@@ -82,8 +82,8 @@ context('Alcohol Monitoring Visit Details', () => {
         ],
       })
 
-      const suspensions = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
-      suspensions.timeline.shouldBeVisible()
+      const page = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+      page.timeline.shouldBeVisible()
     })
 
     it('First item includes expected details', () => {
@@ -111,27 +111,25 @@ context('Alcohol Monitoring Visit Details', () => {
         ],
       })
 
-      const visitDetails = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+      const page = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
 
-      visitDetails.timeline.item(0).shouldHaveTitle('TEST_VISIT_TYPE')
-      visitDetails.timeline.item(0).shouldHaveDate('1 Jan 2001 at 12am')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit ID', '301')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit types', 'TEST_VISIT_TYPE')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit attempt', 'attempt 2')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Date visit raised', '1 January 2001')
-      visitDetails.timeline
+      page.timeline.item(0).shouldHaveTitle('TEST_VISIT_TYPE')
+      page.timeline.item(0).shouldHaveDate('1 Jan 2001 at 12am')
+      page.timeline.item(0).description.shouldHaveItem('Visit ID', '301')
+      page.timeline.item(0).description.shouldHaveItem('Visit types', 'TEST_VISIT_TYPE')
+      page.timeline.item(0).description.shouldHaveItem('Visit attempt', 'attempt 2')
+      page.timeline.item(0).description.shouldHaveItem('Date visit raised', '1 January 2001')
+      page.timeline
         .item(0)
         .description.shouldHaveItem('Visit address', 'address line 1 address line 2 address line 3 postcode')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Vist notes', 'TEST_NOTES')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit outcome', 'TEST_OUTCOME')
-      visitDetails.timeline
-        .item(0)
-        .description.shouldHaveItem('Actual work start datetime', '2 February 2002 at 1:01am')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Actual work end datetime', '2 February 2002 at 2:02am')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit rejection reason', 'rejection reason')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit rejection description', 'rejection description')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit cancel reason', 'cancel reason')
-      visitDetails.timeline.item(0).description.shouldHaveItem('Visit cancel description', 'cancel description')
+      page.timeline.item(0).description.shouldHaveItem('Vist notes', 'TEST_NOTES')
+      page.timeline.item(0).description.shouldHaveItem('Visit outcome', 'TEST_OUTCOME')
+      page.timeline.item(0).description.shouldHaveItem('Actual work start datetime', '2 February 2002 at 1:01am')
+      page.timeline.item(0).description.shouldHaveItem('Actual work end datetime', '2 February 2002 at 2:02am')
+      page.timeline.item(0).description.shouldHaveItem('Visit rejection reason', 'rejection reason')
+      page.timeline.item(0).description.shouldHaveItem('Visit rejection description', 'rejection description')
+      page.timeline.item(0).description.shouldHaveItem('Visit cancel reason', 'cancel reason')
+      page.timeline.item(0).description.shouldHaveItem('Visit cancel description', 'cancel description')
     })
 
     it('Second item includes expected details', () => {
@@ -176,28 +174,44 @@ context('Alcohol Monitoring Visit Details', () => {
         ],
       })
 
-      const visitDetails = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
-      visitDetails.timeline.item(0).shouldBeVisible()
+      const page = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+      page.timeline.item(0).shouldBeVisible()
 
-      visitDetails.timeline.item(1).shouldHaveTitle('TEST_VISIT_TYPE')
-      visitDetails.timeline.item(1).shouldHaveDate('1 Jan 2001 at 12am')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit ID', '303')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit types', 'TEST_VISIT_TYPE')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit attempt', 'attempt 4')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Date visit raised', '1 January 2001')
-      visitDetails.timeline
+      page.timeline.item(1).shouldHaveTitle('TEST_VISIT_TYPE')
+      page.timeline.item(1).shouldHaveDate('1 Jan 2001 at 12am')
+      page.timeline.item(1).description.shouldHaveItem('Visit ID', '303')
+      page.timeline.item(1).description.shouldHaveItem('Visit types', 'TEST_VISIT_TYPE')
+      page.timeline.item(1).description.shouldHaveItem('Visit attempt', 'attempt 4')
+      page.timeline.item(1).description.shouldHaveItem('Date visit raised', '1 January 2001')
+      page.timeline
         .item(1)
         .description.shouldHaveItem('Visit address', 'address line 1 address line 2 address line 3 postcode')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Vist notes', 'TEST_NOTES')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit outcome', 'TEST_OUTCOME')
-      visitDetails.timeline
-        .item(0)
-        .description.shouldHaveItem('Actual work start datetime', '2 February 2002 at 1:01am')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Actual work end datetime', '2 February 2002 at 2:02am')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit rejection reason', 'rejection reason')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit rejection description', 'rejection description')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit cancel reason', 'cancel reason')
-      visitDetails.timeline.item(1).description.shouldHaveItem('Visit cancel description', 'cancel description')
+      page.timeline.item(1).description.shouldHaveItem('Vist notes', 'TEST_NOTES')
+      page.timeline.item(1).description.shouldHaveItem('Visit outcome', 'TEST_OUTCOME')
+      page.timeline.item(0).description.shouldHaveItem('Actual work start datetime', '2 February 2002 at 1:01am')
+      page.timeline.item(1).description.shouldHaveItem('Actual work end datetime', '2 February 2002 at 2:02am')
+      page.timeline.item(1).description.shouldHaveItem('Visit rejection reason', 'rejection reason')
+      page.timeline.item(1).description.shouldHaveItem('Visit rejection description', 'rejection description')
+      page.timeline.item(1).description.shouldHaveItem('Visit cancel reason', 'cancel reason')
+      page.timeline.item(1).description.shouldHaveItem('Visit cancel description', 'cancel description')
+    })
+
+    it('Details can be empty and still display', () => {
+      cy.task('stubAlcoholMonitoringGetVisitDetails', {
+        httpStatus: 200,
+        legacySubjectId,
+        body: [
+          {
+            legacySubjectId: 'AAMR321',
+            legacyOrderId: 'OMR123',
+          } as AlcoholMonitoringVisitDetails,
+        ],
+      })
+
+      const page = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+
+      page.timeline.shouldHaveCount(1)
+      page.timeline.item(0).shouldBeVisible()
     })
   })
 })
