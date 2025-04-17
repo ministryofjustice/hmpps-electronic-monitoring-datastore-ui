@@ -33,7 +33,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
   let res: Response
   const next = jest.fn()
 
-  const testOrderId = 123456789
+  const testOrderId = '123456789'
 
   beforeEach(() => {
     alcoholMonitoringEventHistoryController = new AlcoholMonitoringEventHistoryController(

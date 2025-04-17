@@ -24,7 +24,7 @@ export default class AlcoholMonitoringEventHistoryController {
     })
 
     const viewModel = AlcoholMonitoringEventHistoryViewModel.construct(
-      parseInt(legacySubjectId, 10),
+      legacySubjectId,
       `/alcohol-monitoring/${legacySubjectId}`,
       events,
     )
