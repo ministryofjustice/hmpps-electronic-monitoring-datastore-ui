@@ -69,11 +69,7 @@ context('Alcohol monitoring Equipment details navigation', () => {
     Page.verifyOnPage(AlcoholMonitoringEquipmentDetailsPage, { legacySubjectId })
   })
 
-  it.skip('Contains all event history button and navigates to expected page', () => {
-    cy.task('stubAlcoholMonitoringGetMonitoringEvents', {
-      httpStatus: 200,
-      legacySubjectId,
-    })
+  it('Contains all event history button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetIncidentEvents', {
       httpStatus: 200,
       legacySubjectId,

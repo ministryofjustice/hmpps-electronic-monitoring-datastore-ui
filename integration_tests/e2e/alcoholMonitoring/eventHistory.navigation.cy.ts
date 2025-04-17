@@ -6,58 +6,13 @@ import AlcoholMonitoringEquipmentDetailsPage from '../../pages/alcoholMonitoring
 import AlcoholMonitoringEventHistoryPage from '../../pages/alcoholMonitoring/eventHistory'
 import AlcoholMonitoringServiceDetailsPage from '../../pages/alcoholMonitoring/serviceDetails'
 
-context('Alcohol monitoring Visit details navigation', () => {
+context('Alcohol monitoring Order details navigation', () => {
   const legacySubjectId = '1234567'
 
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-    cy.task('stubAlcoholMonitoringGetVisitDetails', {
-      httpStatus: 200,
-      legacySubjectId,
-    })
-
-    cy.signIn()
-  })
-
-  it('Contains order summary button and navigates to expected page', () => {
-    cy.task('stubAlcoholMonitoringGetOrderSummary', {
-      httpStatus: 200,
-      legacySubjectId,
-    })
-
-    const summaryPage = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
-
-    summaryPage.subNavigationLink('Order summary').click()
-    Page.verifyOnPage(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
-  })
-
-  it('Contains order details button and navigates to expected page', () => {
-    cy.task('stubAlcoholMonitoringGetOrderDetails', {
-      httpStatus: 200,
-      legacySubjectId,
-    })
-
-    const summaryPage = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
-
-    summaryPage.subNavigationLink('Order details').click()
-    Page.verifyOnPage(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
-  })
-
-  it('Contains equipment details button and navigates to expected page', () => {
-    cy.task('stubAlcoholMonitoringGetEquipmentDetails', {
-      httpStatus: 200,
-      legacySubjectId,
-    })
-
-    const summaryPage = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
-
-    summaryPage.subNavigationLink('Equipment details').click()
-    Page.verifyOnPage(AlcoholMonitoringEquipmentDetailsPage, { legacySubjectId })
-  })
-
-  it('Contains all event history button and navigates to expected page', () => {
     cy.task('stubAlcoholMonitoringGetIncidentEvents', {
       httpStatus: 200,
       legacySubjectId,
@@ -71,10 +26,55 @@ context('Alcohol monitoring Visit details navigation', () => {
       legacySubjectId,
     })
 
-    const summaryPage = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+    cy.signIn()
+  })
 
-    summaryPage.subNavigationLink('All event history').click()
-    Page.verifyOnPage(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
+  it('Contains order summary button and navigates to expected page', () => {
+    cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      httpStatus: 200,
+      legacySubjectId,
+    })
+
+    const summaryPage = Page.visit(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
+
+    summaryPage.subNavigationLink('Order summary').click()
+    Page.verifyOnPage(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
+  })
+
+  it('Contains order details button and navigates to expected page', () => {
+    cy.task('stubAlcoholMonitoringGetOrderDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+    })
+
+    const summaryPage = Page.visit(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
+
+    summaryPage.subNavigationLink('Order details').click()
+    Page.verifyOnPage(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
+  })
+
+  it('Contains visits details button and navigates to expected page', () => {
+    cy.task('stubAlcoholMonitoringGetVisitDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+    })
+
+    const summaryPage = Page.visit(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
+
+    summaryPage.subNavigationLink('Visit details').click()
+    Page.verifyOnPage(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+  })
+
+  it('Contains equipment details button and navigates to expected page', () => {
+    cy.task('stubAlcoholMonitoringGetEquipmentDetails', {
+      httpStatus: 200,
+      legacySubjectId,
+    })
+
+    const summaryPage = Page.visit(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
+
+    summaryPage.subNavigationLink('Equipment details').click()
+    Page.verifyOnPage(AlcoholMonitoringEquipmentDetailsPage, { legacySubjectId })
   })
 
   it('Contains services button and navigates to expected page', () => {
@@ -83,7 +83,7 @@ context('Alcohol monitoring Visit details navigation', () => {
       legacySubjectId,
     })
 
-    const summaryPage = Page.visit(AlcoholMonitoringVisitDetailsPage, { legacySubjectId })
+    const summaryPage = Page.visit(AlcoholMonitoringEventHistoryPage, { legacySubjectId })
 
     summaryPage.subNavigationLink('Services').click()
     Page.verifyOnPage(AlcoholMonitoringServiceDetailsPage, { legacySubjectId })
