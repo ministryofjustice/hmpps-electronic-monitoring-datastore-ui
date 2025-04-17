@@ -11,7 +11,7 @@ import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
 import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
 import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
 import { AlcoholMonitoringServiceDetails } from '../models/alcoholMonitoring/serviceDetails'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import { IntegritySuspensionOfVisitsEvent } from '../models/integrity/suspensionOfVisits'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
 import { IntegrityContactEvent } from '../models/integrity/contactEvents'
 import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
@@ -509,7 +509,7 @@ describe('EM Datastore API Client', () => {
           startTime: null,
           endDate: null,
         },
-      ] as SuspensionOfVisitsEvent[]
+      ] as IntegritySuspensionOfVisitsEvent[]
       const expectedResult = fakeResponse
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/suspension-of-visits`).reply(200, fakeResponse)
 

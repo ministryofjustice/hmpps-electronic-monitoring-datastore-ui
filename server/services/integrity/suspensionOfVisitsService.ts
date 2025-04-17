@@ -1,13 +1,13 @@
-import logger from '../../logger'
-import getSanitisedError from '../sanitisedError'
+import logger from '../../../logger'
+import getSanitisedError from '../../sanitisedError'
 
-import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import { HmppsAuthClient, RestClientBuilder } from '../data'
+import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import { HmppsAuthClient, RestClientBuilder } from '../../data'
 
-import { OrderRequest } from '../types/OrderRequest'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import { OrderRequest } from '../../types/OrderRequest'
+import { IntegritySuspensionOfVisitsEvent } from '../../models/integrity/suspensionOfVisits'
 
-export default class EmDatastoreSuspensionOfVisitsService {
+export default class IntegritySuspensionOfVisitsService {
   private readonly emDatastoreApiClient: EmDatastoreApiClient
 
   constructor(
@@ -17,7 +17,7 @@ export default class EmDatastoreSuspensionOfVisitsService {
     this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
   }
 
-  async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
+  async getSuspensionOfVisits(input: OrderRequest): Promise<IntegritySuspensionOfVisitsEvent[]> {
     try {
       this.emDatastoreApiClient.updateToken(input.userToken)
       return await this.emDatastoreApiClient.getSuspensionOfVisits(input)

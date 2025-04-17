@@ -8,7 +8,7 @@ import IntegrityDetailsService from './integrity/detailsService'
 import AlcoholMonitoringDetailsService from './alcoholMonitoring/detailsService'
 import IntegrityEventHistoryService from './integrity/eventHistoryService'
 import AlcoholMonitoringEventHistoryService from './alcoholMonitoring/eventHistoryService'
-import EmDatastoreSuspensionOfVisitsService from './emDatastoreSuspensionOfVisitsService'
+import IntegritySuspensionOfVisitsService from './integrity/suspensionOfVisitsService'
 import IntegrityEquipmentDetailsService from './integrity/equipmentDetailsService'
 import AlcoholMonitoringEquipmentDetailsService from './alcoholMonitoring/equipmentDetailsService'
 import IntegrityVisitDetailsService from './integrity/visitDetailsService'
@@ -38,7 +38,7 @@ export const services = () => {
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
-  const emDatastoreSuspensionOfVisitsService = new EmDatastoreSuspensionOfVisitsService(
+  const emDatastoreSuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(
     emDatastoreApiClientFactory,
     hmppsAuthClient,
   )
@@ -96,7 +96,7 @@ export {
   AlcoholMonitoringSummaryService,
   IntegrityEventHistoryService,
   AlcoholMonitoringEventHistoryService,
-  EmDatastoreSuspensionOfVisitsService,
+  IntegritySuspensionOfVisitsService as EmDatastoreSuspensionOfVisitsService,
   IntegrityEquipmentDetailsService,
   AlcoholMonitoringEquipmentDetailsService,
   IntegrityVisitDetailsService,
