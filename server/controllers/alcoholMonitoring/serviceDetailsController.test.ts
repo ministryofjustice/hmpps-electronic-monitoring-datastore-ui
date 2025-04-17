@@ -41,7 +41,7 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
   it('should render page with no data', async () => {
     const expectedViewModel = {
       legacySubjectId: testOrderId,
-      backUrl: `/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
       serviceDetails: [] as AlcoholMonitoringServiceDetails[],
     }
 
@@ -51,7 +51,7 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
 
     expect(AlcoholMonitoringServiceDetailsViewModel.construct).toHaveBeenCalledWith(
       testOrderId,
-      `/alcohol-monitoring/${testOrderId}`,
+      `/orders/alcohol-monitoring/${testOrderId}`,
       [],
     )
     expect(AlcoholMonitoringServiceDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
@@ -82,7 +82,7 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
     }
 
     const expectedViewModel = {
-      backUrl: `/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
       serviceDetails: [
         {
           isoDateTime: eventDateTime,

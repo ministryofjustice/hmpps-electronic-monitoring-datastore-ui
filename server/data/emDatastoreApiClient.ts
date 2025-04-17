@@ -39,7 +39,7 @@ export default class EmDatastoreApiClient {
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     const { data } = input
     return this.restClient.post<QueryExecutionResponse>({
-      path: '/integrity/orders',
+      path: '/orders',
       data,
     })
   }
@@ -47,7 +47,7 @@ export default class EmDatastoreApiClient {
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     const { queryExecutionId } = request
     return this.restClient.get<Order[]>({
-      path: `/integrity/orders?id=${queryExecutionId}`,
+      path: `/orders?id=${queryExecutionId}`,
     })
   }
 
@@ -60,126 +60,126 @@ export default class EmDatastoreApiClient {
   async getIntegritySummary(input: OrderRequest): Promise<IntegrityOrderSummary> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityOrderSummary>({
-      path: `/integrity/orders/${legacySubjectId}`,
+      path: `/orders/integrity/${legacySubjectId}`,
     })
   }
 
   async getAlcoholMonitoringSummary(input: OrderRequest): Promise<AlcoholMonitoringOrderSummary> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringOrderSummary>({
-      path: `/alcohol-monitoring/${legacySubjectId}/information`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/information`,
     })
   }
 
   async getIntegrityDetails(input: OrderRequest): Promise<IndegrityOrderDetails> {
     const { legacySubjectId } = input
     return this.restClient.get<IndegrityOrderDetails>({
-      path: `/integrity/orders/${legacySubjectId}/details`,
+      path: `/orders/integrity/${legacySubjectId}/details`,
     })
   }
 
   async getAlcoholMonitoringDetails(input: OrderRequest): Promise<AlcoholMonitoringOrderDetails> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringOrderDetails>({
-      path: `/alcohol-monitoring/${legacySubjectId}/details`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/details`,
     })
   }
 
   async getIntegrityMonitoringEvents(input: OrderRequest): Promise<IntegrityMonitoringEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityMonitoringEvent[]>({
-      path: `/integrity/orders/${legacySubjectId}/monitoring-events`,
+      path: `/orders/integrity/${legacySubjectId}/monitoring-events`,
     })
   }
 
   async getIntegrityIncidentEvents(input: OrderRequest): Promise<IntegrityIncidentEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityIncidentEvent[]>({
-      path: `/integrity/orders/${legacySubjectId}/incident-events`,
+      path: `/orders/integrity/${legacySubjectId}/incident-events`,
     })
   }
 
   async getAlcoholMonitoringIncidentEvents(input: OrderRequest): Promise<AlcoholMonitoringIncidentEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringIncidentEvent[]>({
-      path: `/alcohol-monitoring/${legacySubjectId}/incident-events`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/incident-events`,
     })
   }
 
   async getIntegrityViolationEvents(input: OrderRequest): Promise<IntegrityViolationEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityViolationEvent[]>({
-      path: `/integrity/orders/${legacySubjectId}/violation-events`,
+      path: `/orders/integrity/${legacySubjectId}/violation-events`,
     })
   }
 
   async getAlcoholMonitoringViolationEvents(input: OrderRequest): Promise<AlcoholMonitoringViolationEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringViolationEvent[]>({
-      path: `/alcohol-monitoring/${legacySubjectId}/violation-events`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/violation-events`,
     })
   }
 
   async getIntegrityContactEvents(input: OrderRequest): Promise<IntegrityContactEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityContactEvent[]>({
-      path: `/integrity/orders/${legacySubjectId}/contact-events`,
+      path: `/orders/integrity/${legacySubjectId}/contact-events`,
     })
   }
 
   async getAlcoholMonitoringContactEvents(input: OrderRequest): Promise<AlcoholMonitoringContactEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringContactEvent[]>({
-      path: `/alcohol-monitoring/${legacySubjectId}/contact-events`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/contact-events`,
     })
   }
 
   async getIntegrityEquipmentDetails(input: OrderRequest): Promise<IntegrityEquipmentDetails[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityEquipmentDetails[]>({
-      path: `/integrity/orders/${legacySubjectId}/equipment-details`,
+      path: `/orders/integrity/${legacySubjectId}/equipment-details`,
     })
   }
 
   async getAlcoholMonitoringEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetails[]> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringEquipmentDetails[]>({
-      path: `/alcohol-monitoring/${legacySubjectId}/equipment-details`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`,
     })
   }
 
   async getIntegrityVisitDetails(input: OrderRequest): Promise<IntegrityVisitDetails[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityVisitDetails[]>({
-      path: `/integrity/orders/${legacySubjectId}/visit-details`,
+      path: `/orders/integrity/${legacySubjectId}/visit-details`,
     })
   }
 
   async getAlcoholMonitoringVisitDetails(input: OrderRequest): Promise<AlcoholMonitoringVisitDetails[]> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringVisitDetails[]>({
-      path: `/alcohol-monitoring/${legacySubjectId}/visit-details`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/visit-details`,
     })
   }
 
   async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
     const { legacySubjectId } = input
     return this.restClient.get<SuspensionOfVisitsEvent[]>({
-      path: `/integrity/orders/${legacySubjectId}/suspension-of-visits`,
+      path: `/orders/integrity/${legacySubjectId}/suspension-of-visits`,
     })
   }
 
   async getIntegrityServiceDetails(input: OrderRequest): Promise<IntegrityServiceDetail[]> {
     const { legacySubjectId } = input
     return this.restClient.get<IntegrityServiceDetail[]>({
-      path: `/integrity/orders/${legacySubjectId}/service-details`,
+      path: `/orders/integrity/${legacySubjectId}/service-details`,
     })
   }
 
   async getAlcoholMonitoringServiceDetails(input: OrderRequest): Promise<AlcoholMonitoringServiceDetails[]> {
     const { legacySubjectId } = input
     return this.restClient.get<AlcoholMonitoringServiceDetails[]>({
-      path: `/alcohol-monitoring/${legacySubjectId}/services`,
+      path: `/orders/alcohol-monitoring/${legacySubjectId}/services`,
     })
   }
 }

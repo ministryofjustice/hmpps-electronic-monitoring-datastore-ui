@@ -25,7 +25,7 @@ export default class AlcoholMonitoringServiceDetailsController {
 
     const viewModel = AlcoholMonitoringServiceDetailsModel.construct(
       legacySubjectId,
-      `/alcohol-monitoring/${legacySubjectId}`,
+      `/orders/alcohol-monitoring/${legacySubjectId}`,
       serviceDetails,
     )
 

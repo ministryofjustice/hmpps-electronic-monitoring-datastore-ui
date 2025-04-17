@@ -51,7 +51,7 @@ export const stubIntegrityGetOrderSummary = (
   stubFor({
     request: {
       method: 'GET',
-      urlPattern: `/datastore/integrity/orders/${options.legacySubjectId}`,
+      urlPattern: `/datastore/orders/integrity/${options.legacySubjectId}`,
     },
     response: {
       status: options.httpStatus,

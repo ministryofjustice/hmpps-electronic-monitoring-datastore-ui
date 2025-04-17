@@ -20,7 +20,7 @@ export const stubIntegrityGetContactEvents = (
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/integrity/orders/${options.legacySubjectId}/contact-events`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}/contact-events`,
     },
     response: {
       status: options.httpStatus,
