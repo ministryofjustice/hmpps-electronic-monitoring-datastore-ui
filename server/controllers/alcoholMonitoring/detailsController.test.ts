@@ -102,7 +102,7 @@ describe('AlcoholMonitoringDetailsController', () => {
 
       const expectedPageData = {
         legacySubjectId: expectedOrderId,
-        backUrl: `/alcohol-monitoring/${expectedOrderId}`,
+        backUrl: `/orders/alcohol-monitoring/${expectedOrderId}`,
         deviceWearerDetails: {
           legacySubjectId: expectedOrderId,
           firstName: 'Testopher',

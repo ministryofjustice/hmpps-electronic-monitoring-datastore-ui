@@ -23,7 +23,7 @@ export const stubAlcoholMonitoringGetServiceDetails = (options: GetServiceDetail
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/alcohol-monitoring/${options.legacySubjectId}/services`,
+      url: `/datastore/orders/alcohol-monitoring/${options.legacySubjectId}/services`,
     },
     response: {
       status: options.httpStatus,
