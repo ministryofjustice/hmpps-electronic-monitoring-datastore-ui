@@ -28,7 +28,7 @@ const defaultOrderDetails = {
 
 type GetOrderDetailsStubOptions = {
   httpStatus: number
-  legacySubjectId: number
+  legacySubjectId: string
   body?: AlcoholMonitoringOrderDetails
 }
 

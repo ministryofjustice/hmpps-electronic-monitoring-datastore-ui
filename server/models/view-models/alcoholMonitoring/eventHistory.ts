@@ -22,13 +22,13 @@ export type AlcoholMonitoringEventHistoryEventModel = {
 }
 
 export type AlcoholMonitoringEventHistoryViewModel = {
-  legacySubjectId: number
+  legacySubjectId: string
   eventHistory: AlcoholMonitoringEventHistoryEventModel[]
   backUrl: string
 }
 
 const createViewModelFromApiDto = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   eventHistory: (AlcoholMonitoringContactEvent | AlcoholMonitoringIncidentEvent | AlcoholMonitoringViolationEvent)[],
 ): AlcoholMonitoringEventHistoryViewModel => ({
@@ -48,7 +48,7 @@ const createViewModelFromApiDto = (
 })
 
 const construct = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   eventHistory: (
     | AlcoholMonitoringContactEvent
