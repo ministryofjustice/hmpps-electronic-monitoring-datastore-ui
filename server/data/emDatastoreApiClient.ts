@@ -14,7 +14,7 @@ import { IntegrityContactEvent } from '../models/integrity/contactEvents'
 import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
 import { IntegrityViolationEvent } from '../models/integrity/violationEvents'
-import { SuspensionOfVisitsEvent } from '../models/suspensionOfVisits'
+import { IntegritySuspensionOfVisitsEvent } from '../models/integrity/suspensionOfVisits'
 
 import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
@@ -162,9 +162,9 @@ export default class EmDatastoreApiClient {
     })
   }
 
-  async getSuspensionOfVisits(input: OrderRequest): Promise<SuspensionOfVisitsEvent[]> {
+  async getSuspensionOfVisits(input: OrderRequest): Promise<IntegritySuspensionOfVisitsEvent[]> {
     const { legacySubjectId } = input
-    return this.restClient.get<SuspensionOfVisitsEvent[]>({
+    return this.restClient.get<IntegritySuspensionOfVisitsEvent[]>({
       path: `/orders/integrity/${legacySubjectId}/suspension-of-visits`,
     })
   }

@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
 import AuditService from '../../services/auditService'
-import EmDatastoreSuspensionOfVisitsService from '../../services/emDatastoreSuspensionOfVisitsService'
+import IntegritySuspensionOfVisitsService from '../../services/integrity/suspensionOfVisitsService'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { SuspensionOfVisitsEvent } from '../../models/suspensionOfVisits'
+import { IntegritySuspensionOfVisitsEvent } from '../../models/integrity/suspensionOfVisits'
 import SuspensionOfVisitsView, {
-  SuspensionOfVisitsViewEvent,
-  SuspensionOfVisitsViewModel,
-} from '../../models/view-models/suspensionOfVisits'
+  IntegritySuspensionOfVisitsViewEvent,
+  IntegritySuspensionOfVisitsViewModel,
+} from '../../models/view-models/integrity/suspensionOfVisits'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/summaryService')
@@ -15,7 +15,7 @@ jest.mock('../../services/integrity/summaryService')
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreSuspensionOfVisitsService = {
   getSuspensionOfVisits: jest.fn(),
-} as unknown as EmDatastoreSuspensionOfVisitsService
+} as unknown as IntegritySuspensionOfVisitsService
 
 jest.spyOn(SuspensionOfVisitsView, 'construct')
 
@@ -27,7 +27,7 @@ describe('SuspensionOfVisitsController', () => {
 
   const testOrderId = 1234321
 
-  const createEvent = (legacySubjectId: number, time: string, dateTime: string): SuspensionOfVisitsEvent => {
+  const createEvent = (legacySubjectId: number, time: string, dateTime: string): IntegritySuspensionOfVisitsEvent => {
     return {
       legacySubjectId,
       suspensionOfVisits: 'Yes',
@@ -38,7 +38,7 @@ describe('SuspensionOfVisitsController', () => {
     }
   }
 
-  const createViewEvent = (dateTime: string, time: string): SuspensionOfVisitsViewEvent => {
+  const createViewEvent = (dateTime: string, time: string): IntegritySuspensionOfVisitsViewEvent => {
     return {
       isoDateTime: dateTime,
       eventType: 'suspension-of-visits',
@@ -52,8 +52,8 @@ describe('SuspensionOfVisitsController', () => {
 
   const createViewData = (
     legacySubjectId: number,
-    events: SuspensionOfVisitsViewEvent[],
-  ): SuspensionOfVisitsViewModel => {
+    events: IntegritySuspensionOfVisitsViewEvent[],
+  ): IntegritySuspensionOfVisitsViewModel => {
     return {
       legacySubjectId,
       backUrl: `/integrity/${legacySubjectId}`,
@@ -76,7 +76,7 @@ describe('SuspensionOfVisitsController', () => {
   it('should render the page with no data', async () => {
     const expectedViewModel = {
       backUrl: `/integrity/${testOrderId}`,
-      events: [] as SuspensionOfVisitsEvent[],
+      events: [] as IntegritySuspensionOfVisitsEvent[],
       legacySubjectId: testOrderId,
     }
     emDatastoreSuspensionOfVisitsService.getSuspensionOfVisits = jest.fn().mockResolvedValue([])
