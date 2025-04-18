@@ -1,25 +1,17 @@
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
-import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
+import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { AlcoholMonitoringEquipmentDetails } from '../../models/alcoholMonitoring/equipmentDetails'
 
 export default class AlcoholMonitoringEquipmentDetailsService {
-  private readonly emDatastoreApiClient: EmDatastoreApiClient
-
-  constructor(
-    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
-    private readonly hmppsAuthClient: HmppsAuthClient,
-  ) {
-    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
-  }
+  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetails[]> {
     try {
-      this.emDatastoreApiClient.updateToken(input.userToken)
-      return await this.emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(input)
+      return await this.emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(input, input.userToken)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of equipment details'
       const sanitisedError = getSanitisedError(error)

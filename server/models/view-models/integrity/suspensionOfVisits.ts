@@ -1,6 +1,6 @@
-import { SuspensionOfVisitsEvent } from '../suspensionOfVisits'
+import { IntegritySuspensionOfVisitsEvent } from '../../integrity/suspensionOfVisits'
 
-export type SuspensionOfVisitsViewEvent = {
+export type IntegritySuspensionOfVisitsViewEvent = {
   isoDateTime: string
   eventType: string
   suspensionOfVisits: string
@@ -10,13 +10,13 @@ export type SuspensionOfVisitsViewEvent = {
   endDate: string
 }
 
-export type SuspensionOfVisitsViewModel = {
+export type IntegritySuspensionOfVisitsViewModel = {
   legacySubjectId: number
   backUrl: string
-  events: SuspensionOfVisitsViewEvent[]
+  events: IntegritySuspensionOfVisitsViewEvent[]
 }
 
-const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewEvent[] =>
+const parseEvents = (events: IntegritySuspensionOfVisitsEvent[]): IntegritySuspensionOfVisitsViewEvent[] =>
   events
     .sort((a, b) => new Date(a.requestedDate).getTime() - new Date(b.requestedDate).getTime())
     .map(event => {
@@ -34,8 +34,8 @@ const parseEvents = (events: SuspensionOfVisitsEvent[]): SuspensionOfVisitsViewE
 const createViewModelFromApiDto = (
   legacySubjectId: number,
   backUrl: string,
-  events: SuspensionOfVisitsEvent[],
-): SuspensionOfVisitsViewModel => {
+  events: IntegritySuspensionOfVisitsEvent[],
+): IntegritySuspensionOfVisitsViewModel => {
   return {
     legacySubjectId,
     backUrl,
@@ -46,8 +46,8 @@ const createViewModelFromApiDto = (
 const construct = (
   legacySubjectId: number,
   backUrl: string,
-  events: SuspensionOfVisitsEvent[] = [],
-): SuspensionOfVisitsViewModel => {
+  events: IntegritySuspensionOfVisitsEvent[] = [],
+): IntegritySuspensionOfVisitsViewModel => {
   return createViewModelFromApiDto(legacySubjectId, backUrl, events)
 }
 

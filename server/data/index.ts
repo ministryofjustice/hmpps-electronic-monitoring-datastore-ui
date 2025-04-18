@@ -18,18 +18,15 @@ import config from '../config'
 import HmppsAuditClient from './hmppsAuditClient'
 import EmDatastoreApiClient from './emDatastoreApiClient'
 
-type RestClientBuilder<T> = (token: string) => T
-
 export const dataAccess = () => ({
   applicationInfo,
   hmppsAuthClient: new HmppsAuthClient(
     config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore(),
   ),
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
-  emDatastoreApiClientFactory: ((token: string) =>
-    new EmDatastoreApiClient(token)) as RestClientBuilder<EmDatastoreApiClient>,
+  emDatastoreApiClient: new EmDatastoreApiClient(config.apis.emDatastoreApi),
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>
 
-export { HmppsAuthClient, RestClientBuilder, HmppsAuditClient, EmDatastoreApiClient }
+export { HmppsAuthClient, HmppsAuditClient, EmDatastoreApiClient }

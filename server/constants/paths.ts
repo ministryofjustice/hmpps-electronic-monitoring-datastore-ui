@@ -15,12 +15,12 @@ const paths = {
 
   ALCOHOL_MONITORING: {
     INDEX: '/alcohol-monitoring',
-    SUMMARY: '/alcohol-monitoring/:legacySubjectId',
-    DETAILS: '/alcohol-monitoring/:legacySubjectId/details',
-    VISIT_DETAILS: '/alcohol-monitoring/:legacySubjectId/visit-details',
-    EQUIPMENT_DETAILS: '/alcohol-monitoring/:legacySubjectId/equipment-details',
-    EVENT_HISTORY: '/alcohol-monitoring/:legacySubjectId/event-history',
-    SERVICE_DETAILS: '/alcohol-monitoring/:legacySubjectId/service-details',
+    SUMMARY: '/orders/alcohol-monitoring/:legacySubjectId',
+    DETAILS: '/orders/alcohol-monitoring/:legacySubjectId/details',
+    VISIT_DETAILS: '/orders/alcohol-monitoring/:legacySubjectId/visit-details',
+    EQUIPMENT_DETAILS: '/orders/alcohol-monitoring/:legacySubjectId/equipment-details',
+    EVENT_HISTORY: '/orders/alcohol-monitoring/:legacySubjectId/event-history',
+    SERVICE_DETAILS: '/orders/alcohol-monitoring/:legacySubjectId/service-details',
   },
 
   CONNECTION_TEST: '/test',

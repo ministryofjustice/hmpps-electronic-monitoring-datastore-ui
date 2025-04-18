@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
-import { stubFor } from '../../wiremock'
-import { Order } from '../../../../server/interfaces/order'
+import { stubFor } from '../wiremock'
+import { Order } from '../../../server/interfaces/order'
 // import { ContactEvent } from '../../../../server/models/integrity'
 
 const defaultOrders = [
@@ -186,13 +186,13 @@ type GetSearchResultsStubOptions = {
   results: Order[]
 }
 
-export const stubIntegrityGetSearchResults = (
+export const stubGetSearchResults = (
   options: GetSearchResultsStubOptions = defaultGetSearchResultsOptions,
 ): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/integrity/orders?id=${options.queryExecutionId}`,
+      url: `/datastore/orders?id=${options.queryExecutionId}`,
     },
     response: {
       status: options.httpStatus,
@@ -201,4 +201,4 @@ export const stubIntegrityGetSearchResults = (
     },
   })
 
-export default stubIntegrityGetSearchResults
+export default stubGetSearchResults

@@ -1,4 +1,4 @@
-export { stubIntegrityGetSearchResults } from './datastore/integrity/getSearchResults'
+export { stubGetSearchResults as stubIntegrityGetSearchResults } from './datastore/getSearchResults'
 
 export { stubIntegrityGetOrderSummary } from './datastore/integrity/getOrderSummary'
 export { stubIntegrityGetOrderDetails } from './datastore/integrity/getOrderDetails'

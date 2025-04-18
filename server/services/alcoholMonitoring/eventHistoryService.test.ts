@@ -1,30 +1,20 @@
 import AlcoholMonitoringEventHistoryService from './eventHistoryService'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
+import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { AlcoholMonitoringIncidentEvent } from '../../models/alcoholMonitoring/incidentEvents'
 import { AlcoholMonitoringContactEvent } from '../../models/alcoholMonitoring/contactEvents'
 import { AlcoholMonitoringViolationEvent } from '../../models/alcoholMonitoring/violationEvents'
 
-jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../data/emDatastoreApiClient')
 
 describe('Alcohol Monitoring Event History Service', () => {
-  const token = 'fake-token-value'
-  const hmppsAuthClient = createMockHmppsAuthClient()
-  const emDatastoreApiClient = createEmDatastoreApiClient()
-
-  const emDatastoreApiClientFactory = jest.fn()
+  const emDatastoreApiClient = createMockEmDatastoreApiClient()
 
   let alcoholMonitoringEventHistoryService: AlcoholMonitoringEventHistoryService
 
   beforeEach(() => {
-    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(
-      emDatastoreApiClientFactory,
-      hmppsAuthClient,
-    )
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(emDatastoreApiClient)
   })
 
   afterEach(() => {

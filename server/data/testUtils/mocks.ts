@@ -22,4 +22,4 @@ import { HmppsAuthClient, EmDatastoreApiClient } from '..'
 jest.mock('..')
 
 export const createMockHmppsAuthClient = () => new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
-export const createEmDatastoreApiClient = () => new EmDatastoreApiClient(null) as jest.Mocked<EmDatastoreApiClient>
+export const createMockEmDatastoreApiClient = () => new EmDatastoreApiClient(null) as jest.Mocked<EmDatastoreApiClient>

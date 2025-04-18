@@ -3,21 +3,18 @@ import nock from 'nock'
 import { AgentConfig } from '../config'
 import RestClient from './restClient'
 
-let restClient: RestClient
+class TestableRestClient extends RestClient {}
+let restClient: TestableRestClient
 
 beforeEach(() => {
-  restClient = new RestClient(
-    'api-name',
-    {
-      url: 'http://localhost:8080/api',
-      timeout: {
-        response: 1000,
-        deadline: 1000,
-      },
-      agent: new AgentConfig(1000),
+  restClient = new TestableRestClient('api-name', {
+    url: 'http://localhost:8080/api',
+    timeout: {
+      response: 1000,
+      deadline: 1000,
     },
-    'token-1',
-  )
+    agent: new AgentConfig(1000),
+  })
 })
 
 afterEach(() => {
@@ -34,6 +31,7 @@ describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', 
 
     const result = await restClient[method]({
       path: '/test',
+      token: 'token-1',
     })
 
     expect(nock.isDone()).toBe(true)
@@ -54,6 +52,7 @@ describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', 
       path: '/test',
       headers: { header1: 'headerValue1' },
       raw: true,
+      token: 'token-1',
     })
 
     expect(nock.isDone()).toBe(true)
@@ -81,6 +80,7 @@ describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', 
         restClient[method]({
           path: '/test',
           headers: { header1: 'headerValue1' },
+          token: 'token-1',
         }),
       ).rejects.toThrow('Internal Server Error')
 
@@ -98,6 +98,7 @@ describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', 
         restClient[method]({
           path: '/test',
           headers: { header1: 'headerValue1' },
+          token: 'token-1',
         }),
       ).rejects.toThrow('Internal Server Error')
 
@@ -120,6 +121,7 @@ describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', 
           path: '/test',
           headers: { header1: 'headerValue1' },
           retry: true,
+          token: 'token-1',
         }),
       ).rejects.toThrow('Internal Server Error')
 
@@ -142,27 +144,7 @@ describe.each(['get', 'patch', 'post', 'put', 'delete'] as const)('Method: %s', 
       path: '/test',
       headers: { header1: 'headerValue1' },
       retry: true,
-    })
-
-    expect(result).toStrictEqual({ success: true })
-    expect(nock.isDone()).toBe(true)
-  })
-})
-
-describe('RestClient Token Management', () => {
-  it('should update the authentication token and use it for subsequent requests', async () => {
-    restClient.updateToken('token-2')
-
-    nock('http://localhost:8080', {
-      reqheaders: {
-        authorization: 'Bearer token-2',
-      },
-    })
-      .get('/api/test')
-      .reply(200, { success: true })
-
-    const result = await restClient.get({
-      path: '/test',
+      token: 'token-1',
     })
 
     expect(result).toStrictEqual({ success: true })

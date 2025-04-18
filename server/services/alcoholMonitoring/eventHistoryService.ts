@@ -1,7 +1,7 @@
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
-import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
+import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { AlcoholMonitoringContactEvent } from '../../models/alcoholMonitoring/contactEvents'
@@ -9,25 +9,17 @@ import { AlcoholMonitoringIncidentEvent } from '../../models/alcoholMonitoring/i
 import { AlcoholMonitoringViolationEvent } from '../../models/alcoholMonitoring/violationEvents'
 
 export default class AlcoholMonitoringEventHistoryService {
-  private readonly emDatastoreApiClient: EmDatastoreApiClient
-
-  constructor(
-    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
-    private readonly hmppsAuthClient: HmppsAuthClient,
-  ) {
-    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
-  }
+  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getEventHistory(
     input: OrderRequest,
   ): Promise<(AlcoholMonitoringContactEvent | AlcoholMonitoringIncidentEvent | AlcoholMonitoringViolationEvent)[]> {
     try {
-      this.emDatastoreApiClient.updateToken(input.userToken)
       return (
         await Promise.all([
-          this.emDatastoreApiClient.getAlcoholMonitoringContactEvents(input),
-          this.emDatastoreApiClient.getAlcoholMonitoringIncidentEvents(input),
-          this.emDatastoreApiClient.getAlcoholMonitoringViolationEvents(input),
+          this.emDatastoreApiClient.getAlcoholMonitoringContactEvents(input, input.userToken),
+          this.emDatastoreApiClient.getAlcoholMonitoringIncidentEvents(input, input.userToken),
+          this.emDatastoreApiClient.getAlcoholMonitoringViolationEvents(input, input.userToken),
         ])
       ).flat()
     } catch (error) {

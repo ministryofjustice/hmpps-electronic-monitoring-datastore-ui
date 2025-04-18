@@ -1,25 +1,18 @@
 import AlcoholMonitoringSummaryService from './summaryService'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
+import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { AlcoholMonitoringOrderSummary } from '../../models/alcoholMonitoring/orderSummary'
 
-jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../data/emDatastoreApiClient')
 
 describe('Alcohol monitoring summary service', () => {
-  const token = 'fake-token-value'
-  const hmppsAuthClient = createMockHmppsAuthClient()
-  const emDatastoreApiClient = createEmDatastoreApiClient()
-
-  const emDatastoreApiClientFactory = jest.fn()
+  const emDatastoreApiClient = createMockEmDatastoreApiClient()
 
   let alcoholMonitoringSummaryService: AlcoholMonitoringSummaryService
 
   beforeEach(() => {
-    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    alcoholMonitoringSummaryService = new AlcoholMonitoringSummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    alcoholMonitoringSummaryService = new AlcoholMonitoringSummaryService(emDatastoreApiClient)
   })
 
   afterEach(() => {

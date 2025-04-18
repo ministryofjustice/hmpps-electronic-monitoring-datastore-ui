@@ -1,25 +1,17 @@
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
-import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
+import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { AlcoholMonitoringOrderDetails } from '../../models/alcoholMonitoring/orderDetails'
 
 export default class AlcoholMonitoringDetailsService {
-  private readonly emDatastoreApiClient: EmDatastoreApiClient
-
-  constructor(
-    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
-    private readonly hmppsAuthClient: HmppsAuthClient,
-  ) {
-    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialised')
-  }
+  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getDetails(input: OrderRequest): Promise<AlcoholMonitoringOrderDetails> {
     try {
-      this.emDatastoreApiClient.updateToken(input.userToken)
-      return await this.emDatastoreApiClient.getAlcoholMonitoringDetails(input)
+      return await this.emDatastoreApiClient.getAlcoholMonitoringDetails(input, input.userToken)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving order details'
       const sanitisedError = getSanitisedError(error)

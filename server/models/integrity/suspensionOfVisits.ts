@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const SuspensionOfVisitsEventModel = z.object({
+export const IntegritySuspensionOfVisitsEventModel = z.object({
   legacySubjectId: z.number(),
   suspensionOfVisits: z.string(),
   requestedDate: z.string().nullable(),
@@ -9,6 +9,6 @@ export const SuspensionOfVisitsEventModel = z.object({
   endDate: z.string().nullable(),
 })
 
-export type SuspensionOfVisitsEvent = z.infer<typeof SuspensionOfVisitsEventModel>
+export type IntegritySuspensionOfVisitsEvent = z.infer<typeof IntegritySuspensionOfVisitsEventModel>
 
-export default SuspensionOfVisitsEventModel
+export default IntegritySuspensionOfVisitsEventModel

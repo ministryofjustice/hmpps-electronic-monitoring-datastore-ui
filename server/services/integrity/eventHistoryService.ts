@@ -1,7 +1,7 @@
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
-import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
+import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { IntegrityContactEvent } from '../../models/integrity/contactEvents'
@@ -10,26 +10,18 @@ import { IntegrityMonitoringEvent } from '../../models/integrity/monitoringEvent
 import { IntegrityViolationEvent } from '../../models/integrity/violationEvents'
 
 export default class IntegrityEventHistoryService {
-  private readonly emDatastoreApiClient: EmDatastoreApiClient
-
-  constructor(
-    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
-    private readonly hmppsAuthClient: HmppsAuthClient,
-  ) {
-    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
-  }
+  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getEventHistory(
     input: OrderRequest,
   ): Promise<(IntegrityContactEvent | IntegrityIncidentEvent | IntegrityMonitoringEvent | IntegrityViolationEvent)[]> {
     try {
-      this.emDatastoreApiClient.updateToken(input.userToken)
       return (
         await Promise.all([
-          this.emDatastoreApiClient.getIntegrityMonitoringEvents(input),
-          this.emDatastoreApiClient.getIntegrityIncidentEvents(input),
-          this.emDatastoreApiClient.getIntegrityContactEvents(input),
-          this.emDatastoreApiClient.getIntegrityViolationEvents(input),
+          this.emDatastoreApiClient.getIntegrityMonitoringEvents(input, input.userToken),
+          this.emDatastoreApiClient.getIntegrityIncidentEvents(input, input.userToken),
+          this.emDatastoreApiClient.getIntegrityContactEvents(input, input.userToken),
+          this.emDatastoreApiClient.getIntegrityViolationEvents(input, input.userToken),
         ])
       ).flat()
     } catch (error) {

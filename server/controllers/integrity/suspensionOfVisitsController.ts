@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, EmDatastoreSuspensionOfVisitsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import SuspensionOfVisitsViewModel from '../../models/view-models/suspensionOfVisits'
+import SuspensionOfVisitsViewModel from '../../models/view-models/integrity/suspensionOfVisits'
 
 export default class SuspensionOfVisitsController {
   constructor(

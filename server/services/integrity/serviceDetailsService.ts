@@ -1,25 +1,17 @@
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
-import { EmDatastoreApiClient, HmppsAuthClient, RestClientBuilder } from '../../data'
+import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { IntegrityServiceDetail } from '../../models/integrity/serviceDetail'
 
 export default class IntegrityServiceDetailService {
-  private readonly emDatastoreApiClient: EmDatastoreApiClient
-
-  constructor(
-    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
-    private readonly hmppsAuthClient: HmppsAuthClient,
-  ) {
-    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialized')
-  }
+  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getServiceDetails(input: OrderRequest): Promise<IntegrityServiceDetail[]> {
     try {
-      this.emDatastoreApiClient.updateToken(input.userToken)
-      return await this.emDatastoreApiClient.getIntegrityServiceDetails(input)
+      return await this.emDatastoreApiClient.getIntegrityServiceDetails(input, input.userToken)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving service details'
       const sanitisedError = getSanitisedError(error)

@@ -12,12 +12,8 @@ jest.mock('../services/emDatastoreConnectionService')
 const auditService = new AuditService(null) as jest.Mocked<AuditService>
 const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(
   null,
-  null,
 ) as jest.Mocked<EmDatastoreOrderSearchService>
-const emDatastoreConnectionService = new EmDatastoreConnectionService(
-  null,
-  null,
-) as jest.Mocked<EmDatastoreConnectionService>
+const emDatastoreConnectionService = new EmDatastoreConnectionService(null) as jest.Mocked<EmDatastoreConnectionService>
 
 emDatastoreConnectionService.test.mockImplementation().mockResolvedValue({} as JSON)
 

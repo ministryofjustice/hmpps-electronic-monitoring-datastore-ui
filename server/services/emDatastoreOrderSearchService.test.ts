@@ -1,35 +1,29 @@
 import { ZodError } from 'zod'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
 import orders from '../data/mockData/orders'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
+import { createMockEmDatastoreApiClient } from '../data/testUtils/mocks'
 import { dateValidator } from '../utils/validators/dateValidator'
 import NameValidator from '../utils/validators/nameValidator'
 import { ValidationResult } from '../models/Validation'
 import getSanitisedError from '../sanitisedError'
 
-jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/emDatastoreApiClient')
 jest.mock('../utils/validators/dateValidator', () => ({
   dateValidator: { parse: jest.fn() },
 }))
 
 describe('Datastore Search Service', () => {
-  const token = 'fake-token-value'
+  const userToken = 'fake-user-token'
   const queryExecutionId = 'query-execution-id'
   const queryExecutionResponse = {
     queryExecutionId,
   }
-  const hmppsAuthClient = createMockHmppsAuthClient()
-  const emDatastoreApiClient = createEmDatastoreApiClient()
-
-  const emDatastoreApiClientFactory = jest.fn()
+  const emDatastoreApiClient = createMockEmDatastoreApiClient()
 
   let datastoreSearchService: EmDatastoreOrderSearchService
 
   beforeEach(() => {
-    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    datastoreSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    datastoreSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClient)
   })
 
   afterEach(() => {
@@ -46,7 +40,7 @@ describe('Datastore Search Service', () => {
       jest.spyOn(datastoreSearchService, 'validateInput')
 
       const invalidInput = {
-        token: 'token',
+        userToken: 'token',
         data: {
           searchType: '',
           legacySubjectId: '',
@@ -91,7 +85,7 @@ describe('Datastore Search Service', () => {
       })
 
       const invalidInput = {
-        token: 'token',
+        userToken: 'token',
         data: {
           searchType: '',
           legacySubjectId: '',
@@ -129,7 +123,7 @@ describe('Datastore Search Service', () => {
       })
 
       const invalidInput = {
-        token: 'token',
+        userToken: 'token',
         data: {
           searchType: '',
           legacySubjectId: '',
@@ -180,7 +174,7 @@ describe('Datastore Search Service', () => {
       })
 
       const invalidInput = {
-        token: 'token',
+        userToken: 'token',
         data: {
           searchType: '',
           legacySubjectId: '',
@@ -222,7 +216,7 @@ describe('Datastore Search Service', () => {
       })
 
       const validInput = {
-        token: 'token',
+        userToken: 'token',
         data: {
           searchType: '',
           legacySubjectId: '',
@@ -250,7 +244,7 @@ describe('Datastore Search Service', () => {
   describe('submitSearchQuery', () => {
     it('submits a search query and returns an order execution ID', async () => {
       const validInput = {
-        token: 'token',
+        userToken: 'token',
         data: {
           searchType: '',
           legacySubjectId: '',
@@ -267,7 +261,7 @@ describe('Datastore Search Service', () => {
 
       const result = await datastoreSearchService.submitSearchQuery(validInput)
 
-      expect(emDatastoreApiClient.submitSearchQuery).toHaveBeenCalledWith(validInput)
+      expect(emDatastoreApiClient.submitSearchQuery).toHaveBeenCalledWith(validInput, 'token')
       expect(result).toEqual(queryExecutionResponse)
     })
 
@@ -277,7 +271,7 @@ describe('Datastore Search Service', () => {
       })
 
       const input = {
-        token: 'token',
+        userToken: 'token',
         data: {
           searchType: '',
           legacySubjectId: '',
@@ -299,20 +293,20 @@ describe('Datastore Search Service', () => {
       jest.spyOn(emDatastoreApiClient, 'getSearchResults').mockResolvedValue(orders)
 
       const request = {
-        token,
+        userToken,
         queryExecutionId,
       }
 
       const result = await datastoreSearchService.getSearchResults(request)
 
-      expect(emDatastoreApiClient.getSearchResults).toHaveBeenCalledWith(request)
+      expect(emDatastoreApiClient.getSearchResults).toHaveBeenCalledWith(request, userToken)
       expect(result).toEqual(orders)
     })
 
     describe('error handling', () => {
       it('handles invalid query execution ID errors from the datastore client', async () => {
         const request = {
-          token,
+          userToken,
           queryExecutionId: '',
         }
 
@@ -339,7 +333,7 @@ describe('Datastore Search Service', () => {
         })
 
         const request = {
-          token,
+          userToken,
           queryExecutionId: '',
         }
 

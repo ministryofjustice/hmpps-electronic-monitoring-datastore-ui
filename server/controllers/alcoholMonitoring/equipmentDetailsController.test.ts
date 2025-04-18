@@ -41,7 +41,7 @@ describe('EquipmentDetailsController', () => {
 
   it('should render page with no data', async () => {
     const expectedViewModel = {
-      backUrl: `/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
       equipmentDetails: [] as AlcoholMonitoringEquipmentDetails[],
       legacySubjectId: testOrderId,
     }
@@ -52,7 +52,7 @@ describe('EquipmentDetailsController', () => {
 
     expect(EquipmentDetailsViewModel.construct).toHaveBeenCalledWith(
       testOrderId,
-      `/alcohol-monitoring/${testOrderId}`,
+      `/orders/alcohol-monitoring/${testOrderId}`,
       [],
     )
     expect(EquipmentDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
@@ -61,7 +61,7 @@ describe('EquipmentDetailsController', () => {
 
   it('should render page with equipment details', async () => {
     const expectedViewModel = {
-      backUrl: `/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
       equipmentDetails: [
         {
           legacySubjectId: testOrderId,

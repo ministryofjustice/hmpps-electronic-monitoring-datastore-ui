@@ -20,7 +20,7 @@ export const stubIntegrityGetEquipmentDetails = (
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/integrity/orders/${options.legacySubjectId}/equipment-details`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}/equipment-details`,
     },
     response: {
       status: options.httpStatus,

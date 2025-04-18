@@ -1,22 +1,15 @@
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../data/testUtils/mocks'
+import { createMockEmDatastoreApiClient } from '../data/testUtils/mocks'
 
-jest.mock('../data/hmppsAuthClient')
 jest.mock('../data/emDatastoreApiClient')
 
 describe('Connection service', () => {
-  const token = 'fake-token-value'
-  const hmppsAuthClient = createMockHmppsAuthClient()
-  const emDatastoreApiClient = createEmDatastoreApiClient()
-
-  const emDatastoreApiClientFactory = jest.fn()
+  const emDatastoreApiClient = createMockEmDatastoreApiClient()
 
   let emDatastoreConnectionService: EmDatastoreConnectionService
 
   beforeEach(() => {
-    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClientFactory, hmppsAuthClient)
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClient)
   })
 
   afterEach(() => {
@@ -47,7 +40,7 @@ describe('Connection service', () => {
         throw new Error('some error')
       })
 
-      await expect(emDatastoreConnectionService.test(token)).rejects.toEqual(
+      await expect(emDatastoreConnectionService.test('bad-token')).rejects.toEqual(
         new Error('Error connecting to EM Datastore API: some error'),
       )
     })
