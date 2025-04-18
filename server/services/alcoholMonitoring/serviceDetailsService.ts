@@ -11,7 +11,10 @@ export default class AlcoholMonitoringServiceDetailService {
 
   async getServiceDetails(input: OrderRequest): Promise<AlcoholMonitoringServiceDetails[]> {
     try {
-      return await this.emDatastoreApiClient.getAlcoholMonitoringServiceDetails(input, input.userToken)
+      return await this.emDatastoreApiClient.get<AlcoholMonitoringServiceDetails[]>({
+        path: `/orders/alcohol-monitoring/${input.legacySubjectId}/service-details`,
+        token: input.userToken,
+      })
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving service details'
       const sanitisedError = getSanitisedError(error)
