@@ -1,25 +1,18 @@
 import IntegrityServiceDetailService from './serviceDetailsService'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
+import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { IntegrityServiceDetail } from '../../models/integrity/serviceDetail'
 
-jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../data/emDatastoreApiClient')
 
 describe('Integrity Service Details Service', () => {
-  const token = 'fake-token-value'
-  const hmppsAuthClient = createMockHmppsAuthClient()
-  const emDatastoreApiClient = createEmDatastoreApiClient()
-
-  const emDatastoreApiClientFactory = jest.fn()
+  const emDatastoreApiClient = createMockEmDatastoreApiClient()
 
   let integrityServiceDetailService: IntegrityServiceDetailService
 
   beforeEach(() => {
-    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    integrityServiceDetailService = new IntegrityServiceDetailService(emDatastoreApiClientFactory, hmppsAuthClient)
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    integrityServiceDetailService = new IntegrityServiceDetailService(emDatastoreApiClient)
   })
 
   afterEach(() => {

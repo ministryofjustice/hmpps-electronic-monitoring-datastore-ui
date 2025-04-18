@@ -3,7 +3,6 @@ import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
 import { Order } from '../interfaces/order'
 import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import { HmppsAuthClient, RestClientBuilder } from '../data'
 import { ValidationResult } from '../models/Validation'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { DateValidationResponse, dateValidator } from '../utils/validators/dateValidator'
@@ -12,14 +11,7 @@ import { ParsedSearchFormData } from '../models/form-data/searchOrder'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
 export default class EmDatastoreOrderSearchService {
-  private readonly emDatastoreApiClient: EmDatastoreApiClient
-
-  constructor(
-    private readonly emDatastoreApiClientFactory: RestClientBuilder<EmDatastoreApiClient>,
-    private readonly hmppsAuthClient: HmppsAuthClient,
-  ) {
-    this.emDatastoreApiClient = this.emDatastoreApiClientFactory('uninitialised')
-  }
+  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   isEmptySearch(searchData: ParsedSearchFormData): boolean {
     const { searchType, ...mandatoryFields } = searchData
@@ -65,8 +57,7 @@ export default class EmDatastoreOrderSearchService {
 
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     try {
-      this.emDatastoreApiClient.updateToken(input.userToken)
-      const queryExecutionId = await this.emDatastoreApiClient.submitSearchQuery(input)
+      const queryExecutionId = await this.emDatastoreApiClient.submitSearchQuery(input, input.userToken)
 
       return queryExecutionId
     } catch (error) {
@@ -79,8 +70,7 @@ export default class EmDatastoreOrderSearchService {
 
   async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
     try {
-      this.emDatastoreApiClient.updateToken(request.userToken)
-      return await this.emDatastoreApiClient.getSearchResults(request)
+      return await this.emDatastoreApiClient.getSearchResults(request, request.userToken)
     } catch (error) {
       let userFreindlyMessage = 'Error retrieving search results'
       const sanitisedError = getSanitisedError(error)

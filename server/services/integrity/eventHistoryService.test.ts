@@ -1,5 +1,5 @@
 import IntegrityEventHistoryService from './eventHistoryService'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
+import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { IntegrityMonitoringEvent } from '../../models/integrity/monitoringEvents'
@@ -7,22 +7,15 @@ import { IntegrityIncidentEvent } from '../../models/integrity/incidentEvents'
 import { IntegrityContactEvent } from '../../models/integrity/contactEvents'
 import { IntegrityViolationEvent } from '../../models/integrity/violationEvents'
 
-jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../data/emDatastoreApiClient')
 
 describe('Integrity Event History Service', () => {
-  const token = 'fake-token-value'
-  const hmppsAuthClient = createMockHmppsAuthClient()
-  const emDatastoreApiClient = createEmDatastoreApiClient()
-
-  const emDatastoreApiClientFactory = jest.fn()
+  const emDatastoreApiClient = createMockEmDatastoreApiClient()
 
   let integrityEventHistoryService: IntegrityEventHistoryService
 
   beforeEach(() => {
-    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClientFactory, hmppsAuthClient)
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClient)
   })
 
   afterEach(() => {
