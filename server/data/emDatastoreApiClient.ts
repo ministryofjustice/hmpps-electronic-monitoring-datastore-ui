@@ -20,7 +20,6 @@ import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/order
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
 import { AlcoholMonitoringEquipmentDetails } from '../models/alcoholMonitoring/equipmentDetails'
 import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
-import { AlcoholMonitoringServiceDetails } from '../models/alcoholMonitoring/serviceDetails'
 import { AlcoholMonitoringContactEvent } from '../models/alcoholMonitoring/contactEvents'
 import { AlcoholMonitoringIncidentEvent } from '../models/alcoholMonitoring/incidentEvents'
 import { AlcoholMonitoringViolationEvent } from '../models/alcoholMonitoring/violationEvents'
@@ -190,14 +189,6 @@ export default class EmDatastoreApiClient extends RestClient {
     const { legacySubjectId } = input
     return this.get<IntegritySuspensionOfVisitsEvent[]>({
       path: `/orders/integrity/${legacySubjectId}/suspension-of-visits`,
-      token,
-    })
-  }
-
-  async getIntegrityServiceDetails(input: OrderRequest, token: string): Promise<IntegrityServiceDetail[]> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityServiceDetail[]>({
-      path: `/orders/integrity/${legacySubjectId}/service-details`,
       token,
     })
   }

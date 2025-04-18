@@ -10,7 +10,6 @@ import { AlcoholMonitoringEquipmentDetails } from '../models/alcoholMonitoring/e
 import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
 import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
 import { IntegrityServiceDetail } from '../models/integrity/serviceDetail'
-import { AlcoholMonitoringServiceDetails } from '../models/alcoholMonitoring/serviceDetails'
 import { IntegritySuspensionOfVisitsEvent } from '../models/integrity/suspensionOfVisits'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
 import { IntegrityContactEvent } from '../models/integrity/contactEvents'
@@ -730,65 +729,6 @@ describe('EM Datastore API Client', () => {
       await expect(
         emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfoWithNullToken, token),
       ).rejects.toThrow('Unauthorized')
-    })
-  })
-
-  describe('getIntegrityServiceDetails', () => {
-    it('should fetch all service details', async () => {
-      const expectedResult = [
-        {
-          legacySubjectId: 123,
-          serviceId: 321,
-          serviceAddress1: 'address line 1',
-          serviceAddress2: 'address line 2',
-          serviceAddress3: 'address line 3',
-          serviceAddressPostcode: 'postcode',
-          serviceStartDate: '2002-05-22T01:01:01',
-          serviceEndDate: '2002-05-22T01:01:01',
-          curfewStartDate: '2002-05-22T01:01:01',
-          curfewEndDate: '2002-05-22T01:01:01',
-          monday: 1,
-          tuesday: 2,
-          wednesday: 3,
-          thursday: 4,
-          friday: 5,
-          saturday: 6,
-          sunday: 7,
-        },
-      ] as IntegrityServiceDetail[]
-
-      fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/service-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult as IntegrityServiceDetail[])
-    })
-
-    it('should fetch an empty list of service details', async () => {
-      const expectedResult = [] as IntegrityServiceDetail[]
-
-      fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/service-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('handles null user tokens correctly by expecting Unauthorized', async () => {
-      // Create orderInfo with userToken explicitly set to null
-      const orderInfoWithNullToken: OrderRequest = {
-        legacySubjectId: '123',
-        userToken: null,
-      }
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${orderInfoWithNullToken.legacySubjectId}/service-details`)
-        .reply(401)
-
-      // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityServiceDetails(orderInfoWithNullToken, token)).rejects.toThrow(
-        'Unauthorized',
-      )
     })
   })
 })
