@@ -201,15 +201,4 @@ export default class EmDatastoreApiClient extends RestClient {
       token,
     })
   }
-
-  async getAlcoholMonitoringServiceDetails(
-    input: OrderRequest,
-    token: string,
-  ): Promise<AlcoholMonitoringServiceDetails[]> {
-    const { legacySubjectId } = input
-    return this.get<AlcoholMonitoringServiceDetails[]>({
-      path: `/orders/alcohol-monitoring/${legacySubjectId}/services`,
-      token,
-    })
-  }
 }
