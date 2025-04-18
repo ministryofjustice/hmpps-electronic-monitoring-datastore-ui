@@ -1,57 +1,136 @@
+import nock from 'nock'
 import IntegrityServiceDetailService from './serviceDetailsService'
-import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
-import { OrderRequest } from '../../types/OrderRequest'
-import { IntegrityServiceDetail } from '../../models/integrity/serviceDetail'
-
-jest.mock('../../data/emDatastoreApiClient')
+import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import config, { ApiConfig } from '../../config'
 
 describe('Integrity Service Details Service', () => {
-  const emDatastoreApiClient = createMockEmDatastoreApiClient()
+  let fakeClient: nock.Scope
+  let emDatastoreApiClient: EmDatastoreApiClient
 
   let integrityServiceDetailService: IntegrityServiceDetailService
 
   beforeEach(() => {
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
     integrityServiceDetailService = new IntegrityServiceDetailService(emDatastoreApiClient)
   })
 
   afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll()
+      throw new Error('Not all nock interceptors were used!')
+    }
+    nock.abortPendingRequests()
+    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getServiceDetails', () => {
-    const orderRequest: OrderRequest = {
-      legacySubjectId: '123',
-    }
+    const legacySubjectId = '123'
 
-    const serviceDetailsResponse = [] as IntegrityServiceDetail[]
+    it('should fetch a list of one service detail item', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: 123,
+          serviceId: 321,
+          serviceAddress1: 'address line 1',
+          serviceAddress2: 'address line 2',
+          serviceAddress3: 'address line 3',
+          serviceAddressPostcode: 'postcode',
+          serviceStartDate: '2002-05-22T01:01:01',
+          serviceEndDate: '2002-05-22T01:01:01',
+          curfewStartDate: '2002-05-22T01:01:01',
+          curfewEndDate: '2002-05-22T01:01:01',
+          monday: 1,
+          tuesday: 2,
+          wednesday: 3,
+          thursday: 4,
+          friday: 5,
+          saturday: 6,
+          sunday: 7,
+        },
+      ]
 
-    const expectedResult = [] as IntegrityServiceDetail[]
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
-    it('should return data from the client', async () => {
-      emDatastoreApiClient.getIntegrityServiceDetails.mockResolvedValue(serviceDetailsResponse)
-
-      const results = await integrityServiceDetailService.getServiceDetails(orderRequest)
-
-      expect(results).toEqual(expectedResult)
-    })
-
-    it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.getIntegrityServiceDetails.mockRejectedValue(new Error('some error'))
-
-      await expect(integrityServiceDetailService.getServiceDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving service details: some error'),
-      )
-    })
-
-    it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.getIntegrityServiceDetails.mockImplementation(() => {
-        throw new Error('some error')
+      const result = await integrityServiceDetailService.getServiceDetails({
+        legacySubjectId,
       })
 
-      await expect(integrityServiceDetailService.getServiceDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving service details: some error'),
-      )
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch a list of one service detail item', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+        },
+      ]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
+
+      const result = await integrityServiceDetailService.getServiceDetails({
+        legacySubjectId,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch a list of multiple service detail items', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+        },
+        {
+          legacySubjectId: '456',
+        },
+        {
+          legacySubjectId: '789',
+        },
+      ]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
+
+      const result = await integrityServiceDetailService.getServiceDetails({
+        legacySubjectId,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch an empty list of service detail items', async () => {
+      const expectedResult = [] as IntegrityServiceDetailService[]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
+
+      const result = await integrityServiceDetailService.getServiceDetails({
+        legacySubjectId,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should propagate an error if there is an authorization error', async () => {
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(401)
+
+      await expect(
+        integrityServiceDetailService.getServiceDetails({
+          legacySubjectId,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving service details: Unauthorized'))
+    })
+
+    it('should propagate an error if there is a server error', async () => {
+      fakeClient
+        .get(`/orders/integrity/${legacySubjectId}/service-details`)
+        .replyWithError('Fake unexpected server error')
+
+      await expect(
+        integrityServiceDetailService.getServiceDetails({
+          legacySubjectId,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving service details: Fake unexpected server error'))
     })
   })
 })
