@@ -1,7 +1,7 @@
 import nock from 'nock'
 import EmDatastoreApiClient from './emDatastoreApiClient'
 import orders from './mockData/orders'
-import config from '../config'
+import config, { ApiConfig } from '../config'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
@@ -53,7 +53,7 @@ describe('EM Datastore API Client', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(token)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
   })
 
   afterEach(() => {
@@ -72,7 +72,7 @@ describe('EM Datastore API Client', () => {
         .matchHeader('Authorization', `Bearer ${token}`)
         .reply(200, queryExecutionResponse)
 
-      const result = await emDatastoreApiClient.submitSearchQuery(searchQuery)
+      const result = await emDatastoreApiClient.submitSearchQuery(searchQuery, token)
 
       expect(result).toEqual(queryExecutionResponse)
     })
@@ -80,7 +80,7 @@ describe('EM Datastore API Client', () => {
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
       fakeClient.post('/orders', searchQuery.data).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
-      await expect(emDatastoreApiClient.submitSearchQuery(searchQuery)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.submitSearchQuery(searchQuery, token)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -93,7 +93,7 @@ describe('EM Datastore API Client', () => {
 
       const expected = orders
 
-      const result = await emDatastoreApiClient.getSearchResults(resultsRequest)
+      const result = await emDatastoreApiClient.getSearchResults(resultsRequest, token)
 
       expect(result).toEqual(expected)
     })
@@ -101,7 +101,7 @@ describe('EM Datastore API Client', () => {
     it('should handle 401 Unauthorized when the user token is invalid', async () => {
       fakeClient.get(`/orders?id=${queryExecutionId}`).matchHeader('Authorization', `Bearer ${token}`).reply(401)
 
-      await expect(emDatastoreApiClient.getSearchResults(resultsRequest)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getSearchResults(resultsRequest, token)).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -135,7 +135,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegritySummary(orderInfo)
+      const result = await emDatastoreApiClient.getIntegritySummary(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -150,7 +150,9 @@ describe('EM Datastore API Client', () => {
       nock(config.apis.emDatastoreApi.url).get(`/orders/integrity/${orderInfoWithNullToken.legacySubjectId}`).reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegritySummary(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getIntegritySummary(orderInfoWithNullToken, token)).rejects.toThrow(
+        'Unauthorized',
+      )
     })
   })
 
@@ -184,7 +186,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/information`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -200,7 +202,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getAlcoholMonitoringSummary(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -225,7 +227,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityDetails(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -242,7 +244,9 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityDetails(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getIntegrityDetails(orderInfoWithNullToken, token)).rejects.toThrow(
+        'Unauthorized',
+      )
     })
   })
 
@@ -265,7 +269,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -282,7 +286,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringDetails(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getAlcoholMonitoringDetails(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -295,7 +299,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/monitoring-events`).reply(200, fakeResponse)
 
-      const result = await emDatastoreApiClient.getIntegrityMonitoringEvents(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityMonitoringEvents(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -312,7 +316,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityMonitoringEvents(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getIntegrityMonitoringEvents(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -325,7 +329,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/contact-events`).reply(200, fakeResponse)
 
-      const result = await emDatastoreApiClient.getIntegrityContactEvents(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityContactEvents(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -342,7 +346,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityContactEvents(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getIntegrityContactEvents(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -355,7 +359,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/contact-events`).reply(200, fakeResponse)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringContactEvents(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringContactEvents(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -372,9 +376,9 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringContactEvents(orderInfoWithNullToken)).rejects.toThrow(
-        'Unauthorized',
-      )
+      await expect(
+        emDatastoreApiClient.getAlcoholMonitoringContactEvents(orderInfoWithNullToken, token),
+      ).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -385,7 +389,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/incident-events`).reply(200, fakeResponse)
 
-      const result = await emDatastoreApiClient.getIntegrityIncidentEvents(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityIncidentEvents(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -402,7 +406,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityIncidentEvents(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getIntegrityIncidentEvents(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -415,7 +419,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/incident-events`).reply(200, fakeResponse)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringIncidentEvents(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringIncidentEvents(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -432,9 +436,9 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringIncidentEvents(orderInfoWithNullToken)).rejects.toThrow(
-        'Unauthorized',
-      )
+      await expect(
+        emDatastoreApiClient.getAlcoholMonitoringIncidentEvents(orderInfoWithNullToken, token),
+      ).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -444,7 +448,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/violation-events`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityViolationEvents(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityViolationEvents(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -461,7 +465,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityViolationEvents(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getIntegrityViolationEvents(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -475,7 +479,7 @@ describe('EM Datastore API Client', () => {
         .get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/violation-events`)
         .reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringViolationEvents(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringViolationEvents(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -492,9 +496,9 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringViolationEvents(orderInfoWithNullToken)).rejects.toThrow(
-        'Unauthorized',
-      )
+      await expect(
+        emDatastoreApiClient.getAlcoholMonitoringViolationEvents(orderInfoWithNullToken, token),
+      ).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -513,7 +517,7 @@ describe('EM Datastore API Client', () => {
       const expectedResult = fakeResponse
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/suspension-of-visits`).reply(200, fakeResponse)
 
-      const result = await emDatastoreApiClient.getSuspensionOfVisits(orderInfo)
+      const result = await emDatastoreApiClient.getSuspensionOfVisits(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -528,7 +532,9 @@ describe('EM Datastore API Client', () => {
         .get(`/orders/integrity/${orderInfoWithNullToken.legacySubjectId}/suspension-of-visits`)
         .reply(401)
 
-      await expect(emDatastoreApiClient.getSuspensionOfVisits(orderInfoWithNullToken)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getSuspensionOfVisits(orderInfoWithNullToken, token)).rejects.toThrow(
+        'Unauthorized',
+      )
     })
   })
 
@@ -542,7 +548,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult as IntegrityEquipmentDetails[])
     })
@@ -552,7 +558,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -569,7 +575,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -587,7 +593,7 @@ describe('EM Datastore API Client', () => {
         .get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`)
         .reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -599,7 +605,7 @@ describe('EM Datastore API Client', () => {
         .get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`)
         .reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -610,7 +616,9 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo, token)).rejects.toThrow(
+        'Unauthorized',
+      )
     })
   })
 
@@ -636,7 +644,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityVisitDetails(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityVisitDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult as IntegrityVisitDetails[])
     })
@@ -646,7 +654,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityVisitDetails(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityVisitDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -663,7 +671,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityVisitDetails(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getIntegrityVisitDetails(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -692,7 +700,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult as AlcoholMonitoringVisitDetails[])
     })
@@ -702,7 +710,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -719,9 +727,9 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfoWithNullToken)).rejects.toThrow(
-        'Unauthorized',
-      )
+      await expect(
+        emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfoWithNullToken, token),
+      ).rejects.toThrow('Unauthorized')
     })
   })
 
@@ -751,7 +759,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/service-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult as IntegrityServiceDetail[])
     })
@@ -761,7 +769,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/service-details`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo)
+      const result = await emDatastoreApiClient.getIntegrityServiceDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -778,7 +786,7 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityServiceDetails(orderInfoWithNullToken)).rejects.toThrow(
+      await expect(emDatastoreApiClient.getIntegrityServiceDetails(orderInfoWithNullToken, token)).rejects.toThrow(
         'Unauthorized',
       )
     })
@@ -794,7 +802,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -814,7 +822,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -824,7 +832,7 @@ describe('EM Datastore API Client', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/services`).reply(200, expectedResult)
 
-      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)
+      const result = await emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo, token)
 
       expect(result).toEqual(expectedResult)
     })
@@ -835,7 +843,9 @@ describe('EM Datastore API Client', () => {
         .reply(401)
 
       // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo)).rejects.toThrow('Unauthorized')
+      await expect(emDatastoreApiClient.getAlcoholMonitoringServiceDetails(orderInfo, token)).rejects.toThrow(
+        'Unauthorized',
+      )
     })
   })
 })

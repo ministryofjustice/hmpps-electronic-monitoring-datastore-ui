@@ -17,52 +17,25 @@ import IntegrityServiceDetailsService from './integrity/serviceDetailsService'
 import AlcoholMonitoringServiceDetailsService from './alcoholMonitoring/serviceDetailsService'
 
 export const services = () => {
-  const { applicationInfo, hmppsAuthClient, hmppsAuditClient, emDatastoreApiClientFactory } = dataAccess()
+  const { applicationInfo, hmppsAuditClient, emDatastoreApiClient } = dataAccess()
 
   const auditService = new AuditService(hmppsAuditClient)
-  const emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClientFactory, hmppsAuthClient)
+  const emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClient)
+  const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClient)
 
-  const integrityDetailsService = new IntegrityDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const alcoholMonitoringDetailsService = new AlcoholMonitoringDetailsService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const integritySummaryService = new IntegritySummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const alcoholMonitoringSummaryService = new AlcoholMonitoringSummaryService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const emDatastoreSuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const integrityVisitDetailsService = new IntegrityVisitDetailsService(emDatastoreApiClientFactory, hmppsAuthClient)
-  const alcoholMonitoringVisitDetailsService = new AlcoholMonitoringVisitDetailsService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const integrityServiceDetailsService = new IntegrityServiceDetailsService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
-  const alcoholMonitoringServiceDetailsService = new AlcoholMonitoringServiceDetailsService(
-    emDatastoreApiClientFactory,
-    hmppsAuthClient,
-  )
+  const integrityDetailsService = new IntegrityDetailsService(emDatastoreApiClient)
+  const alcoholMonitoringDetailsService = new AlcoholMonitoringDetailsService(emDatastoreApiClient)
+  const integritySummaryService = new IntegritySummaryService(emDatastoreApiClient)
+  const alcoholMonitoringSummaryService = new AlcoholMonitoringSummaryService(emDatastoreApiClient)
+  const integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClient)
+  const alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(emDatastoreApiClient)
+  const emDatastoreSuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(emDatastoreApiClient)
+  const integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(emDatastoreApiClient)
+  const alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(emDatastoreApiClient)
+  const integrityVisitDetailsService = new IntegrityVisitDetailsService(emDatastoreApiClient)
+  const alcoholMonitoringVisitDetailsService = new AlcoholMonitoringVisitDetailsService(emDatastoreApiClient)
+  const integrityServiceDetailsService = new IntegrityServiceDetailsService(emDatastoreApiClient)
+  const alcoholMonitoringServiceDetailsService = new AlcoholMonitoringServiceDetailsService(emDatastoreApiClient)
 
   return {
     applicationInfo,

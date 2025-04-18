@@ -1,25 +1,18 @@
 import EmDatastoreOrderSummaryService from './summaryService'
-import { createMockHmppsAuthClient, createEmDatastoreApiClient } from '../../data/testUtils/mocks'
+import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
 import { IntegrityOrderSummary } from '../../interfaces/integrity/orderSummary'
 
-jest.mock('../../data/hmppsAuthClient')
 jest.mock('../../data/emDatastoreApiClient')
 
 describe('Order summary service', () => {
-  const token = 'fake-token-value'
-  const hmppsAuthClient = createMockHmppsAuthClient()
-  const emDatastoreApiClient = createEmDatastoreApiClient()
-
-  const emDatastoreApiClientFactory = jest.fn()
+  const emDatastoreApiClient = createMockEmDatastoreApiClient()
 
   let emDatastoreOrderSummaryService: EmDatastoreOrderSummaryService
 
   beforeEach(() => {
-    emDatastoreApiClientFactory.mockReturnValue(emDatastoreApiClient)
-    emDatastoreOrderSummaryService = new EmDatastoreOrderSummaryService(emDatastoreApiClientFactory, hmppsAuthClient)
-    hmppsAuthClient.getSystemClientToken.mockResolvedValue(token)
+    emDatastoreOrderSummaryService = new EmDatastoreOrderSummaryService(emDatastoreApiClient)
   })
 
   afterEach(() => {

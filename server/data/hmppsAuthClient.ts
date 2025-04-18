@@ -32,11 +32,9 @@ function getSystemClientTokenFromHmppsAuth(username?: string): Promise<superagen
     .timeout(timeoutSpec)
 }
 
-export default class HmppsAuthClient {
-  constructor(private readonly tokenStore: TokenStore) {}
-
-  private static restClient(token: string): RestClient {
-    return new RestClient('HMPPS Auth Client', config.apis.hmppsAuth, token)
+export default class HmppsAuthClient extends RestClient {
+  constructor(private readonly tokenStore: TokenStore) {
+    super('HMPPS Auth Client', config.apis.hmppsAuth)
   }
 
   async getSystemClientToken(username?: string): Promise<string> {
