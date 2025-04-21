@@ -1,57 +1,121 @@
+import nock from 'nock'
 import IntegrityEquipmentDetailsService from './equipmentDetailsService'
-import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
-import { OrderRequest } from '../../types/OrderRequest'
+import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import config, { ApiConfig } from '../../config'
 import { IntegrityEquipmentDetails } from '../../models/integrity/equipmentDetails'
 
-jest.mock('../../data/emDatastoreApiClient')
-
 describe('Integrity Equipment Details Service', () => {
-  const emDatastoreApiClient = createMockEmDatastoreApiClient()
+  let fakeClient: nock.Scope
+  let emDatastoreApiClient: EmDatastoreApiClient
 
   let integrityEquipmentDetailsService: IntegrityEquipmentDetailsService
 
   beforeEach(() => {
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
     integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(emDatastoreApiClient)
   })
 
   afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll()
+      throw new Error('Not all nock interceptors were used!')
+    }
+    nock.abortPendingRequests()
+    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getEquipmentDetails', () => {
-    const orderRequest: OrderRequest = {
-      legacySubjectId: '123',
-    }
+    const legacySubjectId = 123
 
-    const equipmentDetailsResponse = [] as IntegrityEquipmentDetails[]
+    it('should fetch a list of one equipment detail item', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+        } as IntegrityEquipmentDetails,
+      ]
 
-    const expectedResult = [] as IntegrityEquipmentDetails[]
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
-    it('should return data from the client', async () => {
-      emDatastoreApiClient.getIntegrityEquipmentDetails.mockResolvedValue(equipmentDetailsResponse)
-
-      const results = await integrityEquipmentDetailsService.getEquipmentDetails(orderRequest)
-
-      expect(results).toEqual(expectedResult)
-    })
-
-    it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.getIntegrityEquipmentDetails.mockRejectedValue(new Error('some error'))
-
-      await expect(integrityEquipmentDetailsService.getEquipmentDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving list of equipment details: some error'),
-      )
-    })
-
-    it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.getIntegrityEquipmentDetails.mockImplementation(() => {
-        throw new Error('some error')
+      const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        legacySubjectId: `${legacySubjectId}`,
       })
 
-      await expect(integrityEquipmentDetailsService.getEquipmentDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving list of equipment details: some error'),
-      )
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch a list of one equipment detail item', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+        } as IntegrityEquipmentDetails,
+      ]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+
+      const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        legacySubjectId: `${legacySubjectId}`,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch a list of multiple equipment detail items', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+        } as IntegrityEquipmentDetails,
+        {
+          legacySubjectId: 456,
+        } as IntegrityEquipmentDetails,
+        {
+          legacySubjectId: 789,
+        } as IntegrityEquipmentDetails,
+      ]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+
+      const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        legacySubjectId: `${legacySubjectId}`,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch an empty list of equipment detail items', async () => {
+      const expectedResult = [] as IntegrityEquipmentDetailsService[]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+
+      const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        legacySubjectId: `${legacySubjectId}`,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should propagate an error if there is an authorization error', async () => {
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(401)
+
+      await expect(
+        integrityEquipmentDetailsService.getEquipmentDetails({
+          legacySubjectId: `${legacySubjectId}`,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Unauthorized'))
+    })
+
+    it('should propagate an error if there is a server error', async () => {
+      fakeClient
+        .get(`/orders/integrity/${legacySubjectId}/equipment-details`)
+        .replyWithError('Fake unexpected server error')
+
+      await expect(
+        integrityEquipmentDetailsService.getEquipmentDetails({
+          legacySubjectId: `${legacySubjectId}`,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Fake unexpected server error'))
     })
   })
 })

@@ -148,14 +148,6 @@ export default class EmDatastoreApiClient extends RestClient {
     })
   }
 
-  async getIntegrityEquipmentDetails(input: OrderRequest, token: string): Promise<IntegrityEquipmentDetails[]> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityEquipmentDetails[]>({
-      path: `/orders/integrity/${legacySubjectId}/equipment-details`,
-      token,
-    })
-  }
-
   async getIntegrityVisitDetails(input: OrderRequest, token: string): Promise<IntegrityVisitDetails[]> {
     const { legacySubjectId } = input
     return this.get<IntegrityVisitDetails[]>({
