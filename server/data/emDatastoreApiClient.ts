@@ -158,17 +158,6 @@ export default class EmDatastoreApiClient extends RestClient {
     })
   }
 
-  async getAlcoholMonitoringEquipmentDetails(
-    input: OrderRequest,
-    token: string,
-  ): Promise<AlcoholMonitoringEquipmentDetails[]> {
-    const { legacySubjectId } = input
-    return this.get<AlcoholMonitoringEquipmentDetails[]>({
-      path: `/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`,
-      token,
-    })
-  }
-
   async getIntegrityVisitDetails(input: OrderRequest, token: string): Promise<IntegrityVisitDetails[]> {
     const { legacySubjectId } = input
     return this.get<IntegrityVisitDetails[]>({

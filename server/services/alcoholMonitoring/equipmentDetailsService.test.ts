@@ -1,57 +1,153 @@
+import nock from 'nock'
 import AlcoholMonitoringEquipmentDetailsService from './equipmentDetailsService'
-import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
-import { OrderRequest } from '../../types/OrderRequest'
 import { AlcoholMonitoringEquipmentDetails } from '../../models/alcoholMonitoring/equipmentDetails'
+import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import config, { ApiConfig } from '../../config'
 
-jest.mock('../../data/emDatastoreApiClient')
-
-describe('Integrity Equipment Details Service', () => {
-  const emDatastoreApiClient = createMockEmDatastoreApiClient()
+describe('Alcohol Monitoring Equipment Details Service', () => {
+  let fakeClient: nock.Scope
+  let emDatastoreApiClient: EmDatastoreApiClient
 
   let alcoholMonitoringEquipmentDetailsService: AlcoholMonitoringEquipmentDetailsService
 
   beforeEach(() => {
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
     alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(emDatastoreApiClient)
   })
 
   afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll()
+      throw new Error('Not all nock interceptors were used!')
+    }
+    nock.abortPendingRequests()
+    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getEquipmentDetails', () => {
-    const orderRequest: OrderRequest = {
-      legacySubjectId: '123',
-    }
+    const legacySubjectId = '123'
 
-    const equipmentDetailsResponse = [] as AlcoholMonitoringEquipmentDetails[]
+    it('should fetch list of equipment details', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: '123',
+          deviceType: null,
+          deviceSerialNumber: null,
+          deviceAddressType: null,
+          legFitting: null,
+          deviceInstalledDateTime: null,
+          deviceRemovedDateTime: null,
+          hmuInstallDateTime: null,
+          hmuRemovedDateTime: null,
+        } as AlcoholMonitoringEquipmentDetails,
+      ]
 
-    const expectedResult = [] as AlcoholMonitoringEquipmentDetails[]
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
-    it('should return data from the client', async () => {
-      emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails.mockResolvedValue(equipmentDetailsResponse)
+      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
 
-      const results = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails(orderRequest)
-
-      expect(results).toEqual(expectedResult)
+      expect(result).toEqual(expectedResult)
     })
 
-    it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails.mockRejectedValue(new Error('some error'))
+    it('should fetch list of equipment details even if not equipment details', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: '123',
+          deviceType: null,
+          deviceSerialNumber: null,
+          deviceAddressType: null,
+          legFitting: null,
+          deviceInstalledDateTime: null,
+          deviceRemovedDateTime: null,
+          hmuInstallDateTime: null,
+          hmuRemovedDateTime: null,
+        } as AlcoholMonitoringEquipmentDetails,
+      ]
 
-      await expect(alcoholMonitoringEquipmentDetailsService.getEquipmentDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving list of equipment details: some error'),
-      )
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+
+      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
+
+      expect(result).toEqual(expectedResult)
     })
 
-    it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails.mockImplementation(() => {
-        throw new Error('some error')
-      })
+    it('should fetch list of multiple equipment detail items', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+          deviceType: null,
+          deviceSerialNumber: null,
+          deviceAddressType: null,
+          legFitting: null,
+          deviceInstalledDateTime: null,
+          deviceRemovedDateTime: null,
+          hmuInstallDateTime: null,
+          hmuRemovedDateTime: null,
+        } as AlcoholMonitoringEquipmentDetails,
+        {
+          legacySubjectId: '456',
+          deviceType: null,
+          deviceSerialNumber: null,
+          deviceAddressType: null,
+          legFitting: null,
+          deviceInstalledDateTime: null,
+          deviceRemovedDateTime: null,
+          hmuInstallDateTime: null,
+          hmuRemovedDateTime: null,
+        } as AlcoholMonitoringEquipmentDetails,
+        {
+          legacySubjectId: '789',
+          deviceType: null,
+          deviceSerialNumber: null,
+          deviceAddressType: null,
+          legFitting: null,
+          deviceInstalledDateTime: null,
+          deviceRemovedDateTime: null,
+          hmuInstallDateTime: null,
+          hmuRemovedDateTime: null,
+        } as AlcoholMonitoringEquipmentDetails,
+      ]
 
-      await expect(alcoholMonitoringEquipmentDetailsService.getEquipmentDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving list of equipment details: some error'),
-      )
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+
+      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch list of equipment details', async () => {
+      const expectedResult = [] as AlcoholMonitoringEquipmentDetails[]
+
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+
+      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should propagate an error if there is an authorization error', async () => {
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(401)
+
+      await expect(
+        alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
+          legacySubjectId,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Unauthorized'))
+    })
+
+    it('should propagate an error if there is a server error', async () => {
+      fakeClient
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
+        .replyWithError('Fake unexpected server error')
+
+      await expect(
+        alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
+          legacySubjectId,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Fake unexpected server error'))
     })
   })
 })
