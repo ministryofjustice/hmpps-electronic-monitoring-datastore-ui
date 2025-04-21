@@ -534,49 +534,6 @@ describe('EM Datastore API Client', () => {
     })
   })
 
-  describe('getInegrityEquipmentDetails', () => {
-    it('should fetch list of equipment details', async () => {
-      const expectedResult = [
-        {
-          legacySubjectId: 123,
-        },
-      ]
-
-      fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult as IntegrityEquipmentDetails[])
-    })
-
-    it('should fetch list of equipment details', async () => {
-      const expectedResult = [] as IntegrityEquipmentDetails[]
-
-      fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/equipment-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('handles null user tokens correctly by expecting Unauthorized', async () => {
-      // Create orderInfo with userToken explicitly set to null
-      const orderInfoWithNullToken: OrderRequest = {
-        legacySubjectId: '123',
-        userToken: null,
-      }
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${orderInfoWithNullToken.legacySubjectId}/equipment-details`)
-        .reply(401)
-
-      // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityEquipmentDetails(orderInfoWithNullToken, token)).rejects.toThrow(
-        'Unauthorized',
-      )
-    })
-  })
-
   describe('getIntegrityVisitDetails', () => {
     it('should fetch list of visit details', async () => {
       const expectedResult = [

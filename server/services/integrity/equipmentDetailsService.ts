@@ -4,14 +4,19 @@ import getSanitisedError from '../../sanitisedError'
 import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { IntegrityEquipmentDetails } from '../../models/integrity/equipmentDetails'
+import { IntegrityEquipmentDetails, IntegrityEquipmentDetailsModel } from '../../models/integrity/equipmentDetails'
 
 export default class IntegrityEquipmentDetailsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getEquipmentDetails(input: OrderRequest): Promise<IntegrityEquipmentDetails[]> {
     try {
-      return await this.emDatastoreApiClient.getIntegrityEquipmentDetails(input, input.userToken)
+      const results = await this.emDatastoreApiClient.get<IntegrityEquipmentDetails[]>({
+        path: `/orders/integrity/${input.legacySubjectId}/equipment-details`,
+        token: input.legacySubjectId,
+      })
+
+      return results.map(equipmentDetails => IntegrityEquipmentDetailsModel.parse(equipmentDetails))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of equipment details'
       const sanitisedError = getSanitisedError(error)
