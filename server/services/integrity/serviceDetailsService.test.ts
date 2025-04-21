@@ -3,6 +3,7 @@ import IntegrityServiceDetailService from './serviceDetailsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
+import { IntegrityServiceDetails } from '../../models/integrity/serviceDetails'
 
 describe('Integrity Service Details Service', () => {
   let fakeClient: nock.Scope
@@ -27,12 +28,12 @@ describe('Integrity Service Details Service', () => {
   })
 
   describe('getServiceDetails', () => {
-    const legacySubjectId = '123'
+    const legacySubjectId = 123
 
     it('should fetch a list of one service detail item', async () => {
       const expectedResult = [
         {
-          legacySubjectId: 123,
+          legacySubjectId,
           serviceId: 321,
           serviceAddress1: 'address line 1',
           serviceAddress2: 'address line 2',
@@ -43,19 +44,19 @@ describe('Integrity Service Details Service', () => {
           curfewStartDate: '2002-05-22T01:01:01',
           curfewEndDate: '2002-05-22T01:01:01',
           monday: 1,
-          tuesday: 2,
-          wednesday: 3,
-          thursday: 4,
-          friday: 5,
-          saturday: 6,
-          sunday: 7,
-        },
+          tuesday: 1,
+          wednesday: 1,
+          thursday: 1,
+          friday: 1,
+          saturday: 1,
+          sunday: 1,
+        } as IntegrityServiceDetails,
       ]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await integrityServiceDetailService.getServiceDetails({
-        legacySubjectId,
+        legacySubjectId: `${legacySubjectId}`,
       })
 
       expect(result).toEqual(expectedResult)
@@ -65,13 +66,29 @@ describe('Integrity Service Details Service', () => {
       const expectedResult = [
         {
           legacySubjectId,
-        },
+          serviceId: null,
+          serviceAddress1: null,
+          serviceAddress2: null,
+          serviceAddress3: null,
+          serviceAddressPostcode: null,
+          serviceStartDate: null,
+          serviceEndDate: null,
+          curfewStartDate: null,
+          curfewEndDate: null,
+          monday: null,
+          tuesday: null,
+          wednesday: null,
+          thursday: null,
+          friday: null,
+          saturday: null,
+          sunday: null,
+        } as IntegrityServiceDetails,
       ]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await integrityServiceDetailService.getServiceDetails({
-        legacySubjectId,
+        legacySubjectId: `${legacySubjectId}`,
       })
 
       expect(result).toEqual(expectedResult)
@@ -81,19 +98,67 @@ describe('Integrity Service Details Service', () => {
       const expectedResult = [
         {
           legacySubjectId,
-        },
+          serviceId: null,
+          serviceAddress1: null,
+          serviceAddress2: null,
+          serviceAddress3: null,
+          serviceAddressPostcode: null,
+          serviceStartDate: null,
+          serviceEndDate: null,
+          curfewStartDate: null,
+          curfewEndDate: null,
+          monday: null,
+          tuesday: null,
+          wednesday: null,
+          thursday: null,
+          friday: null,
+          saturday: null,
+          sunday: null,
+        } as IntegrityServiceDetails,
         {
-          legacySubjectId: '456',
-        },
+          legacySubjectId: 456,
+          serviceId: null,
+          serviceAddress1: null,
+          serviceAddress2: null,
+          serviceAddress3: null,
+          serviceAddressPostcode: null,
+          serviceStartDate: null,
+          serviceEndDate: null,
+          curfewStartDate: null,
+          curfewEndDate: null,
+          monday: null,
+          tuesday: null,
+          wednesday: null,
+          thursday: null,
+          friday: null,
+          saturday: null,
+          sunday: null,
+        } as IntegrityServiceDetails,
         {
-          legacySubjectId: '789',
-        },
+          legacySubjectId: 789,
+          serviceId: null,
+          serviceAddress1: null,
+          serviceAddress2: null,
+          serviceAddress3: null,
+          serviceAddressPostcode: null,
+          serviceStartDate: null,
+          serviceEndDate: null,
+          curfewStartDate: null,
+          curfewEndDate: null,
+          monday: null,
+          tuesday: null,
+          wednesday: null,
+          thursday: null,
+          friday: null,
+          saturday: null,
+          sunday: null,
+        } as IntegrityServiceDetails,
       ]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await integrityServiceDetailService.getServiceDetails({
-        legacySubjectId,
+        legacySubjectId: `${legacySubjectId}`,
       })
 
       expect(result).toEqual(expectedResult)
@@ -105,7 +170,7 @@ describe('Integrity Service Details Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await integrityServiceDetailService.getServiceDetails({
-        legacySubjectId,
+        legacySubjectId: `${legacySubjectId}`,
       })
 
       expect(result).toEqual(expectedResult)
@@ -116,7 +181,7 @@ describe('Integrity Service Details Service', () => {
 
       await expect(
         integrityServiceDetailService.getServiceDetails({
-          legacySubjectId,
+          legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving service details: Unauthorized'))
     })
@@ -128,7 +193,7 @@ describe('Integrity Service Details Service', () => {
 
       await expect(
         integrityServiceDetailService.getServiceDetails({
-          legacySubjectId,
+          legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving service details: Fake unexpected server error'))
     })

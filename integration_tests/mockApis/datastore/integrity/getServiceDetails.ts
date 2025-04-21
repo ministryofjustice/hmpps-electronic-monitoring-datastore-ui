@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { IntegrityServiceDetail } from '../../../../server/models/integrity/serviceDetail'
+import { IntegrityServiceDetails } from '../../../../server/models/integrity/serviceDetails'
 
 const defaultServiceDetailsStubOptions = {
   httpStatus: 200,
@@ -11,7 +11,7 @@ const defaultServiceDetailsStubOptions = {
 type GetServiceDetailsStubOptions = {
   httpStatus: number
   legacySubjectId?: number
-  body?: IntegrityServiceDetail[]
+  body?: IntegrityServiceDetails[]
 }
 
 export const stubIntegrityGetServiceDetails = (

@@ -1,4 +1,4 @@
-import { IntegrityServiceDetail } from '../../integrity/serviceDetail'
+import { IntegrityServiceDetails } from '../../integrity/serviceDetails'
 import { IntegrityTimelineEventModel } from '../../integrity/TimelineEvent'
 
 export type IntegrityServiceDetailsViewModel = {
@@ -10,7 +10,7 @@ export type IntegrityServiceDetailsViewModel = {
 const createViewModelFromApiDto = (
   legacySubjectId: number,
   backUrl: string,
-  serviceDetails: IntegrityServiceDetail[],
+  serviceDetails: IntegrityServiceDetails[],
 ): IntegrityServiceDetailsViewModel => ({
   legacySubjectId,
   serviceDetails: serviceDetails
@@ -32,7 +32,7 @@ const createViewModelFromApiDto = (
 const construct = (
   legacySubjectId: number,
   backUrl: string,
-  serviceDetails: IntegrityServiceDetail[] = [],
+  serviceDetails: IntegrityServiceDetails[] = [],
 ): IntegrityServiceDetailsViewModel => {
   return createViewModelFromApiDto(legacySubjectId, backUrl, serviceDetails)
 }

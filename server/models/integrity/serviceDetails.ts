@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const IntegrityServiceDetailModel = z.object({
+export const IntegrityServiceDetailsModel = z.object({
   legacySubjectId: z.number(),
   serviceId: z.number().nullable(),
   serviceAddress1: z.string().nullable(),
@@ -20,4 +20,4 @@ export const IntegrityServiceDetailModel = z.object({
   sunday: z.number().nullable(),
 })
 
-export type IntegrityServiceDetail = z.infer<typeof IntegrityServiceDetailModel>
+export type IntegrityServiceDetails = z.infer<typeof IntegrityServiceDetailsModel>
