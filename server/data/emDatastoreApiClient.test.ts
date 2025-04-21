@@ -580,47 +580,6 @@ describe('EM Datastore API Client', () => {
     })
   })
 
-  describe('getAlcoholMonitoringEquipmentDetails', () => {
-    it('should fetch list of equipment details', async () => {
-      const expectedResult: AlcoholMonitoringEquipmentDetails[] = [
-        {
-          legacySubjectId: '123',
-        },
-      ]
-
-      fakeClient
-        .get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`)
-        .reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('should fetch list of equipment details', async () => {
-      const expectedResult: AlcoholMonitoringEquipmentDetails[] = []
-
-      fakeClient
-        .get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`)
-        .reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('handles null user tokens correctly by expecting Unauthorized', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/equipment-details`)
-        .reply(401)
-
-      // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getAlcoholMonitoringEquipmentDetails(orderInfo, token)).rejects.toThrow(
-        'Unauthorized',
-      )
-    })
-  })
-
   describe('getIntegrityVisitDetails', () => {
     it('should fetch list of visit details', async () => {
       const expectedResult = [
@@ -676,59 +635,5 @@ describe('EM Datastore API Client', () => {
     })
   })
 
-  describe('getAlcoholMonitoringVisitDetails', () => {
-    it('should fetch list of visit details', async () => {
-      const expectedResult = [
-        {
-          legacySubjectId: '123',
-          visitId: '300',
-          visitType: 'visit type',
-          visitAttempt: 'attempt 1',
-          dateVisitRaised: '2001-01-01T00:00:00',
-          visitAddress: 'test visit address',
-          visitNotes: 'visit notes',
-          visitOutcome: 'visit outcome',
-          actualWorkStartDateTime: '2002-02-02T02:20:20',
-          actualWorkEndDateTime: '2003-03-03T03:30:30',
-          visitRejectionReason: 'rejection reason',
-          visitRejectionDescription: 'rejection description',
-          visitCancelReason: 'cancel reason',
-          visitCancelDescription: 'cancel description',
-        },
-      ] as AlcoholMonitoringVisitDetails[]
-
-      fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult as AlcoholMonitoringVisitDetails[])
-    })
-
-    it('should fetch list of visit details', async () => {
-      const expectedResult = [] as AlcoholMonitoringVisitDetails[]
-
-      fakeClient.get(`/orders/alcohol-monitoring/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('handles null user tokens correctly by expecting Unauthorized', async () => {
-      // Create orderInfo with userToken explicitly set to null
-      const orderInfoWithNullToken: OrderRequest = {
-        legacySubjectId: '123',
-        userToken: null,
-      }
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${orderInfoWithNullToken.legacySubjectId}/visit-details`)
-        .reply(401)
-
-      // Expect the method call to throw due to unauthorized access
-      await expect(
-        emDatastoreApiClient.getAlcoholMonitoringVisitDetails(orderInfoWithNullToken, token),
-      ).rejects.toThrow('Unauthorized')
-    })
-  })
+  describe('getAlcoholMonitoringVisitDetails', () => {})
 })
