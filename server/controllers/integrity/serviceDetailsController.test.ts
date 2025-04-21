@@ -5,7 +5,7 @@ import IntegrityServiceDetailsController from './serviceDetailsController'
 import IntegrityServiceDetailsViewModel from '../../models/view-models/integrity/serviceDetails'
 import { IntegrityTimelineEventModel } from '../../models/integrity/TimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { IntegrityServiceDetail } from '../../models/integrity/serviceDetail'
+import { IntegrityServiceDetails } from '../../models/integrity/serviceDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/serviceDetailsService')
@@ -40,7 +40,7 @@ describe('IntegrityServiceDetailsController', () => {
     const expectedViewModel = {
       legacySubjectId: testOrderId,
       backUrl: `/integrity/${testOrderId}`,
-      serviceDetails: [] as IntegrityServiceDetail[],
+      serviceDetails: [] as IntegrityServiceDetails[],
     }
 
     integrityServiceDetailsService.getServiceDetails = jest.fn().mockResolvedValue([])
