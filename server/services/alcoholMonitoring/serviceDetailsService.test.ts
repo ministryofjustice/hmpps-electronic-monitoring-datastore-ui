@@ -34,7 +34,14 @@ describe('Alcohol Monitoring Service Details Service', () => {
       const expectedResult = [
         {
           legacySubjectId,
-        },
+          serviceStartDate: null,
+          serviceEndDate: null,
+          serviceAddress: null,
+          equipmentStartDate: null,
+          equipmentEndDate: null,
+          hmuSerialNumber: null,
+          deviceSerialNumber: null,
+        } as AlcoholMonitoringServiceDetails,
       ]
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`).reply(200, expectedResult)
@@ -50,13 +57,34 @@ describe('Alcohol Monitoring Service Details Service', () => {
       const expectedResult = [
         {
           legacySubjectId,
-        },
+          serviceStartDate: null,
+          serviceEndDate: null,
+          serviceAddress: null,
+          equipmentStartDate: null,
+          equipmentEndDate: null,
+          hmuSerialNumber: null,
+          deviceSerialNumber: null,
+        } as AlcoholMonitoringServiceDetails,
         {
           legacySubjectId: '456',
-        },
+          serviceStartDate: null,
+          serviceEndDate: null,
+          serviceAddress: null,
+          equipmentStartDate: null,
+          equipmentEndDate: null,
+          hmuSerialNumber: null,
+          deviceSerialNumber: null,
+        } as AlcoholMonitoringServiceDetails,
         {
           legacySubjectId: '789',
-        },
+          serviceStartDate: null,
+          serviceEndDate: null,
+          serviceAddress: null,
+          equipmentStartDate: null,
+          equipmentEndDate: null,
+          hmuSerialNumber: null,
+          deviceSerialNumber: null,
+        } as AlcoholMonitoringServiceDetails,
       ]
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`).reply(200, expectedResult)
