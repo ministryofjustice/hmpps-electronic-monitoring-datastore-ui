@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { OrderDetails } from '../../../../server/models/orderDetails'
+import { IntegrityOrderDetails } from '../../../../server/models/integrity/orderDetails'
 
 const defaultOrderDetails = {
   specials: 'no',
@@ -41,7 +41,7 @@ const defaultOrderDetails = {
 type GetOrderDetailsStubOptions = {
   httpStatus: number
   legacySubjectId?: string
-  body?: OrderDetails
+  body?: IntegrityOrderDetails
 }
 
 export const stubIntegrityGetOrderDetails = (options: GetOrderDetailsStubOptions): SuperAgentRequest =>
