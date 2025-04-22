@@ -5,9 +5,7 @@ import config, { ApiConfig } from '../config'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
-import { IntegrityEquipmentDetails } from '../models/integrity/equipmentDetails'
 import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
-import { IntegritySuspensionOfVisitsEvent } from '../models/integrity/suspensionOfVisits'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
 import { IntegrityContactEvent } from '../models/integrity/contactEvents'
 import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
@@ -495,42 +493,6 @@ describe('EM Datastore API Client', () => {
       await expect(
         emDatastoreApiClient.getAlcoholMonitoringViolationEvents(orderInfoWithNullToken, token),
       ).rejects.toThrow('Unauthorized')
-    })
-  })
-
-  describe('getSuspensionOfVisits', () => {
-    it('should fetch suspension of visits events', async () => {
-      const fakeResponse = [
-        {
-          legacySubjectId: 1232123,
-          suspensionOfVisits: 'test',
-          requestedDate: null,
-          startDate: null,
-          startTime: null,
-          endDate: null,
-        },
-      ] as IntegritySuspensionOfVisitsEvent[]
-      const expectedResult = fakeResponse
-      fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/suspension-of-visits`).reply(200, fakeResponse)
-
-      const result = await emDatastoreApiClient.getSuspensionOfVisits(orderInfo, token)
-
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('handles null user tokens correctly by expecting Unauthorized', async () => {
-      const orderInfoWithNullToken: OrderRequest = {
-        legacySubjectId: '123',
-        userToken: null,
-      }
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${orderInfoWithNullToken.legacySubjectId}/suspension-of-visits`)
-        .reply(401)
-
-      await expect(emDatastoreApiClient.getSuspensionOfVisits(orderInfoWithNullToken, token)).rejects.toThrow(
-        'Unauthorized',
-      )
     })
   })
 
