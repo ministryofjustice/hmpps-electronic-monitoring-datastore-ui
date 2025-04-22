@@ -4,7 +4,7 @@ import {
   KeyOrderInformation,
   SubjectHistoryReport,
   OrderDocument,
-} from '../../../../server/interfaces/integrity/orderSummary'
+} from '../../../../server/models/integrity/orderSummary'
 
 const defaultGetOrderSummaryOptions = {
   httpStatus: 200,

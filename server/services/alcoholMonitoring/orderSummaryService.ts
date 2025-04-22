@@ -4,14 +4,22 @@ import getSanitisedError from '../../sanitisedError'
 import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { IntegrityOrderSummary } from '../../interfaces/integrity/orderSummary'
+import {
+  AlcoholMonitoringOrderSummary,
+  AlcoholMonitoringOrderSummaryModel,
+} from '../../models/alcoholMonitoring/orderSummary'
 
-export default class IntegritySummaryService {
+export default class AlcoholMonitoringOrderSummaryService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
-  async getSummary(input: OrderRequest): Promise<IntegrityOrderSummary> {
+  async getOrderSummary(input: OrderRequest): Promise<AlcoholMonitoringOrderSummary> {
     try {
-      return await this.emDatastoreApiClient.getIntegritySummary(input, input.userToken)
+      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringOrderSummary>({
+        path: `/orders/alcohol-monitoring/${input.legacySubjectId}`,
+        token: input.userToken,
+      })
+
+      return AlcoholMonitoringOrderSummaryModel.parse(result)
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving order summary'
       const sanitisedError = getSanitisedError(error)

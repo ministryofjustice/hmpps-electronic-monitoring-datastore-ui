@@ -1,15 +1,17 @@
 import { Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringSummaryService } from '../../services'
+import { AuditService, AlcoholMonitoringOrderSummaryService } from '../../services'
 import AlcoholMonitoringSummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/alcoholMonitoring/summaryService')
+jest.mock('../../services/alcoholMonitoring/orderSummaryService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const alcoholMonitoringSummaryService = { getSummary: jest.fn() } as unknown as AlcoholMonitoringSummaryService
+const alcoholMonitoringSummaryService = {
+  getOrderSummary: jest.fn(),
+} as unknown as AlcoholMonitoringOrderSummaryService
 
 describe('Alcohol monitoring summary Controller', () => {
   let controller: AlcoholMonitoringSummaryController
@@ -54,11 +56,11 @@ describe('Alcohol monitoring summary Controller', () => {
 
       await controller.summary(req, res, next)
 
-      expect(alcoholMonitoringSummaryService.getSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
+      expect(alcoholMonitoringSummaryService.getOrderSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
     it(`returns correct error when orderService fails`, async () => {
-      alcoholMonitoringSummaryService.getSummary = jest.fn().mockImplementation(() => {
+      alcoholMonitoringSummaryService.getOrderSummary = jest.fn().mockImplementation(() => {
         throw new Error('Expected error message')
       })
 
@@ -81,7 +83,7 @@ describe('Alcohol monitoring summary Controller', () => {
         },
       }
 
-      alcoholMonitoringSummaryService.getSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      alcoholMonitoringSummaryService.getOrderSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
       await controller.summary(req, res, next)
 
