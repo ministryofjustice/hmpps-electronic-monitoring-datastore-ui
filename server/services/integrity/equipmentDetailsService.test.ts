@@ -85,7 +85,7 @@ describe('Integrity Equipment Details Service', () => {
     })
 
     it('should fetch an empty list of equipment detail items', async () => {
-      const expectedResult = [] as IntegrityEquipmentDetailsService[]
+      const expectedResult = [] as IntegrityEquipmentDetails[]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 

@@ -1,5 +1,5 @@
 import nock from 'nock'
-import IntegrityServiceDetailService from './serviceDetailsService'
+import IntegrityServiceDetailsService from './serviceDetailsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
@@ -9,12 +9,12 @@ describe('Integrity Service Details Service', () => {
   let fakeClient: nock.Scope
   let emDatastoreApiClient: EmDatastoreApiClient
 
-  let integrityServiceDetailService: IntegrityServiceDetailService
+  let integrityServiceDetailsService: IntegrityServiceDetailsService
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
     emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
-    integrityServiceDetailService = new IntegrityServiceDetailService(emDatastoreApiClient)
+    integrityServiceDetailsService = new IntegrityServiceDetailsService(emDatastoreApiClient)
   })
 
   afterEach(() => {
@@ -55,7 +55,7 @@ describe('Integrity Service Details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
-      const result = await integrityServiceDetailService.getServiceDetails({
+      const result = await integrityServiceDetailsService.getServiceDetails({
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -87,7 +87,7 @@ describe('Integrity Service Details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
-      const result = await integrityServiceDetailService.getServiceDetails({
+      const result = await integrityServiceDetailsService.getServiceDetails({
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -157,7 +157,7 @@ describe('Integrity Service Details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
-      const result = await integrityServiceDetailService.getServiceDetails({
+      const result = await integrityServiceDetailsService.getServiceDetails({
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -165,11 +165,11 @@ describe('Integrity Service Details Service', () => {
     })
 
     it('should fetch an empty list of service detail items', async () => {
-      const expectedResult = [] as IntegrityServiceDetailService[]
+      const expectedResult = [] as IntegrityServiceDetails[]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
-      const result = await integrityServiceDetailService.getServiceDetails({
+      const result = await integrityServiceDetailsService.getServiceDetails({
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -180,7 +180,7 @@ describe('Integrity Service Details Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/service-details`).reply(401)
 
       await expect(
-        integrityServiceDetailService.getServiceDetails({
+        integrityServiceDetailsService.getServiceDetails({
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving service details: Unauthorized'))
@@ -192,7 +192,7 @@ describe('Integrity Service Details Service', () => {
         .replyWithError('Fake unexpected server error')
 
       await expect(
-        integrityServiceDetailService.getServiceDetails({
+        integrityServiceDetailsService.getServiceDetails({
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving service details: Fake unexpected server error'))

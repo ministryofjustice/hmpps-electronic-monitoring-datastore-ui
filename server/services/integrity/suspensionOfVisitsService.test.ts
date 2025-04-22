@@ -1,54 +1,146 @@
+import nock from 'nock'
 import IntegritySuspensionOfVisitsService from './suspensionOfVisitsService'
-import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
-import { OrderRequest } from '../../types/OrderRequest'
+import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import config, { ApiConfig } from '../../config'
 import { IntegritySuspensionOfVisitsEvent } from '../../models/integrity/suspensionOfVisits'
 
-jest.mock('../../data/emDatastoreApiClient')
+describe('Integrity Suspension of visits Service', () => {
+  let fakeClient: nock.Scope
+  let emDatastoreApiClient: EmDatastoreApiClient
 
-describe('Integrity suspension of visits service', () => {
-  const emDatastoreApiClient = createMockEmDatastoreApiClient()
-  let suspensionOfVisitsService: IntegritySuspensionOfVisitsService
+  let integritySuspensionOfVisitsService: IntegritySuspensionOfVisitsService
 
   beforeEach(() => {
-    suspensionOfVisitsService = new IntegritySuspensionOfVisitsService(emDatastoreApiClient)
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(emDatastoreApiClient)
   })
 
   afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll()
+      throw new Error('Not all nock interceptors were used!')
+    }
+    nock.abortPendingRequests()
+    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getSuspensionOfVisits', () => {
-    const orderRequest: OrderRequest = {
-      legacySubjectId: '123',
-    }
-    const suspensionOfVisitsResponse = [] as IntegritySuspensionOfVisitsEvent[]
-    const expectedResult = [] as IntegritySuspensionOfVisitsEvent[]
+    const legacySubjectId = 123
 
-    it('should return data from the client', async () => {
-      emDatastoreApiClient.getSuspensionOfVisits.mockResolvedValue(suspensionOfVisitsResponse)
+    it('should fetch a list of one suspension of visits item', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+          suspensionOfVisits: 'yes',
+          requestedDate: null,
+          startDate: null,
+          startTime: null,
+          endDate: null,
+        } as IntegritySuspensionOfVisitsEvent,
+      ]
 
-      const results = await suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
 
-      expect(results).toEqual(expectedResult)
-    })
-
-    it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.getSuspensionOfVisits.mockRejectedValue(new Error('some error'))
-
-      await expect(suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving suspension of visits data: some error'),
-      )
-    })
-
-    it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.getSuspensionOfVisits.mockImplementation(() => {
-        throw new Error('some error')
+      const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        legacySubjectId: `${legacySubjectId}`,
       })
 
-      await expect(suspensionOfVisitsService.getSuspensionOfVisits(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving suspension of visits data: some error'),
-      )
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch a list of one equipment detail item', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+          suspensionOfVisits: 'no',
+          requestedDate: null,
+          startDate: null,
+          startTime: null,
+          endDate: null,
+        } as IntegritySuspensionOfVisitsEvent,
+      ]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
+
+      const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        legacySubjectId: `${legacySubjectId}`,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch a list of multiple equipment detail items', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+          suspensionOfVisits: 'yes',
+          requestedDate: null,
+          startDate: null,
+          startTime: null,
+          endDate: null,
+        } as IntegritySuspensionOfVisitsEvent,
+        {
+          legacySubjectId: 456,
+          suspensionOfVisits: 'no',
+          requestedDate: null,
+          startDate: null,
+          startTime: null,
+          endDate: null,
+        } as IntegritySuspensionOfVisitsEvent,
+        {
+          legacySubjectId: 789,
+          suspensionOfVisits: 'yes',
+          requestedDate: null,
+          startDate: null,
+          startTime: null,
+          endDate: null,
+        } as IntegritySuspensionOfVisitsEvent,
+      ]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
+
+      const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        legacySubjectId: `${legacySubjectId}`,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch an empty list of equipment detail items', async () => {
+      const expectedResult = [] as IntegritySuspensionOfVisitsEvent[]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
+
+      const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        legacySubjectId: `${legacySubjectId}`,
+      })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should propagate an error if there is an authorization error', async () => {
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(401)
+
+      await expect(
+        integritySuspensionOfVisitsService.getSuspensionOfVisits({
+          legacySubjectId: `${legacySubjectId}`,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Unauthorized'))
+    })
+
+    it('should propagate an error if there is a server error', async () => {
+      fakeClient
+        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+        .replyWithError('Fake unexpected server error')
+
+      await expect(
+        integritySuspensionOfVisitsService.getSuspensionOfVisits({
+          legacySubjectId: `${legacySubjectId}`,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Fake unexpected server error'))
     })
   })
 })
