@@ -1,47 +1,57 @@
+import nock from 'nock'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
-import { createMockEmDatastoreApiClient } from '../data/testUtils/mocks'
 
-jest.mock('../data/emDatastoreApiClient')
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
+import config, { ApiConfig } from '../config'
 
-describe('Connection service', () => {
-  const emDatastoreApiClient = createMockEmDatastoreApiClient()
+describe('EM Datastore connection service', () => {
+  let fakeClient: nock.Scope
+  let emDatastoreApiClient: EmDatastoreApiClient
 
   let emDatastoreConnectionService: EmDatastoreConnectionService
 
   beforeEach(() => {
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
     emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClient)
   })
 
   afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll()
+      throw new Error('Not all nock interceptors were used!')
+    }
+    nock.abortPendingRequests()
+    nock.cleanAll()
     jest.resetAllMocks()
   })
 
-  describe('getOrderDetails', () => {
-    it('should return empty data from the client', async () => {
-      emDatastoreApiClient.confirmApi.mockResolvedValue({ message: 'test' } as unknown as JSON)
+  describe('test', () => {
+    it('should test', async () => {
+      const expectedResult = {
+        foo: 'bar',
+      }
 
-      const results = await emDatastoreConnectionService.test('token')
+      fakeClient.get(`/test`).reply(200, expectedResult)
 
-      expect(results).toEqual({
-        message: 'test',
-      })
+      const result = await emDatastoreConnectionService.test('token')
+
+      expect(result).toEqual(expectedResult)
     })
 
-    it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.confirmApi.mockRejectedValue(new Error('some error'))
+    it('should propagate an error if there is an authorization error', async () => {
+      fakeClient.get(`/test`).reply(401)
 
       await expect(emDatastoreConnectionService.test('token')).rejects.toEqual(
-        new Error('Error connecting to EM Datastore API: some error'),
+        new Error('Error connecting to EM Datastore API: Unauthorized'),
       )
     })
 
-    it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.confirmApi.mockImplementation(() => {
-        throw new Error('some error')
-      })
+    it('should propagate an error if there is a server error', async () => {
+      fakeClient.get(`/test`).replyWithError('Fake unexpected server error')
 
-      await expect(emDatastoreConnectionService.test('bad-token')).rejects.toEqual(
-        new Error('Error connecting to EM Datastore API: some error'),
+      await expect(emDatastoreConnectionService.test('token')).rejects.toEqual(
+        new Error('Error connecting to EM Datastore API: Fake unexpected server error'),
       )
     })
   })
