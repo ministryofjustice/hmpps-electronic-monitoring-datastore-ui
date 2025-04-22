@@ -9,9 +9,9 @@ export const IntegrityVisitAddressDetailsModel = z.object({
 })
 
 export const IntegrityVisitDetailsModel = z.object({
-  legacySubjectId: z.number(),
+  legacySubjectId: z.string(),
   address: IntegrityVisitAddressDetailsModel.nullable(),
-  actualWorkStartDateTime: z.string(),
+  actualWorkStartDateTime: z.string().nullable(),
   actualWorkEndDateTime: z.string().nullable(),
   visitNotes: z.string().nullable(),
   visitType: z.string().nullable(),

@@ -4,13 +4,13 @@ import { IntegrityContactEvent } from '../../../../server/models/integrity/conta
 
 const defaultContactEventsStubOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 } as GetContactEventsStubOptions
 
 type GetContactEventsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: IntegrityContactEvent[]
 }
 

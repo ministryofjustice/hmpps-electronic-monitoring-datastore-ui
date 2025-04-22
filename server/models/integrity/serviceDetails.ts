@@ -1,7 +1,7 @@
 import z from 'zod'
 
 export const IntegrityServiceDetailsModel = z.object({
-  legacySubjectId: z.number(),
+  legacySubjectId: z.string(),
   serviceId: z.number().nullable(),
   serviceAddress1: z.string().nullable(),
   serviceAddress2: z.string().nullable(),

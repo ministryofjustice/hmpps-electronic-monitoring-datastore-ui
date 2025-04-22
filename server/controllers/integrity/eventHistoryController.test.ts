@@ -24,7 +24,7 @@ describe('IntegrityEventHistoryController', () => {
   let res: Response
   const next = jest.fn()
 
-  const testOrderId = 123456789
+  const testOrderId = '123456789'
 
   beforeEach(() => {
     integrityEventHistoryController = new IntegrityEventHistoryController(auditService, integrityEventHistoryService)

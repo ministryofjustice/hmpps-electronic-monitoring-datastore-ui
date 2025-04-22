@@ -28,7 +28,7 @@ describe('Integrity Suspension of visits Service', () => {
   })
 
   describe('getSuspensionOfVisits', () => {
-    const legacySubjectId = 123
+    const legacySubjectId = '123'
 
     it('should fetch a list of one suspension of visits item', async () => {
       const expectedResult = [
@@ -83,7 +83,7 @@ describe('Integrity Suspension of visits Service', () => {
           endDate: null,
         } as IntegritySuspensionOfVisitsEvent,
         {
-          legacySubjectId: 456,
+          legacySubjectId: '456',
           suspensionOfVisits: 'no',
           requestedDate: null,
           startDate: null,
@@ -91,7 +91,7 @@ describe('Integrity Suspension of visits Service', () => {
           endDate: null,
         } as IntegritySuspensionOfVisitsEvent,
         {
-          legacySubjectId: 789,
+          legacySubjectId: '789',
           suspensionOfVisits: 'yes',
           requestedDate: null,
           startDate: null,

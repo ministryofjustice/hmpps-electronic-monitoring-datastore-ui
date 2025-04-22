@@ -28,7 +28,7 @@ describe('Integrity Service Details Service', () => {
   })
 
   describe('getServiceDetails', () => {
-    const legacySubjectId = 123
+    const legacySubjectId = '123'
 
     it('should fetch a list of one service detail item', async () => {
       const expectedResult = [
@@ -116,7 +116,7 @@ describe('Integrity Service Details Service', () => {
           sunday: null,
         } as IntegrityServiceDetails,
         {
-          legacySubjectId: 456,
+          legacySubjectId: '456',
           serviceId: null,
           serviceAddress1: null,
           serviceAddress2: null,
@@ -135,7 +135,7 @@ describe('Integrity Service Details Service', () => {
           sunday: null,
         } as IntegrityServiceDetails,
         {
-          legacySubjectId: 789,
+          legacySubjectId: '789',
           serviceId: null,
           serviceAddress1: null,
           serviceAddress2: null,

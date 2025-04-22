@@ -4,13 +4,13 @@ import { IntegrityIncidentEvent } from '../../../../server/models/integrity/inci
 
 const defaultIncidentEventsStubOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 } as GetIncidentEventsStubOptions
 
 type GetIncidentEventsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: IntegrityIncidentEvent[]
 }
 

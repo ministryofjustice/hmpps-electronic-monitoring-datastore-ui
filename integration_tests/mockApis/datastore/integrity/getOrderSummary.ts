@@ -8,10 +8,10 @@ import {
 
 const defaultGetOrderSummaryOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   keyOrderInformation: {
     specials: 'no',
-    legacySubjectId: 1234567,
+    legacySubjectId: '1234567',
     name: 'Testopher Fakesmith',
     alias: 'an old tv show',
     dateOfBirth: '1950-01-01',
@@ -36,7 +36,7 @@ const defaultGetOrderSummaryOptions = {
 
 type GetOrderSummaryStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   keyOrderInformation?: KeyOrderInformation
   subjectHistoryReport?: SubjectHistoryReport
   documents?: {

@@ -199,6 +199,19 @@ context('Alcohol Monitoring Visit Details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
+            visitId: null,
+            visitType: null,
+            visitAttempt: null,
+            dateVisitRaised: null,
+            visitAddress: null,
+            visitNotes: null,
+            visitOutcome: null,
+            actualWorkStartDateTime: null,
+            actualWorkEndDateTime: null,
+            visitRejectionReason: null,
+            visitRejectionDescription: null,
+            visitCancelReason: null,
+            visitCancelDescription: null,
           } as AlcoholMonitoringVisitDetails,
         ],
       })

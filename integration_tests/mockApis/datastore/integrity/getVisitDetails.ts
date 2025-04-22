@@ -4,13 +4,13 @@ import { IntegrityVisitDetails } from '../../../../server/models/integrity/visit
 
 const defaultVisitDetailsStubOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 } as GetVisitDetailsStubOptions
 
 type GetVisitDetailsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: IntegrityVisitDetails[]
 }
 

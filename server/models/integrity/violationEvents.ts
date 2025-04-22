@@ -21,7 +21,7 @@ export const IntegrityViolationEventDetailsModel = z.object({
 })
 
 export const IntegrityViolationEventModel = z.object({
-  legacySubjectId: z.number(),
+  legacySubjectId: z.string(),
   type: z.string(),
   dateTime: z.string(),
   details: z.object({}).passthrough(),

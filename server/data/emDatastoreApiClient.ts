@@ -7,7 +7,6 @@ import { OrderRequest } from '../types/OrderRequest'
 
 import { IntegrityOrderSummary } from '../interfaces/integrity/orderSummary'
 import { IndegrityOrderDetails } from '../interfaces/integrity/orderDetails'
-import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
 import { IntegrityContactEvent } from '../models/integrity/contactEvents'
 import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
@@ -15,7 +14,6 @@ import { IntegrityViolationEvent } from '../models/integrity/violationEvents'
 
 import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
-import { AlcoholMonitoringVisitDetails } from '../models/alcoholMonitoring/visitDetails'
 import { AlcoholMonitoringContactEvent } from '../models/alcoholMonitoring/contactEvents'
 import { AlcoholMonitoringIncidentEvent } from '../models/alcoholMonitoring/incidentEvents'
 import { AlcoholMonitoringViolationEvent } from '../models/alcoholMonitoring/violationEvents'
@@ -142,22 +140,6 @@ export default class EmDatastoreApiClient extends RestClient {
     const { legacySubjectId } = input
     return this.get<AlcoholMonitoringContactEvent[]>({
       path: `/orders/alcohol-monitoring/${legacySubjectId}/contact-events`,
-      token,
-    })
-  }
-
-  async getIntegrityVisitDetails(input: OrderRequest, token: string): Promise<IntegrityVisitDetails[]> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityVisitDetails[]>({
-      path: `/orders/integrity/${legacySubjectId}/visit-details`,
-      token,
-    })
-  }
-
-  async getAlcoholMonitoringVisitDetails(input: OrderRequest, token: string): Promise<AlcoholMonitoringVisitDetails[]> {
-    const { legacySubjectId } = input
-    return this.get<AlcoholMonitoringVisitDetails[]>({
-      path: `/orders/alcohol-monitoring/${legacySubjectId}/visit-details`,
       token,
     })
   }

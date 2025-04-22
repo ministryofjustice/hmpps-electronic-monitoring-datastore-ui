@@ -4,13 +4,13 @@ import { IntegrityServiceDetails } from '../../../../server/models/integrity/ser
 
 const defaultServiceDetailsStubOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 }
 
 type GetServiceDetailsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: IntegrityServiceDetails[]
 }
 

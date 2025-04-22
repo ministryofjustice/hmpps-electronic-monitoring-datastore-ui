@@ -5,7 +5,7 @@ export const IntegrityIncidentEventDetailsModel = z.object({
 })
 
 export const IntegrityIncidentEventModel = z.object({
-  legacySubjectId: z.number(),
+  legacySubjectId: z.string(),
   type: z.string(),
   dateTime: z.string(),
   details: z.object({}).passthrough(),

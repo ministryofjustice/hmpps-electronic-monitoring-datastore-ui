@@ -2,7 +2,7 @@ import Page from '../../pages/page'
 import EventHistoryPage from '../../pages/integrity/eventHistory'
 
 context('Event history', () => {
-  const legacySubjectId = 1234567
+  const legacySubjectId = '1234567'
 
   beforeEach(() => {
     cy.task('reset')

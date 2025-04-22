@@ -34,13 +34,13 @@ const defaultSuspensionOfVisitsDetails = {
 
 const defaultGetSuspensionOfVisitsOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 } as GetSuspensionOfVisitsStubOptions
 
 type GetSuspensionOfVisitsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: IntegritySuspensionOfVisitsEvent[]
 }
 

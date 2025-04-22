@@ -25,9 +25,9 @@ describe('SuspensionOfVisitsController', () => {
   let res: Response
   const next = jest.fn()
 
-  const testOrderId = 1234321
+  const testOrderId = '1234321'
 
-  const createEvent = (legacySubjectId: number, time: string, dateTime: string): IntegritySuspensionOfVisitsEvent => {
+  const createEvent = (legacySubjectId: string, time: string, dateTime: string): IntegritySuspensionOfVisitsEvent => {
     return {
       legacySubjectId,
       suspensionOfVisits: 'Yes',
@@ -51,7 +51,7 @@ describe('SuspensionOfVisitsController', () => {
   }
 
   const createViewData = (
-    legacySubjectId: number,
+    legacySubjectId: string,
     events: IntegritySuspensionOfVisitsViewEvent[],
   ): IntegritySuspensionOfVisitsViewModel => {
     return {

@@ -11,7 +11,7 @@ export type IntegritySuspensionOfVisitsViewEvent = {
 }
 
 export type IntegritySuspensionOfVisitsViewModel = {
-  legacySubjectId: number
+  legacySubjectId: string
   backUrl: string
   events: IntegritySuspensionOfVisitsViewEvent[]
 }
@@ -32,7 +32,7 @@ const parseEvents = (events: IntegritySuspensionOfVisitsEvent[]): IntegritySuspe
     })
 
 const createViewModelFromApiDto = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   events: IntegritySuspensionOfVisitsEvent[],
 ): IntegritySuspensionOfVisitsViewModel => {
@@ -44,7 +44,7 @@ const createViewModelFromApiDto = (
 }
 
 const construct = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   events: IntegritySuspensionOfVisitsEvent[] = [],
 ): IntegritySuspensionOfVisitsViewModel => {

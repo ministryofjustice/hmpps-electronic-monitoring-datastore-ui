@@ -2,10 +2,10 @@ import Page from '../../pages/page'
 import SuspensionOfVisitsPage from '../../pages/integrity/suspensionOfVisits'
 
 context('Suspensions', () => {
-  const legacySubjectId = 1234567
+  const legacySubjectId = '1234567'
   const suspensionOfVisitEvents = [
     {
-      legacySubjectId: 123456789,
+      legacySubjectId: '123456789',
       suspensionOfVisits: 'Yes',
       requestedDate: '2001-01-01T01:01:01',
       startDate: '2001-01-01T01:01:01',
@@ -13,7 +13,7 @@ context('Suspensions', () => {
       endDate: '2001-01-01T01:01:01',
     },
     {
-      legacySubjectId: 123456789,
+      legacySubjectId: '123456789',
       suspensionOfVisits: 'Yes',
       requestedDate: '2002-02-02T02:02:02',
       startDate: '2002-02-02T02:02:02',
@@ -21,7 +21,7 @@ context('Suspensions', () => {
       endDate: '2002-02-02T02:02:02',
     },
     {
-      legacySubjectId: 123456789,
+      legacySubjectId: '123456789',
       suspensionOfVisits: 'Yes',
       requestedDate: '2003-03-03T03:03:03',
       startDate: '2003-03-03T03:03:03',

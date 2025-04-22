@@ -2,13 +2,13 @@ import { IntegrityServiceDetails } from '../../integrity/serviceDetails'
 import { IntegrityTimelineEventModel } from '../../integrity/TimelineEvent'
 
 export type IntegrityServiceDetailsViewModel = {
-  legacySubjectId: number
+  legacySubjectId: string
   serviceDetails: IntegrityTimelineEventModel[]
   backUrl: string
 }
 
 const createViewModelFromApiDto = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   serviceDetails: IntegrityServiceDetails[],
 ): IntegrityServiceDetailsViewModel => ({
@@ -30,7 +30,7 @@ const createViewModelFromApiDto = (
 })
 
 const construct = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   serviceDetails: IntegrityServiceDetails[] = [],
 ): IntegrityServiceDetailsViewModel => {

@@ -24,7 +24,7 @@ export default class IntegrityEventHistoryController {
     })
 
     const viewModel = IntegrityEventHistoryViewModel.construct(
-      parseInt(legacySubjectId, 10),
+      legacySubjectId,
       `/integrity/${legacySubjectId}`,
       eventHistory,
     )

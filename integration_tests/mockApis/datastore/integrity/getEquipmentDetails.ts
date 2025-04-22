@@ -4,13 +4,13 @@ import { IntegrityEquipmentDetails } from '../../../../server/models/integrity/e
 
 const defaultEquipmentDetailsStubOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 } as GetEquipmentDetailsStubOptions
 
 type GetEquipmentDetailsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: IntegrityEquipmentDetails[]
 }
 

@@ -4,13 +4,13 @@ import { IntegrityMonitoringEvent } from '../../../../server/models/integrity/mo
 
 const defaultMonitoringEventsStubOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 } as GetMonitoringEventsStubOptions
 
 type GetMonitoringEventsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: IntegrityMonitoringEvent[]
 }
 
