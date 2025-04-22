@@ -5,7 +5,7 @@ import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 
-import { IndegrityOrderDetails } from '../interfaces/integrity/orderDetails'
+import { IntegrityOrderDetails } from '../models/integrity/orderDetails'
 
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
 
@@ -38,9 +38,9 @@ export default class EmDatastoreApiClient extends RestClient {
     })
   }
 
-  async getIntegrityDetails(input: OrderRequest, token: string): Promise<IndegrityOrderDetails> {
+  async getIntegrityDetails(input: OrderRequest, token: string): Promise<IntegrityOrderDetails> {
     const { legacySubjectId } = input
-    return this.get<IndegrityOrderDetails>({
+    return this.get<IntegrityOrderDetails>({
       path: `/orders/integrity/${legacySubjectId}/details`,
       token,
     })

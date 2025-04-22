@@ -4,12 +4,12 @@ import getSanitisedError from '../../sanitisedError'
 import { EmDatastoreApiClient } from '../../data'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { IndegrityOrderDetails } from '../../interfaces/integrity/orderDetails'
+import { IntegrityOrderDetails } from '../../models/integrity/orderDetails'
 
 export default class IntegrityDetailsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
-  async getDetails(input: OrderRequest): Promise<IndegrityOrderDetails> {
+  async getDetails(input: OrderRequest): Promise<IntegrityOrderDetails> {
     try {
       return await this.emDatastoreApiClient.getIntegrityDetails(input, input.userToken)
     } catch (error) {

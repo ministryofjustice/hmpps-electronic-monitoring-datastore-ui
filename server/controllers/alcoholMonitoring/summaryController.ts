@@ -1,7 +1,7 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringOrderSummaryService } from '../../services'
-import { Reports } from '../../models/integrity/orderSummary'
+import { IntegrityReports } from '../../models/integrity/orderSummary'
 
 export default class AlcoholMonitoringSummaryController {
   constructor(
@@ -22,7 +22,7 @@ export default class AlcoholMonitoringSummaryController {
       legacySubjectId,
     })
     const backUrl: string = '/alcohol-monitoring'
-    const reports: Reports = {
+    const reports: IntegrityReports = {
       orderDetails: true,
       visitDetails: true,
       equipmentDetails: true,
