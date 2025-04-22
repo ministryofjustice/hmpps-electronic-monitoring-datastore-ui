@@ -1,6 +1,7 @@
 import z from 'zod'
 
 export const IntegrityOrderDetailsModel = z.object({
+  specials: z.string(),
   legacySubjectId: z.string(),
   firstName: z.string().nullable(),
   lastName: z.string().nullable(),
@@ -24,6 +25,7 @@ export const IntegrityOrderDetailsModel = z.object({
   migratedRisk: z.string().nullable(),
   rangeRisk: z.string().nullable(),
   reportRisk: z.string().nullable(),
+
   orderStartDate: z.string().nullable(),
   orderEndDate: z.string().nullable(),
   orderType: z.string().nullable(),

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express'
 import AuditService, { Page } from '../../services/auditService'
-import IntegrityDetailsService from '../../services/integrity/detailsService'
+import IntegrityDetailsService from '../../services/integrity/orderDetailsService'
 import IntegrityDetailsController from './detailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/integrity/detailsService')
+jest.mock('../../services/integrity/orderDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const integrityDetailsService = { getDetails: jest.fn() } as unknown as IntegrityDetailsService
+const integrityDetailsService = { getOrderDetails: jest.fn() } as unknown as IntegrityDetailsService
 
 describe('IntegrityDetailsController', () => {
   let controller: IntegrityDetailsController
@@ -55,15 +55,15 @@ describe('IntegrityDetailsController', () => {
         },
       })
 
-      integrityDetailsService.getDetails = jest.fn().mockResolvedValueOnce({})
+      integrityDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce({})
 
       await controller.details(req, res, next)
 
-      expect(integrityDetailsService.getDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
+      expect(integrityDetailsService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
     it(`returns correct error when orderDetailsService fails`, async () => {
-      integrityDetailsService.getDetails = jest.fn().mockImplementation(() => {
+      integrityDetailsService.getOrderDetails = jest.fn().mockImplementation(() => {
         throw new Error('Expected error message')
       })
 
@@ -86,7 +86,7 @@ describe('IntegrityDetailsController', () => {
         details: 'expectedOrderDetails',
       }
 
-      integrityDetailsService.getDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      integrityDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
       await controller.details(req, res, next)
 

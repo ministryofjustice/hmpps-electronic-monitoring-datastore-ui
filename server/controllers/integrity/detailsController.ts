@@ -16,7 +16,7 @@ export default class IntegrityDetailsController {
 
     const { legacySubjectId } = req.params
 
-    const orderDetails = await this.integrityDetailsService.getDetails({
+    const orderDetails = await this.integrityDetailsService.getOrderDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
     })

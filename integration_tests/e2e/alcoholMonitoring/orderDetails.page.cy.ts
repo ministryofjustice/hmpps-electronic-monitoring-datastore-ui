@@ -61,11 +61,29 @@ context('Alcohol Monitoring Order Details', () => {
       cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
-        body: [
-          {
-            legacySubjectId: 'AAMR321',
-          } as AlcoholMonitoringOrderDetails,
-        ],
+        body: {
+          legacySubjectId,
+          firstName: null,
+          lastName: null,
+          alias: null,
+          dateOfBirth: null,
+          sex: null,
+          specialInstructions: null,
+          phoneNumber: null,
+          address1: null,
+          address2: null,
+          address3: null,
+          postcode: null,
+          orderStartDate: null,
+          orderEndDate: null,
+          enforceableCondition: null,
+          orderType: null,
+          orderTypeDescription: null,
+          orderEndOutcome: null,
+          responsibleOrganisationPhoneNumber: null,
+          responsibleOrganisationEmail: null,
+          tagAtSource: null,
+        } as AlcoholMonitoringOrderDetails,
       })
 
       const page = Page.visit(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
@@ -80,27 +98,38 @@ context('Alcohol Monitoring Order Details', () => {
         legacySubjectId,
         body: {
           legacySubjectId,
-          firstName: 'Testopher',
-          lastName: 'Fakesmith',
-          alias: 'an old tv show',
-          dateOfBirth: '1950-01-01T00:00:00',
+          firstName: 'John',
+          lastName: 'Smith',
+          alias: 'Zeno',
+          dateOfBirth: '1980-02-01T00:00:00',
           sex: 'Sex',
+          specialInstructions: 'Special instructions',
           phoneNumber: '09876543210',
-          address1: '123 Fourth Street',
-          address2: 'Fiveton',
-          address3: 'Sixbury',
-          postcode: '7AB 8CD',
+          address1: '1 Primary Street',
+          address2: 'Sutton',
+          address3: 'London',
+          postcode: 'ABC 123',
+          orderStartDate: '2012-02-01T00:00:00',
+          orderEndDate: '2013-04-03T00:00:00',
+          enforceableCondition: 'Enforceable condition',
+          orderType: 'Community',
+          orderTypeDescription: '',
+          orderEndOutcome: '',
+          responsibleOrganisationPhoneNumber: '01234567890',
+          responsibleOrganisationEmail: 'a@b.c',
+          tagAtSource: '',
         } as AlcoholMonitoringOrderDetails,
       })
 
       const page = Page.visit(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
 
       page.deviceWearerDetails.shouldHaveItem('Legacy subject ID', legacySubjectId)
-      page.deviceWearerDetails.shouldHaveItem('First name', 'Testopher')
-      page.deviceWearerDetails.shouldHaveItem('Last name', 'Fakesmith')
-      page.deviceWearerDetails.shouldHaveItem('Alias', 'an old tv show')
+      page.deviceWearerDetails.shouldHaveItem('First name', 'John')
+      page.deviceWearerDetails.shouldHaveItem('Last name', 'Smith')
+      page.deviceWearerDetails.shouldHaveItem('Alias', 'Zeno')
+      page.deviceWearerDetails.shouldHaveItem('Date of birth', '1 February 1980')
       page.deviceWearerDetails.shouldHaveItem('Legacy sex', 'Sex')
-      page.deviceWearerDetails.shouldHaveItem('Primary address', '123 Fourth StreetFivetonSixbury7AB 8CD')
+      page.deviceWearerDetails.shouldHaveItem('Primary address', '1 Primary StreetSuttonLondonABC 123')
       page.deviceWearerDetails.shouldHaveItem('Phone/mobile number', '09876543210')
     })
 
@@ -110,9 +139,19 @@ context('Alcohol Monitoring Order Details', () => {
         legacySubjectId,
         body: {
           legacySubjectId,
-          orderStartDate: '2010-01-01T00:00:00',
+          firstName: 'John',
+          lastName: 'Smith',
+          alias: 'Zeno',
+          dateOfBirth: '1980-02-01T00:00:00',
+          sex: 'Sex',
           specialInstructions: 'Special instructions',
-          orderEndDate: '2030-01-01T00:00:00',
+          phoneNumber: '09876543210',
+          address1: '1 Primary Street',
+          address2: 'Sutton',
+          address3: 'London',
+          postcode: 'ABC 123',
+          orderStartDate: '2012-02-01T00:00:00',
+          orderEndDate: '2013-04-03T00:00:00',
           enforceableCondition: 'Enforceable condition',
           orderType: 'Community',
           orderTypeDescription: 'lovely and green',
@@ -125,8 +164,8 @@ context('Alcohol Monitoring Order Details', () => {
 
       const page = Page.visit(AlcoholMonitoringOrderDetailsPage, { legacySubjectId })
 
-      page.orderDetails.shouldHaveItem('Order start date', '1 January 2010')
-      page.orderDetails.shouldHaveItem('Order end date', '1 January 2030')
+      page.orderDetails.shouldHaveItem('Order start date', '1 February 2012')
+      page.orderDetails.shouldHaveItem('Order end date', '3 April 2013')
       page.orderDetails.shouldHaveItem('Order type', 'Community')
       page.orderDetails.shouldHaveItem('Order type description', 'lovely and green')
       page.orderDetails.shouldHaveItem('Order end outcome', 'A good outcome')
