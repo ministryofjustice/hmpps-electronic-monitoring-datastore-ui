@@ -2,7 +2,7 @@ import IntegrityDetailsService from './detailsService'
 import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
 import { OrderRequest } from '../../types/OrderRequest'
-import { IndegrityOrderDetails } from '../../interfaces/integrity/orderDetails'
+import { IntegrityOrderDetails } from '../../models/integrity/orderDetails'
 
 jest.mock('../../data/emDatastoreApiClient')
 
@@ -24,8 +24,8 @@ describe('Integrity Details Service', () => {
       legacySubjectId: '123',
     }
 
-    const emptyResponse = {} as IndegrityOrderDetails
-    const expectedResult = {} as IndegrityOrderDetails
+    const emptyResponse = {} as IntegrityOrderDetails
+    const expectedResult = {} as IntegrityOrderDetails
 
     it('should return empty data from the client', async () => {
       emDatastoreApiClient.getIntegrityDetails.mockResolvedValue(emptyResponse)

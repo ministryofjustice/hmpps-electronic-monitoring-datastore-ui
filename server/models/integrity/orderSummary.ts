@@ -1,6 +1,6 @@
 import z from 'zod'
 
-export const KeyOrderInformationModel = z.object({
+export const IntegrityKeyOrderInformationModel = z.object({
   specials: z.string().nullable(),
   legacySubjectId: z.string(),
   name: z.string().nullable(),
@@ -14,14 +14,14 @@ export const KeyOrderInformationModel = z.object({
   orderEndDate: z.string().nullable(),
 })
 
-export const SubjectHistoryReportModel = z.object({
+export const IntegritySubjectHistoryReportModel = z.object({
   reportUrl: z.string().nullable(),
   name: z.string().nullable(),
   createdOn: z.string().nullable(),
   time: z.string().nullable(),
 })
 
-export const OrderDocumentModel = z.object({
+export const IntegrityOrderDocumentModel = z.object({
   name: z.string().nullable(),
   url: z.string().nullable(),
   createdOn: z.string().nullable(),
@@ -29,12 +29,12 @@ export const OrderDocumentModel = z.object({
   notes: z.string().nullable(),
 })
 
-export const OrderDocumentListModel = z.object({
+export const IntegrityOrderDocumentListModel = z.object({
   pageSize: z.number().nullable(),
-  orderDocuments: z.array(OrderDocumentModel).nullable(),
+  orderDocuments: z.array(IntegrityOrderDocumentModel).nullable(),
 })
 
-export const ReportsModel = z.object({
+export const IntegrityReportsModel = z.object({
   orderDetails: z.boolean(),
   visitDetails: z.boolean(),
   // visitsAndTasks: z.boolean(),
@@ -50,14 +50,14 @@ export const ReportsModel = z.object({
 })
 
 export const IntegrityOrderSummaryModel = z.object({
-  keyOrderInformation: KeyOrderInformationModel.nullable(),
-  subjectHistoryReport: SubjectHistoryReportModel.nullable(),
-  documents: OrderDocumentListModel.nullable(),
+  keyOrderInformation: IntegrityKeyOrderInformationModel.nullable(),
+  subjectHistoryReport: IntegritySubjectHistoryReportModel.nullable(),
+  documents: IntegrityOrderDocumentListModel.nullable(),
 })
 
-export type KeyOrderInformation = z.infer<typeof KeyOrderInformationModel>
-export type SubjectHistoryReport = z.infer<typeof SubjectHistoryReportModel>
-export type OrderDocument = z.infer<typeof OrderDocumentModel>
-export type OrderDocumentList = z.infer<typeof OrderDocumentListModel>
-export type Reports = z.infer<typeof ReportsModel>
+export type IntegrityKeyOrderInformation = z.infer<typeof IntegrityKeyOrderInformationModel>
+export type IntegritySubjectHistoryReport = z.infer<typeof IntegritySubjectHistoryReportModel>
+export type IntegrityOrderDocument = z.infer<typeof IntegrityOrderDocumentModel>
+export type IntegrityOrderDocumentList = z.infer<typeof IntegrityOrderDocumentListModel>
+export type IntegrityReports = z.infer<typeof IntegrityReportsModel>
 export type IntegrityOrderSummary = z.infer<typeof IntegrityOrderSummaryModel>
