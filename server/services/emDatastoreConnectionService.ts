@@ -8,7 +8,10 @@ export default class EmDatastoreConnectionService {
 
   async test(token: string): Promise<JSON> {
     try {
-      return await this.emDatastoreApiClient.confirmApi(token)
+      return await this.emDatastoreApiClient.get<JSON>({
+        path: '/test',
+        token,
+      })
     } catch (error) {
       const userFreindlyMessage = 'Error connecting to EM Datastore API'
       const sanitisedError = getSanitisedError(error)

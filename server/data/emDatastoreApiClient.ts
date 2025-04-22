@@ -23,11 +23,4 @@ export default class EmDatastoreApiClient extends RestClient {
       token: input.userToken,
     })
   }
-
-  async confirmApi(token: string): Promise<JSON> {
-    return this.get<JSON>({
-      path: '/test',
-      token,
-    })
-  }
 }
