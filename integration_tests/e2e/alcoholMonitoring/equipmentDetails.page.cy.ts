@@ -170,6 +170,14 @@ context('Alcohol Monitoring equipment details', () => {
         body: [
           {
             legacySubjectId: 'AAMR321',
+            deviceType: null,
+            deviceSerialNumber: null,
+            deviceAddressType: null,
+            legFitting: null,
+            deviceInstalledDateTime: null,
+            deviceRemovedDateTime: null,
+            hmuInstallDateTime: null,
+            hmuRemovedDateTime: null,
           } as AlcoholMonitoringEquipmentDetails,
         ],
       })

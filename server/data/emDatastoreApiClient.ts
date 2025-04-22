@@ -12,7 +12,6 @@ import { IntegrityContactEvent } from '../models/integrity/contactEvents'
 import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
 import { IntegrityViolationEvent } from '../models/integrity/violationEvents'
-import { IntegritySuspensionOfVisitsEvent } from '../models/integrity/suspensionOfVisits'
 
 import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
