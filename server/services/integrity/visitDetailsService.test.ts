@@ -1,57 +1,143 @@
+import nock from 'nock'
 import IntegrityVisitDetailsService from './visitDetailsService'
-import { createMockEmDatastoreApiClient } from '../../data/testUtils/mocks'
 
-import { OrderRequest } from '../../types/OrderRequest'
 import { IntegrityVisitDetails } from '../../models/integrity/visitDetails'
+import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import config, { ApiConfig } from '../../config'
 
-jest.mock('../../data/emDatastoreApiClient')
-
-describe('Integrity Visit Details Service', () => {
-  const emDatastoreApiClient = createMockEmDatastoreApiClient()
+describe('Alcohol Monitoring Equipment Details Service', () => {
+  let fakeClient: nock.Scope
+  let emDatastoreApiClient: EmDatastoreApiClient
 
   let integrityVisitDetailsService: IntegrityVisitDetailsService
 
   beforeEach(() => {
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
     integrityVisitDetailsService = new IntegrityVisitDetailsService(emDatastoreApiClient)
   })
 
   afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll()
+      throw new Error('Not all nock interceptors were used!')
+    }
+    nock.abortPendingRequests()
+    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getVisitDetails', () => {
-    const orderRequest: OrderRequest = {
-      legacySubjectId: '123',
-    }
+    const legacySubjectId = '123'
 
-    const visitDetailsResponse = [] as IntegrityVisitDetails[]
+    it('should fetch list of visit details', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: '123',
+          address: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitNotes: null,
+          visitType: null,
+          visitOutcome: null,
+        } as IntegrityVisitDetails,
+      ]
 
-    const expectedResult = [] as IntegrityVisitDetails[]
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-    it('should return data from the client', async () => {
-      emDatastoreApiClient.getIntegrityVisitDetails.mockResolvedValue(visitDetailsResponse)
+      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
 
-      const results = await integrityVisitDetailsService.getVisitDetails(orderRequest)
-
-      expect(results).toEqual(expectedResult)
+      expect(result).toEqual(expectedResult)
     })
 
-    it('should propagate an error if the apiClient rejects with an error', async () => {
-      emDatastoreApiClient.getIntegrityVisitDetails.mockRejectedValue(new Error('some error'))
+    it('should fetch list of visit details even if not visit details', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: '123',
+          address: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitNotes: null,
+          visitType: null,
+          visitOutcome: null,
+        } as IntegrityVisitDetails,
+      ]
 
-      await expect(integrityVisitDetailsService.getVisitDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving list of visit details: some error'),
-      )
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
+
+      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
+
+      expect(result).toEqual(expectedResult)
     })
 
-    it('should propagate an error if there is an error thrown by the apiClient', async () => {
-      emDatastoreApiClient.getIntegrityVisitDetails.mockImplementation(() => {
-        throw new Error('some error')
-      })
+    it('should fetch list of multiple equipment detail items', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId,
+          address: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitNotes: null,
+          visitType: null,
+          visitOutcome: null,
+        } as IntegrityVisitDetails,
+        {
+          legacySubjectId: '456',
+          address: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitNotes: null,
+          visitType: null,
+          visitOutcome: null,
+        } as IntegrityVisitDetails,
+        {
+          legacySubjectId: '789',
+          address: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitNotes: null,
+          visitType: null,
+          visitOutcome: null,
+        } as IntegrityVisitDetails,
+      ]
 
-      await expect(integrityVisitDetailsService.getVisitDetails(orderRequest)).rejects.toEqual(
-        new Error('Error retrieving list of visit details: some error'),
-      )
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
+
+      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch list of visit details', async () => {
+      const expectedResult = [] as IntegrityVisitDetails[]
+
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
+
+      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should propagate an error if there is an authorization error', async () => {
+      fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(401)
+
+      await expect(
+        integrityVisitDetailsService.getVisitDetails({
+          legacySubjectId,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving list of visit details: Unauthorized'))
+    })
+
+    it('should propagate an error if there is a server error', async () => {
+      fakeClient
+        .get(`/orders/integrity/${legacySubjectId}/visit-details`)
+        .replyWithError('Fake unexpected server error')
+
+      await expect(
+        integrityVisitDetailsService.getVisitDetails({
+          legacySubjectId,
+        }),
+      ).rejects.toEqual(new Error('Error retrieving list of visit details: Fake unexpected server error'))
     })
   })
 })

@@ -23,7 +23,7 @@ describe('EquipmentDetailsController', () => {
   let res: Response
   const next = jest.fn()
 
-  const testOrderId = 123456789
+  const testOrderId = '123456789'
 
   beforeEach(() => {
     equipmentDetailsController = new IntegrityEquipmentDetailsController(

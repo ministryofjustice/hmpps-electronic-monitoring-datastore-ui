@@ -6,7 +6,7 @@ import { Order } from '../../../server/interfaces/order'
 const defaultOrders = [
   {
     dataType: 'am',
-    legacySubjectId: 1000000,
+    legacySubjectId: '1000000',
     firstName: 'Amy',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -20,7 +20,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 2000000,
+    legacySubjectId: '2000000',
     firstName: 'Bill',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -34,7 +34,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 3000000,
+    legacySubjectId: '3000000',
     firstName: 'Claire',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -48,7 +48,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 8000000,
+    legacySubjectId: '8000000',
     firstName: 'Daniel',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -62,7 +62,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 30000,
+    legacySubjectId: '30000',
     firstName: 'Emma',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -76,7 +76,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 4000000,
+    legacySubjectId: '4000000',
     firstName: 'Fred',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -90,7 +90,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 30000,
+    legacySubjectId: '30000',
     firstName: 'Geoff',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -104,7 +104,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 4000000,
+    legacySubjectId: '4000000',
     firstName: 'Hortense',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -118,7 +118,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 30000,
+    legacySubjectId: '30000',
     firstName: 'Isaac',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -132,7 +132,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 4000000,
+    legacySubjectId: '4000000',
     firstName: 'Jessica',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -146,7 +146,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 30000,
+    legacySubjectId: '30000',
     firstName: 'Ken',
     lastName: 'Smith',
     addressLine1: 'First line of address',
@@ -160,7 +160,7 @@ const defaultOrders = [
   },
   {
     dataType: 'am',
-    legacySubjectId: 4000000,
+    legacySubjectId: '4000000',
     firstName: 'Lucille',
     lastName: 'Smith',
     addressLine1: 'First line of address',

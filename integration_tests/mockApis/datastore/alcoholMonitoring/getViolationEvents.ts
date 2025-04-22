@@ -4,13 +4,13 @@ import { AlcoholMonitoringViolationEvent } from '../../../../server/models/alcoh
 
 const defaultViolationEventsStubOptions = {
   httpStatus: 200,
-  legacySubjectId: 123456789,
+  legacySubjectId: '123456789',
   body: [],
 } as GetViolationEventsStubOptions
 
 type GetViolationEventsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   body?: AlcoholMonitoringViolationEvent[]
 }
 

@@ -1,6 +1,6 @@
 export interface Order {
   dataType: string
-  legacySubjectId: number
+  legacySubjectId: string
   firstName?: string
   lastName?: string
   addressLine1?: string

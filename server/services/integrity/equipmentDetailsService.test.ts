@@ -28,7 +28,7 @@ describe('Integrity Equipment Details Service', () => {
   })
 
   describe('getEquipmentDetails', () => {
-    const legacySubjectId = 123
+    const legacySubjectId = '123'
 
     it('should fetch a list of one equipment detail item', async () => {
       const expectedResult = [
@@ -68,10 +68,10 @@ describe('Integrity Equipment Details Service', () => {
           legacySubjectId,
         } as IntegrityEquipmentDetails,
         {
-          legacySubjectId: 456,
+          legacySubjectId: '456',
         } as IntegrityEquipmentDetails,
         {
-          legacySubjectId: 789,
+          legacySubjectId: '789',
         } as IntegrityEquipmentDetails,
       ]
 

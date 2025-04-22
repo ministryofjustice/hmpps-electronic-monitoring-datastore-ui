@@ -3,7 +3,7 @@ import { IntegrityOrderSummary } from '../../interfaces/integrity/orderSummary'
 const orderInformation: IntegrityOrderSummary = {
   keyOrderInformation: {
     specials: 'No',
-    legacySubjectId: 1234567,
+    legacySubjectId: '1234567',
     name: 'John Smith',
     alias: 'Zeno',
     dateOfBirth: '01-02-1980',

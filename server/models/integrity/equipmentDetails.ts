@@ -8,7 +8,7 @@ export const IntegrityEquipmentDetailModel = z.object({
 })
 
 export const IntegrityEquipmentDetailsModel = z.object({
-  legacySubjectId: z.number(),
+  legacySubjectId: z.string(),
   pid: IntegrityEquipmentDetailModel.optional(),
   hmu: IntegrityEquipmentDetailModel.optional(),
 })

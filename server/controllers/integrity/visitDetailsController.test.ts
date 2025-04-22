@@ -21,7 +21,7 @@ describe('IntegrityVisitDetailsController', () => {
   let res: Response
   const next = jest.fn()
 
-  const testOrderId = 123456789
+  const testOrderId = '123456789'
 
   beforeEach(() => {
     integrityVisitDetailsController = new IntegrityVisitDetailsController(auditService, emDatastoreVisitDetailsService)

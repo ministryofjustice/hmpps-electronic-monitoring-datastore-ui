@@ -5,7 +5,6 @@ import config, { ApiConfig } from '../config'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
-import { IntegrityVisitDetails } from '../models/integrity/visitDetails'
 import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
 import { IntegrityContactEvent } from '../models/integrity/contactEvents'
 import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
@@ -495,61 +494,4 @@ describe('EM Datastore API Client', () => {
       ).rejects.toThrow('Unauthorized')
     })
   })
-
-  describe('getIntegrityVisitDetails', () => {
-    it('should fetch list of visit details', async () => {
-      const expectedResult = [
-        {
-          legacySubjectId: 123,
-          address: {
-            addressLine1: 'address line 1',
-            addressLine2: 'address line 2',
-            addressLine3: 'address line 3',
-            addressLine4: null,
-            postcode: 'address line 3',
-          },
-          actualWorkStartDateTime: '2001-01-01T01:01:01',
-          actualWorkEndDateTime: '2002-02-02T02:02:02',
-          visitNotes: 'TEST_NOTES',
-          visitType: 'TEST_VISIT_TYPE',
-          visitOutcome: 'TEST_OUTCOME',
-        },
-      ] as IntegrityVisitDetails[]
-
-      fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getIntegrityVisitDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult as IntegrityVisitDetails[])
-    })
-
-    it('should fetch list of visit details', async () => {
-      const expectedResult = [] as IntegrityVisitDetails[]
-
-      fakeClient.get(`/orders/integrity/${orderInfo.legacySubjectId}/visit-details`).reply(200, expectedResult)
-
-      const result = await emDatastoreApiClient.getIntegrityVisitDetails(orderInfo, token)
-
-      expect(result).toEqual(expectedResult)
-    })
-
-    it('handles null user tokens correctly by expecting Unauthorized', async () => {
-      // Create orderInfo with userToken explicitly set to null
-      const orderInfoWithNullToken: OrderRequest = {
-        legacySubjectId: '123',
-        userToken: null,
-      }
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${orderInfoWithNullToken.legacySubjectId}/visit-details`)
-        .reply(401)
-
-      // Expect the method call to throw due to unauthorized access
-      await expect(emDatastoreApiClient.getIntegrityVisitDetails(orderInfoWithNullToken, token)).rejects.toThrow(
-        'Unauthorized',
-      )
-    })
-  })
-
-  describe('getAlcoholMonitoringVisitDetails', () => {})
 })

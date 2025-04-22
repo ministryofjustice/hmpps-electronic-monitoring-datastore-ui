@@ -15,13 +15,13 @@ export type IntegrityEventHistoryEventModel = {
 }
 
 export type IntegrityEventHistoryViewModel = {
-  legacySubjectId: number
+  legacySubjectId: string
   eventHistory: IntegrityEventHistoryEventModel[]
   backUrl: string
 }
 
 const createViewModelFromApiDto = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   eventHistory: (IntegrityContactEvent | IntegrityIncidentEvent | IntegrityMonitoringEvent | IntegrityViolationEvent)[],
 ): IntegrityEventHistoryViewModel => ({
@@ -41,7 +41,7 @@ const createViewModelFromApiDto = (
 })
 
 const construct = (
-  legacySubjectId: number,
+  legacySubjectId: string,
   backUrl: string,
   eventHistory: (
     | IntegrityContactEvent

@@ -1,6 +1,6 @@
 export interface SearchCriteria {
   dataType: string
-  legacySubjectId?: number
+  legacySubjectId?: string
   firstName?: string
   lastName?: string
   alias?: string | null

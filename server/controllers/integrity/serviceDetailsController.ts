@@ -24,7 +24,7 @@ export default class IntegrityServiceDetailsController {
     })
 
     const viewModel = IntegrityServiceDetailsModel.construct(
-      parseInt(legacySubjectId, 10),
+      legacySubjectId,
       `/integrity/${legacySubjectId}`,
       serviceDetails,
     )

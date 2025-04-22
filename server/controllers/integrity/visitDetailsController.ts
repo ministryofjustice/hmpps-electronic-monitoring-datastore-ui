@@ -24,7 +24,7 @@ export default class IntegrityVisitDetailsController {
     })
 
     const viewModel = IntegrityVisitDetailsModel.construct(
-      parseInt(legacySubjectId, 10),
+      legacySubjectId,
       `/integrity/${legacySubjectId}`,
       visitDetails,
     )

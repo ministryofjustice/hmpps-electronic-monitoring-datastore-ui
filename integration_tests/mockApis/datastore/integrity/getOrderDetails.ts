@@ -4,10 +4,10 @@ import { OrderDetails } from '../../../../server/models/orderDetails'
 
 const defaultGetOrderDetailsOptions = {
   httpStatus: 200,
-  legacySubjectId: 1234567,
+  legacySubjectId: '1234567',
   details: {
     specials: 'no',
-    legacySubjectId: 1234567,
+    legacySubjectId: '1234567',
     firstName: null,
     lastName: null,
     alias: null,
@@ -44,7 +44,7 @@ const defaultGetOrderDetailsOptions = {
 
 type GetOrderDetailsStubOptions = {
   httpStatus: number
-  legacySubjectId?: number
+  legacySubjectId?: string
   details: OrderDetails
 }
 

@@ -5,7 +5,7 @@ import { AlcoholMonitoringVisitDetails } from '../../models/alcoholMonitoring/vi
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
 
-describe('Alcohol Monitoring Visit Details Service', () => {
+describe('Alcohol Monitoring Equipment Details Service', () => {
   let fakeClient: nock.Scope
   let emDatastoreApiClient: EmDatastoreApiClient
 
@@ -34,20 +34,20 @@ describe('Alcohol Monitoring Visit Details Service', () => {
       const expectedResult = [
         {
           legacySubjectId: '123',
-          visitId: '300',
-          visitType: 'visit type',
-          visitAttempt: 'attempt 1',
-          dateVisitRaised: '2001-01-01T00:00:00',
-          visitAddress: 'test visit address',
-          visitNotes: 'visit notes',
-          visitOutcome: 'visit outcome',
-          actualWorkStartDateTime: '2002-02-02T02:20:20',
-          actualWorkEndDateTime: '2003-03-03T03:30:30',
-          visitRejectionReason: 'rejection reason',
-          visitRejectionDescription: 'rejection description',
-          visitCancelReason: 'cancel reason',
-          visitCancelDescription: 'cancel description',
-        },
+          visitId: null,
+          visitType: null,
+          visitAttempt: null,
+          dateVisitRaised: null,
+          visitAddress: null,
+          visitNotes: null,
+          visitOutcome: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitRejectionReason: null,
+          visitRejectionDescription: null,
+          visitCancelReason: null,
+          visitCancelDescription: null,
+        } as AlcoholMonitoringVisitDetails,
       ]
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/visit-details`).reply(200, expectedResult)
@@ -57,17 +57,83 @@ describe('Alcohol Monitoring Visit Details Service', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should fetch list of multiple visit detail items', async () => {
+    it('should fetch list of visit details even if not visit details', async () => {
+      const expectedResult = [
+        {
+          legacySubjectId: '123',
+          visitId: null,
+          visitType: null,
+          visitAttempt: null,
+          dateVisitRaised: null,
+          visitAddress: null,
+          visitNotes: null,
+          visitOutcome: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitRejectionReason: null,
+          visitRejectionDescription: null,
+          visitCancelReason: null,
+          visitCancelDescription: null,
+        } as AlcoholMonitoringVisitDetails,
+      ]
+
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/visit-details`).reply(200, expectedResult)
+
+      const result = await alcoholMonitoringVisitDetailsService.getVisitDetails({ legacySubjectId })
+
+      expect(result).toEqual(expectedResult)
+    })
+
+    it('should fetch list of multiple equipment detail items', async () => {
       const expectedResult = [
         {
           legacySubjectId,
-        },
+          visitId: null,
+          visitType: null,
+          visitAttempt: null,
+          dateVisitRaised: null,
+          visitAddress: null,
+          visitNotes: null,
+          visitOutcome: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitRejectionReason: null,
+          visitRejectionDescription: null,
+          visitCancelReason: null,
+          visitCancelDescription: null,
+        } as AlcoholMonitoringVisitDetails,
         {
           legacySubjectId: '456',
-        },
+          visitId: null,
+          visitType: null,
+          visitAttempt: null,
+          dateVisitRaised: null,
+          visitAddress: null,
+          visitNotes: null,
+          visitOutcome: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitRejectionReason: null,
+          visitRejectionDescription: null,
+          visitCancelReason: null,
+          visitCancelDescription: null,
+        } as AlcoholMonitoringVisitDetails,
         {
           legacySubjectId: '789',
-        },
+          visitId: null,
+          visitType: null,
+          visitAttempt: null,
+          dateVisitRaised: null,
+          visitAddress: null,
+          visitNotes: null,
+          visitOutcome: null,
+          actualWorkStartDateTime: null,
+          actualWorkEndDateTime: null,
+          visitRejectionReason: null,
+          visitRejectionDescription: null,
+          visitCancelReason: null,
+          visitCancelDescription: null,
+        } as AlcoholMonitoringVisitDetails,
       ]
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/visit-details`).reply(200, expectedResult)
