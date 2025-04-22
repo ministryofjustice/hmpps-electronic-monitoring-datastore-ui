@@ -3,7 +3,7 @@ import SuspensionOfVisitsPage from '../../pages/integrity/suspensionOfVisits'
 
 context('Suspensions', () => {
   const legacySubjectId = 1234567
-  const events = [
+  const suspensionOfVisitEvents = [
     {
       legacySubjectId: 123456789,
       suspensionOfVisits: 'Yes',
@@ -63,7 +63,7 @@ context('Suspensions', () => {
     cy.task('stubIntegrityGetSuspensionOfVisits', {
       httpStatus: 200,
       legacySubjectId,
-      events,
+      body: suspensionOfVisitEvents,
     })
 
     cy.signIn()

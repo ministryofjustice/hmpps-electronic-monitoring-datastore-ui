@@ -2,18 +2,18 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
 import { IntegritySuspensionOfVisitsEvent } from '../../../../server/models/integrity/suspensionOfVisits'
 
-const defaultGetSuspensionOfVisitsOptions = {
-  httpStatus: 200,
+const defaultSuspensionOfVisitsDetails = {
   legacySubjectId: 123456789,
-  events: [
-    {
-      legacySubjectId: 123456789,
-      suspensionOfVisits: 'Yes',
-      requestedDate: '2001-01-01T01:01:01',
-      startDate: '2001-01-01T01:01:01',
-      startTime: '01:01:01',
-      endDate: '2001-01-01T01:01:01',
-    },
+  suspensionOfVisits: 'Yes',
+  requestedDate: '2001-01-01T01:01:01',
+  startDate: '2001-01-01T01:01:01',
+  startTime: '01:01:01',
+  endDate: '2001-01-01T01:01:01',
+}
+
+/*
+
+    ,
     {
       legacySubjectId: 123456789,
       suspensionOfVisits: 'Yes',
@@ -30,13 +30,18 @@ const defaultGetSuspensionOfVisitsOptions = {
       startTime: '03:03:03',
       endDate: '2003-03-03T03:03:03',
     },
-  ],
+*/
+
+const defaultGetSuspensionOfVisitsOptions = {
+  httpStatus: 200,
+  legacySubjectId: 123456789,
+  body: [],
 } as GetSuspensionOfVisitsStubOptions
 
 type GetSuspensionOfVisitsStubOptions = {
   httpStatus: number
   legacySubjectId?: number
-  events: IntegritySuspensionOfVisitsEvent[]
+  body?: IntegritySuspensionOfVisitsEvent[]
 }
 
 export const stubIntegrityGetSuspensionOfVisits = (
@@ -50,7 +55,15 @@ export const stubIntegrityGetSuspensionOfVisits = (
     response: {
       status: options.httpStatus,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: options.httpStatus === 200 ? options.events : null,
+      jsonBody:
+        options.httpStatus === 200
+          ? options.body || [
+              {
+                ...defaultSuspensionOfVisitsDetails,
+                legacySubjectId: options.legacySubjectId,
+              },
+            ]
+          : [],
     },
   })
 
