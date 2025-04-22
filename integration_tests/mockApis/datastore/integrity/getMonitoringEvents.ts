@@ -2,11 +2,7 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
 import { IntegrityMonitoringEvent } from '../../../../server/models/integrity/monitoringEvents'
 
-const defaultMonitoringEventsStubOptions = {
-  httpStatus: 200,
-  legacySubjectId: '123456789',
-  body: [],
-} as GetMonitoringEventsStubOptions
+const defaultMonitoringEvents = [] as IntegrityMonitoringEvent[]
 
 type GetMonitoringEventsStubOptions = {
   httpStatus: number
@@ -14,9 +10,7 @@ type GetMonitoringEventsStubOptions = {
   body?: IntegrityMonitoringEvent[]
 }
 
-export const stubIntegrityGetMonitoringEvents = (
-  options: GetMonitoringEventsStubOptions = defaultMonitoringEventsStubOptions,
-): SuperAgentRequest =>
+export const stubIntegrityGetMonitoringEvents = (options: GetMonitoringEventsStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -25,7 +19,7 @@ export const stubIntegrityGetMonitoringEvents = (
     response: {
       status: options.httpStatus,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: options.httpStatus === 200 ? options.body : null,
+      jsonBody: options.httpStatus === 200 ? options.body || [...defaultMonitoringEvents] : undefined,
     },
   })
 

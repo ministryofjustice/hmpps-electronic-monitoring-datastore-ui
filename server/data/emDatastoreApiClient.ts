@@ -5,10 +5,8 @@ import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 
-import { IntegrityOrderSummary } from '../models/integrity/orderSummary'
 import { IndegrityOrderDetails } from '../interfaces/integrity/orderDetails'
 
-import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
 
 export default class EmDatastoreApiClient extends RestClient {

@@ -2,11 +2,7 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
 import { IntegrityServiceDetails } from '../../../../server/models/integrity/serviceDetails'
 
-const defaultServiceDetailsStubOptions = {
-  httpStatus: 200,
-  legacySubjectId: '123456789',
-  body: [],
-}
+const defaultServiceDetails = [] as IntegrityServiceDetails[]
 
 type GetServiceDetailsStubOptions = {
   httpStatus: number
@@ -14,9 +10,7 @@ type GetServiceDetailsStubOptions = {
   body?: IntegrityServiceDetails[]
 }
 
-export const stubIntegrityGetServiceDetails = (
-  options: GetServiceDetailsStubOptions = defaultServiceDetailsStubOptions,
-): SuperAgentRequest =>
+export const stubIntegrityGetServiceDetails = (options: GetServiceDetailsStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -25,7 +19,7 @@ export const stubIntegrityGetServiceDetails = (
     response: {
       status: options.httpStatus,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: options.httpStatus === 200 ? options.body : null,
+      jsonBody: options.httpStatus === 200 ? options.body || [...defaultServiceDetails] : undefined,
     },
   })
 

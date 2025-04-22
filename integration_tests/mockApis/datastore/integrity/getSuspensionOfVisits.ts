@@ -2,41 +2,14 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
 import { IntegritySuspensionOfVisitsEvent } from '../../../../server/models/integrity/suspensionOfVisits'
 
-const defaultSuspensionOfVisitsDetails = {
-  legacySubjectId: 123456789,
+const defaultSuspensionOfVisitsEvent = {
+  legacySubjectId: '123456789',
   suspensionOfVisits: 'Yes',
   requestedDate: '2001-01-01T01:01:01',
   startDate: '2001-01-01T01:01:01',
   startTime: '01:01:01',
   endDate: '2001-01-01T01:01:01',
-}
-
-/*
-
-    ,
-    {
-      legacySubjectId: 123456789,
-      suspensionOfVisits: 'Yes',
-      requestedDate: '2002-02-02T02:02:02',
-      startDate: '2002-02-02T02:02:02',
-      startTime: '02:02:02',
-      endDate: '2002-02-02T02:02:02',
-    },
-    {
-      legacySubjectId: 123456789,
-      suspensionOfVisits: 'Yes',
-      requestedDate: '2003-03-03T03:03:03',
-      startDate: '2003-03-03T03:03:03',
-      startTime: '03:03:03',
-      endDate: '2003-03-03T03:03:03',
-    },
-*/
-
-const defaultGetSuspensionOfVisitsOptions = {
-  httpStatus: 200,
-  legacySubjectId: '123456789',
-  body: [],
-} as GetSuspensionOfVisitsStubOptions
+} as IntegritySuspensionOfVisitsEvent
 
 type GetSuspensionOfVisitsStubOptions = {
   httpStatus: number
@@ -44,9 +17,7 @@ type GetSuspensionOfVisitsStubOptions = {
   body?: IntegritySuspensionOfVisitsEvent[]
 }
 
-export const stubIntegrityGetSuspensionOfVisits = (
-  options: GetSuspensionOfVisitsStubOptions = defaultGetSuspensionOfVisitsOptions,
-): SuperAgentRequest =>
+export const stubIntegrityGetSuspensionOfVisits = (options: GetSuspensionOfVisitsStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -59,11 +30,11 @@ export const stubIntegrityGetSuspensionOfVisits = (
         options.httpStatus === 200
           ? options.body || [
               {
-                ...defaultSuspensionOfVisitsDetails,
+                ...defaultSuspensionOfVisitsEvent,
                 legacySubjectId: options.legacySubjectId,
               },
             ]
-          : [],
+          : undefined,
     },
   })
 

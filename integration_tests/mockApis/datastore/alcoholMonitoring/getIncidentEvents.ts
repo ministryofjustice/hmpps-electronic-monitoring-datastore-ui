@@ -2,11 +2,7 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
 import { AlcoholMonitoringIncidentEvent } from '../../../../server/models/alcoholMonitoring/incidentEvents'
 
-const defaultIncidentEventsStubOptions = {
-  httpStatus: 200,
-  legacySubjectId: '123456789',
-  body: [],
-} as GetIncidentEventsStubOptions
+const defaultIncidentEvents = [] as AlcoholMonitoringIncidentEvent[]
 
 type GetIncidentEventsStubOptions = {
   httpStatus: number
@@ -14,9 +10,7 @@ type GetIncidentEventsStubOptions = {
   body?: AlcoholMonitoringIncidentEvent[]
 }
 
-export const stubAlcoholMonitoringGetIncidentEvents = (
-  options: GetIncidentEventsStubOptions = defaultIncidentEventsStubOptions,
-): SuperAgentRequest =>
+export const stubAlcoholMonitoringGetIncidentEvents = (options: GetIncidentEventsStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -25,7 +19,7 @@ export const stubAlcoholMonitoringGetIncidentEvents = (
     response: {
       status: options.httpStatus,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: options.httpStatus === 200 ? options.body : null,
+      jsonBody: options.httpStatus === 200 ? options.body || [...defaultIncidentEvents] : undefined,
     },
   })
 

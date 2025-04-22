@@ -2,11 +2,7 @@ import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
 import { IntegrityContactEvent } from '../../../../server/models/integrity/contactEvents'
 
-const defaultContactEventsStubOptions = {
-  httpStatus: 200,
-  legacySubjectId: '123456789',
-  body: [],
-} as GetContactEventsStubOptions
+const defaultContactEvents = [] as IntegrityContactEvent[]
 
 type GetContactEventsStubOptions = {
   httpStatus: number
@@ -14,9 +10,7 @@ type GetContactEventsStubOptions = {
   body?: IntegrityContactEvent[]
 }
 
-export const stubIntegrityGetContactEvents = (
-  options: GetContactEventsStubOptions = defaultContactEventsStubOptions,
-): SuperAgentRequest =>
+export const stubIntegrityGetContactEvents = (options: GetContactEventsStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -25,7 +19,7 @@ export const stubIntegrityGetContactEvents = (
     response: {
       status: options.httpStatus,
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
-      jsonBody: options.httpStatus === 200 ? options.body : null,
+      jsonBody: options.httpStatus === 200 ? options.body || [...defaultContactEvents] : undefined,
     },
   })
 

@@ -11,7 +11,7 @@ context('Order Details', () => {
     cy.task('stubIntegrityGetOrderDetails', {
       httpStatus: 200,
       legacySubjectId,
-      details: {
+      body: {
         specials: 'no',
         legacySubjectId,
         firstName: null,

@@ -20,7 +20,19 @@ context('Alcohol Monitoring Order Summary', () => {
       cy.task('stubAlcoholMonitoringGetOrderSummary', {
         httpStatus: 200,
         legacySubjectId,
-        body: {} as AlcoholMonitoringOrderSummary,
+        body: {
+          legacySubjectId,
+          firstName: 'Testopher',
+          lastName: 'Fakesmith',
+          alias: 'an old tv show',
+          dateOfBirth: '1950-01-01',
+          postcode: '7AB 8CD',
+          address1: '123 Fourth Street',
+          address2: 'Fiveton',
+          address3: 'Sixbury',
+          orderStartDate: '2010-01-01T00:00:00',
+          orderEndDate: '2030-01-01T00:00:00',
+        } as AlcoholMonitoringOrderSummary,
       })
     })
 
@@ -87,11 +99,19 @@ context('Alcohol Monitoring Order Summary', () => {
       cy.task('stubAlcoholMonitoringGetOrderSummary', {
         httpStatus: 200,
         legacySubjectId,
-        body: [
-          {
-            legacySubjectId: 'AAMR321',
-          } as AlcoholMonitoringOrderSummary,
-        ],
+        body: {
+          legacySubjectId: 'AAMR321',
+          firstName: null,
+          lastName: null,
+          alias: null,
+          dateOfBirth: null,
+          address1: null,
+          address2: null,
+          address3: null,
+          postcode: null,
+          orderStartDate: null,
+          orderEndDate: null,
+        } as AlcoholMonitoringOrderSummary,
       })
 
       const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })

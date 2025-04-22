@@ -294,10 +294,9 @@ describe('Alcohol Monitoring event history Service', () => {
 
     it('should propagate an error if there is an authorisation error getting contact events', async () => {
       const incidentEventsResponse = [] as AlcoholMonitoringIncidentEvent[]
-      const contactEventsResponse = [] as AlcoholMonitoringContactEvent[]
       const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`).reply(200, contactEventsResponse)
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`).reply(401)
       fakeClient
         .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
@@ -312,7 +311,6 @@ describe('Alcohol Monitoring event history Service', () => {
 
     it('should propagate an error if there is a server error getting contact events', async () => {
       const incidentEventsResponse = [] as AlcoholMonitoringIncidentEvent[]
-      const contactEventsResponse = [] as AlcoholMonitoringContactEvent[]
       const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)

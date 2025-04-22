@@ -26,6 +26,16 @@ context('Integrity Order Summary', () => {
           orderStartDate: '2010-01-01',
           orderEndDate: '2030-01-01',
         },
+        subjectHistoryReport: {
+          reportUrl: '',
+          name: '',
+          createdOn: '',
+          time: '',
+        },
+        documents: {
+          pageSize: 1,
+          orderDocuments: [],
+        },
       })
 
       cy.signIn()
@@ -79,6 +89,16 @@ context('Integrity Order Summary', () => {
           address3: 'Sixbury',
           orderStartDate: '2010-01-01',
           orderEndDate: '2030-01-01',
+        },
+        subjectHistoryReport: {
+          reportUrl: '',
+          name: '',
+          createdOn: '',
+          time: '',
+        },
+        documents: {
+          pageSize: 1,
+          orderDocuments: [],
         },
       })
 
