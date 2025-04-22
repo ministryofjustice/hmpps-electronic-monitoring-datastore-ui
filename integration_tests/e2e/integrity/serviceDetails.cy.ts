@@ -73,7 +73,7 @@ context('Service details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             serviceId: 321,
             serviceAddress1: 'address line 1',
             serviceAddress2: 'address line 2',
@@ -118,7 +118,7 @@ context('Service details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             serviceId: 321,
             serviceAddress1: 'address line 1',
             serviceAddress2: 'address line 2',
@@ -151,7 +151,7 @@ context('Service details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             serviceId: 321,
             serviceAddress1: 'address line 1',
             serviceAddress2: 'address line 2',
@@ -170,7 +170,7 @@ context('Service details', () => {
             sunday: 7,
           },
           {
-            legacySubjectId: 456,
+            legacySubjectId: '456',
             serviceId: 654,
             serviceAddress1: 'address line 1',
             serviceAddress2: 'address line 2',

@@ -74,7 +74,7 @@ context('Equipment Details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             pid: {
               id: '123456',
               equipmentCategoryDescription: 'TEST_PID_DESCRIPTION',
@@ -115,7 +115,7 @@ context('Equipment Details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             pid: {
               id: '123456',
               equipmentCategoryDescription: 'TEST_PID_DESCRIPTION',
@@ -145,7 +145,7 @@ context('Equipment Details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             pid: {
               id: '123456',
               equipmentCategoryDescription: 'TEST_PID_DESCRIPTION',
@@ -160,7 +160,7 @@ context('Equipment Details', () => {
             },
           },
           {
-            legacySubjectId: 456,
+            legacySubjectId: '456',
             pid: {
               id: '012938',
               equipmentCategoryDescription: 'TEST_PID_DESCRIPTION',
@@ -192,7 +192,7 @@ context('Equipment Details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             hmu: {
               id: '098765',
               equipmentCategoryDescription: 'TEST_HMU_DESCRIPTION',
@@ -216,7 +216,7 @@ context('Equipment Details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 123,
+            legacySubjectId,
             pid: {
               id: '012938',
               equipmentCategoryDescription: 'TEST_PID_DESCRIPTION',

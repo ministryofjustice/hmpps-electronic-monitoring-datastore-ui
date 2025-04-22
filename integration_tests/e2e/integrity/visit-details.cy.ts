@@ -62,7 +62,7 @@ context('Visit details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 321,
+            legacySubjectId,
             address: {
               addressLine1: 'address line 1',
               addressLine2: 'address line 2',
@@ -91,7 +91,7 @@ context('Visit details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 321,
+            legacySubjectId,
             address: {
               addressLine1: 'address line 1',
               addressLine2: 'address line 2',
@@ -127,7 +127,7 @@ context('Visit details', () => {
         legacySubjectId,
         body: [
           {
-            legacySubjectId: 321,
+            legacySubjectId,
             address: {
               addressLine1: 'address line 1',
               addressLine2: 'address line 2',
@@ -142,7 +142,7 @@ context('Visit details', () => {
             visitOutcome: 'TEST_OUTCOME',
           },
           {
-            legacySubjectId: 321,
+            legacySubjectId: '321',
             address: {
               addressLine1: 'address line 5',
               addressLine2: 'address line 6',

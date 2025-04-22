@@ -30,6 +30,16 @@ context('Integrity Order summary navigation', () => {
         orderStartDate: '2010-01-01',
         orderEndDate: '2030-01-01',
       },
+      subjectHistoryReport: {
+        reportUrl: '',
+        name: '',
+        createdOn: '',
+        time: '',
+      },
+      documents: {
+        pageSize: 1,
+        orderDocuments: [],
+      },
     })
 
     cy.signIn()

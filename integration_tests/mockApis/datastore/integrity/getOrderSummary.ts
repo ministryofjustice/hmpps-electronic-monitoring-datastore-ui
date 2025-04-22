@@ -1,14 +1,8 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import {
-  KeyOrderInformation,
-  SubjectHistoryReport,
-  OrderDocument,
-} from '../../../../server/models/integrity/orderSummary'
+import { IntegrityOrderSummary } from '../../../../server/models/integrity/orderSummary'
 
-const defaultGetOrderSummaryOptions = {
-  httpStatus: 200,
-  legacySubjectId: '123456789',
+const defaultOrderSummary = {
   keyOrderInformation: {
     specials: 'no',
     legacySubjectId: '1234567',
@@ -32,22 +26,15 @@ const defaultGetOrderSummaryOptions = {
     pageSize: 1,
     orderDocuments: [],
   },
-} as GetOrderSummaryStubOptions
+} as IntegrityOrderSummary
 
 type GetOrderSummaryStubOptions = {
   httpStatus: number
   legacySubjectId?: string
-  keyOrderInformation?: KeyOrderInformation
-  subjectHistoryReport?: SubjectHistoryReport
-  documents?: {
-    pageSize: number
-    orderDocuments: OrderDocument[]
-  }
+  body?: IntegrityOrderSummary
 }
 
-export const stubIntegrityGetOrderSummary = (
-  options: GetOrderSummaryStubOptions = defaultGetOrderSummaryOptions,
-): SuperAgentRequest =>
+export const stubIntegrityGetOrderSummary = (options: GetOrderSummaryStubOptions): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
@@ -58,12 +45,14 @@ export const stubIntegrityGetOrderSummary = (
       headers: { 'Content-Type': 'application/json;charset=UTF-8' },
       jsonBody:
         options.httpStatus === 200
-          ? {
-              keyOrderInformation: options.keyOrderInformation,
-              subjectHistoryReport: options.subjectHistoryReport,
-              documents: options.documents,
+          ? options.body || {
+              ...defaultOrderSummary,
+              keyOrderInformation: {
+                ...defaultOrderSummary.keyOrderInformation,
+                legacySubjectId: options.legacySubjectId,
+              },
             }
-          : null,
+          : undefined,
     },
   })
 
