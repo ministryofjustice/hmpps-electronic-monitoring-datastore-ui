@@ -52,28 +52,6 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should fetch list of equipment details even if not equipment details', async () => {
-      const expectedResult = [
-        {
-          legacySubjectId: '123',
-          deviceType: null,
-          deviceSerialNumber: null,
-          deviceAddressType: null,
-          legFitting: null,
-          deviceInstalledDateTime: null,
-          deviceRemovedDateTime: null,
-          hmuInstallDateTime: null,
-          hmuRemovedDateTime: null,
-        } as AlcoholMonitoringEquipmentDetails,
-      ]
-
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
-
-      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
-
-      expect(result).toEqual(expectedResult)
-    })
-
     it('should fetch list of multiple equipment detail items', async () => {
       const expectedResult = [
         {

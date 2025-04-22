@@ -7,16 +7,9 @@ import { OrderRequest } from '../types/OrderRequest'
 
 import { IntegrityOrderSummary } from '../interfaces/integrity/orderSummary'
 import { IndegrityOrderDetails } from '../interfaces/integrity/orderDetails'
-import { IntegrityContactEvent } from '../models/integrity/contactEvents'
-import { IntegrityIncidentEvent } from '../models/integrity/incidentEvents'
-import { IntegrityMonitoringEvent } from '../models/integrity/monitoringEvents'
-import { IntegrityViolationEvent } from '../models/integrity/violationEvents'
 
 import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
 import { AlcoholMonitoringOrderDetails } from '../models/alcoholMonitoring/orderDetails'
-import { AlcoholMonitoringContactEvent } from '../models/alcoholMonitoring/contactEvents'
-import { AlcoholMonitoringIncidentEvent } from '../models/alcoholMonitoring/incidentEvents'
-import { AlcoholMonitoringViolationEvent } from '../models/alcoholMonitoring/violationEvents'
 
 export default class EmDatastoreApiClient extends RestClient {
   constructor(apiConfig: ApiConfig) {
@@ -75,71 +68,6 @@ export default class EmDatastoreApiClient extends RestClient {
     const { legacySubjectId } = input
     return this.get<AlcoholMonitoringOrderDetails>({
       path: `/orders/alcohol-monitoring/${legacySubjectId}/details`,
-      token,
-    })
-  }
-
-  async getIntegrityMonitoringEvents(input: OrderRequest, token: string): Promise<IntegrityMonitoringEvent[]> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityMonitoringEvent[]>({
-      path: `/orders/integrity/${legacySubjectId}/monitoring-events`,
-      token,
-    })
-  }
-
-  async getIntegrityIncidentEvents(input: OrderRequest, token: string): Promise<IntegrityIncidentEvent[]> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityIncidentEvent[]>({
-      path: `/orders/integrity/${legacySubjectId}/incident-events`,
-      token,
-    })
-  }
-
-  async getAlcoholMonitoringIncidentEvents(
-    input: OrderRequest,
-    token: string,
-  ): Promise<AlcoholMonitoringIncidentEvent[]> {
-    const { legacySubjectId } = input
-    return this.get<AlcoholMonitoringIncidentEvent[]>({
-      path: `/orders/alcohol-monitoring/${legacySubjectId}/incident-events`,
-      token,
-    })
-  }
-
-  async getIntegrityViolationEvents(input: OrderRequest, token: string): Promise<IntegrityViolationEvent[]> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityViolationEvent[]>({
-      path: `/orders/integrity/${legacySubjectId}/violation-events`,
-      token,
-    })
-  }
-
-  async getAlcoholMonitoringViolationEvents(
-    input: OrderRequest,
-    token: string,
-  ): Promise<AlcoholMonitoringViolationEvent[]> {
-    const { legacySubjectId } = input
-    return this.get<AlcoholMonitoringViolationEvent[]>({
-      path: `/orders/alcohol-monitoring/${legacySubjectId}/violation-events`,
-      token,
-    })
-  }
-
-  async getIntegrityContactEvents(input: OrderRequest, token: string): Promise<IntegrityContactEvent[]> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityContactEvent[]>({
-      path: `/orders/integrity/${legacySubjectId}/contact-events`,
-      token,
-    })
-  }
-
-  async getAlcoholMonitoringContactEvents(
-    input: OrderRequest,
-    token: string,
-  ): Promise<AlcoholMonitoringContactEvent[]> {
-    const { legacySubjectId } = input
-    return this.get<AlcoholMonitoringContactEvent[]>({
-      path: `/orders/alcohol-monitoring/${legacySubjectId}/contact-events`,
       token,
     })
   }
