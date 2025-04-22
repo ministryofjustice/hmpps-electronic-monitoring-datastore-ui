@@ -5,7 +5,7 @@ import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
 import { OrderRequest } from '../types/OrderRequest'
 
-import { IntegrityOrderSummary } from '../interfaces/integrity/orderSummary'
+import { IntegrityOrderSummary } from '../models/integrity/orderSummary'
 import { IndegrityOrderDetails } from '../interfaces/integrity/orderDetails'
 
 import { AlcoholMonitoringOrderSummary } from '../models/alcoholMonitoring/orderSummary'
@@ -36,22 +36,6 @@ export default class EmDatastoreApiClient extends RestClient {
   async confirmApi(token: string): Promise<JSON> {
     return this.get<JSON>({
       path: '/test',
-      token,
-    })
-  }
-
-  async getIntegritySummary(input: OrderRequest, token: string): Promise<IntegrityOrderSummary> {
-    const { legacySubjectId } = input
-    return this.get<IntegrityOrderSummary>({
-      path: `/orders/integrity/${legacySubjectId}`,
-      token,
-    })
-  }
-
-  async getAlcoholMonitoringSummary(input: OrderRequest, token: string): Promise<AlcoholMonitoringOrderSummary> {
-    const { legacySubjectId } = input
-    return this.get<AlcoholMonitoringOrderSummary>({
-      path: `/orders/alcohol-monitoring/${legacySubjectId}/information`,
       token,
     })
   }

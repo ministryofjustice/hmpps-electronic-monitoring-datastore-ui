@@ -1,12 +1,12 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringSummaryService } from '../../services'
-import { Reports } from '../../interfaces/integrity/orderSummary'
+import { AuditService, AlcoholMonitoringOrderSummaryService } from '../../services'
+import { Reports } from '../../models/integrity/orderSummary'
 
 export default class AlcoholMonitoringSummaryController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly summaryService: AlcoholMonitoringSummaryService,
+    private readonly summaryService: AlcoholMonitoringOrderSummaryService,
   ) {}
 
   summary: RequestHandler = async (req: Request, res: Response) => {
@@ -17,7 +17,7 @@ export default class AlcoholMonitoringSummaryController {
 
     const { legacySubjectId } = req.params
 
-    const summary = await this.summaryService.getSummary({
+    const summary = await this.summaryService.getOrderSummary({
       userToken: res.locals.user.token,
       legacySubjectId,
     })

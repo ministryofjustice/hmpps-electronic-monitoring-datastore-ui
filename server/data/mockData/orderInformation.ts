@@ -1,4 +1,4 @@
-import { IntegrityOrderSummary } from '../../interfaces/integrity/orderSummary'
+import { IntegrityOrderSummary } from '../../models/integrity/orderSummary'
 
 const orderInformation: IntegrityOrderSummary = {
   keyOrderInformation: {

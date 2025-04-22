@@ -1,15 +1,15 @@
 import { Request, Response } from 'express'
 import AuditService, { Page } from '../../services/auditService'
-import { IntegritySummaryService } from '../../services'
+import { IntegrityOrderSummaryService } from '../../services'
 import IntegritySummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/integrity/summaryService')
+jest.mock('../../services/integrity/orderSummaryService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const integritySummaryService = { getSummary: jest.fn() } as unknown as IntegritySummaryService
+const integritySummaryService = { getOrderSummary: jest.fn() } as unknown as IntegrityOrderSummaryService
 
 describe('Integrity summary Controller', () => {
   let controller: IntegritySummaryController
@@ -58,11 +58,11 @@ describe('Integrity summary Controller', () => {
 
       await controller.summary(req, res, next)
 
-      expect(integritySummaryService.getSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
+      expect(integritySummaryService.getOrderSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
     it(`returns correct error when orderService fails`, async () => {
-      integritySummaryService.getSummary = jest.fn().mockImplementation(() => {
+      integritySummaryService.getOrderSummary = jest.fn().mockImplementation(() => {
         throw new Error('Expected error message')
       })
 
@@ -84,7 +84,7 @@ describe('Integrity summary Controller', () => {
         },
       }
 
-      integritySummaryService.getSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      integritySummaryService.getOrderSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
       await controller.summary(req, res, next)
 
