@@ -16,14 +16,17 @@ context('Alcohol monitoring Order details navigation', () => {
     cy.task('stubAlcoholMonitoringGetIncidentEvents', {
       httpStatus: 200,
       legacySubjectId,
+      body: [],
     })
     cy.task('stubAlcoholMonitoringGetViolationEvents', {
       httpStatus: 200,
       legacySubjectId,
+      body: [],
     })
     cy.task('stubAlcoholMonitoringGetContactEvents', {
       httpStatus: 200,
       legacySubjectId,
+      body: [],
     })
 
     cy.signIn()
