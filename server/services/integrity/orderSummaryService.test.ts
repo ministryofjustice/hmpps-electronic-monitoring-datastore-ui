@@ -51,10 +51,7 @@ describe('Integrity order summary Service', () => {
           createdOn: '',
           time: '',
         },
-        documents: {
-          pageSize: 1,
-          orderDocuments: [],
-        },
+        documents: [],
       } as IntegrityOrderSummary
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
@@ -85,10 +82,7 @@ describe('Integrity order summary Service', () => {
           createdOn: null,
           time: null,
         },
-        documents: {
-          pageSize: 1,
-          orderDocuments: [],
-        },
+        documents: [],
       } as IntegrityOrderSummary
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)

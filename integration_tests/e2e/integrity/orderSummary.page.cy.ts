@@ -32,10 +32,7 @@ context('Integrity Order Summary', () => {
           createdOn: '',
           time: '',
         },
-        documents: {
-          pageSize: 1,
-          orderDocuments: [],
-        },
+        documents: [],
       })
 
       cy.signIn()
@@ -96,10 +93,7 @@ context('Integrity Order Summary', () => {
           createdOn: '',
           time: '',
         },
-        documents: {
-          pageSize: 1,
-          orderDocuments: [],
-        },
+        documents: [],
       })
 
       cy.signIn()

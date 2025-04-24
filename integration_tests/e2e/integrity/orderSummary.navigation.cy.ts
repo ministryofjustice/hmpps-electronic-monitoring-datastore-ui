@@ -36,10 +36,7 @@ context('Integrity Order summary navigation', () => {
         createdOn: '',
         time: '',
       },
-      documents: {
-        pageSize: 1,
-        orderDocuments: [],
-      },
+      documents: [],
     })
 
     cy.signIn()
