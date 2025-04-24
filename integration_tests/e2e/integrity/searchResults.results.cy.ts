@@ -19,7 +19,7 @@ context('Alcohol monitoring search results', () => {
         results: [
           {
             dataType: 'integrity',
-            legacySubjectId: 100,
+            legacySubjectId: '100',
             firstName: 'Amy',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -78,7 +78,7 @@ context('Alcohol monitoring search results', () => {
         results: [
           {
             dataType: 'integrity',
-            legacySubjectId: 100,
+            legacySubjectId: '100',
             firstName: 'Amy',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -92,7 +92,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 200,
+            legacySubjectId: '200',
             firstName: 'Bill',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -159,7 +159,7 @@ context('Alcohol monitoring search results', () => {
         results: [
           {
             dataType: 'integrity',
-            legacySubjectId: 100,
+            legacySubjectId: '100',
             firstName: 'Amy',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -173,7 +173,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 200,
+            legacySubjectId: '200',
             firstName: 'Bill',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -187,7 +187,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 3000000,
+            legacySubjectId: '3000000',
             firstName: 'Claire',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -201,7 +201,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 8000000,
+            legacySubjectId: '8000000',
             firstName: 'Daniel',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -215,7 +215,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 30000,
+            legacySubjectId: '30000',
             firstName: 'Emma',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -229,7 +229,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 4000000,
+            legacySubjectId: '4000000',
             firstName: 'Fred',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -243,7 +243,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 30000,
+            legacySubjectId: '30000',
             firstName: 'Geoff',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -257,7 +257,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 4000000,
+            legacySubjectId: '4000000',
             firstName: 'Hortense',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -271,7 +271,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 30000,
+            legacySubjectId: '30000',
             firstName: 'Isaac',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -285,7 +285,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 4000000,
+            legacySubjectId: '4000000',
             firstName: 'Jessica',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -299,7 +299,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 30000,
+            legacySubjectId: '30000',
             firstName: 'Ken',
             lastName: 'Smith',
             addressLine1: 'First line of address',
@@ -313,7 +313,7 @@ context('Alcohol monitoring search results', () => {
           },
           {
             dataType: 'integrity',
-            legacySubjectId: 4000000,
+            legacySubjectId: '4000000',
             firstName: 'Lucille',
             lastName: 'Smith',
             addressLine1: 'First line of address',
