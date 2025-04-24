@@ -6,7 +6,6 @@ import paths from '../constants/paths'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchResultsViewModel from '../models/view-models/searchResults'
 import { ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
-import { Order } from '../models/order'
 import OrderSearchCriteriaValidator from '../utils/validators/orderSearchCriteriaValidator'
 
 export default class SearchController {
@@ -65,7 +64,7 @@ export default class SearchController {
     }
   }
 
-  searchResultsPage: RequestHandler = async (req: Request, res: Response) => {
+  searchResultsPage: RequestHandler = async (req: Request, res: Response, next) => {
     await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
       who: res.locals.user.username,
       correlationId: req.id,
@@ -79,23 +78,22 @@ export default class SearchController {
       return
     }
 
-    let orders: Order[]
-
     try {
-      orders = await this.datastoreSearchService.getSearchResults({
+      const orders = await this.datastoreSearchService.getSearchResults({
         userToken: res.locals.user.token,
         queryExecutionId,
       })
+
+      const viewModel = SearchResultsViewModel.construct(orders)
+
+      res.render('pages/searchResults', { viewModel, orderType })
     } catch (error) {
       if (error.message === 'Error retrieving search results: Invalid query execution ID') {
         res.redirect(paths.SEARCH)
         return
       }
-      throw error
+
+      next(error)
     }
-
-    const viewModel = SearchResultsViewModel.construct(orders)
-
-    res.render('pages/searchResults', { viewModel, orderType })
   }
 }

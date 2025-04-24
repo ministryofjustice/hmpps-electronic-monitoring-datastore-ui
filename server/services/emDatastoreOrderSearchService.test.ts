@@ -92,15 +92,13 @@ describe('Datastore Search Service', () => {
     })
 
     describe('error handling', () => {
-      it('handles invalid query execution ID errors from the datastore API', async () => {
+      it('handles invalid query execution ID errors from the datastore client', async () => {
         fakeClient
           .get(`/orders?id=`)
-          .reply(400, {
-            data: {
-              status: 500,
-              userMessage: '',
-              developerMessage: 'QueryExecution ABC was not found (Service: Athena, Status Code: 400, Request ID: ABC',
-            },
+          .reply(500, {
+            status: 500,
+            userMessage: '',
+            developerMessage: 'QueryExecution ABC was not found (Service: Athena, Status Code: 400, Request ID: ABC',
           })
           .persist()
 
@@ -109,23 +107,29 @@ describe('Datastore Search Service', () => {
             userToken,
             queryExecutionId: '',
           }),
-        ).rejects.toThrow('Error retrieving search results: Bad Request')
-        // ).rejects.toThrow('Error retrieving search results: Invalid query execution ID')
+        ).rejects.toThrow('Error retrieving search results: Invalid query execution ID')
       })
 
       it('handles other errors from the datastore client', async () => {
-        jest.spyOn(emDatastoreApiClient, 'get').mockImplementationOnce(() => {
-          throw new Error()
-        })
+        fakeClient
+          .get(`/orders?id=`)
+          .reply(500, {
+            status: 500,
+            errorCode: null,
+            userMessage:
+              "Unexpected error: The Amazon Athena query failed to run with error message: TABLE_NOT_FOUND: line 1:111: Table 'xxx.yyy.zzz' does not exist",
+            developerMessage:
+              "The Amazon Athena query failed to run with error message: TABLE_NOT_FOUND: line 1:111: Table 'xxx.yyy.zzz' does not exist",
+            moreInfo: null,
+          })
+          .persist()
 
-        const request = {
-          userToken,
-          queryExecutionId: '',
-        }
-
-        await expect(emDatastoreOrderSearchService.getSearchResults(request)).rejects.toThrow(
-          'Error retrieving search results',
-        )
+        await expect(
+          emDatastoreOrderSearchService.getSearchResults({
+            userToken,
+            queryExecutionId: '',
+          }),
+        ).rejects.toThrow('Error retrieving search results: Internal Server Error')
       })
     })
   })
