@@ -1,7 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../wiremock'
-import { Order } from '../../../server/interfaces/order'
-// import { ContactEvent } from '../../../../server/models/integrity'
+import { Order } from '../../../server/models/order'
 
 const defaultOrders = [
   {

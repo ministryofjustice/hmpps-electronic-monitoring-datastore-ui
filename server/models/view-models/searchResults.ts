@@ -1,4 +1,4 @@
-import { Order } from '../../interfaces/order'
+import { Order } from '../order'
 
 export type OrdersViewModel = {
   dataType: string
@@ -20,9 +20,21 @@ export type OrdersViewModel = {
 }[]
 
 const createViewModelFromApiDto = (orders: Order[]): OrdersViewModel =>
-  orders.map(order => {
+  orders.map((order: Order) => {
     return {
+      dataType: order.dataType,
       ...order,
+      legacySubjectId: order.legacySubjectId,
+      firstName: order.firstName,
+      lastName: order.lastName,
+      addressLine1: order.addressLine1,
+      addressLine2: order.addressLine2,
+      addressLine3: order.addressLine3,
+      addressPostcode: order.addressPostcode,
+      alias: order.alias,
+      dateOfBirth: order.dateOfBirth,
+      orderStartDate: order.orderStartDate,
+      orderEndDate: order.orderEndDate,
       sortAddress:
         (order.addressLine1 || '') +
         (order.addressLine2 || '') +
