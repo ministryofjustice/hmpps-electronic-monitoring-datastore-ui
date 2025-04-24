@@ -498,7 +498,18 @@ context('Alcohol monitoring search results', () => {
         httpStatus: 200,
         results: [
           {
+            dataType: 'am',
             legacySubjectId: 'AAMR100',
+            firstName: null,
+            lastName: null,
+            addressLine1: null,
+            addressLine2: null,
+            addressLine3: null,
+            addressPostcode: null,
+            alias: null,
+            dateOfBirth: null,
+            orderStartDate: null,
+            orderEndDate: null,
           },
         ],
       })
