@@ -1,4 +1,4 @@
-import { dateValidator } from './dateValidator'
+import DateValidator from './dateValidator'
 import strings from '../../constants/strings'
 
 describe('DateValidator', () => {
@@ -14,7 +14,7 @@ describe('DateValidator', () => {
 
     validDates.forEach(([day, month, year]) => {
       it(`returns true for valid date ${day}/${month}/${year}`, () => {
-        const response = dateValidator.parse({
+        const response = DateValidator.dob.parse({
           day,
           month,
           year,
@@ -58,7 +58,7 @@ describe('DateValidator', () => {
 
     tests.forEach(({ date: [day, month, year], error, description }) => {
       it(`returns false and appropriate error message for ${description}: ${day}/${month}/${year}`, () => {
-        const response = dateValidator.parse({
+        const response = DateValidator.dob.parse({
           day,
           month,
           year,
@@ -79,7 +79,7 @@ describe('DateValidator', () => {
 
     validDates.forEach(([day, month, year]) => {
       it(`returns true for valid date ${day}/${month}/${year}`, () => {
-        const response = dateValidator.parse({
+        const response = DateValidator.dob.parse({
           day,
           month,
           year,

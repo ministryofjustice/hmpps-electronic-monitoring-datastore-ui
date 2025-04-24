@@ -7,7 +7,7 @@ import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchResultsViewModel from '../models/view-models/searchResults'
 import { ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
 import { Order } from '../interfaces/order'
-import { ValidationResult } from '../models/Validation'
+import OrderSearchCriteriaValidator from '../utils/validators/orderSearchCriteriaValidator'
 
 export default class SearchController {
   constructor(
@@ -44,10 +44,7 @@ export default class SearchController {
 
     const validatedFormData = ParsedSearchFormDataModel.parse(req.body)
 
-    const validationErrors: ValidationResult = this.datastoreSearchService.validateInput({
-      userToken: res.locals.user.token,
-      data: validatedFormData,
-    })
+    const validationErrors = OrderSearchCriteriaValidator.validateInput(validatedFormData)
 
     if (validationErrors.length > 0) {
       req.session.formData = validatedFormData

@@ -1,59 +1,12 @@
-import { ZodTypeAny } from 'zod'
 import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
 import { Order } from '../interfaces/order'
 import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import { ValidationResult } from '../models/Validation'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
-import { DateValidationResponse, dateValidator } from '../utils/validators/dateValidator'
-import NameValidator from '../utils/validators/nameValidator'
-import { ParsedSearchFormData } from '../models/form-data/searchOrder'
 import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
 
 export default class EmDatastoreOrderSearchService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
-
-  isEmptySearch(searchData: ParsedSearchFormData): boolean {
-    const { searchType, ...mandatoryFields } = searchData
-    return Object.values(mandatoryFields).every(value => value === '' || value === undefined)
-  }
-
-  validateInput(input: SearchFormInput): ValidationResult {
-    const validationErrors: ValidationResult = []
-
-    if (this.isEmptySearch(input.data)) {
-      validationErrors.push({
-        field: 'emptyForm',
-        error: 'You must enter a value into at least one search field',
-      })
-      return validationErrors
-    }
-
-    const parsedDateOfBirth: DateValidationResponse = dateValidator.parse({
-      day: input.data.dobDay,
-      month: input.data.dobMonth,
-      year: input.data.dobYear,
-    })
-    if (!parsedDateOfBirth.isValid) {
-      validationErrors.push(parsedDateOfBirth.error!)
-    }
-
-    ;['firstName', 'lastName', 'alias'].forEach(field => {
-      const fieldValue = input.data[field as keyof SearchFormInput['data']]
-      const validator = NameValidator[field as keyof typeof NameValidator] as ZodTypeAny
-
-      const validationResult = validator.safeParse(fieldValue)
-
-      if (!validationResult.success) {
-        validationErrors.push({
-          field,
-          error: validationResult.error.issues[0].message,
-        })
-      }
-    })
-
-    return validationErrors
-  }
 
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     try {
