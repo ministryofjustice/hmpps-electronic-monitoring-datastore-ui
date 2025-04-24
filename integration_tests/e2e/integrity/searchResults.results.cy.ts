@@ -1,5 +1,6 @@
 import Page from '../../pages/page'
 import IntegritySearchResultsPage from '../../pages/integrity/searchResults'
+import { Order } from '../../../server/models/order'
 
 context('Alcohol monitoring search results', () => {
   const queryExecutionId = 'query-execution-id'
@@ -498,8 +499,19 @@ context('Alcohol monitoring search results', () => {
         httpStatus: 200,
         results: [
           {
+            dataType: 'integrity',
             legacySubjectId: 'AAMR100',
-          },
+            firstName: null,
+            lastName: null,
+            addressLine1: null,
+            addressLine2: null,
+            addressLine3: null,
+            addressPostcode: null,
+            alias: null,
+            dateOfBirth: null,
+            orderStartDate: null,
+            orderEndDate: null,
+          } as Order,
         ],
       })
     })
