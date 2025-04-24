@@ -1,4 +1,4 @@
-import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
+import { QueryExecutionResponse } from '../models/queryExecutionResponse'
 import { Token } from '../interfaces/token'
 import { ParsedSearchFormData } from '../models/form-data/searchOrder'
 

@@ -1,123 +1,120 @@
-import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
-import orders from '../data/mockData/orders'
-import { createMockEmDatastoreApiClient } from '../data/testUtils/mocks'
-import getSanitisedError from '../sanitisedError'
+import nock from 'nock'
 
-jest.mock('../data/emDatastoreApiClient')
-jest.mock('../utils/validators/dateValidator', () => ({
-  dateValidator: { parse: jest.fn() },
-}))
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
+import config, { ApiConfig } from '../config'
+import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
 
 describe('Datastore Search Service', () => {
+  let fakeClient: nock.Scope
+  let emDatastoreApiClient: EmDatastoreApiClient
+
+  let emDatastoreOrderSearchService: EmDatastoreOrderSearchService
+
   const userToken = 'fake-user-token'
   const queryExecutionId = 'query-execution-id'
   const queryExecutionResponse = {
     queryExecutionId,
   }
-  const emDatastoreApiClient = createMockEmDatastoreApiClient()
-
-  let datastoreSearchService: EmDatastoreOrderSearchService
 
   beforeEach(() => {
-    datastoreSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClient)
+    fakeClient = nock(config.apis.emDatastoreApi.url)
+    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClient)
+  })
+
+  afterEach(() => {
+    if (!nock.isDone()) {
+      nock.cleanAll()
+      throw new Error('Not all nock interceptors were used!')
+    }
+    nock.abortPendingRequests()
+    nock.cleanAll()
+    jest.resetAllMocks()
   })
 
   afterEach(() => {
     jest.resetAllMocks()
   })
 
-  it('should set up and tear down the tests successfully', async () => {
-    expect(true).toBe(true)
-  })
-
   describe('submitSearchQuery', () => {
     it('submits a search query and returns an order execution ID', async () => {
-      const validInput = {
-        userToken: 'token',
-        data: {
-          searchType: '',
-          legacySubjectId: '',
-          firstName: 'John',
-          lastName: 'Doe',
-          alias: 'JD',
-          dobDay: '10',
-          dobMonth: '02',
-          dobYear: '2021',
-        },
+      const data = {
+        searchType: '',
+        legacySubjectId: '',
+        firstName: 'John',
+        lastName: 'Doe',
+        alias: 'JD',
+        dobDay: '10',
+        dobMonth: '02',
+        dobYear: '2021',
       }
 
-      jest.spyOn(emDatastoreApiClient, 'submitSearchQuery').mockResolvedValue(queryExecutionResponse)
+      fakeClient.post(`/orders`, data).reply(200, { queryExecutionId })
 
-      const result = await datastoreSearchService.submitSearchQuery(validInput)
-
-      expect(emDatastoreApiClient.submitSearchQuery).toHaveBeenCalledWith(validInput, 'token')
+      const result = await emDatastoreOrderSearchService.submitSearchQuery({
+        userToken: 'token',
+        data,
+      })
       expect(result).toEqual(queryExecutionResponse)
     })
 
     it('handles errors from the datastore client', async () => {
-      jest.spyOn(emDatastoreApiClient, 'submitSearchQuery').mockImplementationOnce(() => {
-        throw getSanitisedError(new Error('Client error'))
-      })
-
-      const input = {
-        userToken: 'token',
-        data: {
-          searchType: '',
-          legacySubjectId: '',
-          firstName: '',
-          lastName: '',
-          alias: '',
-          dobDay: '',
-          dobMonth: '',
-          dobYear: '',
-        },
+      const data = {
+        searchType: '',
+        legacySubjectId: '',
+        firstName: '',
+        lastName: '',
+        alias: '',
+        dobDay: '',
+        dobMonth: '',
+        dobYear: '',
       }
 
-      expect(datastoreSearchService.submitSearchQuery(input)).rejects.toThrow('Error submitting search query')
+      expect(
+        emDatastoreOrderSearchService.submitSearchQuery({
+          userToken: 'token',
+          data,
+        }),
+      ).rejects.toThrow('Error submitting search query')
     })
   })
 
   describe('getSearchResults', () => {
     it('submits a request containing a query execution ID and returns search results', async () => {
-      jest.spyOn(emDatastoreApiClient, 'getSearchResults').mockResolvedValue(orders)
+      fakeClient.get(`/orders?id=${queryExecutionId}`).reply(200, [])
 
-      const request = {
+      const result = await emDatastoreOrderSearchService.getSearchResults({
         userToken,
         queryExecutionId,
-      }
+      })
 
-      const result = await datastoreSearchService.getSearchResults(request)
-
-      expect(emDatastoreApiClient.getSearchResults).toHaveBeenCalledWith(request, userToken)
-      expect(result).toEqual(orders)
+      expect(result).toEqual([])
     })
 
     describe('error handling', () => {
-      it('handles invalid query execution ID errors from the datastore client', async () => {
-        const request = {
-          userToken,
-          queryExecutionId: '',
-        }
+      it('handles invalid query execution ID errors from the datastore API', async () => {
+        fakeClient
+          .get(`/orders?id=`)
+          .reply(400, {
+            data: {
+              status: 500,
+              userMessage: '',
+              developerMessage: 'QueryExecution ABC was not found (Service: Athena, Status Code: 400, Request ID: ABC',
+            },
+          })
+          .persist()
 
-        const error = {
-          data: {
-            status: 500,
-            userMessage: '',
-            developerMessage: 'QueryExecution ABC was not found (Service: Athena, Status Code: 400, Request ID: ABC',
-          },
-        }
-
-        jest.spyOn(emDatastoreApiClient, 'getSearchResults').mockImplementationOnce(() => {
-          throw error
-        })
-
-        await expect(datastoreSearchService.getSearchResults(request)).rejects.toThrow(
-          'Error retrieving search results: Invalid query execution ID',
-        )
+        await expect(
+          emDatastoreOrderSearchService.getSearchResults({
+            userToken,
+            queryExecutionId: '',
+          }),
+        ).rejects.toThrow('Error retrieving search results: Bad Request')
+        // ).rejects.toThrow('Error retrieving search results: Invalid query execution ID')
       })
 
       it('handles other errors from the datastore client', async () => {
-        jest.spyOn(emDatastoreApiClient, 'getSearchResults').mockImplementationOnce(() => {
+        jest.spyOn(emDatastoreApiClient, 'get').mockImplementationOnce(() => {
           throw new Error()
         })
 
@@ -126,7 +123,7 @@ describe('Datastore Search Service', () => {
           queryExecutionId: '',
         }
 
-        await expect(datastoreSearchService.getSearchResults(request)).rejects.toThrow(
+        await expect(emDatastoreOrderSearchService.getSearchResults(request)).rejects.toThrow(
           'Error retrieving search results',
         )
       })

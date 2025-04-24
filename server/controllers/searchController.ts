@@ -6,7 +6,7 @@ import paths from '../constants/paths'
 import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
 import SearchResultsViewModel from '../models/view-models/searchResults'
 import { ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
-import { Order } from '../interfaces/order'
+import { Order } from '../models/order'
 import OrderSearchCriteriaValidator from '../utils/validators/orderSearchCriteriaValidator'
 
 export default class SearchController {

@@ -1,18 +1,22 @@
 import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
-import { Order } from '../interfaces/order'
+import { Order, OrderModel } from '../models/order'
 import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import { SearchFormInput, SearchResultsRequest } from '../types/Search'
-import { QueryExecutionResponse } from '../interfaces/QueryExecutionResponse'
+import { QueryExecutionResponse, QueryExecutionResponseModel } from '../models/queryExecutionResponse'
 
 export default class EmDatastoreOrderSearchService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
     try {
-      const queryExecutionId = await this.emDatastoreApiClient.submitSearchQuery(input, input.userToken)
+      const result = await this.emDatastoreApiClient.post<QueryExecutionResponse>({
+        path: '/orders',
+        data: input.data,
+        token: input.userToken,
+      })
 
-      return queryExecutionId
+      return QueryExecutionResponseModel.parse(result)
     } catch (error) {
       const sanitisedError: SanitisedError = getSanitisedError(error)
       logger.error(sanitisedError, 'Error submitting search query')
@@ -21,9 +25,14 @@ export default class EmDatastoreOrderSearchService {
     }
   }
 
-  async getSearchResults(request: SearchResultsRequest): Promise<Order[]> {
+  async getSearchResults(input: SearchResultsRequest): Promise<Order[]> {
     try {
-      return await this.emDatastoreApiClient.getSearchResults(request, request.userToken)
+      const results = await this.emDatastoreApiClient.get<Order[]>({
+        path: `/orders?id=${input.queryExecutionId}`,
+        token: input.userToken,
+      })
+
+      return results.map(order => OrderModel.parse(order))
     } catch (error) {
       let userFreindlyMessage = 'Error retrieving search results'
       const sanitisedError = getSanitisedError(error)

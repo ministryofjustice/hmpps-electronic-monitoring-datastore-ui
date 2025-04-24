@@ -1,4 +1,4 @@
-import { Order } from '../../interfaces/order'
+import { Order } from '../../models/order'
 
 const orders: Order[] = [
   {
