@@ -22,10 +22,7 @@ const defaultOrderSummary = {
     createdOn: '',
     time: '',
   },
-  documents: {
-    pageSize: 1,
-    orderDocuments: [],
-  },
+  documents: [],
 } as IntegrityOrderSummary
 
 type GetOrderSummaryStubOptions = {

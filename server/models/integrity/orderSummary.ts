@@ -29,11 +29,6 @@ export const IntegrityOrderDocumentModel = z.object({
   notes: z.string().nullable(),
 })
 
-export const IntegrityOrderDocumentListModel = z.object({
-  pageSize: z.number().nullable(),
-  orderDocuments: z.array(IntegrityOrderDocumentModel).nullable(),
-})
-
 export const IntegrityReportsModel = z.object({
   orderDetails: z.boolean(),
   visitDetails: z.boolean(),
@@ -52,12 +47,11 @@ export const IntegrityReportsModel = z.object({
 export const IntegrityOrderSummaryModel = z.object({
   keyOrderInformation: IntegrityKeyOrderInformationModel.optional(),
   subjectHistoryReport: IntegritySubjectHistoryReportModel.optional(),
-  documents: IntegrityOrderDocumentListModel.optional(),
+  documents: z.array(IntegrityOrderDocumentModel).optional(),
 })
 
 export type IntegrityKeyOrderInformation = z.infer<typeof IntegrityKeyOrderInformationModel>
 export type IntegritySubjectHistoryReport = z.infer<typeof IntegritySubjectHistoryReportModel>
 export type IntegrityOrderDocument = z.infer<typeof IntegrityOrderDocumentModel>
-export type IntegrityOrderDocumentList = z.infer<typeof IntegrityOrderDocumentListModel>
 export type IntegrityReports = z.infer<typeof IntegrityReportsModel>
 export type IntegrityOrderSummary = z.infer<typeof IntegrityOrderSummaryModel>
