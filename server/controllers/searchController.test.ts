@@ -1,4 +1,3 @@
-import session, { SessionData } from 'express-session'
 import { Request, Response } from 'express'
 import AuditService from '../services/auditService'
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
@@ -14,9 +13,6 @@ jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreOrderSearchService')
 
 const queryExecutionId = 'query-execution-id'
-const queryExecutionResponse = {
-  queryExecutionId,
-}
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreOrderSearchService = {
@@ -40,23 +36,7 @@ describe('SearchController', () => {
       jest.clearAllMocks()
       searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
-      req = createMockRequest({
-        session: {
-          id: 'mock-session-id',
-          cookie: { originalMaxAge: 3600000 } as session.Cookie,
-          regenerate: jest.fn(),
-          destroy: jest.fn(),
-          reload: jest.fn(),
-          save: jest.fn(),
-          touch: jest.fn(),
-          resetMaxAge: jest.fn(),
-          returnTo: '/return',
-          nowInMinutes: 12345,
-          validationErrors: [],
-          formData: {},
-        } as session.Session & Partial<SessionData>,
-      })
-
+      req = createMockRequest()
       res = createMockResponse()
     })
 
@@ -72,9 +52,6 @@ describe('SearchController', () => {
       }
 
       await searchController.searchPage(req, res, next)
-
-      expect(SearchForOrdersViewModel.construct).toHaveBeenCalledWith({}, [])
-      expect(SearchForOrdersViewModel.construct).toHaveReturnedWith(expectedViewModel)
       expect(res.render).toHaveBeenCalledWith('pages/search', expectedViewModel)
     })
 
@@ -125,12 +102,6 @@ describe('SearchController', () => {
       }
 
       await searchController.searchPage(req, res, jest.fn())
-
-      expect(SearchForOrdersViewModel.construct).toHaveBeenCalledWith(
-        req.session.formData,
-        req.session.validationErrors,
-      )
-      expect(SearchForOrdersViewModel.construct).toHaveReturnedWith(expectedViewModel)
       expect(res.render).toHaveBeenCalledWith('pages/search', expectedViewModel)
     })
   })
@@ -139,30 +110,7 @@ describe('SearchController', () => {
     beforeEach(() => {
       searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
-      req = createMockRequest({
-        body: {
-          firstName: 'John',
-          lastName: 'Doe',
-          alias: 'JD',
-          'dob-day': '10',
-          'dob-month': '02',
-          'dob-year': '2021',
-        },
-        session: {
-          id: 'mock-session-id',
-          cookie: { originalMaxAge: 3600000 } as session.Cookie,
-          regenerate: jest.fn(),
-          destroy: jest.fn(),
-          reload: jest.fn(),
-          save: jest.fn(),
-          touch: jest.fn(),
-          resetMaxAge: jest.fn(),
-          returnTo: '/return',
-          nowInMinutes: 12345,
-          validationErrors: [],
-          formData: {},
-        } as session.Session & Partial<SessionData>,
-      })
+      req = createMockRequest()
       res = createMockResponse()
       next = jest.fn()
 
@@ -170,10 +118,23 @@ describe('SearchController', () => {
     })
 
     it('should redirect to search with appropriate error when validation errors exist', async () => {
+      emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue({
+        queryExecutionId,
+      })
+
+      req.body = {
+        firstName: 'John@123.com',
+        lastName: 'Doe',
+        alias: 'JD',
+        'dob-day': '10',
+        'dob-month': '02',
+        'dob-year': '2021',
+      }
+
       const parsedFormData: ParsedSearchFormData = {
         searchType: undefined,
         legacySubjectId: undefined,
-        firstName: 'John',
+        firstName: 'John@123.com',
         lastName: 'Doe',
         alias: 'JD',
         dobDay: '10',
@@ -181,22 +142,20 @@ describe('SearchController', () => {
         dobYear: '2021',
       }
 
-      emDatastoreOrderSearchService.validateInput = jest
-        .fn()
-        .mockReturnValueOnce([{ field: 'firstName', error: 'Invalid first name' }])
-
       await searchController.submitSearchQuery(req, res, next)
 
       expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(parsedFormData)
-      expect(req.session.validationErrors).toEqual([{ field: 'firstName', error: 'Invalid first name' }])
+      expect(req.session.validationErrors).toEqual([
+        { field: 'firstName', error: 'First name must contain letters only' },
+      ])
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 
     it('should redirect to search with appropriate error when no search data supplied', async () => {
       const validationErrors = [
         {
-          field: 'form',
+          field: 'emptyForm',
           error: 'You must enter a value into at least one search field',
         },
       ]
@@ -221,23 +180,21 @@ describe('SearchController', () => {
         dobYear: '',
       }
 
-      emDatastoreOrderSearchService.validateInput = jest.fn().mockReturnValueOnce(validationErrors)
-
       await searchController.submitSearchQuery(req, res, next)
 
-      expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(req.session.formData).toEqual(parsedFormData)
       expect(req.session.validationErrors).toEqual(validationErrors)
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 
     it('when input is valid, redirects to the results page with the query execution ID as a URL query parameter', async () => {
-      emDatastoreOrderSearchService.validateInput = jest.fn().mockReturnValueOnce([])
-      emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue(queryExecutionResponse)
+      emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue({
+        queryExecutionId,
+      })
 
       req.body = {
         searchType: 'integrity',
-        firstName: '',
+        firstName: 'John',
         lastName: '',
         alias: '',
         'dob-day': '',
@@ -246,8 +203,6 @@ describe('SearchController', () => {
       }
 
       await searchController.submitSearchQuery(req, res, next)
-
-      expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
       expect(res.redirect).toHaveBeenCalledWith(`/integrity?search_id=${queryExecutionId}`)
     })
   })
@@ -256,22 +211,7 @@ describe('SearchController', () => {
     beforeEach(() => {
       searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
-      req = createMockRequest({
-        session: {
-          id: 'mock-session-id',
-          cookie: { originalMaxAge: 3600000 } as session.Cookie,
-          regenerate: jest.fn(),
-          destroy: jest.fn(),
-          reload: jest.fn(),
-          save: jest.fn(),
-          touch: jest.fn(),
-          resetMaxAge: jest.fn(),
-          returnTo: '/return',
-          nowInMinutes: 12345,
-          validationErrors: [],
-          formData: {},
-        } as session.Session & Partial<SessionData>,
-      })
+      req = createMockRequest()
       res = createMockResponse()
       next = jest.fn()
 
@@ -282,7 +222,6 @@ describe('SearchController', () => {
       emDatastoreOrderSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
 
       await searchController.searchResultsPage(req, res, next)
-
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 

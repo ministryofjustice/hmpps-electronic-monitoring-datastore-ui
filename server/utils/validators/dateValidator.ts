@@ -31,114 +31,116 @@ const dateModel = z.object({
 })
 
 // Validator
-export const dateValidator = dateModel.transform((data): DateValidationResponse => {
-  const { day, month, year } = data
+export default class DateValidator {
+  static dob = dateModel.transform((data: { day: string; month: string; year: string }): DateValidationResponse => {
+    const { day, month, year } = data
 
-  let inputDate: Date
+    let inputDate: Date
 
-  // Convert date string to numbers or null
-  const parsedDay = day ? parseInt(day, 10) : null
-  const parsedMonth = month ? parseInt(month, 10) : null
-  const parsedYear = year ? parseInt(year, 10) : null
+    // Convert date string to numbers or null
+    const parsedDay = day ? parseInt(day, 10) : null
+    const parsedMonth = month ? parseInt(month, 10) : null
+    const parsedYear = year ? parseInt(year, 10) : null
 
-  // Valid condition: All date fields are empty
-  if (!day && !month && !year) {
-    return { isValid: true }
-  }
+    // Valid condition: All date fields are empty
+    if (!day && !month && !year) {
+      return { isValid: true }
+    }
 
-  // Invalid condition: Some but not all date fields are populated
-  if ((parsedDay || parsedMonth || parsedYear) && !(parsedDay && parsedMonth && parsedYear)) {
-    if (!parsedDay)
+    // Invalid condition: Some but not all date fields are populated
+    if ((parsedDay || parsedMonth || parsedYear) && !(parsedDay && parsedMonth && parsedYear)) {
+      if (!parsedDay)
+        return {
+          isValid: false,
+          error: {
+            field: 'dob',
+            error: strings.errors.missingDay,
+          },
+        }
+      if (!parsedMonth)
+        return {
+          isValid: false,
+          error: {
+            field: 'dob',
+            error: strings.errors.missingMonth,
+          },
+        }
+      if (!parsedYear)
+        return {
+          isValid: false,
+          error: {
+            field: 'dob',
+            error: strings.errors.missingYear,
+          },
+        }
+    }
+
+    // Invalid condition: Non-numeric characters are entered for the day or year
+    if (!/^\d+$/.test(day) || !/^\d+$/.test(month) || !/^\d+$/.test(year)) {
       return {
         isValid: false,
         error: {
           field: 'dob',
-          error: strings.errors.missingDay,
+          error: strings.errors.unrealDate,
         },
       }
-    if (!parsedMonth)
+    }
+
+    // Invalid condition: Year is before the earliest permitted date
+    if (parsedYear && parsedYear < MIN_YEAR) {
       return {
         isValid: false,
         error: {
           field: 'dob',
-          error: strings.errors.missingMonth,
+          error: strings.errors.dateBelowLimit + MIN_DATE,
         },
       }
-    if (!parsedYear)
+    }
+
+    // Invalid condition: The submitted values do not create a real date
+    if (!isValidDate(parsedYear, parsedMonth, parsedDay)) {
       return {
         isValid: false,
         error: {
           field: 'dob',
-          error: strings.errors.missingYear,
+          error: strings.errors.unrealDate,
         },
       }
-  }
-
-  // Invalid condition: Non-numeric characters are entered for the day or year
-  if (!/^\d+$/.test(day) || !/^\d+$/.test(month) || !/^\d+$/.test(year)) {
-    return {
-      isValid: false,
-      error: {
-        field: 'dob',
-        error: strings.errors.unrealDate,
-      },
     }
-  }
 
-  // Invalid condition: Year is before the earliest permitted date
-  if (parsedYear && parsedYear < MIN_YEAR) {
-    return {
-      isValid: false,
-      error: {
-        field: 'dob',
-        error: strings.errors.dateBelowLimit + MIN_DATE,
-      },
-    }
-  }
-
-  // Invalid condition: The submitted values do not create a real date
-  if (!isValidDate(parsedYear, parsedMonth, parsedDay)) {
-    return {
-      isValid: false,
-      error: {
-        field: 'dob',
-        error: strings.errors.unrealDate,
-      },
-    }
-  }
-
-  // Invalid condition: Date constructor can't generate a date with the provided values
-  try {
-    inputDate = new Date(parsedYear, parsedMonth - 1, parsedDay)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
-    return {
-      isValid: false,
-      error: {
-        field: 'dateOfBirth',
-        error: strings.errors.unrealDate,
-      },
-    }
-  }
-
-  // Invalid condition: The submitted date is not in the past
-  if (parsedYear && parsedMonth && parsedDay) {
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    if (inputDate >= today) {
+    // Invalid condition: Date constructor can't generate a date with the provided values
+    try {
+      inputDate = new Date(parsedYear, parsedMonth - 1, parsedDay)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
       return {
         isValid: false,
         error: {
-          field: 'dob',
-          error: 'The date must be in the past.',
+          field: 'dateOfBirth',
+          error: strings.errors.unrealDate,
         },
       }
     }
-  }
 
-  // Valid condition: Date passes validation
-  return {
-    isValid: true,
-  }
-})
+    // Invalid condition: The submitted date is not in the past
+    if (parsedYear && parsedMonth && parsedDay) {
+      const today = new Date()
+      today.setHours(0, 0, 0, 0)
+
+      if (inputDate >= today) {
+        return {
+          isValid: false,
+          error: {
+            field: 'dob',
+            error: 'The date must be in the past.',
+          },
+        }
+      }
+    }
+
+    // Valid condition: Date passes validation
+    return {
+      isValid: true,
+    }
+  })
+}
