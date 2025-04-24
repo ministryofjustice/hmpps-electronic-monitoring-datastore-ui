@@ -50,9 +50,9 @@ export const IntegrityReportsModel = z.object({
 })
 
 export const IntegrityOrderSummaryModel = z.object({
-  keyOrderInformation: IntegrityKeyOrderInformationModel.nullable(),
-  subjectHistoryReport: IntegritySubjectHistoryReportModel.nullable(),
-  documents: IntegrityOrderDocumentListModel.nullable(),
+  keyOrderInformation: IntegrityKeyOrderInformationModel.optional(),
+  subjectHistoryReport: IntegritySubjectHistoryReportModel.optional(),
+  documents: IntegrityOrderDocumentListModel.optional(),
 })
 
 export type IntegrityKeyOrderInformation = z.infer<typeof IntegrityKeyOrderInformationModel>
