@@ -1,0 +1,92 @@
+{% extends "../partials/layout-mapping.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from '../components/safeDateFormatters.njk' import safeGovukDate %}
+
+{% set heading = "Order details" %}
+{% set pageTitle = applicationName + " - " + heading %}
+{% set backUrl = backUrl %}
+
+{% set legacySubjectId = details.legacySubjectId %}
+
+{% set rows = [] %}
+{% for route in routes %}
+{% set selectButtonHtml %}
+  {{ govukButton({
+    classes: "route-select",
+    attributes: {
+      "aria-label": route.location,
+      "data-index": loop.index0
+    },
+    text: "Select"
+  }) }}
+{% endset %}
+  {% set rows = (rows.push([
+    {
+      text: safeGovukDate(route.date),
+      attributes: {
+        "data-sort-value": route.date,
+        "data-date": route.date
+      }
+    },
+    {
+      text: route.timePeriod.start + ' - ' + route.timePeriod.end,
+      attributes: {
+        "data-sort-value": route.timePeriod.start,
+        "data-time-period": route.timePeriod.start + ' - ' + route.timePeriod.end
+      }
+    },
+    {
+      text: route.location,
+      attributes: {
+        "data-location": route.location
+      }
+    },
+    {
+      html: selectButtonHtml,
+      attributes: {
+        "data-route": route.route | dump
+      }
+    }
+  ]), rows) %}
+{% endfor %}
+
+{% block innerContent %}
+  <div id="places">
+    {{ govukTable({
+      attributes: {
+        "data-module": "moj-sortable-table"
+      },
+      caption: "Routes",
+      classes: "ems-routes",
+      head: [
+        {
+          text: "Date",
+          attributes: {
+            "aria-sort": "ascending"
+          }
+        },
+        {
+          text: "Time Period",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "Location",
+          attributes: {
+            "aria-sort": "none"
+          }
+        },
+        {
+          text: "Option"
+        }
+      ],
+      rows: rows
+    }) }}
+  </div>
+{% endblock %}
+
+{% block asideContent %}
+{% endblock %}

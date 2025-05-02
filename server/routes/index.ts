@@ -6,6 +6,7 @@ import { Page } from '../services/auditService'
 
 import ConnectionTestController from '../controllers/connectionTestController'
 import SearchController from '../controllers/searchController'
+import MappingController from '../controllers/mappingController'
 
 // integrity orders
 import IntegritySummaryController from '../controllers/integrity/summaryController'
@@ -52,6 +53,7 @@ export default function routes({
 
   const connectionTestController = new ConnectionTestController(auditService, emDatastoreConnectionService)
   const searchController = new SearchController(auditService, emDatastoreOrderSearchService)
+  const mappingController = new MappingController()
 
   // integrity
   const integritySummaryController = new IntegritySummaryController(auditService, integrityOrderSummaryService)
@@ -114,6 +116,7 @@ export default function routes({
   get(paths.INTEGRITY_ORDER.SERVICE_DETAILS, integrityServiceDetailsController.showServiceDetails)
   get(paths.INTEGRITY_ORDER.EVENT_HISTORY, integrityEventHistoryController.showEventHistory)
   get(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, suspensionOfVisitsController.showSuspensionOfVisits)
+  get(paths.INTEGRITY_ORDER.MAP, mappingController.map)
 
   // alcohol monitoring
   get(paths.ALCOHOL_MONITORING.INDEX, (req, res, next) => {
