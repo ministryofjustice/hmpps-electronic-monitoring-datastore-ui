@@ -26,11 +26,21 @@ export default function setUpWebSecurity(): Router {
           // page by an attacker.
           scriptSrc: ["'self'", (_req: Request, res: Response) => `'nonce-${res.locals.cspNonce}'`],
           styleSrc: ["'self'", (_req: Request, res: Response) => `'nonce-${res.locals.cspNonce}'`],
+          imgSrc: [
+            "'self'",
+            'data:',
+            'openlayers.org',
+            'tile.openstreetmap.org ',
+            'a.tile.openstreetmap.org',
+            'b.tile.openstreetmap.org',
+            'c.tile.openstreetmap.org',
+            (_req: Request, res: Response) => `'nonce-${res.locals.cspNonce}'`,
+          ],
           fontSrc: ["'self'"],
           formAction: [`'self' ${config.apis.hmppsAuth.externalUrl}`],
         },
       },
-      crossOriginEmbedderPolicy: true,
+      crossOriginEmbedderPolicy: false,
     }),
   )
   return router

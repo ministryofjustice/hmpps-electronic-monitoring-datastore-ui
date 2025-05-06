@@ -11,6 +11,7 @@ const paths = {
     SUSPENSION_OF_VISITS: '/integrity/:legacySubjectId/suspension-of-visits',
     EVENT_HISTORY: '/integrity/:legacySubjectId/event-history',
     SERVICE_DETAILS: '/integrity/:legacySubjectId/service-details',
+    MAP: '/integrity/:legacySubjectId/map',
   },
 
   ALCOHOL_MONITORING: {
