@@ -78,7 +78,7 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.810.0",
+    "@aws-sdk/client-sqs": "^3.812.0",
     "@ministryofjustice/frontend": "^5.1.3",
     "@x-govuk/govuk-prototype-filters": "^2.0.0",
     "agentkeepalive": "^4.6.0",
@@ -88,7 +88,7 @@
     "bunyan-format": "^0.2.1",
     "compression": "^1.8.0",
     "connect-flash": "^0.1.1",
-    "connect-redis": "^8.0.3",
+    "connect-redis": "^8.1.0",
     "csrf-sync": "^4.2.1",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
@@ -98,14 +98,14 @@
     "jquery": "^3.7.1",
     "jwt-decode": "^4.0.0",
     "nocache": "^4.0.0",
-    "npm": "^11.3.0",
+    "npm": "^11.4.0",
     "nunjucks": "^3.2.4",
     "passport": "^0.7.0",
     "passport-oauth2": "^1.8.0",
     "redis": "^5.0.1",
     "superagent": "^10.2.1",
     "uuid": "^11.1.0",
-    "zod": "^3.24.4"
+    "zod": "^3.25.7"
   },
   "devDependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^4.0.3",
@@ -117,7 +117,7 @@
     "@types/http-errors": "^2.0.4",
     "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/node": "^22.15.18",
+    "@types/node": "^22.15.19",
     "@types/nunjucks": "^3.2.6",
     "@types/passport": "^1.0.17",
     "@types/passport-oauth2": "^1.4.17",
@@ -160,7 +160,7 @@
     "prettier": "^3.5.3",
     "prettier-plugin-jinja-template": "^2.1.0",
     "supertest": "^7.1.1",
-    "ts-jest": "^29.3.3",
+    "ts-jest": "^29.3.4",
     "typescript": "^5.8.3"
   },
   "overrides": {
