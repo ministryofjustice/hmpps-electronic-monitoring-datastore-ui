@@ -71,7 +71,7 @@ const createViewModelFromApiDto = (
 const construct = (
   legacySubjectId: string,
   backUrl: string,
-  orderDetails: AlcoholMonitoringOrderDetails = {},
+  orderDetails: AlcoholMonitoringOrderDetails,
 ): AlcoholMonitoringOrderDetailsViewModel => {
   return createViewModelFromApiDto(legacySubjectId, backUrl, orderDetails)
 }
