@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import AuditService, { Page } from '../../services/auditService'
-import AlcoholMonitoringDetailsService from '../../services/alcoholMonitoring/orderDetailsService'
+import AlcoholMonitoringOrderDetailsService from '../../services/alcoholMonitoring/orderDetailsService'
 import AlcoholMonitoringDetailsController from './detailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
@@ -9,7 +9,9 @@ jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const alcoholMonitoringDetailsService = { getOrderDetails: jest.fn() } as unknown as AlcoholMonitoringDetailsService
+const alcoholMonitoringDetailsService = {
+  getOrderDetails: jest.fn(),
+} as unknown as AlcoholMonitoringOrderDetailsService
 
 describe('AlcoholMonitoringDetailsController', () => {
   let controller: AlcoholMonitoringDetailsController
@@ -38,6 +40,8 @@ describe('AlcoholMonitoringDetailsController', () => {
     it(`logs hitting the page`, async () => {
       const expectedLogData = { who: 'fakeUserName', correlationId: 'fakeId' }
 
+      alcoholMonitoringDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce({})
+
       controller.details(req, res, next)
 
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.AM_ORDER_DETAILS_PAGE, expectedLogData)
@@ -54,6 +58,8 @@ describe('AlcoholMonitoringDetailsController', () => {
           legacySubjectId: expectedOrderId,
         },
       })
+
+      alcoholMonitoringDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce({})
 
       await controller.details(req, res, next)
 
