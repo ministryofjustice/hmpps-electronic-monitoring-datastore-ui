@@ -1,5 +1,3 @@
-import { v4 as uuidv4 } from 'uuid'
-
 import { PageElement } from '../page'
 
 export default class PageHeaderComponent {
@@ -9,7 +7,7 @@ export default class PageHeaderComponent {
 
   private get element(): PageElement {
     if (!this.elementCacheId) {
-      this.elementCacheId = uuidv4()
+      this.elementCacheId = crypto.randomUUID()
 
       cy.get('body', { log: false }).then($body => {
         const $el = $body.find(this.className)

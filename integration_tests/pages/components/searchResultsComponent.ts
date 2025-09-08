@@ -1,10 +1,8 @@
 /* eslint-disable max-classes-per-file */
-import { v4 as uuidv4 } from 'uuid'
-
 import { PageElement } from '../page'
 
 class SearchResultRow {
-  private elementCacheId: string = uuidv4()
+  private elementCacheId: string = crypto.randomUUID()
 
   constructor(row: PageElement) {
     row.as(`${this.elementCacheId}-element`)
@@ -47,7 +45,7 @@ export default class SearchResultsComponent {
 
   private get element(): PageElement {
     if (!this.elementCacheId) {
-      this.elementCacheId = uuidv4()
+      this.elementCacheId = crypto.randomUUID()
 
       cy.get('body', { log: false }).then($body => {
         const $el = $body.find(this.className)

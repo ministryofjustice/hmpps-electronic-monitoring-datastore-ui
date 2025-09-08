@@ -1,6 +1,4 @@
 /* eslint-disable max-classes-per-file */
-import { v4 as uuidv4 } from 'uuid'
-
 import { PageElement } from '../page'
 
 class TimelineItemDescriptionComponent {
@@ -10,7 +8,7 @@ class TimelineItemDescriptionComponent {
 
   constructor(private readonly timelineItem: PageElement) {
     if (!this.elementCacheId) {
-      this.elementCacheId = uuidv4()
+      this.elementCacheId = crypto.randomUUID()
 
       timelineItem.then($timelineItem => {
         const $el = $timelineItem.find(this.className)
@@ -77,7 +75,7 @@ class TimelineItem {
 
   constructor(row: PageElement, index: number) {
     if (!this.elementCacheId) {
-      this.elementCacheId = uuidv4()
+      this.elementCacheId = crypto.randomUUID()
 
       row.then($timelineItems => {
         const $el = $timelineItems.eq(index)
@@ -132,7 +130,7 @@ export default class timelineComponent {
 
   private get element(): PageElement {
     if (!this.elementCacheId) {
-      this.elementCacheId = uuidv4()
+      this.elementCacheId = crypto.randomUUID()
 
       cy.get('body', { log: false }).then($body => {
         const $el = $body.find(this.className)
