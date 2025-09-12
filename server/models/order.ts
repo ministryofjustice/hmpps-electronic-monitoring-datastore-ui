@@ -1,14 +1,13 @@
 import z from 'zod'
 
 export const OrderModel = z.object({
-  dataType: z.string(),
   legacySubjectId: z.string(),
   firstName: z.string().nullable(),
   lastName: z.string().nullable(),
-  addressLine1: z.string().nullable(),
-  addressLine2: z.string().nullable(),
-  addressLine3: z.string().nullable(),
-  addressPostcode: z.string().nullable(),
+  primaryAddressLine1: z.string().nullable(),
+  primaryAddressLine2: z.string().nullable(),
+  primaryAddressLine3: z.string().nullable(),
+  primaryAddressPostcode: z.string().optional(),
   alias: z.string().nullable(),
   dateOfBirth: z.string().nullable(),
   orderStartDate: z.string().nullable(),

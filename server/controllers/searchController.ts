@@ -81,6 +81,7 @@ export default class SearchController {
     try {
       const orders = await this.datastoreSearchService.getSearchResults({
         userToken: res.locals.user.token,
+        orderType,
         queryExecutionId,
       })
 
