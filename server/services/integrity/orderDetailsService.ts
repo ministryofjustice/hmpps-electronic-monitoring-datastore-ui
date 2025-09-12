@@ -12,7 +12,7 @@ export default class IntegrityDetailsService {
   async getOrderDetails(input: OrderRequest): Promise<IntegrityOrderDetails> {
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityOrderDetails>({
-        path: `/orders/integrity/${input.legacySubjectId}/details`,
+        path: `/orders/integrity/${input.legacySubjectId}`,
         token: input.userToken,
       })
 

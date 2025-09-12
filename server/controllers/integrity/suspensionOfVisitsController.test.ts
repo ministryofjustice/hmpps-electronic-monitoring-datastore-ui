@@ -10,7 +10,7 @@ import SuspensionOfVisitsView, {
 } from '../../models/view-models/integrity/suspensionOfVisits'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/integrity/orderSummaryService')
+jest.mock('../../services/integrity/suspensionOfVisitsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreSuspensionOfVisitsService = {

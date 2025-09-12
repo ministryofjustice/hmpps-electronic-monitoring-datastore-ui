@@ -39,7 +39,7 @@ describe('Datastore Search Service', () => {
   describe('submitSearchQuery', () => {
     it('submits a search query and returns an order execution ID', async () => {
       const data = {
-        searchType: '',
+        searchType: 'integrity',
         legacySubjectId: '',
         firstName: 'John',
         lastName: 'Doe',
@@ -49,7 +49,7 @@ describe('Datastore Search Service', () => {
         dobYear: '2021',
       }
 
-      fakeClient.post(`/orders`, data).reply(200, { queryExecutionId })
+      fakeClient.post(`/orders/integrity`, data).reply(200, { queryExecutionId })
 
       const result = await emDatastoreOrderSearchService.submitSearchQuery({
         userToken: 'token',
@@ -81,10 +81,11 @@ describe('Datastore Search Service', () => {
 
   describe('getSearchResults', () => {
     it('submits a request containing a query execution ID and returns search results', async () => {
-      fakeClient.get(`/orders?id=${queryExecutionId}`).reply(200, [])
+      fakeClient.get(`/orders/integrity?id=${queryExecutionId}`).reply(200, [])
 
       const result = await emDatastoreOrderSearchService.getSearchResults({
         userToken,
+        orderType: 'integrity',
         queryExecutionId,
       })
 
@@ -94,7 +95,7 @@ describe('Datastore Search Service', () => {
     describe('error handling', () => {
       it('handles invalid query execution ID errors from the datastore client', async () => {
         fakeClient
-          .get(`/orders?id=`)
+          .get(`/orders/integrity?id=`)
           .reply(500, {
             status: 500,
             userMessage: '',
@@ -105,6 +106,7 @@ describe('Datastore Search Service', () => {
         await expect(
           emDatastoreOrderSearchService.getSearchResults({
             userToken,
+            orderType: 'integrity',
             queryExecutionId: '',
           }),
         ).rejects.toThrow('Error retrieving search results: Invalid query execution ID')
@@ -112,7 +114,7 @@ describe('Datastore Search Service', () => {
 
       it('handles other errors from the datastore client', async () => {
         fakeClient
-          .get(`/orders?id=`)
+          .get(`/orders/integrity?id=`)
           .reply(500, {
             status: 500,
             errorCode: null,
@@ -127,6 +129,7 @@ describe('Datastore Search Service', () => {
         await expect(
           emDatastoreOrderSearchService.getSearchResults({
             userToken,
+            orderType: 'integrity',
             queryExecutionId: '',
           }),
         ).rejects.toThrow('Error retrieving search results: Internal Server Error')

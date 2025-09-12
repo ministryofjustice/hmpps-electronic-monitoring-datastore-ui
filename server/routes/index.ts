@@ -31,7 +31,6 @@ export default function routes({
   emDatastoreConnectionService,
   emDatastoreOrderSearchService,
 
-  integrityOrderSummaryService,
   integrityDetailsService,
   integrityEquipmentDetailsService,
   integrityVisitDetailsService,
@@ -39,7 +38,6 @@ export default function routes({
   integrityEventHistoryService,
   integritySuspensionOfVisitsService,
 
-  alcoholMonitoringOrderSummaryService,
   alcoholMonitoringDetailsService,
   alcoholMonitoringEquipmentDetailsService,
   alcoholMonitoringVisitDetailsService,
@@ -54,7 +52,7 @@ export default function routes({
   const searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
   // integrity
-  const integritySummaryController = new IntegritySummaryController(auditService, integrityOrderSummaryService)
+  const integritySummaryController = new IntegritySummaryController(auditService, integrityDetailsService)
   const integrityDetailsController = new IntegrityDetailsController(auditService, integrityDetailsService)
   const integrityEquipmentDetailsController = new IntegrityEquipmentDetailsController(
     auditService,
@@ -78,7 +76,7 @@ export default function routes({
   )
 
   // alcohol monitoring
-  const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringOrderSummaryService)
+  const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringDetailsService)
   const amDetailsController = new AmDetailsController(auditService, alcoholMonitoringDetailsService)
   const amEquipmentDetailsController = new AmEquipmentDetailsController(
     auditService,

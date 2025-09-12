@@ -55,7 +55,7 @@ describe('Alcohol Monitoring order summary Service', () => {
         tagAtSource: null,
       } as AlcoholMonitoringOrderDetails
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/details`).reply(200, expectedResult)
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(200, expectedResult)
 
       const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ legacySubjectId })
 
@@ -87,7 +87,7 @@ describe('Alcohol Monitoring order summary Service', () => {
         tagAtSource: null,
       } as AlcoholMonitoringOrderDetails
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/details`).reply(200, expectedResult)
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(200, expectedResult)
 
       const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ legacySubjectId })
 
@@ -95,7 +95,7 @@ describe('Alcohol Monitoring order summary Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/details`).reply(401)
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(401)
 
       await expect(
         alcoholMonitoringOrderDetailsService.getOrderDetails({
@@ -105,9 +105,7 @@ describe('Alcohol Monitoring order summary Service', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/details`)
-        .replyWithError('Fake unexpected server error')
+      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).replyWithError('Fake unexpected server error')
 
       await expect(
         alcoholMonitoringOrderDetailsService.getOrderDetails({
