@@ -1,17 +1,17 @@
 import { Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringOrderSummaryService } from '../../services'
+import { AuditService, AlcoholMonitoringDetailsService } from '../../services'
 import AlcoholMonitoringSummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { OrderRequest } from '../../types/OrderRequest'
 
 jest.mock('../../services/auditService')
-jest.mock('../../services/alcoholMonitoring/orderSummaryService')
+jest.mock('../../services/alcoholMonitoring/orderDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const alcoholMonitoringSummaryService = {
-  getOrderSummary: jest.fn(),
-} as unknown as AlcoholMonitoringOrderSummaryService
+const alcoholMonitoringDetailsService = {
+  getOrderDetails: jest.fn(),
+} as unknown as AlcoholMonitoringDetailsService
 
 describe('Alcohol monitoring summary Controller', () => {
   let controller: AlcoholMonitoringSummaryController
@@ -27,14 +27,14 @@ describe('Alcohol monitoring summary Controller', () => {
   const next = jest.fn()
 
   it(`constructs the system under test and mocks appropriately`, () => {
-    controller = new AlcoholMonitoringSummaryController(auditService, alcoholMonitoringSummaryService)
+    controller = new AlcoholMonitoringSummaryController(auditService, alcoholMonitoringDetailsService)
     expect(controller).not.toBeNull()
   })
 
   describe('Alcohol Monitoring Summary', () => {
     beforeEach(() => {
       jest.clearAllMocks()
-      controller = new AlcoholMonitoringSummaryController(auditService, alcoholMonitoringSummaryService)
+      controller = new AlcoholMonitoringSummaryController(auditService, alcoholMonitoringDetailsService)
 
       res = createMockResponse()
       res.status = jest.fn().mockReturnValue(res)
@@ -56,11 +56,11 @@ describe('Alcohol monitoring summary Controller', () => {
 
       await controller.summary(req, res, next)
 
-      expect(alcoholMonitoringSummaryService.getOrderSummary).toHaveBeenCalledWith(expectedOrderServiceParams)
+      expect(alcoholMonitoringDetailsService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
     it(`returns correct error when orderService fails`, async () => {
-      alcoholMonitoringSummaryService.getOrderSummary = jest.fn().mockImplementation(() => {
+      alcoholMonitoringDetailsService.getOrderDetails = jest.fn().mockImplementation(() => {
         throw new Error('Expected error message')
       })
 
@@ -83,7 +83,7 @@ describe('Alcohol monitoring summary Controller', () => {
         },
       }
 
-      alcoholMonitoringSummaryService.getOrderSummary = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      alcoholMonitoringDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
       await controller.summary(req, res, next)
 

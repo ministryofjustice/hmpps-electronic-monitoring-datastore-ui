@@ -67,7 +67,7 @@ describe('Integrity order details Service', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).reply(200, expectedResult)
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
 
       const result = await integrityOrderDetailsService.getOrderDetails({ legacySubjectId })
 
@@ -111,7 +111,7 @@ describe('Integrity order details Service', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).reply(200, expectedResult)
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
 
       const result = await integrityOrderDetailsService.getOrderDetails({ legacySubjectId })
 
@@ -119,7 +119,7 @@ describe('Integrity order details Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).reply(401)
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(401)
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
@@ -129,7 +129,7 @@ describe('Integrity order details Service', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).replyWithError('Fake unexpected server error')
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).replyWithError('Fake unexpected server error')
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
