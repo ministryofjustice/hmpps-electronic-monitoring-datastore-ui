@@ -2,8 +2,6 @@ import { dataAccess } from '../data'
 import AuditService from './auditService'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
-import IntegrityOrderSummaryService from './integrity/orderSummaryService'
-import AlcoholMonitoringOrderSummaryService from './alcoholMonitoring/orderSummaryService'
 import IntegrityDetailsService from './integrity/orderDetailsService'
 import AlcoholMonitoringDetailsService from './alcoholMonitoring/orderDetailsService'
 import IntegrityEventHistoryService from './integrity/eventHistoryService'
@@ -25,8 +23,6 @@ export const services = () => {
 
   const integrityDetailsService = new IntegrityDetailsService(emDatastoreApiClient)
   const alcoholMonitoringDetailsService = new AlcoholMonitoringDetailsService(emDatastoreApiClient)
-  const integrityOrderSummaryService = new IntegrityOrderSummaryService(emDatastoreApiClient)
-  const alcoholMonitoringOrderSummaryService = new AlcoholMonitoringOrderSummaryService(emDatastoreApiClient)
   const integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClient)
   const alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(emDatastoreApiClient)
   const integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(emDatastoreApiClient)
@@ -43,8 +39,6 @@ export const services = () => {
     emDatastoreConnectionService,
     integrityDetailsService,
     alcoholMonitoringDetailsService,
-    integrityOrderSummaryService,
-    alcoholMonitoringOrderSummaryService,
     emDatastoreOrderSearchService,
     integrityEventHistoryService,
     alcoholMonitoringEventHistoryService,
@@ -65,8 +59,6 @@ export {
   EmDatastoreOrderSearchService,
   IntegrityDetailsService,
   AlcoholMonitoringDetailsService,
-  IntegrityOrderSummaryService,
-  AlcoholMonitoringOrderSummaryService,
   IntegrityEventHistoryService,
   AlcoholMonitoringEventHistoryService,
   IntegritySuspensionOfVisitsService,

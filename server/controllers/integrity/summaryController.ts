@@ -1,12 +1,12 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, IntegrityOrderSummaryService } from '../../services'
-import { IntegrityReports } from '../../models/integrity/orderSummary'
+import { AuditService, IntegrityDetailsService } from '../../services'
+import { IntegrityReports } from '../../models/view-models/reports'
 
 export default class IntegritySummaryController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly integritySummaryService: IntegrityOrderSummaryService,
+    private readonly integritySummaryService: IntegrityDetailsService,
   ) {}
 
   summary: RequestHandler = async (req: Request, res: Response) => {
@@ -17,7 +17,7 @@ export default class IntegritySummaryController {
 
     const { legacySubjectId } = req.params
 
-    const orderInformation = await this.integritySummaryService.getOrderSummary({
+    const orderDetails = await this.integritySummaryService.getOrderDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
     })
@@ -30,6 +30,8 @@ export default class IntegritySummaryController {
       allEventHistory: true,
       services: true,
     }
-    res.render('pages/integrity/summary', { legacySubjectId, data: orderInformation, backUrl, reports })
+
+    const viewModel = { legacySubjectId, orderDetails, backUrl, reports }
+    res.render('pages/integrity/summary', viewModel)
   }
 }
