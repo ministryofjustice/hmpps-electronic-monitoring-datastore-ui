@@ -9,11 +9,14 @@ export default class EmDatastoreOrderSearchService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async submitSearchQuery(input: SearchFormInput): Promise<QueryExecutionResponse> {
+    const { data, userToken } = input
+    const { searchType } = data
+
     try {
       const result = await this.emDatastoreApiClient.post<QueryExecutionResponse>({
-        path: '/orders',
-        data: input.data,
-        token: input.userToken,
+        path: `/orders/${searchType}`,
+        data,
+        token: userToken,
       })
 
       return QueryExecutionResponseModel.parse(result)
@@ -26,10 +29,12 @@ export default class EmDatastoreOrderSearchService {
   }
 
   async getSearchResults(input: SearchResultsRequest): Promise<Order[]> {
+    const { orderType, queryExecutionId, userToken } = input
+
     try {
       const results = await this.emDatastoreApiClient.get<Order[]>({
-        path: `/orders?id=${input.queryExecutionId}`,
-        token: input.userToken,
+        path: `/orders/${orderType}?id=${queryExecutionId}`,
+        token: userToken,
       })
 
       return results.map(order => OrderModel.parse(order))

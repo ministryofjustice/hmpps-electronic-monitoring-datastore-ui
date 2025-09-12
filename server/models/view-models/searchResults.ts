@@ -1,14 +1,13 @@
 import { Order } from '../order'
 
 export type OrdersViewModel = {
-  dataType: string
   legacySubjectId?: string
   firstName?: string
   lastName?: string
-  addressLine1?: string
-  addressLine2?: string
-  addressLine3?: string
-  addressPostcode?: string
+  primaryAddressLine1?: string
+  primaryAddressLine2?: string
+  primaryAddressLine3?: string
+  primaryAddressPostcode?: string
   alias?: string | null
   dateOfBirth?: string
   orderStartDate?: string
@@ -22,24 +21,23 @@ export type OrdersViewModel = {
 const createViewModelFromApiDto = (orders: Order[]): OrdersViewModel =>
   orders.map((order: Order) => {
     return {
-      dataType: order.dataType,
       ...order,
       legacySubjectId: order.legacySubjectId,
       firstName: order.firstName,
       lastName: order.lastName,
-      addressLine1: order.addressLine1,
-      addressLine2: order.addressLine2,
-      addressLine3: order.addressLine3,
-      addressPostcode: order.addressPostcode,
+      primaryAddressLine1: order.primaryAddressLine1,
+      primaryAddressLine2: order.primaryAddressLine2,
+      primaryAddressLine3: order.primaryAddressLine3,
+      primaryAddressPostcode: order.primaryAddressPostcode,
       alias: order.alias,
       dateOfBirth: order.dateOfBirth,
       orderStartDate: order.orderStartDate,
       orderEndDate: order.orderEndDate,
       sortAddress:
-        (order.addressLine1 || '') +
-        (order.addressLine2 || '') +
-        (order.addressLine3 || '') +
-        (order.addressPostcode || ''),
+        (order.primaryAddressLine1 || '') +
+        (order.primaryAddressLine2 || '') +
+        (order.primaryAddressLine3 || '') +
+        (order.primaryAddressPostcode || ''),
       sortDateOfBirth: new Date(`${order.dateOfBirth}Z`).getTime(),
       sortOrderStartDate: new Date(`${order.orderStartDate}Z`).getTime(),
       sortOrderEndDate: new Date(`${order.orderEndDate}Z`).getTime(),

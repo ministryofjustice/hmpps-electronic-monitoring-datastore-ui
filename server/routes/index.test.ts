@@ -51,36 +51,6 @@ describe('Core page basic GET requests', () => {
   )
 })
 
-describe('Search results page', () => {
-  // TODO: Fix this test by mocking return values of the datastoreSearchService .validateInput() and .search() methods
-  // it('Returns data', async () => {
-  //   const req = createMockRequest({
-  //     session: {
-  //       id: 'mock-session-id',
-  //       cookie: { originalMaxAge: 3600000 } as session.Cookie,
-  //       regenerate: jest.fn(),
-  //       destroy: jest.fn(),
-  //       reload: jest.fn(),
-  //       save: jest.fn(),
-  //       touch: jest.fn(),
-  //       resetMaxAge: jest.fn(),
-  //       returnTo: '/return',
-  //       nowInMinutes: 12345,
-  //       validationErrors: [],
-  //       formData: {},
-  //     } as session.Session & Partial<SessionData>,
-  //   })
-  //   const res = await request(app)
-  //   .post('/search')
-  //   .expect(200) // Expect a 200 OK response
-  //       expect(res.text).toContain('Search results')
-  //       expect(auditService.logPageView).toHaveBeenCalledWith(Page.SEARCH_RESULTS_PAGE, {
-  //         who: user.username,
-  //         correlationId: expect.any(String),
-  //       })
-  // })
-})
-
 export type GetRequestFixture = [route: string, titleText: string, auditType: Page]
 
 export function basicGetTest(route: string, titleText: string, auditType: Page) {

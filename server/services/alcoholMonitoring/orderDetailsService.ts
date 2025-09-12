@@ -15,7 +15,7 @@ export default class AlcoholMonitoringDetailsService {
   async getOrderDetails(input: OrderRequest): Promise<AlcoholMonitoringOrderDetails> {
     try {
       const result = await this.emDatastoreApiClient.get<AlcoholMonitoringOrderDetails>({
-        path: `/orders/alcohol-monitoring/${input.legacySubjectId}/details`,
+        path: `/orders/alcohol-monitoring/${input.legacySubjectId}`,
         token: input.userToken,
       })
 

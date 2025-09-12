@@ -6,4 +6,7 @@ export type SearchFormInput = Token & {
   data: ParsedSearchFormData
 }
 
-export type SearchResultsRequest = Token & QueryExecutionResponse
+export type SearchResultsRequest = Token &
+  QueryExecutionResponse & {
+    orderType: string
+  }
