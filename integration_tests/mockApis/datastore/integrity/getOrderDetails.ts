@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { IntegrityOrderDetails } from '../../../../server/models/integrity/orderDetails'
+import { IntegrityOrderDetails } from '../../../../server/data/models/integrityOrderDetails'
 
 const defaultOrderDetails = {
   specials: 'no',

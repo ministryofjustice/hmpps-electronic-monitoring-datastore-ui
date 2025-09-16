@@ -3,20 +3,20 @@ import getSanitisedError from '../../sanitisedError'
 
 import { EmDatastoreApiClient } from '../../data'
 
-import { OrderRequest } from '../../types/OrderRequest'
-import { IntegrityVisitDetails, IntegrityVisitDetailsModel } from '../../models/integrity/visitDetails'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
+import { IntegrityVisitDetails } from '../../data/models/integrityVisitDetails'
 
 export default class IntegrityVisitDetailsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
-  async getVisitDetails(input: OrderRequest): Promise<IntegrityVisitDetails[]> {
+  async getVisitDetails(input: GetOrderRequest): Promise<IntegrityVisitDetails[]> {
     try {
       const results = await this.emDatastoreApiClient.get<IntegrityVisitDetails[]>({
         path: `/orders/integrity/${input.legacySubjectId}/visit-details`,
         token: input.userToken,
       })
 
-      return results.map(visitDetails => IntegrityVisitDetailsModel.parse(visitDetails))
+      return results.map(visitDetails => IntegrityVisitDetails.parse(visitDetails))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of visit details'
       const sanitisedError = getSanitisedError(error)

@@ -3,13 +3,53 @@ import AuditService, { Page } from '../../services/auditService'
 import IntegrityDetailsService from '../../services/integrity/orderDetailsService'
 import IntegrityDetailsController from './detailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { OrderRequest } from '../../types/OrderRequest'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
+import { IntegritySearchResultsView } from '../../models/view-models/integritySearchResults'
+import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/orderDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const integrityDetailsService = { getOrderDetails: jest.fn() } as unknown as IntegrityDetailsService
+
+const integrityOrderDetails = [
+  {
+    legacySubjectId: '1000000',
+    firstName: 'Pheobe',
+    lastName: 'Smith',
+    primaryAddressLine1: 'First line of address',
+    primaryAddressLine2: 'Second line of address',
+    primaryAddressLine3: 'Third line of address',
+    primaryAddressPostCode: 'PostCode',
+    alias: null,
+    dateOfBirth: '01-01-1970',
+    orderStartDate: '08-02-2019',
+    orderEndDate: '08-02-2020',
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
+]
+
+const integritySearchResults: IntegritySearchResultsView = [
+  {
+    legacySubjectId: '1000000',
+    firstName: 'Pheobe',
+    lastName: 'Smith',
+    primaryAddressLine1: 'First line of address',
+    primaryAddressLine2: 'Second line of address',
+    primaryAddressLine3: 'Third line of address',
+    primaryAddressPostCode: 'PostCode',
+    alias: null,
+    dateOfBirth: '01-01-1970',
+    orderStartDate: '08-02-2019',
+    orderEndDate: '08-02-2020',
+    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
+    sortDateOfBirth: 0,
+    sortOrderEndDate: 1596326400000,
+    sortOrderStartDate: 1564704000000,
+  },
+]
 
 describe('IntegrityDetailsController', () => {
   let controller: IntegrityDetailsController
@@ -45,7 +85,7 @@ describe('IntegrityDetailsController', () => {
 
     it(`calls the DatastoreOrderService for data using the correct legacySubjectId parameter`, async () => {
       const expectedOrderId = 'testId'
-      const expectedOrderServiceParams: OrderRequest = {
+      const expectedOrderServiceParams: GetOrderRequest = {
         userToken: 'fakeUserToken',
         legacySubjectId: expectedOrderId,
       }
@@ -91,6 +131,39 @@ describe('IntegrityDetailsController', () => {
       await controller.details(req, res, next)
 
       expect(res.render).toHaveBeenCalledWith('pages/integrity/details', expectedPageData)
+    })
+  })
+
+  describe('SearchResults', () => {
+    const queryExecutionId = 'query-execution-id'
+
+    beforeEach(() => {
+      jest.clearAllMocks()
+      controller = new IntegrityDetailsController(auditService, integrityDetailsService)
+
+      req = createMockRequest()
+      res = createMockResponse()
+    })
+
+    it('should redirect to the search page when no orderExecutionId is submitted', async () => {
+      integrityDetailsService.getSearchResults = jest.fn().mockResolvedValue(integrityOrderDetails)
+
+      await controller.searchResults(req, res, next)
+      expect(res.redirect).toHaveBeenCalledWith('/search')
+    })
+
+    it('should render the search results view when a valid orderExecutionId is submitted', async () => {
+      const viewModel = [...integritySearchResults]
+      req.query.search_id = queryExecutionId
+
+      integrityDetailsService.getSearchResults = jest.fn().mockResolvedValue(integrityOrderDetails)
+
+      await controller.searchResults(req, res, next)
+
+      expect(res.render).toHaveBeenCalledWith('pages/searchResults', {
+        viewModel,
+        orderType: 'integrity',
+      })
     })
   })
 })

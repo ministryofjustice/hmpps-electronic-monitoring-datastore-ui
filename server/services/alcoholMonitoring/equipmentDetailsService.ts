@@ -3,23 +3,20 @@ import getSanitisedError from '../../sanitisedError'
 
 import { EmDatastoreApiClient } from '../../data'
 
-import { OrderRequest } from '../../types/OrderRequest'
-import {
-  AlcoholMonitoringEquipmentDetails,
-  AlcoholMonitoringEquipmentDetailsModel,
-} from '../../models/alcoholMonitoring/equipmentDetails'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
+import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
 
 export default class AlcoholMonitoringEquipmentDetailsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
-  async getEquipmentDetails(input: OrderRequest): Promise<AlcoholMonitoringEquipmentDetails[]> {
+  async getEquipmentDetails(input: GetOrderRequest): Promise<AlcoholMonitoringEquipmentDetails[]> {
     try {
       const result = await this.emDatastoreApiClient.get<AlcoholMonitoringEquipmentDetails[]>({
         path: `/orders/alcohol-monitoring/${input.legacySubjectId}/equipment-details`,
         token: input.userToken,
       })
 
-      return result.map(equipmentDetails => AlcoholMonitoringEquipmentDetailsModel.parse(equipmentDetails))
+      return result.map(equipmentDetails => AlcoholMonitoringEquipmentDetails.parse(equipmentDetails))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of equipment details'
       const sanitisedError = getSanitisedError(error)

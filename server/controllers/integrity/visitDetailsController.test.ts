@@ -2,10 +2,10 @@ import { Request, Response } from 'express'
 import { AuditService, IntegrityVisitDetailsService } from '../../services'
 import IntegrityVisitDetailsController from './visitDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityVisitDetailsViewModel from '../../models/view-models/integrity/visitDetails'
-import { IntegrityTimelineEventModel } from '../../models/integrity/TimelineEvent'
+import { IntegrityVisitDetailsView } from '../../models/view-models/integrityVisitDetails'
+import { IntegrityTimelineEvent } from '../../models/view-models/integrityTimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { IntegrityVisitDetails, IntegrityVisitDetailsModel } from '../../models/integrity/visitDetails'
+import { IntegrityVisitDetails } from '../../data/models/integrityVisitDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/visitDetailsService')
@@ -13,7 +13,7 @@ jest.mock('../../services/integrity/visitDetailsService')
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreVisitDetailsService = { getOrderSummary: jest.fn() } as unknown as IntegrityVisitDetailsService
 
-jest.spyOn(IntegrityVisitDetailsViewModel, 'construct')
+jest.spyOn(IntegrityVisitDetailsView, 'construct')
 
 describe('IntegrityVisitDetailsController', () => {
   let integrityVisitDetailsController: IntegrityVisitDetailsController
@@ -44,8 +44,8 @@ describe('IntegrityVisitDetailsController', () => {
 
     await integrityVisitDetailsController.showVisitDetails(req, res, next)
 
-    expect(IntegrityVisitDetailsViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
-    expect(IntegrityVisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityVisitDetailsView.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
+    expect(IntegrityVisitDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/visit-details', expectedViewModel)
   })
 
@@ -66,7 +66,7 @@ describe('IntegrityVisitDetailsController', () => {
               addressLine1: 'address line 1',
               addressLine2: 'address line 2',
               addressLine3: 'address line 3',
-              addressLine4: null,
+              addressLine4: undefined,
               postcode: 'address line 3',
             },
             actualWorkStartDateTime: eventDateTime,
@@ -75,19 +75,19 @@ describe('IntegrityVisitDetailsController', () => {
             visitType: 'TEST_VISIT_TYPE',
             visitOutcome: 'TEST_OUTCOME',
           },
-        } as IntegrityTimelineEventModel,
+        } as IntegrityTimelineEvent,
       ],
       legacySubjectId: testOrderId,
     }
 
     emDatastoreVisitDetailsService.getVisitDetails = jest.fn().mockResolvedValue([
-      IntegrityVisitDetailsModel.parse({
+      IntegrityVisitDetails.parse({
         legacySubjectId: testOrderId,
         address: {
           addressLine1: 'address line 1',
           addressLine2: 'address line 2',
           addressLine3: 'address line 3',
-          addressLine4: null,
+          addressLine4: undefined,
           postcode: 'address line 3',
         },
         actualWorkStartDateTime: eventDateTime,
@@ -100,7 +100,7 @@ describe('IntegrityVisitDetailsController', () => {
 
     await integrityVisitDetailsController.showVisitDetails(req, res, next)
 
-    expect(IntegrityVisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityVisitDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/visit-details', expectedViewModel)
   })
 })

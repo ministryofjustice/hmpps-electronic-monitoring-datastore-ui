@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { AlcoholMonitoringOrderDetails } from '../../../../server/models/alcoholMonitoring/orderDetails'
+import { AlcoholMonitoringOrderDetails } from '../../../../server/data/models/alcoholMonitoringOrderDetails'
 
 const defaultOrderDetails = {
   legacySubjectId: 'AA12345',
@@ -14,7 +14,7 @@ const defaultOrderDetails = {
   address1: '1 Primary Street',
   address2: 'Sutton',
   address3: 'London',
-  postcode: 'ABC 123',
+  postCode: 'ABC 123',
   orderStartDate: '2012-02-01T00:00:00',
   orderEndDate: '2013-04-03T00:00:00',
   enforceableCondition: 'Enforceable condition',
@@ -36,7 +36,7 @@ export const stubAlcoholMonitoringGetOrderDetails = (options: GetOrderDetailsStu
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/alcohol-monitoring/${options.legacySubjectId}/details`,
+      url: `/orders/alcohol-monitoring/${options.legacySubjectId}`,
     },
     response: {
       status: options.httpStatus,
