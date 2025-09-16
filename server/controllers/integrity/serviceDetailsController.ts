@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityServiceDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityServiceDetailsModel from '../../models/view-models/integrity/serviceDetails'
+import { IntegrityServiceDetailsView } from '../../models/view-models/integrityServiceDetails'
 
 export default class IntegrityServiceDetailsController {
   constructor(
@@ -23,7 +23,7 @@ export default class IntegrityServiceDetailsController {
       legacySubjectId,
     })
 
-    const viewModel = IntegrityServiceDetailsModel.construct(
+    const viewModel = IntegrityServiceDetailsView.construct(
       legacySubjectId,
       `/integrity/${legacySubjectId}`,
       serviceDetails,

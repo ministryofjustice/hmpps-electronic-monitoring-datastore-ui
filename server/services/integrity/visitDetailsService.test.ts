@@ -1,7 +1,7 @@
 import nock from 'nock'
 import IntegrityVisitDetailsService from './visitDetailsService'
 
-import { IntegrityVisitDetails } from '../../models/integrity/visitDetails'
+import { IntegrityVisitDetails } from '../../data/models/integrityVisitDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
 
@@ -35,7 +35,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         {
           legacySubjectId: '123',
           address: null,
-          actualWorkStartDateTime: null,
+          actualWorkStartDateTime: '2020-02-02T00:00:00.000Z',
           actualWorkEndDateTime: null,
           visitNotes: null,
           visitType: null,
@@ -55,7 +55,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         {
           legacySubjectId: '123',
           address: null,
-          actualWorkStartDateTime: null,
+          actualWorkStartDateTime: '2020-03-03T00:00:00.000Z',
           actualWorkEndDateTime: null,
           visitNotes: null,
           visitType: null,
@@ -75,7 +75,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         {
           legacySubjectId,
           address: null,
-          actualWorkStartDateTime: null,
+          actualWorkStartDateTime: '2020-04-04T00:00:00.000Z',
           actualWorkEndDateTime: null,
           visitNotes: null,
           visitType: null,
@@ -84,7 +84,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         {
           legacySubjectId: '456',
           address: null,
-          actualWorkStartDateTime: null,
+          actualWorkStartDateTime: '2020-05-05T00:00:00.000Z',
           actualWorkEndDateTime: null,
           visitNotes: null,
           visitType: null,
@@ -93,7 +93,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         {
           legacySubjectId: '789',
           address: null,
-          actualWorkStartDateTime: null,
+          actualWorkStartDateTime: '2020-06-06T00:00:00.000Z',
           actualWorkEndDateTime: null,
           visitNotes: null,
           visitType: null,

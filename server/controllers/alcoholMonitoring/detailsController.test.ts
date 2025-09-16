@@ -3,7 +3,7 @@ import AuditService, { Page } from '../../services/auditService'
 import AlcoholMonitoringOrderDetailsService from '../../services/alcoholMonitoring/orderDetailsService'
 import AlcoholMonitoringDetailsController from './detailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { OrderRequest } from '../../types/OrderRequest'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
@@ -49,7 +49,7 @@ describe('AlcoholMonitoringDetailsController', () => {
 
     it(`calls the DatastoreOrderService for data using the correct legacySubjectId parameter`, async () => {
       const expectedOrderId = 'testId'
-      const expectedOrderServiceParams: OrderRequest = {
+      const expectedOrderServiceParams: GetOrderRequest = {
         userToken: 'fakeUserToken',
         legacySubjectId: expectedOrderId,
       }
@@ -120,7 +120,7 @@ describe('AlcoholMonitoringDetailsController', () => {
           primaryAddressLine1: '123 Fourth Street',
           primaryAddressLine2: 'Fiveton',
           primaryAddressLine3: 'Sixbury',
-          primaryAddressPostcode: '7AB 8CD',
+          primaryAddressPostCode: '7AB 8CD',
         },
         orderDetails: {
           orderStartDate: '2010-01-01T00:00:00',

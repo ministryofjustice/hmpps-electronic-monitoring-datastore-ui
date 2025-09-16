@@ -3,17 +3,17 @@ import getSanitisedError from '../../sanitisedError'
 
 import { EmDatastoreApiClient } from '../../data'
 
-import { OrderRequest } from '../../types/OrderRequest'
-import { IntegrityContactEvent, IntegrityContactEventModel } from '../../models/integrity/contactEvents'
-import { IntegrityIncidentEvent, IntegrityIncidentEventModel } from '../../models/integrity/incidentEvents'
-import { IntegrityMonitoringEvent, IntegrityMonitoringEventModel } from '../../models/integrity/monitoringEvents'
-import { IntegrityViolationEvent, IntegrityViolationEventModel } from '../../models/integrity/violationEvents'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
+import { IntegrityContactEvent } from '../../data/models/integrityContactEvent'
+import { IntegrityIncidentEvent } from '../../data/models/integrityIncidentEvent'
+import { IntegrityMonitoringEvent } from '../../data/models/integrityMonitoringEvent'
+import { IntegrityViolationEvent } from '../../data/models/integrityViolationEvent'
 
 export default class IntegrityEventHistoryService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getEventHistory(
-    input: OrderRequest,
+    input: GetOrderRequest,
   ): Promise<(IntegrityContactEvent | IntegrityIncidentEvent | IntegrityMonitoringEvent | IntegrityViolationEvent)[]> {
     return (
       await Promise.all([
@@ -25,14 +25,14 @@ export default class IntegrityEventHistoryService {
     ).flat()
   }
 
-  private async getIncidentEvents(input: OrderRequest): Promise<IntegrityIncidentEvent[]> {
+  private async getIncidentEvents(input: GetOrderRequest): Promise<IntegrityIncidentEvent[]> {
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityIncidentEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/incident-events`,
         token: input.userToken,
       })
 
-      return result.map(incidentEvent => IntegrityIncidentEventModel.parse(incidentEvent))
+      return result.map(incidentEvent => IntegrityIncidentEvent.parse(incidentEvent))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of incident events'
       const sanitisedError = getSanitisedError(error)
@@ -42,14 +42,14 @@ export default class IntegrityEventHistoryService {
     }
   }
 
-  private async getContactEvents(input: OrderRequest): Promise<IntegrityContactEvent[]> {
+  private async getContactEvents(input: GetOrderRequest): Promise<IntegrityContactEvent[]> {
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityContactEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/contact-events`,
         token: input.userToken,
       })
 
-      return result.map(contactEvent => IntegrityContactEventModel.parse(contactEvent))
+      return result.map(contactEvent => IntegrityContactEvent.parse(contactEvent))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of contact events'
       const sanitisedError = getSanitisedError(error)
@@ -59,14 +59,14 @@ export default class IntegrityEventHistoryService {
     }
   }
 
-  private async getViolationEvents(input: OrderRequest): Promise<IntegrityViolationEvent[]> {
+  private async getViolationEvents(input: GetOrderRequest): Promise<IntegrityViolationEvent[]> {
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityViolationEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/violation-events`,
         token: input.userToken,
       })
 
-      return result.map(violationEvent => IntegrityViolationEventModel.parse(violationEvent))
+      return result.map(violationEvent => IntegrityViolationEvent.parse(violationEvent))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of violation events'
       const sanitisedError = getSanitisedError(error)
@@ -76,14 +76,14 @@ export default class IntegrityEventHistoryService {
     }
   }
 
-  private async getMonitoringEvents(input: OrderRequest): Promise<IntegrityMonitoringEvent[]> {
+  private async getMonitoringEvents(input: GetOrderRequest): Promise<IntegrityMonitoringEvent[]> {
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityMonitoringEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/monitoring-events`,
         token: input.userToken,
       })
 
-      return result.map(monitoringEvent => IntegrityMonitoringEventModel.parse(monitoringEvent))
+      return result.map(monitoringEvent => IntegrityMonitoringEvent.parse(monitoringEvent))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving list of monitoring events'
       const sanitisedError = getSanitisedError(error)

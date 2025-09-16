@@ -8,7 +8,7 @@ const strings: Record<string, Record<string, string>> = {
     missingMonth: 'Date of birth must include a month',
     missingYear: 'Date of birth must include a year',
     unrealDate: 'Please enter a real date in the format DD/MM/YYYY. For example, 24/10/2020',
-    dateBelowLimit: 'Enter a date after ',
+    dateBelowLimit: 'Enter a date after 01/01/1900',
     futureDate: 'Future dates are not allowed',
   },
   errorCodesFromApi: {},
