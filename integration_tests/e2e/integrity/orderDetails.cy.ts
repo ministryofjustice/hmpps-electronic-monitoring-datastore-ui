@@ -24,7 +24,7 @@ context('Order Details', () => {
         primaryAddressLine1: 'Address line 1',
         primaryAddressLine2: 'Address line 2',
         primaryAddressLine3: 'Address line 3',
-        primaryAddressPostCode: 'Postcode',
+        primaryAddressPostCode: 'PostCode',
         phoneOrMobileNumber: null,
         ppo: null,
         mappa: null,
@@ -98,7 +98,7 @@ context('Order Details', () => {
         cy.wrap($summary).getBySummaryListKey('Technical bail').should('be.visible')
         cy.wrap($summary).getBySummaryListKey('Manual risk').should('be.visible')
         cy.wrap($summary).getBySummaryListKey('Offence risk').should('be.visible')
-        cy.wrap($summary).getBySummaryListKey('Postcode risk').should('be.visible')
+        cy.wrap($summary).getBySummaryListKey('PostCode risk').should('be.visible')
         cy.wrap($summary).getBySummaryListKey('False limb risk').should('be.visible')
         cy.wrap($summary).getBySummaryListKey('Migrated risk').should('be.visible')
         cy.wrap($summary).getBySummaryListKey('Range risk').should('be.visible')
@@ -110,7 +110,7 @@ context('Order Details', () => {
       const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
       orderDetailsPage.deviceWearerDetails
         .getBySummaryListKey('Primary address')
-        .contains('Address line 1Address line 2Address line 3Postcode')
+        .contains('Address line 1Address line 2Address line 3PostCode')
     })
   })
 

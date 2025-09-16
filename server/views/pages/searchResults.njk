@@ -33,21 +33,18 @@
   {% endset %}
 
   {% set addressHtml %}
-    {% if (order.addressLine1 or order.addressLine2 or order.addressLine3 or order.addressPostcode ) %}
+    {% if (order.primaryAddressLine1 or order.primaryAddressLine2 or order.primaryAddressLine3 or order.primaryAddressPostCode ) %}
       <p class="govuk-body">
-        {% if (order.addressLine1) %}
-          {{ order.addressLine1 }}<br/>
+        {% if (order.primaryAddressLine1) %}
+          {{ order.primaryAddressLine1 }}<br/>
         {% endif %}
-        {% if (order.addressLine2) %}
-          {{ order.addressLine2 }}<br/>
+        {% if (order.primaryAddressLine2) %}
+          {{ order.primaryAddressLine2 }}<br/>
         {% endif %}
-        {% if (order.addressLine3) %}
-          {{ order.addressLine3 }}<br/>
+        {% if (order.primaryAddressLine3) %}
+          {{ order.primaryAddressLine3 }}<br/>
         {% endif %}
-        {% if (event.properties.serviceAddress4) %}
-          {{ event.properties.serviceAddress4 }}<br/>
-        {% endif %}
-        {{ order.addressPostcode }}
+        {{ order.primaryAddressPostCode }}
       </p>
     {% endif %}
   {% endset %}

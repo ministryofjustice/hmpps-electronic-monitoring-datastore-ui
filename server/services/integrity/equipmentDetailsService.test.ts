@@ -3,7 +3,7 @@ import IntegrityEquipmentDetailsService from './equipmentDetailsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
-import { IntegrityEquipmentDetails } from '../../models/integrity/equipmentDetails'
+import { IntegrityEquipmentDetails } from '../../data/models/integrityEquipmentDetails'
 
 describe('Integrity Equipment Details Service', () => {
   let fakeClient: nock.Scope

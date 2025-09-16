@@ -2,20 +2,11 @@ import { Request, Response } from 'express'
 import { AuditService, AlcoholMonitoringEventHistoryService } from '../../services'
 import AlcoholMonitoringEventHistoryController from './eventHistoryController'
 // eslint-disable-next-line import/no-named-as-default
-import AlcoholMonitoringEventHistoryViewModel from '../../models/view-models/alcoholMonitoring/eventHistory'
+import { AlcoholMonitoringEventHistoryView } from '../../models/view-models/alcoholMonitoringEventHistory'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import {
-  AlcoholMonitoringIncidentEvent,
-  AlcoholMonitoringIncidentEventModel,
-} from '../../models/alcoholMonitoring/incidentEvents'
-import {
-  AlcoholMonitoringContactEvent,
-  AlcoholMonitoringContactEventModel,
-} from '../../models/alcoholMonitoring/contactEvents'
-import {
-  AlcoholMonitoringViolationEvent,
-  AlcoholMonitoringViolationEventModel,
-} from '../../models/alcoholMonitoring/violationEvents'
+import { AlcoholMonitoringIncidentEvent } from '../../data/models/alcoholMonitoringIncidentEvent'
+import { AlcoholMonitoringContactEvent } from '../../data/models/alcoholMonitoringContactEvent'
+import { AlcoholMonitoringViolationEvent } from '../../data/models/alcoholMonitoringViolationEvent'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/eventHistoryService')
@@ -25,7 +16,7 @@ const alcoholMonitoringEventHistoryService = {
   getEventHistory: jest.fn(),
 } as unknown as AlcoholMonitoringEventHistoryService
 
-jest.spyOn(AlcoholMonitoringEventHistoryViewModel, 'construct')
+jest.spyOn(AlcoholMonitoringEventHistoryView, 'construct')
 
 describe('AlcoholMonitoringEventHistoryController', () => {
   let alcoholMonitoringEventHistoryController: AlcoholMonitoringEventHistoryController
@@ -63,12 +54,12 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     await alcoholMonitoringEventHistoryController.showEventHistory(req, res, next)
 
-    expect(AlcoholMonitoringEventHistoryViewModel.construct).toHaveBeenCalledWith(
+    expect(AlcoholMonitoringEventHistoryView.construct).toHaveBeenCalledWith(
       testOrderId,
       `/orders/alcohol-monitoring/${testOrderId}`,
       [],
     )
-    expect(AlcoholMonitoringEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/event-history', expectedViewModel)
   })
 
@@ -106,7 +97,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
     }
 
     alcoholMonitoringEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
-      AlcoholMonitoringViolationEventModel.parse({
+      AlcoholMonitoringViolationEvent.parse({
         legacySubjectId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
@@ -116,7 +107,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     await alcoholMonitoringEventHistoryController.showEventHistory(req, res, next)
 
-    expect(AlcoholMonitoringEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/event-history', expectedViewModel)
   })
 
@@ -151,7 +142,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
     }
 
     alcoholMonitoringEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
-      AlcoholMonitoringIncidentEventModel.parse({
+      AlcoholMonitoringIncidentEvent.parse({
         legacySubjectId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
@@ -161,7 +152,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     await alcoholMonitoringEventHistoryController.showEventHistory(req, res, next)
 
-    expect(AlcoholMonitoringEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/event-history', expectedViewModel)
   })
 
@@ -198,7 +189,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
     }
 
     alcoholMonitoringEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
-      AlcoholMonitoringContactEventModel.parse({
+      AlcoholMonitoringContactEvent.parse({
         legacySubjectId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
@@ -208,7 +199,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     await alcoholMonitoringEventHistoryController.showEventHistory(req, res, next)
 
-    expect(AlcoholMonitoringEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/event-history', expectedViewModel)
   })
 })

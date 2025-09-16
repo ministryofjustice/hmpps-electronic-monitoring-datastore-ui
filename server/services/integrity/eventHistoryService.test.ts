@@ -1,10 +1,10 @@
 import nock from 'nock'
 import IntegrityEventHistoryService from './eventHistoryService'
 
-import { IntegrityIncidentEvent } from '../../models/integrity/incidentEvents'
-import { IntegrityContactEvent } from '../../models/integrity/contactEvents'
-import { IntegrityViolationEvent } from '../../models/integrity/violationEvents'
-import { IntegrityMonitoringEvent } from '../../models/integrity/monitoringEvents'
+import { IntegrityIncidentEvent } from '../../data/models/integrityIncidentEvent'
+import { IntegrityContactEvent } from '../../data/models/integrityContactEvent'
+import { IntegrityViolationEvent } from '../../data/models/integrityViolationEvent'
+import { IntegrityMonitoringEvent } from '../../data/models/integrityMonitoringEvent'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
 
@@ -41,32 +41,31 @@ describe('Alcohol Monitoring event history Service', () => {
           dateTime: '2002-02-02T02:02:02',
           details: {
             outcome: null,
-            type: null,
+            type: 'contact',
             reason: null,
             channel: null,
             userId: null,
             userName: null,
             modifiedDateTime: null,
           },
-        },
-      ] as IntegrityContactEvent[]
+        } as IntegrityContactEvent,
+      ]
       const incidentEventsResponse = [
         {
           legacySubjectId,
           type: 'incident',
           dateTime: '2003-03-03T03:03:03',
           details: {
-            type: null,
+            type: 'foo',
           },
-        },
-      ] as IntegrityIncidentEvent[]
+        } as IntegrityIncidentEvent,
+      ]
       const violationEventsResponse = [
         {
           legacySubjectId,
           type: 'violation',
           dateTime: '2004-04-04T04:04:04',
           details: {
-            type: null,
             enforcementReason: null,
             investigationOutcomeReason: null,
             breachDetails: null,
@@ -84,19 +83,19 @@ describe('Alcohol Monitoring event history Service', () => {
             subjectLetterSentDate: null,
             warningLetterSentDateTime: null,
           },
-        },
-      ] as IntegrityViolationEvent[]
+        } as IntegrityViolationEvent,
+      ]
       const monitoringEventsResponse = [
         {
           legacySubjectId,
           type: 'montoring',
           dateTime: '2005-05-05T05:05:05',
           details: {
-            type: null,
+            type: 'bar',
             processedDateTime: null,
           },
-        },
-      ] as IntegrityMonitoringEvent[]
+        } as IntegrityMonitoringEvent,
+      ]
 
       const expectedResult = [
         ...monitoringEventsResponse,
@@ -123,54 +122,53 @@ describe('Alcohol Monitoring event history Service', () => {
           dateTime: '2002-02-02T02:02:02',
           details: {
             outcome: null,
-            type: null,
+            type: 'baz',
             reason: null,
             channel: null,
             userId: null,
             userName: null,
             modifiedDateTime: null,
           },
-        },
+        } as IntegrityContactEvent,
         {
           legacySubjectId,
           type: 'contact',
           dateTime: '2005-05-05T05:05:05',
           details: {
             outcome: null,
-            type: null,
+            type: 'nan',
             reason: null,
             channel: null,
             userId: null,
             userName: null,
             modifiedDateTime: null,
           },
-        },
-      ] as IntegrityContactEvent[]
+        } as IntegrityContactEvent,
+      ]
       const incidentEventsResponse = [
         {
           legacySubjectId,
           type: 'incident',
           dateTime: '2003-03-03T03:03:03',
           details: {
-            type: null,
+            type: 'yellow',
           },
-        },
+        } as IntegrityIncidentEvent,
         {
           legacySubjectId,
           type: 'incident',
           dateTime: '2006-06-06T06:06:06',
           details: {
-            type: null,
+            type: 'red alert',
           },
-        },
-      ] as IntegrityIncidentEvent[]
+        } as IntegrityIncidentEvent,
+      ]
       const violationEventsResponse = [
         {
           legacySubjectId,
           type: 'violation',
           dateTime: '2004-04-04T04:04:04',
           details: {
-            type: null,
             enforcementReason: null,
             investigationOutcomeReason: null,
             breachDetails: null,
@@ -188,13 +186,12 @@ describe('Alcohol Monitoring event history Service', () => {
             subjectLetterSentDate: null,
             warningLetterSentDateTime: null,
           },
-        },
+        } as IntegrityViolationEvent,
         {
           legacySubjectId,
           type: 'violation',
           dateTime: '2007-07-07T07:07:07',
           details: {
-            type: null,
             enforcementReason: null,
             investigationOutcomeReason: null,
             breachDetails: null,
@@ -212,26 +209,26 @@ describe('Alcohol Monitoring event history Service', () => {
             subjectLetterSentDate: null,
             warningLetterSentDateTime: null,
           },
-        },
-      ] as IntegrityViolationEvent[]
+        } as IntegrityViolationEvent,
+      ]
       const monitoringEventsResponse = [
         {
           legacySubjectId,
           type: 'montoring',
           dateTime: '2008-08-08T08:08:08',
           details: {
-            type: null,
+            type: 'bar',
           },
-        },
+        } as IntegrityMonitoringEvent,
         {
           legacySubjectId,
           type: 'montoring',
           dateTime: '2009-09-09T09:09:09',
           details: {
-            type: null,
+            type: 'foo',
           },
-        },
-      ] as IntegrityMonitoringEvent[]
+        } as IntegrityMonitoringEvent,
+      ]
 
       const expectedResult = [
         ...monitoringEventsResponse,

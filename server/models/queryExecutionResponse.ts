@@ -1,7 +1,6 @@
 import z from 'zod'
 
-export const QueryExecutionResponseModel = z.object({
+export type QueryExecutionResponse = z.infer<typeof QueryExecutionResponse>
+export const QueryExecutionResponse = z.object({
   queryExecutionId: z.string(),
 })
-
-export type QueryExecutionResponse = z.infer<typeof QueryExecutionResponseModel>

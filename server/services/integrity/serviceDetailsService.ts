@@ -3,20 +3,20 @@ import getSanitisedError from '../../sanitisedError'
 
 import { EmDatastoreApiClient } from '../../data'
 
-import { OrderRequest } from '../../types/OrderRequest'
-import { IntegrityServiceDetails, IntegrityServiceDetailsModel } from '../../models/integrity/serviceDetails'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
+import { IntegrityServiceDetails } from '../../data/models/integrityServiceDetails'
 
 export default class IntegrityServiceDetailService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
-  async getServiceDetails(input: OrderRequest): Promise<IntegrityServiceDetails[]> {
+  async getServiceDetails(input: GetOrderRequest): Promise<IntegrityServiceDetails[]> {
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityServiceDetails[]>({
         path: `/orders/integrity/${input.legacySubjectId}/service-details`,
         token: input.userToken,
       })
 
-      return result.map(serviceDetails => IntegrityServiceDetailsModel.parse(serviceDetails))
+      return result.map(serviceDetails => IntegrityServiceDetails.parse(serviceDetails))
     } catch (error) {
       const userFreindlyMessage = 'Error retrieving service details'
       const sanitisedError = getSanitisedError(error)

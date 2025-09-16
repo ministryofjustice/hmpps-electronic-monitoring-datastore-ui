@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityEventHistoryService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityEventHistoryViewModel from '../../models/view-models/integrity/eventHistory'
+import { IntegrityEventHistoryView } from '../../models/view-models/integrityEventHistory'
 
 export default class IntegrityEventHistoryController {
   constructor(
@@ -23,7 +23,7 @@ export default class IntegrityEventHistoryController {
       legacySubjectId,
     })
 
-    const viewModel = IntegrityEventHistoryViewModel.construct(
+    const viewModel = IntegrityEventHistoryView.construct(
       legacySubjectId,
       `/integrity/${legacySubjectId}`,
       eventHistory,

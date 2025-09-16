@@ -3,11 +3,11 @@ import AuditService from '../../services/auditService'
 import IntegritySuspensionOfVisitsService from '../../services/integrity/suspensionOfVisitsService'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { IntegritySuspensionOfVisitsEvent } from '../../models/integrity/suspensionOfVisits'
-import SuspensionOfVisitsView, {
+import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
+import {
+  IntegritySuspensionOfVisitsView,
   IntegritySuspensionOfVisitsViewEvent,
-  IntegritySuspensionOfVisitsViewModel,
-} from '../../models/view-models/integrity/suspensionOfVisits'
+} from '../../models/view-models/integritySuspensionOfVisits'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/suspensionOfVisitsService')
@@ -17,7 +17,7 @@ const emDatastoreSuspensionOfVisitsService = {
   getSuspensionOfVisits: jest.fn(),
 } as unknown as IntegritySuspensionOfVisitsService
 
-jest.spyOn(SuspensionOfVisitsView, 'construct')
+jest.spyOn(IntegritySuspensionOfVisitsView, 'construct')
 
 describe('SuspensionOfVisitsController', () => {
   let controller: SuspensionOfVisitsController
@@ -27,7 +27,7 @@ describe('SuspensionOfVisitsController', () => {
 
   const testOrderId = '1234321'
 
-  const createEvent = (legacySubjectId: string, time: string, dateTime: string): IntegritySuspensionOfVisitsEvent => {
+  const createEvent = (legacySubjectId: string, time: string, dateTime: string): IntegritySuspensionOfVisits => {
     return {
       legacySubjectId,
       suspensionOfVisits: 'Yes',
@@ -53,7 +53,7 @@ describe('SuspensionOfVisitsController', () => {
   const createViewData = (
     legacySubjectId: string,
     events: IntegritySuspensionOfVisitsViewEvent[],
-  ): IntegritySuspensionOfVisitsViewModel => {
+  ): IntegritySuspensionOfVisitsView => {
     return {
       legacySubjectId,
       backUrl: `/integrity/${legacySubjectId}`,
@@ -76,19 +76,19 @@ describe('SuspensionOfVisitsController', () => {
   it('should render the page with no data', async () => {
     const expectedViewModel = {
       backUrl: `/integrity/${testOrderId}`,
-      events: [] as IntegritySuspensionOfVisitsEvent[],
+      events: [] as IntegritySuspensionOfVisits[],
       legacySubjectId: testOrderId,
     }
     emDatastoreSuspensionOfVisitsService.getSuspensionOfVisits = jest.fn().mockResolvedValue([])
 
     await controller.showSuspensionOfVisits(req, res, next)
 
-    expect(SuspensionOfVisitsView.construct).toHaveBeenCalledWith(
+    expect(IntegritySuspensionOfVisitsView.construct).toHaveBeenCalledWith(
       testOrderId,
       `/integrity/${testOrderId}`,
       expectedViewModel.events,
     )
-    expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegritySuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/suspension-of-visits', expectedViewModel)
   })
 
@@ -104,7 +104,7 @@ describe('SuspensionOfVisitsController', () => {
 
     await controller.showSuspensionOfVisits(req, res, next)
 
-    expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
+    expect(IntegritySuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/suspension-of-visits', expectedViewData)
   })
 
@@ -138,7 +138,7 @@ describe('SuspensionOfVisitsController', () => {
 
     await controller.showSuspensionOfVisits(req, res, next)
 
-    expect(SuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
+    expect(IntegritySuspensionOfVisitsView.construct).toHaveReturnedWith(expectedViewData)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/suspension-of-visits', expectedViewData)
   })
 })

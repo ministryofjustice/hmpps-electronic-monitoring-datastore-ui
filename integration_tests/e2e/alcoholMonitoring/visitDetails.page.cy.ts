@@ -3,7 +3,7 @@ import Page from '../../pages/page'
 import AlcoholMonitoringVisitDetailsPage from '../../pages/alcoholMonitoring/visitDetails'
 import AlcoholMonitoringOrderSummaryPage from '../../pages/alcoholMonitoring/summary'
 
-import { AlcoholMonitoringVisitDetails } from '../../../server/models/alcoholMonitoring/visitDetails'
+import { AlcoholMonitoringVisitDetails } from '../../../server/data/models/alcoholMonitoringVisitDetails'
 
 context('Alcohol Monitoring Visit Details', () => {
   const legacySubjectId = '1234567'
@@ -68,7 +68,7 @@ context('Alcohol Monitoring Visit Details', () => {
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 1',
             dateVisitRaised: '2001-01-01T00:00:00',
-            visitAddress: 'address line 1 address line 2 address line 3 postcode',
+            visitAddress: 'address line 1 address line 2 address line 3 postCode',
             visitNotes: 'TEST_NOTES',
             visitOutcome: 'TEST_OUTCOME',
             actualWorkStartDateTime: '2002-02-02T01:01:01',
@@ -96,7 +96,7 @@ context('Alcohol Monitoring Visit Details', () => {
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 2',
             dateVisitRaised: '2001-01-01T00:00:00',
-            visitAddress: 'address line 1 address line 2 address line 3 postcode',
+            visitAddress: 'address line 1 address line 2 address line 3 postCode',
             visitNotes: 'TEST_NOTES',
             visitOutcome: 'TEST_OUTCOME',
             actualWorkStartDateTime: '2002-02-02T01:01:01',
@@ -119,7 +119,7 @@ context('Alcohol Monitoring Visit Details', () => {
       page.timeline.item(0).description.shouldHaveItem('Date visit raised', '1 January 2001')
       page.timeline
         .item(0)
-        .description.shouldHaveItem('Visit address', 'address line 1 address line 2 address line 3 postcode')
+        .description.shouldHaveItem('Visit address', 'address line 1 address line 2 address line 3 postCode')
       page.timeline.item(0).description.shouldHaveItem('Vist notes', 'TEST_NOTES')
       page.timeline.item(0).description.shouldHaveItem('Visit outcome', 'TEST_OUTCOME')
       page.timeline.item(0).description.shouldHaveItem('Actual work start datetime', '2 February 2002 at 1:01am')
@@ -141,7 +141,7 @@ context('Alcohol Monitoring Visit Details', () => {
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 3',
             dateVisitRaised: '2001-01-01T00:00:00',
-            visitAddress: 'address line 1 address line 2 address line 3 postcode',
+            visitAddress: 'address line 1 address line 2 address line 3 postCode',
             visitNotes: 'TEST_NOTES',
             visitOutcome: 'TEST_OUTCOME',
             actualWorkStartDateTime: '2002-02-02T01:01:01',
@@ -157,7 +157,7 @@ context('Alcohol Monitoring Visit Details', () => {
             visitType: 'TEST_VISIT_TYPE',
             visitAttempt: 'attempt 4',
             dateVisitRaised: '2001-01-01T00:00:00',
-            visitAddress: 'address line 1 address line 2 address line 3 postcode',
+            visitAddress: 'address line 1 address line 2 address line 3 postCode',
             visitNotes: 'TEST_NOTES',
             visitOutcome: 'TEST_OUTCOME',
             actualWorkStartDateTime: '2002-02-02T01:01:01',
@@ -181,7 +181,7 @@ context('Alcohol Monitoring Visit Details', () => {
       page.timeline.item(1).description.shouldHaveItem('Date visit raised', '1 January 2001')
       page.timeline
         .item(1)
-        .description.shouldHaveItem('Visit address', 'address line 1 address line 2 address line 3 postcode')
+        .description.shouldHaveItem('Visit address', 'address line 1 address line 2 address line 3 postCode')
       page.timeline.item(1).description.shouldHaveItem('Vist notes', 'TEST_NOTES')
       page.timeline.item(1).description.shouldHaveItem('Visit outcome', 'TEST_OUTCOME')
       page.timeline.item(0).description.shouldHaveItem('Actual work start datetime', '2 February 2002 at 1:01am')

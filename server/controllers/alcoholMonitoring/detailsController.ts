@@ -1,8 +1,10 @@
 import type { Request, RequestHandler, Response } from 'express'
+import paths from '../../constants/paths'
 import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import AlcoholMonitoringOrderDetailsModel from '../../models/view-models/alcoholMonitoring/orderDetails'
+import { AlcoholMonitoringOrderDetailsView } from '../../models/view-models/alcoholMonitoringOrderDetails'
+import { AlchoholMonitoringSearchResultView } from '../../models/view-models/alcoholMonitoringSearchResults'
 
 export default class OrderDetailsController {
   constructor(
@@ -23,12 +25,44 @@ export default class OrderDetailsController {
       legacySubjectId,
     })
 
-    const viewModel = AlcoholMonitoringOrderDetailsModel.construct(
+    const viewModel = AlcoholMonitoringOrderDetailsView.construct(
       legacySubjectId,
       `/orders/alcohol-monitoring/${legacySubjectId}`,
       orderDetails,
     )
 
     res.render('pages/alcohol-monitoring/details', viewModel)
+  }
+
+  searchResults: RequestHandler = async (req: Request, res: Response, next) => {
+    await this.auditService.logPageView(Page.SEARCH_RESULTS_PAGE, {
+      who: res.locals.user.username,
+      correlationId: req.id,
+    })
+
+    const queryExecutionId = req.query.search_id as string
+
+    if (!queryExecutionId) {
+      res.redirect(paths.SEARCH)
+      return
+    }
+
+    try {
+      const orders = await this.alcoholMonitoringDetailsService.getSearchResults({
+        userToken: res.locals.user.token,
+        queryExecutionId,
+      })
+
+      const viewModel = AlchoholMonitoringSearchResultView.construct(orders)
+
+      res.render('pages/searchResults', { viewModel, orderType: 'alcohol-monitoring' })
+    } catch (error) {
+      if (error.message === 'Error retrieving search results: Invalid query execution ID') {
+        res.redirect(paths.SEARCH)
+        return
+      }
+
+      next(error)
+    }
   }
 }

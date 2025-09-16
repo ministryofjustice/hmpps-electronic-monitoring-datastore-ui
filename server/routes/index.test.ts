@@ -45,7 +45,7 @@ describe('Core page basic GET requests', () => {
     async (route, titleText, auditType) => basicGetTest(route, titleText, auditType),
   )
 
-  it.each<GetRequestFixture>([[paths.CONNECTION_TEST, 'API test page', null]])(
+  it.each<GetRequestFixture>([[paths.CONNECTION_TEST, 'API test page', Page.TEST_CONNECTION_PAGE]])(
     'should render connection test page',
     async (route, titleText, auditType) => basicGetTest(route, titleText, auditType),
   )
@@ -61,6 +61,7 @@ export function basicGetTest(route: string, titleText: string, auditType: Page) 
     .expect('Content-Type', /html/)
     .expect(res => {
       expect(res.text).toContain(titleText)
+
       if (auditType !== null) {
         expect(auditService.logPageView).toHaveBeenCalledWith(auditType, {
           who: user.username,
