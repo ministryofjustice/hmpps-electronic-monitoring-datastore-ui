@@ -4,10 +4,10 @@ import AuditService from '../../services/auditService'
 import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
 import IntegrityEquipmentDetailsController from './equipmentDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import EquipmentDetailsViewModel from '../../models/view-models/integrity/equipmentDetails'
-import { IntegrityTimelineEventModel } from '../../models/integrity/TimelineEvent'
+import { IntegrityEquipmentDetailsView } from '../../models/view-models/integrityEquipmentDetails'
+import { IntegrityTimelineEvent } from '../../models/view-models/integrityTimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { IntegrityEquipmentDetails, IntegrityEquipmentDetailsModel } from '../../models/integrity/equipmentDetails'
+import { IntegrityEquipmentDetails } from '../../data/models/integrityEquipmentDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/equipmentDetailsService')
@@ -15,7 +15,7 @@ jest.mock('../../services/integrity/equipmentDetailsService')
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const emDatastoreEquipmentDetailsService = { getEvents: jest.fn() } as unknown as IntegrityEquipmentDetailsService
 
-jest.spyOn(EquipmentDetailsViewModel, 'construct')
+jest.spyOn(IntegrityEquipmentDetailsView, 'construct')
 
 describe('EquipmentDetailsController', () => {
   let equipmentDetailsController: IntegrityEquipmentDetailsController
@@ -63,8 +63,8 @@ describe('EquipmentDetailsController', () => {
 
     await equipmentDetailsController.showEquipmentDetails(req, res, next)
 
-    expect(EquipmentDetailsViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
-    expect(EquipmentDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityEquipmentDetailsView.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
+    expect(IntegrityEquipmentDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/equipment-details', expectedViewModel)
   })
 
@@ -85,41 +85,41 @@ describe('EquipmentDetailsController', () => {
               id: 'pid_id',
               equipmentCategoryDescription: 'pid category',
               installedDateTime: eventDateTime,
-              removedDateTime: null,
+              removedDateTime: undefined,
             },
             hmu: {
               id: 'hmu_id',
               equipmentCategoryDescription: 'hmu category',
               installedDateTime: eventDateTime,
-              removedDateTime: null,
+              removedDateTime: undefined,
             },
           },
-        } as IntegrityTimelineEventModel,
+        } as IntegrityTimelineEvent,
       ],
       legacySubjectId: testOrderId,
     }
 
     emDatastoreEquipmentDetailsService.getEquipmentDetails = jest.fn().mockResolvedValue([
-      IntegrityEquipmentDetailsModel.parse({
+      IntegrityEquipmentDetails.parse({
         legacySubjectId: testOrderId,
         pid: {
           id: 'pid_id',
           equipmentCategoryDescription: 'pid category',
           installedDateTime: eventDateTime,
-          removedDateTime: null,
+          removedDateTime: undefined,
         },
         hmu: {
           id: 'hmu_id',
           equipmentCategoryDescription: 'hmu category',
           installedDateTime: eventDateTime,
-          removedDateTime: null,
+          removedDateTime: undefined,
         },
       }),
     ])
 
     await equipmentDetailsController.showEquipmentDetails(req, res, next)
 
-    expect(EquipmentDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityEquipmentDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/equipment-details', expectedViewModel)
   })
 })

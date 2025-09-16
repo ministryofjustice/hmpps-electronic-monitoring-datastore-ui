@@ -2,10 +2,10 @@ import { Request, Response } from 'express'
 import { AuditService, AlcoholMonitoringServiceDetailsService } from '../../services'
 import AlcoholMonitoringServiceDetailsController from './serviceDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import AlcoholMonitoringServiceDetailsViewModel from '../../models/view-models/alcoholMonitoring/serviceDetails'
-import { AlcoholMonitoringTimelineEventModel } from '../../models/alcoholMonitoring/TimelineEvent'
+import { AlcoholMonitoringServiceDetailsView } from '../../models/view-models/alcoholMonitoringServiceDetails'
+import { AlcoholMonitoringTimelineEvent } from '../../models/view-models/alcoholMonitoringTimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { AlcoholMonitoringServiceDetails } from '../../models/alcoholMonitoring/serviceDetails'
+import { AlcoholMonitoringServiceDetails } from '../../data/models/alcoholMonitoringServiceDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/serviceDetailsService')
@@ -15,7 +15,7 @@ const alcoholMonitoringServiceDetailsService = {
   getServiceDetails: jest.fn(),
 } as unknown as AlcoholMonitoringServiceDetailsService
 
-jest.spyOn(AlcoholMonitoringServiceDetailsViewModel, 'construct')
+jest.spyOn(AlcoholMonitoringServiceDetailsView, 'construct')
 
 describe('AlcoholMonitoringServiceDetailsController', () => {
   let alcoholMonitoringServiceDetailsController: AlcoholMonitoringServiceDetailsController
@@ -49,12 +49,12 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
 
     await alcoholMonitoringServiceDetailsController.showServiceDetails(req, res, next)
 
-    expect(AlcoholMonitoringServiceDetailsViewModel.construct).toHaveBeenCalledWith(
+    expect(AlcoholMonitoringServiceDetailsView.construct).toHaveBeenCalledWith(
       testOrderId,
       `/orders/alcohol-monitoring/${testOrderId}`,
       [],
     )
-    expect(AlcoholMonitoringServiceDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringServiceDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/service-details', expectedViewModel)
   })
 
@@ -67,7 +67,7 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
       serviceAddress1: 'address line 1',
       serviceAddress2: 'address line 2',
       serviceAddress3: 'address line 3',
-      serviceAddressPostcode: 'postcode',
+      serviceAddressPostCode: 'postCode',
       serviceStartDate: eventDateTime,
       serviceEndDate: eventDateTime,
       curfewStartDate: eventDateTime,
@@ -90,7 +90,7 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
           date: new Date(eventDateTime).toDateString(),
           eventType: 'am-service-details',
           properties: serviceDetails,
-        } as AlcoholMonitoringTimelineEventModel,
+        } as AlcoholMonitoringTimelineEvent,
       ],
       legacySubjectId: testOrderId,
     }
@@ -99,7 +99,7 @@ describe('AlcoholMonitoringServiceDetailsController', () => {
 
     await alcoholMonitoringServiceDetailsController.showServiceDetails(req, res, next)
 
-    expect(AlcoholMonitoringServiceDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringServiceDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/service-details', expectedViewModel)
   })
 })

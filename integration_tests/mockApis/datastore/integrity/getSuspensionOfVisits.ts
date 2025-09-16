@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { IntegritySuspensionOfVisitsEvent } from '../../../../server/models/integrity/suspensionOfVisits'
+import { IntegritySuspensionOfVisits } from '../../../../server/data/models/integritySuspensionOfVisits'
 
 const defaultSuspensionOfVisitsEvent = {
   legacySubjectId: '123456789',
@@ -9,12 +9,12 @@ const defaultSuspensionOfVisitsEvent = {
   startDate: '2001-01-01T01:01:01',
   startTime: '01:01:01',
   endDate: '2001-01-01T01:01:01',
-} as IntegritySuspensionOfVisitsEvent
+} as IntegritySuspensionOfVisits
 
 type GetSuspensionOfVisitsStubOptions = {
   httpStatus: number
   legacySubjectId?: string
-  body?: IntegritySuspensionOfVisitsEvent[]
+  body?: IntegritySuspensionOfVisits[]
 }
 
 export const stubIntegrityGetSuspensionOfVisits = (options: GetSuspensionOfVisitsStubOptions): SuperAgentRequest =>

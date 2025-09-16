@@ -2,10 +2,10 @@ import { Request, Response } from 'express'
 import { AuditService, IntegrityServiceDetailsService } from '../../services'
 import IntegrityServiceDetailsController from './serviceDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityServiceDetailsViewModel from '../../models/view-models/integrity/serviceDetails'
-import { IntegrityTimelineEventModel } from '../../models/integrity/TimelineEvent'
+import { IntegrityServiceDetailsView } from '../../models/view-models/integrityServiceDetails'
+import { IntegrityTimelineEvent } from '../../models/view-models/integrityTimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { IntegrityServiceDetails } from '../../models/integrity/serviceDetails'
+import { IntegrityServiceDetails } from '../../data/models/integrityServiceDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/serviceDetailsService')
@@ -13,7 +13,7 @@ jest.mock('../../services/integrity/serviceDetailsService')
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const integrityServiceDetailsService = { getServiceDetails: jest.fn() } as unknown as IntegrityServiceDetailsService
 
-jest.spyOn(IntegrityServiceDetailsViewModel, 'construct')
+jest.spyOn(IntegrityServiceDetailsView, 'construct')
 
 describe('IntegrityServiceDetailsController', () => {
   let integrityServiceDetailsController: IntegrityServiceDetailsController
@@ -47,12 +47,8 @@ describe('IntegrityServiceDetailsController', () => {
 
     await integrityServiceDetailsController.showServiceDetails(req, res, next)
 
-    expect(IntegrityServiceDetailsViewModel.construct).toHaveBeenCalledWith(
-      testOrderId,
-      `/integrity/${testOrderId}`,
-      [],
-    )
-    expect(IntegrityServiceDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityServiceDetailsView.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
+    expect(IntegrityServiceDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/service-details', expectedViewModel)
   })
 
@@ -65,7 +61,7 @@ describe('IntegrityServiceDetailsController', () => {
       serviceAddress1: 'address line 1',
       serviceAddress2: 'address line 2',
       serviceAddress3: 'address line 3',
-      serviceAddressPostcode: 'postcode',
+      serviceAddressPostCode: 'postCode',
       serviceStartDate: eventDateTime,
       serviceEndDate: eventDateTime,
       curfewStartDate: eventDateTime,
@@ -88,7 +84,7 @@ describe('IntegrityServiceDetailsController', () => {
           date: new Date(eventDateTime).toDateString(),
           eventType: 'service-details',
           properties: serviceDetails,
-        } as IntegrityTimelineEventModel,
+        } as IntegrityTimelineEvent,
       ],
       legacySubjectId: testOrderId,
     }
@@ -97,7 +93,7 @@ describe('IntegrityServiceDetailsController', () => {
 
     await integrityServiceDetailsController.showServiceDetails(req, res, next)
 
-    expect(IntegrityServiceDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityServiceDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/service-details', expectedViewModel)
   })
 })

@@ -14,6 +14,8 @@
   <form method="post" novalidate id="order-search-form">
     <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
 
+    {{ validationErrors | dump }}
+
     {% if emptyFormError %}
     <div class="govuk-form-group--error">
       <p class="govuk-error-message">{{ emptyFormError.text }}</p>
@@ -86,7 +88,6 @@
 
     {{ govukDateInput({
       id: "dob",
-      namePrefix: "dob",
       fieldset: {
         legend: {
           text: "Date of birth",
@@ -101,19 +102,22 @@
 
       items: [
         {
-          name: "day",
+          id: "dob-day",
+          name: "dobDay",
           classes: "govuk-input--width-2",
           value: dob.value.day,
           attributes: disabled
         },
         {
-          name: "month",
+          id: "dob-month",
+          name: "dobMonth",
           classes: "govuk-input--width-2",
           value: dob.value.month,
           attributes: disabled
         },
         {
-          name: "year",
+          id: "dob-year",
+          name: "dobYear",
           classes: "govuk-input--width-4",
           value: dob.value.year,
           attributes: disabled

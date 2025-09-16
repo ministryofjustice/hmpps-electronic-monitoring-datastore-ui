@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { IntegrityContactEvent } from '../../../../server/models/integrity/contactEvents'
+import { IntegrityContactEvent } from '../../../../server/data/models/integrityContactEvent'
 
 const defaultContactEvents = [] as IntegrityContactEvent[]
 

@@ -1,9 +1,9 @@
 import nock from 'nock'
 import AlcoholMonitoringEventHistoryService from './eventHistoryService'
 
-import { AlcoholMonitoringIncidentEvent } from '../../models/alcoholMonitoring/incidentEvents'
-import { AlcoholMonitoringContactEvent } from '../../models/alcoholMonitoring/contactEvents'
-import { AlcoholMonitoringViolationEvent } from '../../models/alcoholMonitoring/violationEvents'
+import { AlcoholMonitoringIncidentEvent } from '../../data/models/alcoholMonitoringIncidentEvent'
+import { AlcoholMonitoringContactEvent } from '../../data/models/alcoholMonitoringContactEvent'
+import { AlcoholMonitoringViolationEvent } from '../../data/models/alcoholMonitoringViolationEvent'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
 

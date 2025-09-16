@@ -6,15 +6,15 @@ import AlcoholMonitoringOrderSummaryPage from '../../pages/alcoholMonitoring/sum
 import {
   AlcoholMonitoringContactEvent,
   AlcoholMonitoringContactEventDetails,
-} from '../../../server/models/alcoholMonitoring/contactEvents'
+} from '../../../server/data/models/alcoholMonitoringContactEvent'
 import {
   AlcoholMonitoringIncidentEvent,
   AlcoholMonitoringIncidentEventDetails,
-} from '../../../server/models/alcoholMonitoring/incidentEvents'
+} from '../../../server/data/models/alcoholMonitoringIncidentEvent'
 import {
   AlcoholMonitoringViolationEvent,
   AlcoholMonitoringViolationEventDetails,
-} from '../../../server/models/alcoholMonitoring/violationEvents'
+} from '../../../server/data/models/alcoholMonitoringViolationEvent'
 
 context('Alcohol Monitoring event history', () => {
   const legacySubjectId = '1234567'

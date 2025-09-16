@@ -3,10 +3,10 @@ import AuditService from '../../services/auditService'
 import AlcoholMonitoringEquipmentDetailsService from '../../services/alcoholMonitoring/equipmentDetailsService'
 import AlcoholMonitoringEquipmentDetailsController from './equipmentDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import EquipmentDetailsViewModel from '../../models/view-models/alcoholMonitoring/equipmentDetails'
-import { AlcoholMonitoringTimelineEventModel } from '../../models/alcoholMonitoring/TimelineEvent'
+import { AlcoholMonitoringEquipmentDetailsView } from '../../models/view-models/alcoholMonitoringEquipmentDetails'
+import { AlcoholMonitoringTimelineEvent } from '../../models/view-models/alcoholMonitoringTimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { AlcoholMonitoringEquipmentDetails } from '../../models/alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/equipmentDetailsService')
@@ -16,7 +16,7 @@ const alcoholMonitoringEquipmentDetailsService = {
   getEquipmentDetails: jest.fn(),
 } as unknown as AlcoholMonitoringEquipmentDetailsService
 
-jest.spyOn(EquipmentDetailsViewModel, 'construct')
+jest.spyOn(AlcoholMonitoringEquipmentDetailsView, 'construct')
 
 describe('EquipmentDetailsController', () => {
   let alcoholMonitoringEquipmentDetailsController: AlcoholMonitoringEquipmentDetailsController
@@ -50,12 +50,12 @@ describe('EquipmentDetailsController', () => {
 
     await alcoholMonitoringEquipmentDetailsController.showEquipmentDetails(req, res, next)
 
-    expect(EquipmentDetailsViewModel.construct).toHaveBeenCalledWith(
+    expect(AlcoholMonitoringEquipmentDetailsView.construct).toHaveBeenCalledWith(
       testOrderId,
       `/orders/alcohol-monitoring/${testOrderId}`,
       [],
     )
-    expect(EquipmentDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringEquipmentDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/equipment-details', expectedViewModel)
   })
 
@@ -72,7 +72,7 @@ describe('EquipmentDetailsController', () => {
           properties: {
             legacySubjectId: testOrderId,
           },
-        } as AlcoholMonitoringTimelineEventModel,
+        } as AlcoholMonitoringTimelineEvent,
       ],
       legacySubjectId: testOrderId,
     }
@@ -87,7 +87,7 @@ describe('EquipmentDetailsController', () => {
 
     await alcoholMonitoringEquipmentDetailsController.showEquipmentDetails(req, res, next)
 
-    expect(EquipmentDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringEquipmentDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/equipment-details', expectedViewModel)
   })
 })

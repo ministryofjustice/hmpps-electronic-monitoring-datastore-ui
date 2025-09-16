@@ -2,13 +2,10 @@ import { Request, Response } from 'express'
 import { AuditService, AlcoholMonitoringVisitDetailsService } from '../../services'
 import AlcoholMonitoringVisitDetailsController from './visitDetailsController'
 // eslint-disable-next-line import/no-named-as-default
-import AlcoholMonitoringVisitDetailsViewModel from '../../models/view-models/alcoholMonitoring/visitDetails'
-import { AlcoholMonitoringTimelineEventModel } from '../../models/alcoholMonitoring/TimelineEvent'
+import { AlcoholMonitoringVisitDetailsView } from '../../models/view-models/alcoholMonitoringVisitDetails'
+import { AlcoholMonitoringTimelineEvent } from '../../models/view-models/alcoholMonitoringTimelineEvent'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import {
-  AlcoholMonitoringVisitDetails,
-  AlcoholMonitoringVisitDetailsModel,
-} from '../../models/alcoholMonitoring/visitDetails'
+import { AlcoholMonitoringVisitDetails } from '../../data/models/alcoholMonitoringVisitDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/visitDetailsService')
@@ -18,7 +15,7 @@ const alcoholMonitoringVisitDetailsService = {
   getOrderSummary: jest.fn(),
 } as unknown as AlcoholMonitoringVisitDetailsService
 
-jest.spyOn(AlcoholMonitoringVisitDetailsViewModel, 'construct')
+jest.spyOn(AlcoholMonitoringVisitDetailsView, 'construct')
 
 describe('AlcoholMonitoringVisitDetailsController', () => {
   let alcoholMonitoringVisitDetailsController: AlcoholMonitoringVisitDetailsController
@@ -52,19 +49,19 @@ describe('AlcoholMonitoringVisitDetailsController', () => {
 
     await alcoholMonitoringVisitDetailsController.showVisitDetails(req, res, next)
 
-    expect(AlcoholMonitoringVisitDetailsViewModel.construct).toHaveBeenCalledWith(
+    expect(AlcoholMonitoringVisitDetailsView.construct).toHaveBeenCalledWith(
       testOrderId,
       `/orders/alcohol-monitoring/${testOrderId}`,
       [],
     )
-    expect(AlcoholMonitoringVisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringVisitDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/visit-details', expectedViewModel)
   })
 
   it('should render page with visit details', async () => {
     const eventDateTime = '2022-02-02T02:02:02'
 
-    const visitDetails = AlcoholMonitoringVisitDetailsModel.parse({
+    const visitDetails = AlcoholMonitoringVisitDetails.parse({
       legacySubjectId: testOrderId,
       visitId: '300',
       visitType: 'visit type',
@@ -90,7 +87,7 @@ describe('AlcoholMonitoringVisitDetailsController', () => {
           date: new Date(eventDateTime).toDateString(),
           eventType: 'am-visit-details',
           properties: visitDetails,
-        } as AlcoholMonitoringTimelineEventModel,
+        } as AlcoholMonitoringTimelineEvent,
       ],
       legacySubjectId: testOrderId,
     }
@@ -99,7 +96,7 @@ describe('AlcoholMonitoringVisitDetailsController', () => {
 
     await alcoholMonitoringVisitDetailsController.showVisitDetails(req, res, next)
 
-    expect(AlcoholMonitoringVisitDetailsViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(AlcoholMonitoringVisitDetailsView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/alcohol-monitoring/visit-details', expectedViewModel)
   })
 })

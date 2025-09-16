@@ -3,7 +3,7 @@ import Page from '../../pages/page'
 import AlcoholMonitoringEquipmentDetailsPage from '../../pages/alcoholMonitoring/equipmentDetails'
 import AlcoholMonitoringOrderSummaryPage from '../../pages/alcoholMonitoring/summary'
 
-import { AlcoholMonitoringEquipmentDetails } from '../../../server/models/alcoholMonitoring/equipmentDetails'
+import { AlcoholMonitoringEquipmentDetails } from '../../../server/data/models/alcoholMonitoringEquipmentDetails'
 
 context('Alcohol Monitoring equipment details', () => {
   const legacySubjectId = '1234567'
