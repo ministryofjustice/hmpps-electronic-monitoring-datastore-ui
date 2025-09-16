@@ -3,7 +3,7 @@ import AuditService, { Page } from '../../services/auditService'
 import { IntegrityDetailsService } from '../../services'
 import IntegritySummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { OrderRequest } from '../../types/OrderRequest'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/orderDetailsService')
@@ -45,7 +45,7 @@ describe('Integrity summary Controller', () => {
 
     it(`calls the DatastoreOrderService for data using the correct legacySubjectId parameter`, async () => {
       const expectedOrderId = 'testId'
-      const expectedOrderServiceParams: OrderRequest = {
+      const expectedOrderServiceParams: GetOrderRequest = {
         userToken: 'fakeUserToken',
         legacySubjectId: expectedOrderId,
       }

@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../wiremock'
-import { Order } from '../../../server/models/order'
+import { AlcoholMonitoringOrderDetails } from '../../../server/data/models/alcoholMonitoringOrderDetails'
 
 const defaultOrders = [
   {
@@ -11,7 +11,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: null,
     dateOfBirth: '01-01-1970',
     orderStartDate: '08-02-2019',
@@ -25,7 +25,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: 'Plato',
     dateOfBirth: '01-02-1971',
     orderStartDate: '03-11-2020',
@@ -39,7 +39,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: null,
     dateOfBirth: '09-04-1962',
     orderStartDate: '05-08-2001',
@@ -53,7 +53,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: 'Aristotle',
     dateOfBirth: '12-11-1978',
     orderStartDate: '18-02-2012',
@@ -67,7 +67,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: 'Socrates',
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
@@ -81,7 +81,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: null,
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
@@ -95,7 +95,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: 'Socrates',
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
@@ -109,7 +109,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: null,
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
@@ -123,7 +123,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: 'Socrates',
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
@@ -137,7 +137,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: null,
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
@@ -151,7 +151,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: 'Socrates',
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
@@ -165,7 +165,7 @@ const defaultOrders = [
     addressLine1: 'First line of address',
     addressLine2: 'Second line of address',
     addressLine3: 'Third line of address',
-    addressPostcode: 'Postcode',
+    addressPostCode: 'PostCode',
     alias: null,
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
@@ -182,7 +182,7 @@ const defaultGetSearchResultsOptions = {
 type GetSearchResultsStubOptions = {
   queryExecutionId: string
   httpStatus: number
-  results: Order[]
+  results: AlcoholMonitoringOrderDetails[]
 }
 
 export const stubGetSearchResults = (
@@ -191,7 +191,7 @@ export const stubGetSearchResults = (
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders?id=${options.queryExecutionId}`,
+      url: `/orders/alcohol-monitoring?id=${options.queryExecutionId}`,
     },
     response: {
       status: options.httpStatus,

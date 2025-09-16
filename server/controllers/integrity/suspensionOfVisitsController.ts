@@ -2,7 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegritySuspensionOfVisitsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import SuspensionOfVisitsViewModel from '../../models/view-models/integrity/suspensionOfVisits'
+import { IntegritySuspensionOfVisitsView } from '../../models/view-models/integritySuspensionOfVisits'
 
 export default class SuspensionOfVisitsController {
   constructor(
@@ -18,7 +18,7 @@ export default class SuspensionOfVisitsController {
       legacySubjectId,
     })
 
-    const viewModel = SuspensionOfVisitsViewModel.construct(
+    const viewModel = IntegritySuspensionOfVisitsView.construct(
       legacySubjectId,
       `/integrity/${legacySubjectId}`,
       suspensionOfVisitsData || [],

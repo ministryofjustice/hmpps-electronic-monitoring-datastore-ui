@@ -3,7 +3,7 @@ import Page from '../../pages/page'
 import SearchPage from '../../pages/search'
 import AlcoholMonitoringOrderSummaryPage from '../../pages/alcoholMonitoring/summary'
 
-import { AlcoholMonitoringOrderSummary } from '../../../server/models/alcoholMonitoring/orderSummary'
+import { AlcoholMonitoringOrderDetails } from '../../../server/data/models/alcoholMonitoringOrderDetails'
 
 context('Alcohol Monitoring Order Summary', () => {
   const legacySubjectId = '1234567'
@@ -26,13 +26,13 @@ context('Alcohol Monitoring Order Summary', () => {
           lastName: 'Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
-          postcode: '7AB 8CD',
+          postCode: '7AB 8CD',
           address1: '123 Fourth Street',
           address2: 'Fiveton',
           address3: 'Sixbury',
           orderStartDate: '2010-01-01T00:00:00',
           orderEndDate: '2030-01-01T00:00:00',
-        } as AlcoholMonitoringOrderSummary,
+        } as AlcoholMonitoringOrderDetails,
       })
     })
 
@@ -75,13 +75,13 @@ context('Alcohol Monitoring Order Summary', () => {
           lastName: 'Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
-          postcode: '7AB 8CD',
+          postCode: '7AB 8CD',
           address1: '123 Fourth Street',
           address2: 'Fiveton',
           address3: 'Sixbury',
           orderStartDate: '2010-01-01T00:00:00',
           orderEndDate: '2030-01-01T00:00:00',
-        } as AlcoholMonitoringOrderSummary,
+        } as AlcoholMonitoringOrderDetails,
       })
 
       const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
@@ -108,10 +108,10 @@ context('Alcohol Monitoring Order Summary', () => {
           address1: null,
           address2: null,
           address3: null,
-          postcode: null,
+          postCode: null,
           orderStartDate: null,
           orderEndDate: null,
-        } as AlcoholMonitoringOrderSummary,
+        } as AlcoholMonitoringOrderDetails,
       })
 
       const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })

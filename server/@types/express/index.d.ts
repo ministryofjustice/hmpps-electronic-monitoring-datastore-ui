@@ -1,12 +1,18 @@
+import { RawOrderSearchCriteria } from '../../models/requests/SearchOrdersRequest'
 import { HmppsUser } from '../../interfaces/hmppsUser'
+
+export type FormError = {
+  field: string
+  message: string
+}
 
 export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
     nowInMinutes: number
-    formData: SearchOrderFormData
-    validationErrors: ValidationResult
+    formData: RawOrderSearchCriteria
+    validationErrors: FormError[]
   }
 }
 

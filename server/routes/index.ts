@@ -101,10 +101,7 @@ export default function routes({
   post(paths.SEARCH, searchController.submitSearchQuery)
 
   // integrity
-  get(paths.INTEGRITY_ORDER.INDEX, (req, res, next) => {
-    req.params.orderType = 'integrity'
-    searchController.searchResultsPage(req, res, next)
-  })
+  get(paths.INTEGRITY_ORDER.INDEX, integrityDetailsController.searchResults)
   get(paths.INTEGRITY_ORDER.SUMMARY, integritySummaryController.summary)
   get(paths.INTEGRITY_ORDER.DETAILS, integrityDetailsController.details)
   get(paths.INTEGRITY_ORDER.VISIT_DETAILS, integrityVisitDetailsController.showVisitDetails)
@@ -114,10 +111,7 @@ export default function routes({
   get(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, suspensionOfVisitsController.showSuspensionOfVisits)
 
   // alcohol monitoring
-  get(paths.ALCOHOL_MONITORING.INDEX, (req, res, next) => {
-    req.params.orderType = 'alcohol-monitoring'
-    searchController.searchResultsPage(req, res, next)
-  })
+  get(paths.ALCOHOL_MONITORING.INDEX, amDetailsController.searchResults)
   get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.summary)
   get(paths.ALCOHOL_MONITORING.DETAILS, amDetailsController.details)
   get(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, amEquipmentDetailsController.showEquipmentDetails)

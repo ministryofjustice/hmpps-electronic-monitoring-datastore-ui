@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { IntegrityEquipmentDetails } from '../../../../server/models/integrity/equipmentDetails'
+import { IntegrityEquipmentDetails } from '../../../../server/data/models/integrityEquipmentDetails'
 
 const defaultEquipmentDetails = [] as IntegrityEquipmentDetails[]
 

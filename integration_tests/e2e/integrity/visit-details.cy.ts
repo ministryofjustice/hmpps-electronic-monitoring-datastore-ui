@@ -68,7 +68,7 @@ context('Visit details', () => {
               addressLine2: 'address line 2',
               addressLine3: 'address line 3',
               addressLine4: 'address line 4',
-              postcode: 'postcode',
+              postCode: 'postCode',
             },
             actualWorkStartDateTime: '2002-02-02T01:01:01',
             actualWorkEndDateTime: '2002-02-02T02:02:02',
@@ -97,7 +97,7 @@ context('Visit details', () => {
               addressLine2: 'address line 2',
               addressLine3: 'address line 3',
               addressLine4: 'address line 4',
-              postcode: 'postcode',
+              postCode: 'postCode',
             },
             actualWorkStartDateTime: '2002-02-02T01:01:01',
             actualWorkEndDateTime: '2002-02-02T02:02:02',
@@ -111,7 +111,7 @@ context('Visit details', () => {
       const visitDetails = Page.visit(VisitDetailsPage, { legacySubjectId })
       visitDetails.getTimelineItem(0).within($item => {
         cy.wrap($item).contains('TEST_VISIT_TYPE')
-        cy.wrap($item).contains('Address address line 1 address line 2 address line 3 address line 4 postcode')
+        cy.wrap($item).contains('Address address line 1 address line 2 address line 3 address line 4 postCode')
         cy.wrap($item).contains('Actual work start date 2 February 2002')
         cy.wrap($item).contains('Actual work start time 1:01am')
         cy.wrap($item).contains('Actual work end date 2 February 2002')
@@ -133,7 +133,7 @@ context('Visit details', () => {
               addressLine2: 'address line 2',
               addressLine3: 'address line 3',
               addressLine4: 'address line 4',
-              postcode: 'postcode',
+              postCode: 'postCode',
             },
             actualWorkStartDateTime: '2002-02-02T01:01:01',
             actualWorkEndDateTime: '2002-02-02T02:02:02',
@@ -148,7 +148,7 @@ context('Visit details', () => {
               addressLine2: 'address line 6',
               addressLine3: 'address line 7',
               addressLine4: 'address line 8',
-              postcode: 'postcode 2',
+              postCode: 'postCode 2',
             },
             actualWorkStartDateTime: '2002-02-02T03:03:03',
             actualWorkEndDateTime: '2002-02-02T04:04:04',
@@ -162,7 +162,7 @@ context('Visit details', () => {
       const visitDetails = Page.visit(VisitDetailsPage, { legacySubjectId })
       visitDetails.getTimelineItem(1).within($item => {
         cy.wrap($item).contains('TEST_VISIT_TYPE_2')
-        cy.wrap($item).contains('Address address line 5 address line 6 address line 7 address line 8 postcode 2')
+        cy.wrap($item).contains('Address address line 5 address line 6 address line 7 address line 8 postCode 2')
         cy.wrap($item).contains('Actual work start date 2 February 2002')
         cy.wrap($item).contains('Actual work start time 3:03am')
         cy.wrap($item).contains('Actual work end date 2 February 2002')

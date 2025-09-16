@@ -1,7 +1,7 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringDetailsService } from '../../services'
-import { IntegrityReports } from '../../models/view-models/reports'
+import { AlchoholMonitoringReportsView } from '../../models/view-models/alcoholMonitoringReports'
 
 export default class AlcoholMonitoringSummaryController {
   constructor(
@@ -17,12 +17,12 @@ export default class AlcoholMonitoringSummaryController {
 
     const { legacySubjectId } = req.params
 
-    const summary = await this.detailsService.getOrderDetails({
+    const orderDetails = await this.detailsService.getOrderDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
     })
     const backUrl: string = '/alcohol-monitoring'
-    const reports: IntegrityReports = {
+    const reports: AlchoholMonitoringReportsView = {
       orderDetails: true,
       visitDetails: true,
       equipmentDetails: true,
@@ -30,6 +30,8 @@ export default class AlcoholMonitoringSummaryController {
       allEventHistory: true,
       services: true,
     }
-    res.render('pages/alcohol-monitoring/summary', { legacySubjectId, summary, backUrl, reports })
+
+    const viewModel = { legacySubjectId, orderDetails, backUrl, reports }
+    res.render('pages/alcohol-monitoring/summary', viewModel)
   }
 }

@@ -3,7 +3,7 @@ import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringDetailsService } from '../../services'
 import AlcoholMonitoringSummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { OrderRequest } from '../../types/OrderRequest'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
@@ -49,7 +49,7 @@ describe('Alcohol monitoring summary Controller', () => {
     })
 
     it(`calls the service for data using the correct legacySubjectId parameter`, async () => {
-      const expectedOrderServiceParams: OrderRequest = {
+      const expectedOrderServiceParams: GetOrderRequest = {
         userToken: 'fakeUserToken',
         legacySubjectId: expectedOrderId,
       }
@@ -71,7 +71,7 @@ describe('Alcohol monitoring summary Controller', () => {
       const expectedOrderDetails = 'expectedOrderDetails'
       const expectedPageData = {
         legacySubjectId: expectedOrderId,
-        summary: expectedOrderDetails,
+        orderDetails: expectedOrderDetails,
         backUrl: '/alcohol-monitoring',
         reports: {
           orderDetails: true,

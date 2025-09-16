@@ -3,7 +3,7 @@ import Page from '../../pages/page'
 import AlcoholMonitoringOrderDetailsPage from '../../pages/alcoholMonitoring/details'
 import AlcoholMonitoringOrderSummaryPage from '../../pages/alcoholMonitoring/summary'
 
-import { AlcoholMonitoringOrderDetails } from '../../../server/models/alcoholMonitoring/orderDetails'
+import { AlcoholMonitoringOrderDetails } from '../../../server/data/models/alcoholMonitoringOrderDetails'
 
 context('Alcohol Monitoring Order Details', () => {
   const legacySubjectId = '1234567'
@@ -73,7 +73,7 @@ context('Alcohol Monitoring Order Details', () => {
           address1: null,
           address2: null,
           address3: null,
-          postcode: null,
+          postCode: null,
           orderStartDate: null,
           orderEndDate: null,
           enforceableCondition: null,
@@ -108,7 +108,7 @@ context('Alcohol Monitoring Order Details', () => {
           address1: '1 Primary Street',
           address2: 'Sutton',
           address3: 'London',
-          postcode: 'ABC 123',
+          postCode: 'ABC 123',
           orderStartDate: '2012-02-01T00:00:00',
           orderEndDate: '2013-04-03T00:00:00',
           enforceableCondition: 'Enforceable condition',
@@ -149,7 +149,7 @@ context('Alcohol Monitoring Order Details', () => {
           address1: '1 Primary Street',
           address2: 'Sutton',
           address3: 'London',
-          postcode: 'ABC 123',
+          postCode: 'ABC 123',
           orderStartDate: '2012-02-01T00:00:00',
           orderEndDate: '2013-04-03T00:00:00',
           enforceableCondition: 'Enforceable condition',
