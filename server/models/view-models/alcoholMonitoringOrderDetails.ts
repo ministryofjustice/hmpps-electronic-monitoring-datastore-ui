@@ -1,4 +1,6 @@
+import paths from '../../constants/paths'
 import { AlcoholMonitoringOrderDetails } from '../../data/models/alcoholMonitoringOrderDetails'
+import { buildUrl } from '../../utils/utils'
 
 export type AlcoholMonitoringDeviceWearer = {
   legacySubjectId: string
@@ -7,10 +9,7 @@ export type AlcoholMonitoringDeviceWearer = {
   alias?: string
   legacySex?: string
   dateOfBirth?: string
-  primaryAddressLine1?: string
-  primaryAddressLine2?: string
-  primaryAddressLine3?: string
-  primaryAddressPostCode?: string
+  primaryAddress?: string[]
   phoneOrMobileNumber?: string
 }
 
@@ -34,46 +33,38 @@ export type AlcoholMonitoringOrderDetailsView = {
   backUrl: string
 }
 
-const createViewModelFromApiDto = (
-  legacySubjectId: string,
-  backUrl: string,
-  orderDetails: AlcoholMonitoringOrderDetails,
-): AlcoholMonitoringOrderDetailsView => ({
-  legacySubjectId,
-  deviceWearerDetails: {
-    legacySubjectId: orderDetails.legacySubjectId,
-    firstName: orderDetails.firstName,
-    lastName: orderDetails.lastName,
-    alias: orderDetails.alias,
-    legacySex: orderDetails.sex,
-    dateOfBirth: orderDetails.dateOfBirth,
-    primaryAddressLine1: orderDetails.address1,
-    primaryAddressLine2: orderDetails.address2,
-    primaryAddressLine3: orderDetails.address3,
-    primaryAddressPostCode: orderDetails.postcode,
-    phoneOrMobileNumber: orderDetails.phoneNumber,
-  },
-  orderDetails: {
-    orderStartDate: orderDetails.orderStartDate,
-    orderEndDate: orderDetails.orderEndDate,
-    orderType: orderDetails.orderType,
-    orderTypeDescription: orderDetails.orderTypeDescription,
-    orderEndOutcome: orderDetails.orderEndOutcome,
-    specialInstructions: orderDetails.specialInstructions,
-    enforceableCondition: orderDetails.enforceableCondition,
-    tagAtSource: orderDetails.tagAtSource,
-    responsibleOrganisationPhoneNumber: orderDetails.responsibleOrganisationPhoneNumber,
-    responsibleOrganisationEmail: orderDetails.responsibleOrganisationEmail,
-  },
-  backUrl,
-})
-
 export const AlcoholMonitoringOrderDetailsView = {
-  construct(
-    legacySubjectId: string,
-    backUrl: string,
-    orderDetails: AlcoholMonitoringOrderDetails,
-  ): AlcoholMonitoringOrderDetailsView {
-    return createViewModelFromApiDto(legacySubjectId, backUrl, orderDetails)
+  construct(legacySubjectId: string, orderDetails: AlcoholMonitoringOrderDetails): AlcoholMonitoringOrderDetailsView {
+    return {
+      legacySubjectId,
+      deviceWearerDetails: {
+        legacySubjectId: orderDetails.legacySubjectId,
+        firstName: orderDetails.firstName,
+        lastName: orderDetails.lastName,
+        alias: orderDetails.alias,
+        legacySex: orderDetails.sex,
+        dateOfBirth: orderDetails.dateOfBirth,
+        primaryAddress: [
+          orderDetails.address1,
+          orderDetails.address2,
+          orderDetails.address3,
+          orderDetails.postcode,
+        ].filter(n => n && n !== ''),
+        phoneOrMobileNumber: orderDetails.phoneNumber,
+      },
+      orderDetails: {
+        orderStartDate: orderDetails.orderStartDate,
+        orderEndDate: orderDetails.orderEndDate,
+        orderType: orderDetails.orderType,
+        orderTypeDescription: orderDetails.orderTypeDescription,
+        orderEndOutcome: orderDetails.orderEndOutcome,
+        specialInstructions: orderDetails.specialInstructions,
+        enforceableCondition: orderDetails.enforceableCondition,
+        tagAtSource: orderDetails.tagAtSource,
+        responsibleOrganisationPhoneNumber: orderDetails.responsibleOrganisationPhoneNumber,
+        responsibleOrganisationEmail: orderDetails.responsibleOrganisationEmail,
+      },
+      backUrl: buildUrl(paths.ALCOHOL_MONITORING.SUMMARY, { legacySubjectId }),
+    }
   },
 }

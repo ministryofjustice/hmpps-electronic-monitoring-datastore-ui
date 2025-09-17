@@ -14,29 +14,23 @@ context('Integrity Order summary navigation', () => {
     cy.task('reset')
     cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-    cy.task('stubIntegrityGetOrderSummary', {
+    cy.task('stubIntegrityGetOrderDetails', {
       httpStatus: 200,
       legacySubjectId,
-      keyOrderInformation: {
+      body: {
         specials: 'no',
         legacySubjectId,
         name: 'Testopher Fakesmith',
         alias: 'an old tv show',
         dateOfBirth: '1950-01-01',
-        postCode: '7AB 8CD',
-        address1: '123 Fourth Street',
-        address2: 'Fiveton',
-        address3: 'Sixbury',
+        primaryAddressLine1: '123 Fourth Street',
+        primaryAddressLine2: 'Fiveton',
+        primaryAddressLine3: 'Sixbury',
+        primaryAddressPostCode: '7AB 8CD',
         orderStartDate: '2010-01-01',
         orderEndDate: '2030-01-01',
+        offenceRisk: false,
       },
-      subjectHistoryReport: {
-        reportUrl: '',
-        name: '',
-        createdOn: '',
-        time: '',
-      },
-      documents: [],
     })
 
     cy.signIn()

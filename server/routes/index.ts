@@ -9,7 +9,7 @@ import SearchController from '../controllers/searchController'
 
 // integrity orders
 import IntegritySummaryController from '../controllers/integrity/summaryController'
-import IntegrityDetailsController from '../controllers/integrity/detailsController'
+import IntegrityOrderDetailsController from '../controllers/integrity/orderDetailsController'
 import IntegrityEquipmentDetailsController from '../controllers/integrity/equipmentDetailsController'
 import IntegrityVisitDetailsController from '../controllers/integrity/visitDetailsController'
 import IntegrityServiceDetailsController from '../controllers/integrity/serviceDetailsController'
@@ -31,14 +31,14 @@ export default function routes({
   emDatastoreConnectionService,
   emDatastoreOrderSearchService,
 
-  integrityDetailsService,
+  integrityOrderDetailsService: integrityDetailsService,
   integrityEquipmentDetailsService,
   integrityVisitDetailsService,
   integrityServiceDetailsService,
   integrityEventHistoryService,
   integritySuspensionOfVisitsService,
 
-  alcoholMonitoringDetailsService,
+  alcoholMonitoringOrderDetailsService: alcoholMonitoringDetailsService,
   alcoholMonitoringEquipmentDetailsService,
   alcoholMonitoringVisitDetailsService,
   alcoholMonitoringServiceDetailsService,
@@ -53,7 +53,7 @@ export default function routes({
 
   // integrity
   const integritySummaryController = new IntegritySummaryController(auditService, integrityDetailsService)
-  const integrityDetailsController = new IntegrityDetailsController(auditService, integrityDetailsService)
+  const integrityDetailsController = new IntegrityOrderDetailsController(auditService, integrityDetailsService)
   const integrityEquipmentDetailsController = new IntegrityEquipmentDetailsController(
     auditService,
     integrityEquipmentDetailsService,

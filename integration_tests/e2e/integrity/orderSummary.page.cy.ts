@@ -1,6 +1,7 @@
 import Page from '../../pages/page'
 import IntegrityOrderSummaryPage from '../../pages/integrity/summary'
 import SearchPage from '../../pages/search'
+import { IntegrityOrderDetails } from '../../../server/data/models/integrityOrderDetails'
 
 context('Integrity Order Summary', () => {
   const legacySubjectId = '1234567'
@@ -10,29 +11,24 @@ context('Integrity Order Summary', () => {
       cy.task('reset')
       cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-      cy.task('stubIntegrityGetOrderSummary', {
+      cy.task('stubIntegrityGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
-        keyOrderInformation: {
+        body: {
           specials: 'no',
           legacySubjectId,
-          name: 'Testopher Fakesmith',
+          firstName: 'Testopher',
+          lastName: 'Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
-          postCode: '7AB 8CD',
-          address1: '123 Fourth Street',
-          address2: 'Fiveton',
-          address3: 'Sixbury',
+          primaryAddressLine1: '123 Fourth Street',
+          primaryAddressLine2: 'Fiveton',
+          primaryAddressLine3: 'Sixbury',
+          primaryAddressPostCode: '7AB 8CD',
           orderStartDate: '2010-01-01',
           orderEndDate: '2030-01-01',
-        },
-        subjectHistoryReport: {
-          reportUrl: '',
-          name: '',
-          createdOn: '',
-          time: '',
-        },
-        documents: [],
+          offenceRisk: false,
+        } as IntegrityOrderDetails,
       })
 
       cy.signIn()
@@ -71,29 +67,24 @@ context('Integrity Order Summary', () => {
       cy.task('reset')
       cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-      cy.task('stubIntegrityGetOrderSummary', {
+      cy.task('stubIntegrityGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
-        keyOrderInformation: {
+        body: {
           specials: 'no',
           legacySubjectId,
-          name: 'Testopher Fakesmith',
+          firstName: 'Testopher',
+          lastName: 'Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
-          postCode: '7AB 8CD',
-          address1: '123 Fourth Street',
-          address2: 'Fiveton',
-          address3: 'Sixbury',
+          primaryAddressLine1: '123 Fourth Street',
+          primaryAddressLine2: 'Fiveton',
+          primaryAddressLine3: 'Sixbury',
+          primaryAddressPostCode: '7AB 8CD',
           orderStartDate: '2010-01-01',
           orderEndDate: '2030-01-01',
-        },
-        subjectHistoryReport: {
-          reportUrl: '',
-          name: '',
-          createdOn: '',
-          time: '',
-        },
-        documents: [],
+          offenceRisk: false,
+        } as IntegrityOrderDetails,
       })
 
       cy.signIn()

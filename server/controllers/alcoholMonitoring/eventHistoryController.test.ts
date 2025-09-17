@@ -42,7 +42,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
   it('should render page with no data', async () => {
     const expectedViewModel = {
       legacySubjectId: testOrderId,
-      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/alcohol-monitoring/${testOrderId}`,
       eventHistory: [] as (
         | AlcoholMonitoringIncidentEvent
         | AlcoholMonitoringContactEvent
@@ -56,7 +56,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     expect(AlcoholMonitoringEventHistoryView.construct).toHaveBeenCalledWith(
       testOrderId,
-      `/orders/alcohol-monitoring/${testOrderId}`,
+      `/alcohol-monitoring/${testOrderId}`,
       [],
     )
     expect(AlcoholMonitoringEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
@@ -84,7 +84,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     const expectedViewModel = {
       legacySubjectId: testOrderId,
-      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/alcohol-monitoring/${testOrderId}`,
       eventHistory: [
         {
           isoDateTime: eventDateTime,
@@ -129,7 +129,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     const expectedViewModel = {
       legacySubjectId: testOrderId,
-      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/alcohol-monitoring/${testOrderId}`,
       eventHistory: [
         {
           isoDateTime: eventDateTime,
@@ -176,7 +176,7 @@ describe('AlcoholMonitoringEventHistoryController', () => {
 
     const expectedViewModel = {
       legacySubjectId: testOrderId,
-      backUrl: `/orders/alcohol-monitoring/${testOrderId}`,
+      backUrl: `/alcohol-monitoring/${testOrderId}`,
       eventHistory: [
         {
           isoDateTime: eventDateTime,

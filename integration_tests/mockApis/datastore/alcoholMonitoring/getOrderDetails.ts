@@ -36,7 +36,7 @@ export const stubAlcoholMonitoringGetOrderDetails = (options: GetOrderDetailsStu
   stubFor({
     request: {
       method: 'GET',
-      url: `/orders/alcohol-monitoring/${options.legacySubjectId}`,
+      url: `/datastore/orders/alcohol-monitoring/${options.legacySubjectId}`,
     },
     response: {
       status: options.httpStatus,
@@ -45,7 +45,7 @@ export const stubAlcoholMonitoringGetOrderDetails = (options: GetOrderDetailsStu
         options.httpStatus === 200
           ? options.body || {
               ...defaultOrderDetails,
-              legacySubjectId: options.legacySubjectId,
+              legacySubjectId: options.legacySubjectId || defaultOrderDetails.legacySubjectId,
             }
           : null,
     },

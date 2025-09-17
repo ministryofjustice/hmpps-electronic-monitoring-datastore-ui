@@ -3,6 +3,8 @@ import { Page } from '../../services/auditService'
 import { AuditService, IntegrityEventHistoryService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
 import { IntegrityEventHistoryView } from '../../models/view-models/integrityEventHistory'
+import paths from '../../constants/paths'
+import { buildUrl } from '../../utils/utils'
 
 export default class IntegrityEventHistoryController {
   constructor(
@@ -25,7 +27,7 @@ export default class IntegrityEventHistoryController {
 
     const viewModel = IntegrityEventHistoryView.construct(
       legacySubjectId,
-      `/integrity/${legacySubjectId}`,
+      buildUrl(paths.INTEGRITY_ORDER.SUMMARY, { legacySubjectId }),
       eventHistory,
     )
 
