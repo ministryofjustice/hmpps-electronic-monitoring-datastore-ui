@@ -22,7 +22,7 @@ context('Alcohol monitoring Visit details navigation', () => {
   })
 
   it('Contains order summary button and navigates to expected page', () => {
-    cy.task('stubAlcoholMonitoringGetOrderSummary', {
+    cy.task('stubAlcoholMonitoringGetOrderDetails', {
       httpStatus: 200,
       legacySubjectId,
     })

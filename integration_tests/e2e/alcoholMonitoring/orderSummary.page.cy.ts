@@ -17,7 +17,7 @@ context('Alcohol Monitoring Order Summary', () => {
 
   describe('General page content', () => {
     beforeEach(() => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: {
@@ -26,7 +26,7 @@ context('Alcohol Monitoring Order Summary', () => {
           lastName: 'Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
-          postCode: '7AB 8CD',
+          postcode: '7AB 8CD',
           address1: '123 Fourth Street',
           address2: 'Fiveton',
           address3: 'Sixbury',
@@ -66,7 +66,7 @@ context('Alcohol Monitoring Order Summary', () => {
 
   describe('Order information', () => {
     it('Displays a summary of the order', () => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: {
@@ -75,7 +75,7 @@ context('Alcohol Monitoring Order Summary', () => {
           lastName: 'Fakesmith',
           alias: 'an old tv show',
           dateOfBirth: '1950-01-01',
-          postCode: '7AB 8CD',
+          postcode: '7AB 8CD',
           address1: '123 Fourth Street',
           address2: 'Fiveton',
           address3: 'Sixbury',
@@ -96,7 +96,7 @@ context('Alcohol Monitoring Order Summary', () => {
     })
 
     it('Summary can be empty and still display', () => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: {
@@ -108,7 +108,7 @@ context('Alcohol Monitoring Order Summary', () => {
           address1: null,
           address2: null,
           address3: null,
-          postCode: null,
+          postcode: null,
           orderStartDate: null,
           orderEndDate: null,
         } as AlcoholMonitoringOrderDetails,

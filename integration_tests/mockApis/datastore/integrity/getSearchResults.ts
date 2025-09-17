@@ -1,9 +1,11 @@
-import { IntegritySearchResultsView } from '../../models/view-models/integritySearchResults'
+import { SuperAgentRequest } from 'superagent'
+import { stubFor } from '../../wiremock'
+import { IntegrityOrderDetails } from '../../../../server/data/models/integrityOrderDetails'
 
-const integritySearchResults: IntegritySearchResultsView = [
+const defaultOrders: IntegrityOrderDetails[] = [
   {
     legacySubjectId: '1000000',
-    firstName: 'Pheobe',
+    firstName: 'Amy',
     lastName: 'Smith',
     primaryAddressLine1: 'First line of address',
     primaryAddressLine2: 'Second line of address',
@@ -13,11 +15,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '01-01-1970',
     orderStartDate: '08-02-2019',
     orderEndDate: '08-02-2020',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 0,
-    sortOrderEndDate: 1596326400000,
-    sortOrderStartDate: 1564704000000,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '2000000',
     firstName: 'Bill',
@@ -30,11 +30,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '01-02-1971',
     orderStartDate: '03-11-2020',
     orderEndDate: '03-11-2021',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 31622400000,
-    sortOrderEndDate: 1615420800000,
-    sortOrderStartDate: 1583884800000,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '3000000',
     firstName: 'Claire',
@@ -47,11 +45,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '09-04-1962',
     orderStartDate: '05-08-2001',
     orderEndDate: '05-08-2002',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: -231206400000,
-    sortOrderEndDate: 1020816000000,
-    sortOrderStartDate: 989280000000,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '8000000',
     firstName: 'Daniel',
@@ -64,11 +60,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '12-11-1978',
     orderStartDate: '18-02-2012',
     orderEndDate: '18-02-2014',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 282182400000,
-    sortOrderEndDate: NaN,
-    sortOrderStartDate: NaN,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '30000',
     firstName: 'Emma',
@@ -81,11 +75,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
     orderEndDate: '24-01-2020',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 983577600000,
-    sortOrderEndDate: NaN,
-    sortOrderStartDate: NaN,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '4000000',
     firstName: 'Fred',
@@ -98,11 +90,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
     orderEndDate: '01-05-2022',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 334713600000,
-    sortOrderEndDate: 1641340800000,
-    sortOrderStartDate: 1609804800000,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '30000',
     firstName: 'Geoff',
@@ -115,11 +105,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
     orderEndDate: '24-01-2020',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 983577600000,
-    sortOrderEndDate: NaN,
-    sortOrderStartDate: NaN,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '4000000',
     firstName: 'Hortense',
@@ -132,11 +120,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
     orderEndDate: '01-05-2022',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 334713600000,
-    sortOrderEndDate: 1641340800000,
-    sortOrderStartDate: 1609804800000,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '30000',
     firstName: 'Isaac',
@@ -149,11 +135,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
     orderEndDate: '24-01-2020',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 983577600000,
-    sortOrderEndDate: NaN,
-    sortOrderStartDate: NaN,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '4000000',
     firstName: 'Jessica',
@@ -166,11 +150,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
     orderEndDate: '01-05-2022',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 334713600000,
-    sortOrderEndDate: 1641340800000,
-    sortOrderStartDate: 1609804800000,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '30000',
     firstName: 'Ken',
@@ -183,11 +165,9 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '03-03-2001',
     orderStartDate: '24-01-2017',
     orderEndDate: '24-01-2020',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 983577600000,
-    sortOrderEndDate: NaN,
-    sortOrderStartDate: NaN,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
   {
     legacySubjectId: '4000000',
     firstName: 'Lucille',
@@ -200,11 +180,36 @@ const integritySearchResults: IntegritySearchResultsView = [
     dateOfBirth: '08-10-1980',
     orderStartDate: '01-05-2021',
     orderEndDate: '01-05-2022',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
-    sortDateOfBirth: 334713600000,
-    sortOrderEndDate: 1641340800000,
-    sortOrderStartDate: 1609804800000,
-  },
+    specials: 'no',
+    offenceRisk: false,
+  } as IntegrityOrderDetails,
 ]
 
-export default integritySearchResults
+const defaultGetSearchResultsOptions = {
+  queryExecutionId: 'query-execution-id',
+  httpStatus: 200,
+  results: defaultOrders,
+} as GetSearchResultsStubOptions
+
+type GetSearchResultsStubOptions = {
+  queryExecutionId: string
+  httpStatus: number
+  results: IntegrityOrderDetails[]
+}
+
+export const stubGetIntegritySearchResults = (
+  options: GetSearchResultsStubOptions = defaultGetSearchResultsOptions,
+): SuperAgentRequest =>
+  stubFor({
+    request: {
+      method: 'GET',
+      url: `/datastore/orders/integrity?id=${options.queryExecutionId}`,
+    },
+    response: {
+      status: options.httpStatus,
+      headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+      jsonBody: options.httpStatus === 200 ? options.results : null,
+    },
+  })
+
+export default stubGetIntegritySearchResults

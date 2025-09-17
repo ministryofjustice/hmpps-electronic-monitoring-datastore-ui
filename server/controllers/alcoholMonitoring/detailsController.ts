@@ -1,15 +1,14 @@
 import type { Request, RequestHandler, Response } from 'express'
 import paths from '../../constants/paths'
 import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringDetailsService } from '../../services'
-// eslint-disable-next-line import/no-named-as-default
+import { AuditService, AlcoholMonitoringOrderDetailsService } from '../../services'
 import { AlcoholMonitoringOrderDetailsView } from '../../models/view-models/alcoholMonitoringOrderDetails'
 import { AlchoholMonitoringSearchResultView } from '../../models/view-models/alcoholMonitoringSearchResults'
 
 export default class OrderDetailsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly alcoholMonitoringDetailsService: AlcoholMonitoringDetailsService,
+    private readonly alcoholMonitoringDetailsService: AlcoholMonitoringOrderDetailsService,
   ) {}
 
   details: RequestHandler = async (req: Request, res: Response) => {
@@ -25,11 +24,7 @@ export default class OrderDetailsController {
       legacySubjectId,
     })
 
-    const viewModel = AlcoholMonitoringOrderDetailsView.construct(
-      legacySubjectId,
-      `/orders/alcohol-monitoring/${legacySubjectId}`,
-      orderDetails,
-    )
+    const viewModel = AlcoholMonitoringOrderDetailsView.construct(legacySubjectId, orderDetails)
 
     res.render('pages/alcohol-monitoring/details', viewModel)
   }

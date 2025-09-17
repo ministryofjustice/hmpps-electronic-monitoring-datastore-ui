@@ -13,10 +13,6 @@ export default class AlcoholMonitoringSearchResultsPage extends AppPage {
     return cy.contains('Return to search page')
   }
 
-  get serviceInformation(): PageElement {
-    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
-  }
-
   get backButton(): PageElement {
     return cy.contains('back to search form')
   }

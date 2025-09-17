@@ -8,7 +8,7 @@ context('Integrity search results', () => {
   beforeEach(() => {
     cy.task('reset')
     cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-    cy.task('stubIntegrityGetSearchResults', {
+    cy.task('stubGetIntegritySearchResults', {
       queryExecutionId,
       httpStatus: 200,
       results: [],

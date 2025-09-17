@@ -8,10 +8,6 @@ export default class OrderSummaryPage extends AppPage {
     super('Key order details', paths.INTEGRITY_ORDER.SUMMARY, 'Order information')
   }
 
-  get serviceInformation(): PageElement {
-    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
-  }
-
   get summaryDetails(): SummaryListComponent {
     return new SummaryListComponent('Order information')
   }

@@ -3,11 +3,7 @@ import type { RequestHandler } from 'express'
 
 import logger from '../../logger'
 import asyncMiddleware from './asyncMiddleware'
-
-export enum HMPPS_AUTH_ROLES {
-  ROLE_EM_DATASTORE_GENERAL__RO = 'ROLE_EM_DATASTORE_GENERAL_RO',
-  ROLE_EM_DATASTORE_RESTRICTED__RO = 'ROLE_EM_DATASTORE_RESTRICTED_RO',
-}
+import { HMPPS_AUTH_ROLES } from '../constants/roles'
 
 export const emDatastoreApiAuthorisedRoles = () => {
   return Object.keys(HMPPS_AUTH_ROLES).map(key => HMPPS_AUTH_ROLES[key as keyof typeof HMPPS_AUTH_ROLES])

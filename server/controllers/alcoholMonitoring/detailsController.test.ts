@@ -4,6 +4,7 @@ import AlcoholMonitoringOrderDetailsService from '../../services/alcoholMonitori
 import AlcoholMonitoringDetailsController from './detailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
+import { AlcoholMonitoringOrderDetailsView } from '../../models/view-models/alcoholMonitoringOrderDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
@@ -108,7 +109,7 @@ describe('AlcoholMonitoringDetailsController', () => {
 
       const expectedPageData = {
         legacySubjectId: expectedOrderId,
-        backUrl: `/orders/alcohol-monitoring/${expectedOrderId}`,
+        backUrl: `/alcohol-monitoring/${expectedOrderId}`,
         deviceWearerDetails: {
           legacySubjectId: expectedOrderId,
           firstName: 'Testopher',
@@ -117,10 +118,7 @@ describe('AlcoholMonitoringDetailsController', () => {
           dateOfBirth: '1950-01-01T00:00:00',
           legacySex: 'Sex',
           phoneOrMobileNumber: '09876543210',
-          primaryAddressLine1: '123 Fourth Street',
-          primaryAddressLine2: 'Fiveton',
-          primaryAddressLine3: 'Sixbury',
-          primaryAddressPostCode: '7AB 8CD',
+          primaryAddress: ['123 Fourth Street', 'Fiveton', 'Sixbury', '7AB 8CD'],
         },
         orderDetails: {
           orderStartDate: '2010-01-01T00:00:00',
@@ -134,7 +132,7 @@ describe('AlcoholMonitoringDetailsController', () => {
           tagAtSource: 'no',
           specialInstructions: 'Special instructions',
         },
-      }
+      } as AlcoholMonitoringOrderDetailsView
 
       alcoholMonitoringDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(mockOrderDetails)
 
