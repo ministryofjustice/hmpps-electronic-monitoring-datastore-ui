@@ -36,7 +36,7 @@ const defaultOrderDetails = {
   notifyingOrganisationDetailsName: null,
   responsibleOrganisation: null,
   responsibleOrganisationDetailsRegion: null,
-}
+} as IntegrityOrderDetails
 
 type GetOrderDetailsStubOptions = {
   httpStatus: number
@@ -48,7 +48,7 @@ export const stubIntegrityGetOrderDetails = (options: GetOrderDetailsStubOptions
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/integrity/${options.legacySubjectId}/details`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}`,
     },
     response: {
       status: options.httpStatus,

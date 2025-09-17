@@ -4,47 +4,34 @@
 {% from '../../components/safeDateFormatters.njk' import safeGovukDate %}
 
 {% set heading = "Order details" %}
-{% set pageTitle = applicationName + " - " + heading %}
-{% set backUrl = backUrl %}
-
-{% set legacySubjectId = details.legacySubjectId %}
 
 {% block innerContent %}
   <h2 class="govuk-heading-m">Device wearer</h2>
 
-  {% set offenseRisk = 'Yes' if details.offenceRisk else 'No' %}
-  {%
-    set primaryAddress = [
-      details.primaryAddressLine1,
-      details.primaryAddressLine2,
-      details.primaryAddressLine3,
-      details.primaryAddressPostCode
-    ] | reject(null) | join('<br>')
-  %}
   {{
     govukSummaryList({
       rows: [
-        { key: { text: 'Specials' }, value:  { text: details.specials } },
-        { key: { text: 'Legacy subject ID' }, value:  { text: details.legacySubjectId } },
-        { key: { text: 'First name' }, value:  { text: details.firstName } },
-        { key: { text: 'Last name' }, value:  { text: details.lastName } },
-        { key: { text: 'Alias' }, value:  { text: details.alias } },
-        { key: { text: 'Date of birth' }, value:  { text: safeGovukDate(details.dateOfBirth) } },
-        { key: { text: 'Adult/child' }, value:  { text: details.adultOrChild } },
-        { key: { text: 'Legacy sex' }, value:  { text: details.sex } },
-        { key: { text: 'Contact' }, value:  { text: details.contact } },
-        { key: { text: 'Primary address' }, value:  { html: primaryAddress } },
-        { key: { text: 'Phone/mobile number' }, value:  { text: details.phoneOrMobileNumber } },
-        { key: { text: 'PPO' }, value:  { text: details.ppo } },
-        { key: { text: 'MAPPA' }, value:  { text: details.mappa } },
-        { key: { text: 'Technical bail' }, value:  { text: details.technicalBail } },
-        { key: { text: 'Manual risk' }, value:  { text: details.manualRisk } },
-        { key: { text: 'Offence risk' }, value:  { text: offenseRisk } },
-        { key: { text: 'PostCode risk' }, value:  { text: details.postCodeRisk } },
-        { key: { text: 'False limb risk' }, value:  { text: details.falseLimbRisk } },
-        { key: { text: 'Migrated risk' }, value:  { text: details.migratedRisk } },
-        { key: { text: 'Range risk' }, value:  { text: details.rangeRisk } },
-        { key: { text: 'Report risk' }, value:  { text: details.reportRisk } }
+        { key: { text: 'Specials' }, value:  { text: deviceWearerDetails.specials } },
+        { key: { text: 'Legacy subject ID' }, value:  { text: deviceWearerDetails.legacySubjectId } },
+        { key: { text: 'First name' }, value:  { text: deviceWearerDetails.firstName } },
+        { key: { text: 'Last name' }, value:  { text: deviceWearerDetails.lastName } },
+        { key: { text: 'Alias' }, value:  { text: deviceWearerDetails.alias } },
+        { key: { text: 'Date of birth' }, value:  { text: safeGovukDate(deviceWearerDetails.dateOfBirth) } },
+        { key: { text: 'Adult/child' }, value:  { text: deviceWearerDetails.adultOrChild } },
+        { key: { text: 'Legacy sex' }, value:  { text: deviceWearerDetails.sex } },
+        { key: { text: 'Contact' }, value:  { text: deviceWearerDetails.contact } },
+        { key: { text: 'Primary address' }, value:  { html: deviceWearerDetails.primaryAddress | join('<br/>') } },
+        { key: { text: 'Phone/mobile number' }, value:  { text: deviceWearerDetails.phoneOrMobileNumber } },
+        { key: { text: 'PPO' }, value:  { text: deviceWearerDetails.ppo } },
+        { key: { text: 'MAPPA' }, value:  { text: deviceWearerDetails.mappa } },
+        { key: { text: 'Technical bail' }, value:  { text: deviceWearerDetails.technicalBail } },
+        { key: { text: 'Manual risk' }, value:  { text: deviceWearerDetails.manualRisk } },
+        { key: { text: 'Offence risk' }, value:  { text: orderDdeviceWearerDetailsetails.offenseRisk } },
+        { key: { text: 'PostCode risk' }, value:  { text: orderdeviceWearerDetailsDetails.postCodeRisk } },
+        { key: { text: 'False limb risk' }, value:  { text: ordedeviceWearerDetailsrDetails.falseLimbRisk } },
+        { key: { text: 'Migrated risk' }, value:  { text: orderDdeviceWearerDetailsetails.migratedRisk } },
+        { key: { text: 'Range risk' }, value:  { text: deviceWearerDetails.rangeRisk } },
+        { key: { text: 'Report risk' }, value:  { text: deviceWearerDetails.reportRisk } }
       ]
     })
   }}
@@ -54,15 +41,15 @@
   {{
     govukSummaryList({
       rows: [
-        { key: { text: 'Order start date' }, value: { text: safeGovukDate(details.orderStartDate) } },
-        { key: { text: 'Order end date' }, value: { text: safeGovukDate(details.orderEndDate) } },
-        { key: { text: 'Order type' }, value: { text: details.orderType } },
-        { key: { text: 'Order type description' }, value: { text: details.orderTypeDescription } },
-        { key: { text: 'Order type detail' }, value: { text: details.orderTypeDetail } },
-        { key: { text: 'Wearing wrist PID' }, value: { text: details.wearingWristPid } },
-        { key: { text: 'Notifying organisation name' }, value: { text: details.notifyingOrganisationDetailsName } },
-        { key: { text: 'Responsible organisation' }, value: { text: details.responsibleOrganisation } },
-        { key: { text: 'Responsible organisation region' }, value: { text: details.responsibleOrganisationDetailsRegion } }
+        { key: { text: 'Order start date' }, value: { text: safeGovukDate(orderDetails.orderStartDate) } },
+        { key: { text: 'Order end date' }, value: { text: safeGovukDate(orderDetails.orderEndDate) } },
+        { key: { text: 'Order type' }, value: { text: orderDetails.orderType } },
+        { key: { text: 'Order type description' }, value: { text: orderDetails.orderTypeDescription } },
+        { key: { text: 'Order type detail' }, value: { text: orderDetails.orderTypeDetail } },
+        { key: { text: 'Wearing wrist PID' }, value: { text: orderDetails.wearingWristPid } },
+        { key: { text: 'Notifying organisation name' }, value: { text: orderDetails.notifyingOrganisationDetailsName } },
+        { key: { text: 'Responsible organisation' }, value: { text: orderDetails.responsibleOrganisation } },
+        { key: { text: 'Responsible organisation region' }, value: { text: orderDetails.responsibleOrganisationDetailsRegion } }
       ]
     })
   }}

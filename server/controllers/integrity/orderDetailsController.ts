@@ -1,13 +1,14 @@
 import type { Request, RequestHandler, Response } from 'express'
 import paths from '../../constants/paths'
 import { Page } from '../../services/auditService'
-import { AuditService, IntegrityDetailsService } from '../../services'
+import { AuditService, IntegrityOrderDetailsService } from '../../services'
 import { IntegritySearchResultView } from '../../models/view-models/integritySearchResults'
+import { IntegrityOrderDetailsView } from '../../models/view-models/integrityOrderDetails'
 
-export default class IntegrityDetailsController {
+export default class IntegrityOrderDetailsController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly integrityDetailsService: IntegrityDetailsService,
+    private readonly integrityDetailsService: IntegrityOrderDetailsService,
   ) {}
 
   details: RequestHandler = async (req: Request, res: Response) => {
@@ -23,11 +24,8 @@ export default class IntegrityDetailsController {
       legacySubjectId,
     })
 
-    res.render('pages/integrity/details', {
-      legacySubjectId,
-      backUrl: `/integrity/${legacySubjectId}`,
-      details: orderDetails,
-    })
+    const viewModel = IntegrityOrderDetailsView.construct(legacySubjectId, orderDetails)
+    res.render('pages/integrity/details', viewModel)
   }
 
   searchResults: RequestHandler = async (req: Request, res: Response, next) => {

@@ -1,5 +1,6 @@
 import Page from '../../pages/page'
 import OrderDetailsPage from '../../pages/integrity/details'
+import { IntegrityOrderDetails } from '../../../server/data/models/integrityOrderDetails'
 
 context('Order Details', () => {
   const legacySubjectId = '1232123'
@@ -45,7 +46,7 @@ context('Order Details', () => {
         notifyingOrganisationDetailsName: null,
         responsibleOrganisation: null,
         responsibleOrganisationDetailsRegion: null,
-      },
+      } as IntegrityOrderDetails,
     })
 
     cy.signIn()

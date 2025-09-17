@@ -39,7 +39,7 @@ context('Alcohol Monitoring Visit Details', () => {
     })
 
     it('Can go back to the summary page', () => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
       })
