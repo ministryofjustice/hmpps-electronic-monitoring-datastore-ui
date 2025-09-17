@@ -1,17 +1,20 @@
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import AuditService, { Page } from '../../services/auditService'
-import IntegrityDetailsService from '../../services/integrity/orderDetailsService'
-import IntegrityDetailsController from './detailsController'
+import IntegrityOrderDetailsService from '../../services/integrity/orderDetailsService'
+import IntegrityOrderDetailsController from './orderDetailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
-import { IntegritySearchResultsView } from '../../models/view-models/integritySearchResults'
+import { IntegritySearchResultView } from '../../models/view-models/integritySearchResults'
 import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
+import { IntegrityOrderDetailsView } from '../../models/view-models/integrityOrderDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/orderDetailsService')
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const integrityDetailsService = { getOrderDetails: jest.fn() } as unknown as IntegrityDetailsService
+const integrityOrderDetailsService = {
+  getOrderDetails: jest.fn(),
+} as unknown as IntegrityOrderDetailsService
 
 const integrityOrderDetails = [
   {
@@ -31,45 +34,39 @@ const integrityOrderDetails = [
   } as IntegrityOrderDetails,
 ]
 
-const integritySearchResults: IntegritySearchResultsView = [
+const integritySearchResults: IntegritySearchResultView = [
   {
     legacySubjectId: '1000000',
-    firstName: 'Pheobe',
-    lastName: 'Smith',
-    primaryAddressLine1: 'First line of address',
-    primaryAddressLine2: 'Second line of address',
-    primaryAddressLine3: 'Third line of address',
-    primaryAddressPostCode: 'PostCode',
+    name: 'Pheobe Smith',
+    primaryAddress: ['First line of address', 'Second line of address', 'Third line of address', 'PostCode'],
     alias: null,
     dateOfBirth: '01-01-1970',
     orderStartDate: '08-02-2019',
     orderEndDate: '08-02-2020',
-    sortAddress: 'First line of addressSecond line of addressThird line of addressPostCode',
+    sortAddress: 'First line of address Second line of address Third line of address PostCode',
     sortDateOfBirth: 0,
     sortOrderEndDate: 1596326400000,
     sortOrderStartDate: 1564704000000,
   },
 ]
 
-describe('IntegrityDetailsController', () => {
-  let controller: IntegrityDetailsController
-  let req: Request
+describe('Integrity summary Controller', () => {
+  let controller: IntegrityOrderDetailsController
+
+  const expectedOrderId = 'testId'
+  const req = createMockRequest({
+    params: {
+      legacySubjectId: expectedOrderId,
+    },
+    id: 'fakeId', // correlation-id
+  })
   let res: Response
   const next = jest.fn()
 
-  it(`constructs the system under test and mocks appropriately`, () => {
-    controller = new IntegrityDetailsController(auditService, integrityDetailsService)
-    expect(controller).not.toBeNull()
-  })
-
-  describe('Details', () => {
+  describe('Integrity order details', () => {
     beforeEach(() => {
       jest.clearAllMocks()
-      controller = new IntegrityDetailsController(auditService, integrityDetailsService)
-
-      req = createMockRequest({
-        id: 'fakeId',
-      })
+      controller = new IntegrityOrderDetailsController(auditService, integrityOrderDetailsService)
 
       res = createMockResponse()
       res.status = jest.fn().mockReturnValue(res)
@@ -78,32 +75,28 @@ describe('IntegrityDetailsController', () => {
     it(`logs hitting the page`, async () => {
       const expectedLogData = { who: 'fakeUserName', correlationId: 'fakeId' }
 
+      integrityOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce({})
+
       controller.details(req, res, next)
 
       expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_ORDER_DETAILS_PAGE, expectedLogData)
     })
 
     it(`calls the DatastoreOrderService for data using the correct legacySubjectId parameter`, async () => {
-      const expectedOrderId = 'testId'
       const expectedOrderServiceParams: GetOrderRequest = {
         userToken: 'fakeUserToken',
         legacySubjectId: expectedOrderId,
       }
-      req = createMockRequest({
-        params: {
-          legacySubjectId: expectedOrderId,
-        },
-      })
 
-      integrityDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce({})
+      integrityOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce({})
 
       await controller.details(req, res, next)
 
-      expect(integrityDetailsService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
+      expect(integrityOrderDetailsService.getOrderDetails).toHaveBeenCalledWith(expectedOrderServiceParams)
     })
 
     it(`returns correct error when orderDetailsService fails`, async () => {
-      integrityDetailsService.getOrderDetails = jest.fn().mockImplementation(() => {
+      integrityOrderDetailsService.getOrderDetails = jest.fn().mockImplementation(() => {
         throw new Error('Expected error message')
       })
 
@@ -111,22 +104,51 @@ describe('IntegrityDetailsController', () => {
     })
 
     it(`renders the page with appropriate data`, async () => {
-      const expectedOrderId = 'testId'
-      const expectedOrderDetails = 'expectedOrderDetails'
-
-      req = createMockRequest({
-        params: {
-          legacySubjectId: expectedOrderId,
-        },
-      })
+      const expectedOrderDetails = {
+        firstName: 'John',
+        lastName: 'West',
+      }
 
       const expectedPageData = {
         legacySubjectId: expectedOrderId,
+        deviceWearerDetails: {
+          adultOrChild: undefined,
+          alias: undefined,
+          contact: undefined,
+          dateOfBirth: undefined,
+          falseLimbRisk: undefined,
+          firstName: 'John',
+          lastName: 'West',
+          legacySubjectId: 'testId',
+          manualRisk: undefined,
+          mappa: undefined,
+          migratedRisk: undefined,
+          offenseRisk: 'No',
+          phoneOrMobileNumber: undefined,
+          postCodeRisk: undefined,
+          ppo: undefined,
+          primaryAddress: [],
+          rangeRisk: undefined,
+          reportRisk: undefined,
+          sex: undefined,
+          specials: undefined,
+          technicalBail: undefined,
+        },
+        orderDetails: {
+          notifyingOrganisationDetailsName: undefined,
+          orderEndDate: undefined,
+          orderStartDate: undefined,
+          orderType: undefined,
+          orderTypeDescription: undefined,
+          orderTypeDetail: undefined,
+          responsibleOrganisation: undefined,
+          responsibleOrganisationDetailsRegion: undefined,
+          wearingWristPid: undefined,
+        },
         backUrl: `/integrity/${expectedOrderId}`,
-        details: 'expectedOrderDetails',
-      }
+      } as IntegrityOrderDetailsView
 
-      integrityDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
+      integrityOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(expectedOrderDetails)
 
       await controller.details(req, res, next)
 
@@ -139,14 +161,14 @@ describe('IntegrityDetailsController', () => {
 
     beforeEach(() => {
       jest.clearAllMocks()
-      controller = new IntegrityDetailsController(auditService, integrityDetailsService)
+      controller = new IntegrityOrderDetailsController(auditService, integrityOrderDetailsService)
 
-      req = createMockRequest()
       res = createMockResponse()
+      res.status = jest.fn().mockReturnValue(res)
     })
 
     it('should redirect to the search page when no orderExecutionId is submitted', async () => {
-      integrityDetailsService.getSearchResults = jest.fn().mockResolvedValue(integrityOrderDetails)
+      integrityOrderDetailsService.getSearchResults = jest.fn().mockResolvedValue(integrityOrderDetails)
 
       await controller.searchResults(req, res, next)
       expect(res.redirect).toHaveBeenCalledWith('/search')
@@ -156,7 +178,7 @@ describe('IntegrityDetailsController', () => {
       const viewModel = [...integritySearchResults]
       req.query.search_id = queryExecutionId
 
-      integrityDetailsService.getSearchResults = jest.fn().mockResolvedValue(integrityOrderDetails)
+      integrityOrderDetailsService.getSearchResults = jest.fn().mockResolvedValue(integrityOrderDetails)
 
       await controller.searchResults(req, res, next)
 

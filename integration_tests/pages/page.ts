@@ -1,36 +1,6 @@
+import { extractParamsAndArgs, buildUrl } from '../../server/utils/utils'
+
 export type PageElement = Cypress.Chainable<JQuery>
-
-const extractParamsAndArgs = (args: unknown[]) => {
-  let params: object = {}
-  let query: object = {}
-
-  if (typeof args[0] !== 'string') {
-    params = args.shift() as object
-    query = args.shift() as object
-  }
-
-  return { params, query }
-}
-
-const buildUrl = (template: string, params: object = {}, query: object = {}) => {
-  const parts = template.split('/')
-
-  Object.keys(params).forEach(param => {
-    const index = parts.indexOf(`:${param}`)
-    if (index > -1) {
-      parts[index] = params[param]
-    }
-  })
-
-  const uri = parts.join('/')
-
-  const querystring: string[] = []
-  Object.keys(query).forEach(key => {
-    querystring.push(`${key}=${query[key]}`)
-  })
-
-  return `${uri}${querystring.length > 0 ? '?' : ''}${querystring.join('&')}`
-}
 
 export default abstract class Page {
   static verifyOnPage<T extends Page, Args extends unknown[]>(
@@ -100,7 +70,10 @@ export default abstract class Page {
     cy.isAccessible()
   }
 
-  checkUrl(params: object = {}, query: object = {}): void {
+  checkUrl(
+    params: Record<string, string | number | boolean> = {},
+    query: Record<string, string | number | boolean> = {},
+  ): void {
     const url = buildUrl(this.uri as string, params, query)
 
     cy.url().should('equal', `${Cypress.config().baseUrl}${url}`)

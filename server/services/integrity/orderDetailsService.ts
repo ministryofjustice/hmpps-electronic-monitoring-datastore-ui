@@ -7,7 +7,7 @@ import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 import { ListSearchResultsRequest } from '../../models/requests/ListSearchResultsRequest'
 
-export default class IntegrityDetailsService {
+export default class IntegrityOrderDetailsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getOrderDetails(input: GetOrderRequest): Promise<IntegrityOrderDetails> {

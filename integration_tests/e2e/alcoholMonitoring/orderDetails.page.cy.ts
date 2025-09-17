@@ -39,7 +39,7 @@ context('Alcohol Monitoring Order Details', () => {
     })
 
     it('Can go back to the summary page', () => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
       })
@@ -108,7 +108,7 @@ context('Alcohol Monitoring Order Details', () => {
           address1: '1 Primary Street',
           address2: 'Sutton',
           address3: 'London',
-          postCode: 'ABC 123',
+          postcode: 'ABC 123',
           orderStartDate: '2012-02-01T00:00:00',
           orderEndDate: '2013-04-03T00:00:00',
           enforceableCondition: 'Enforceable condition',

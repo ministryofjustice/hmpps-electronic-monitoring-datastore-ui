@@ -7,22 +7,30 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
 {% set heading = page.title %}
-{% set pageTitle = makePageTitle({ pageHeading: page.title, hasErrors: errors }) %}
+{% set pageTitle = page.title %}
 {% set backUrl = "/" %}
 
 {% block innerContent %}
-  <form method="post" novalidate id="order-search-form">
-    <span class="govuk-caption-l  govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
+  {{ errorSummary | dump }}
 
-    {{ validationErrors | dump }}
+  {% if errorSummary %}
+    {% set errorList = [] %}
+    {% for entry in errorSummary.errorList %}
+    {% set errorList = (errorList.push({
+      text: entry.error,
+      href: "#" + entry.field
+    }), errorList) %}
+    {% endfor %}
+    {{ govukErrorSummary({
+      titleText: errorSummary.title,
+      errorList: errorList
+    }) }}
+  {% endif %}
 
-    {% if emptyFormError %}
-    <div class="govuk-form-group--error">
-      <p class="govuk-error-message">{{ emptyFormError.text }}</p>
-    </div>
-    {% endif %}
+  <form action="" method="post" {{ formEncoding }} novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrfToken }}">
 
-    <input type="hidden" name="_csrf" value="{{ csrfToken }}"/>
+    <span class="govuk-caption-l govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</span>
 
     {# TODO: Remove environment flag when AM is ready for deployment to preprod & prod #}
     {% if (environmentName | upper == 'DEV' ) %}
@@ -52,7 +60,7 @@
 
     {{ govukInput({
       label: {
-        text: "Legacy Subject Id",
+        text: "Legacy subject id",
         classes: "govuk-label--s"
       },
       classes: "govuk-!-width-two-thirds",
@@ -103,28 +111,28 @@
       items: [
         {
           id: "dob-day",
-          name: "dobDay",
+          name: "Day",
           classes: "govuk-input--width-2",
           value: dob.value.day,
           attributes: disabled
         },
         {
           id: "dob-month",
-          name: "dobMonth",
+          name: "Month",
           classes: "govuk-input--width-2",
           value: dob.value.month,
           attributes: disabled
         },
         {
           id: "dob-year",
-          name: "dobYear",
+          name: "Year",
           classes: "govuk-input--width-4",
           value: dob.value.year,
           attributes: disabled
         }
       ],
       errorMessage: dob.error
-      }) }}
+    }) }}
 
     {{ govukInput({
       label: {
@@ -138,13 +146,11 @@
       errorMessage: alias.error
     }) }}
 
-    {% if emptyFormError %}
-      </div>
-    {% endif %}
-
-    {{ govukButton({
-      text: "Search",
-      classes: "ems-search-form__button--submit"
-    }) }}
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: "Search",
+        classes: "ems-search-form__button--submit"
+      }) }}
+    </div>
   </form>
 {% endblock %}

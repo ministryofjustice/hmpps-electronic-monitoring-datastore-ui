@@ -3,6 +3,8 @@ import { Page } from '../../services/auditService'
 import { AuditService, IntegrityEquipmentDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
 import { IntegrityEquipmentDetailsView } from '../../models/view-models/integrityEquipmentDetails'
+import paths from '../../constants/paths'
+import { buildUrl } from '../../utils/utils'
 
 export default class IntegrityEquipmentDetailsController {
   constructor(
@@ -25,7 +27,7 @@ export default class IntegrityEquipmentDetailsController {
 
     const viewModel = IntegrityEquipmentDetailsView.construct(
       legacySubjectId,
-      `/integrity/${legacySubjectId}`,
+      buildUrl(paths.INTEGRITY_ORDER.SUMMARY, { legacySubjectId }),
       equipmentDetails,
     )
 
