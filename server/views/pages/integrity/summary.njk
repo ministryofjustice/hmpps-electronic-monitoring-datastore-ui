@@ -4,40 +4,21 @@
 {% from '../../components/safeDateFormatters.njk' import safeGovukDate %}
 
 {% set heading = "Key order details" %}
-{% set pageTitle = applicationName + " - " + heading %}
-{% set backUrl = backUrl %}
-
-
-{% set legacySubjectId = legacySubjectId %}
 
 {% block innerContent %}
   <h2 class="govuk-heading-m">Order information</h2>
 
-  {%
-    set primaryAddress = [
-      orderDetails.primaryAddressLine1,
-      orderDetails.primaryAddressLine2,
-      orderDetails.primaryAddressLine3,
-      orderDetails.primaryAddressPostCode
-    ] | reject(null) | join('<br>')
-  %}
-  {%
-    set name = [
-      orderDetails.firstName,
-      orderDetails.lastName
-    ] | reject(null) | join(' ')
-  %}
   {{
     govukSummaryList({
       rows: [
-        { key: { text: 'Specials' }, value:  { text: orderDetails.specials } },
-        { key: { text: 'Legacy Subject ID' }, value:  { text: orderDetails.legacySubjectId } },
-        { key: { text: 'Name' }, value:  { text: name } },
-        { key: { text: 'Alias' }, value:  { text: orderDetails.alias } },
-        { key: { text: 'Date of birth' }, value:  { text: safeGovukDate(orderDetails.dateOfBirth) } },
-        { key: { text: 'Primary address' }, value:  { html: primaryAddress } },
-        { key: { text: 'Order start date' }, value:  { text: safeGovukDate(orderDetails.orderStartDate) } },
-        { key: { text: 'Order end date' }, value:  { text: safeGovukDate(orderDetails.orderEndDate) } }
+        { key: { text: 'Specials' }, value:  { text: orderSummary.specials } },
+        { key: { text: 'Legacy Subject ID' }, value:  { text: orderSummary.legacySubjectId } },
+        { key: { text: 'Name' }, value:  { text: orderSummary.name } },
+        { key: { text: 'Alias' }, value:  { text: orderSummary.alias } },
+        { key: { text: 'Date of birth' }, value:  { text: safeGovukDate(orderSummary.dateOfBirth) } },
+        { key: { text: 'Primary address' }, value:  { html: orderSummary.primaryAddress | join('<br>') } },
+        { key: { text: 'Order start date' }, value:  { text: safeGovukDate(orderSummary.orderStartDate) } },
+        { key: { text: 'Order end date' }, value:  { text: safeGovukDate(orderSummary.orderEndDate) } }
       ]
     })
   }}

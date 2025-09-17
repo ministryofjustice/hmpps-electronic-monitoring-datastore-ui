@@ -14,6 +14,10 @@ export default class AppPage extends Page {
     return cy.contains('Back')
   }
 
+  get serviceInformation(): PageElement {
+    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
+  }
+
   checkOnPage(): void {
     super.checkOnPage()
 

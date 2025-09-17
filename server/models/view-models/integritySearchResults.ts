@@ -1,13 +1,9 @@
 import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 
-export type IntegritySearchResultsView = {
+export type IntegritySearchResult = {
   legacySubjectId?: string
-  firstName?: string
-  lastName?: string
-  primaryAddressLine1?: string
-  primaryAddressLine2?: string
-  primaryAddressLine3?: string
-  primaryAddressPostCode?: string
+  name?: string
+  primaryAddress?: string[]
   alias?: string | null
   dateOfBirth?: string
   orderStartDate?: string
@@ -16,35 +12,32 @@ export type IntegritySearchResultsView = {
   sortDateOfBirth?: number
   sortOrderStartDate?: number
   sortOrderEndDate?: number
-}[]
+}
 
-const createViewModelFromApiDto = (orders: IntegrityOrderDetails[]): IntegritySearchResultsView =>
-  orders.map((order: IntegrityOrderDetails) => {
-    return {
-      legacySubjectId: order.legacySubjectId,
-      firstName: order.firstName,
-      lastName: order.lastName,
-      primaryAddressLine1: order.primaryAddressLine1,
-      primaryAddressLine2: order.primaryAddressLine2,
-      primaryAddressLine3: order.primaryAddressLine3,
-      primaryAddressPostCode: order.primaryAddressPostCode,
-      alias: order.alias,
-      dateOfBirth: order.dateOfBirth,
-      orderStartDate: order.orderStartDate,
-      orderEndDate: order.orderEndDate,
-      sortAddress:
-        (order.primaryAddressLine1 || '') +
-        (order.primaryAddressLine2 || '') +
-        (order.primaryAddressLine3 || '') +
-        (order.primaryAddressPostCode || ''),
-      sortDateOfBirth: new Date(`${order.dateOfBirth}Z`).getTime(),
-      sortOrderStartDate: new Date(`${order.orderStartDate}Z`).getTime(),
-      sortOrderEndDate: new Date(`${order.orderEndDate}Z`).getTime(),
-    }
-  })
-
+export type IntegritySearchResultView = IntegritySearchResult[]
 export const IntegritySearchResultView = {
-  construct(orders: IntegrityOrderDetails[]): IntegritySearchResultsView {
-    return createViewModelFromApiDto(orders)
+  construct(orders: IntegrityOrderDetails[]): IntegritySearchResultView {
+    return orders.map((order: IntegrityOrderDetails) => {
+      const primaryAddress = [
+        order.primaryAddressLine1,
+        order.primaryAddressLine2,
+        order.primaryAddressLine3,
+        order.primaryAddressPostCode,
+      ]
+
+      return {
+        legacySubjectId: order.legacySubjectId,
+        name: [order.firstName, order.lastName].join(' '),
+        primaryAddress,
+        alias: order.alias,
+        dateOfBirth: order.dateOfBirth,
+        orderStartDate: order.orderStartDate,
+        orderEndDate: order.orderEndDate,
+        sortAddress: primaryAddress.filter(n => n && n !== '').join(' '),
+        sortDateOfBirth: new Date(`${order.dateOfBirth}Z`).getTime(),
+        sortOrderStartDate: new Date(`${order.orderStartDate}Z`).getTime(),
+        sortOrderEndDate: new Date(`${order.orderEndDate}Z`).getTime(),
+      } as IntegritySearchResult
+    })
   },
 }

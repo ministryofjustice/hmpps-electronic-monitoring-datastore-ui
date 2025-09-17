@@ -4,21 +4,10 @@
 {% from '../../components/safeDateFormatters.njk' import safeGovukDate %}
 
 {% set heading = "Order details" %}
-{% set pageTitle = applicationName + " - " + heading %}
-{% set backUrl = backUrl %}
 
 {% block innerContent %}
   <h2 class="govuk-heading-m">Device wearer</h2>
 
-  {% set offenseRisk = 'Yes' if deviceWearerDetails.offenceRisk else 'No' %}
-  {%
-    set primaryAddress = [
-      deviceWearerDetails.primaryAddressLine1,
-      deviceWearerDetails.primaryAddressLine2,
-      deviceWearerDetails.primaryAddressLine3,
-      deviceWearerDetails.primaryAddressPostCode
-    ] | reject(null) | join('<br>')
-  %}
   {{
     govukSummaryList({
       rows: [
@@ -28,7 +17,7 @@
         { key: { text: 'Alias' }, value:  { text: deviceWearerDetails.alias } },
         { key: { text: 'Date of birth' }, value:  { text: safeGovukDate(deviceWearerDetails.dateOfBirth) } },
         { key: { text: 'Legacy sex' }, value:  { text: deviceWearerDetails.legacySex } },
-        { key: { text: 'Primary address' }, value:  { html: primaryAddress } },
+        { key: { text: 'Primary address' }, value:  { html: deviceWearerDetails.primaryAddress | join('<br/>') } },
         { key: { text: 'Phone/mobile number' }, value:  { text: deviceWearerDetails.phoneOrMobileNumber } }
       ]
     })

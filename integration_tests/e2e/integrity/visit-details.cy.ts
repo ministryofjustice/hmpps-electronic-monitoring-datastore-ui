@@ -1,5 +1,6 @@
 import Page from '../../pages/page'
 import VisitDetailsPage from '../../pages/integrity/visitDetails'
+import { IntegrityVisitDetails } from '../../../server/data/models/integrityVisitDetails'
 
 context('Visit details', () => {
   const legacySubjectId = '1234567'
@@ -68,14 +69,14 @@ context('Visit details', () => {
               addressLine2: 'address line 2',
               addressLine3: 'address line 3',
               addressLine4: 'address line 4',
-              postCode: 'postCode',
+              postcode: 'postCode',
             },
             actualWorkStartDateTime: '2002-02-02T01:01:01',
             actualWorkEndDateTime: '2002-02-02T02:02:02',
             visitNotes: 'TEST_NOTES',
             visitType: 'TEST_VISIT_TYPE',
             visitOutcome: 'TEST_OUTCOME',
-          },
+          } as IntegrityVisitDetails,
         ],
       })
 
@@ -97,14 +98,14 @@ context('Visit details', () => {
               addressLine2: 'address line 2',
               addressLine3: 'address line 3',
               addressLine4: 'address line 4',
-              postCode: 'postCode',
+              postcode: 'postCode',
             },
             actualWorkStartDateTime: '2002-02-02T01:01:01',
             actualWorkEndDateTime: '2002-02-02T02:02:02',
             visitNotes: 'TEST_NOTES',
             visitType: 'TEST_VISIT_TYPE',
             visitOutcome: 'TEST_OUTCOME',
-          },
+          } as IntegrityVisitDetails,
         ],
       })
 
@@ -133,14 +134,14 @@ context('Visit details', () => {
               addressLine2: 'address line 2',
               addressLine3: 'address line 3',
               addressLine4: 'address line 4',
-              postCode: 'postCode',
+              postcode: 'postCode',
             },
             actualWorkStartDateTime: '2002-02-02T01:01:01',
             actualWorkEndDateTime: '2002-02-02T02:02:02',
             visitNotes: 'TEST_NOTES',
             visitType: 'TEST_VISIT_TYPE',
             visitOutcome: 'TEST_OUTCOME',
-          },
+          } as IntegrityVisitDetails,
           {
             legacySubjectId: '321',
             address: {
@@ -148,14 +149,14 @@ context('Visit details', () => {
               addressLine2: 'address line 6',
               addressLine3: 'address line 7',
               addressLine4: 'address line 8',
-              postCode: 'postCode 2',
+              postcode: 'postCode 2',
             },
             actualWorkStartDateTime: '2002-02-02T03:03:03',
             actualWorkEndDateTime: '2002-02-02T04:04:04',
             visitNotes: 'TEST_NOTES_2',
             visitType: 'TEST_VISIT_TYPE_2',
             visitOutcome: 'TEST_OUTCOME_2',
-          },
+          } as IntegrityVisitDetails,
         ],
       })
 

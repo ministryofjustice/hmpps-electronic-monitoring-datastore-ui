@@ -24,28 +24,17 @@
   {% endset %}
 
   {% set nameHtml %}
-    {% if (order.firstName or order.lastName) %}
-      <p>{{ order.firstName | upper }} {{ order.lastName | upper }} </p>
-      {% if (order.alias) %}
-        <p>Alias: {{ order.alias }}</p>
-      {% endif %}
+    {% if (order.name) %}
+      <p>{{ order.name | upper }}</p>
+    {% endif %}
+    {% if (order.alias) %}
+      <p>Alias: {{ order.alias }}</p>
     {% endif %}
   {% endset %}
 
   {% set addressHtml %}
-    {% if (order.primaryAddressLine1 or order.primaryAddressLine2 or order.primaryAddressLine3 or order.primaryAddressPostCode ) %}
-      <p class="govuk-body">
-        {% if (order.primaryAddressLine1) %}
-          {{ order.primaryAddressLine1 }}<br/>
-        {% endif %}
-        {% if (order.primaryAddressLine2) %}
-          {{ order.primaryAddressLine2 }}<br/>
-        {% endif %}
-        {% if (order.primaryAddressLine3) %}
-          {{ order.primaryAddressLine3 }}<br/>
-        {% endif %}
-        {{ order.primaryAddressPostCode }}
-      </p>
+    {% if (order.primaryAddress ) %}
+      <p class="govuk-body">{{ order.primaryAddress | join('<br/>') | safe }}</p>
     {% endif %}
   {% endset %}
 

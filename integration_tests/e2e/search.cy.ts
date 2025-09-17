@@ -1,146 +1,144 @@
+import { HMPPS_AUTH_ROLES } from '../../server/constants/roles'
 import Page from '../pages/page'
 import SearchPage from '../pages/search'
+import StartPage from '../pages/start'
+
+const expectedValidationErrors = {
+  form: 'You must enter a value into at least one search field',
+  firstName: 'First name must contain letters only',
+  lastName: 'Last name must contain letters only',
+  alias: 'Alias must contain letters and spaces only',
+  dob: 'Enter date of birth',
+}
 
 context('Search', () => {
   beforeEach(() => {
     cy.task('reset')
-    cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+    cy.task('stubSignIn', { name: 'Master Tester', roles: [HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_GENERAL__RO] })
+
     cy.signIn()
+
+    Page.visit(StartPage)
+    cy.contains('Go to search page').click()
   })
 
-  it('Should display the user name visible in header', () => {
-    const page = Page.visit(SearchPage)
-    page.header.userName.should('contain.text', 'M. Tester')
-  })
-
-  it('Should display the phase banner in header', () => {
-    const page = Page.visit(SearchPage)
-    page.header.phaseBanner.should('contain.text', 'DEV')
-  })
-
-  it('Should display the back link', () => {
-    const page = Page.visit(SearchPage)
-
-    page.backButton.should('exist')
-  })
-
-  it('Should be accessible', () => {
-    const page = Page.visit(SearchPage)
-    page.checkIsAccessible()
-  })
-
-  describe('Service information banner', () => {
-    it('Service information banner is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.serviceInformation().should('be.visible')
+  describe('General page content', () => {
+    it('can see their user name', () => {
+      const page = Page.verifyOnPage(SearchPage)
+      page.header.userName.contains('M. Tester')
     })
 
-    it('Service information banner text is correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage
-        .serviceInformation()
-        .should('contain', 'This service gives you access to all order data that was held by Capita and G4S')
+    it('Can see the phase banner', () => {
+      const page = Page.verifyOnPage(SearchPage)
+      page.header.phaseBanner.contains('DEV')
+    })
+
+    it('Can see service information', () => {
+      const page = Page.verifyOnPage(SearchPage)
+      page.serviceInformation.should('exist')
+    })
+
+    it('Can go back to the start page', () => {
+      const page = Page.verifyOnPage(SearchPage)
+
+      page.backButton.click()
+      Page.verifyOnPage(StartPage)
+    })
+
+    it('Is accessible', () => {
+      const page = Page.verifyOnPage(SearchPage)
+      page.checkIsAccessible()
     })
   })
 
-  describe('Subject ID field', () => {
-    it('Subject ID field is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.subjectIdField().should('be.visible')
+  describe('Order search form', () => {
+    it('Displays Legacy subject ID field', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.form.legacySubjectIdField.shouldNotBeDisabled()
     })
 
-    it('Subject ID label is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.subjectIdLabel().should('be.visible')
+    it('Displays First name field', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.form.firstNameField.shouldNotBeDisabled()
     })
 
-    it('Subject ID label text is correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.subjectIdLabel().should('contain', 'Subject Id')
+    it('Displays Last name field', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.form.lastNameField.shouldNotBeDisabled()
+    })
+
+    it('Displays Date of birth fields', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.form.dateOfBirthField.shouldNotBeDisabled()
+    })
+
+    it('Displays Alias field', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.form.aliasField.shouldNotBeDisabled()
+    })
+
+    it('Displays Search button', () => {
+      const searchPage = Page.verifyOnPage(SearchPage)
+      searchPage.form.searchButton.should('be.visible')
     })
   })
 
-  describe('First name field', () => {
-    it('First name field is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.firstNameField().should('be.visible')
-    })
+  it('Should display empty form validation error message', () => {
+    const page = Page.verifyOnPage(SearchPage)
 
-    it('First name label is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.firstNameLabel().should('be.visible')
-    })
+    page.form.searchButton.click()
 
-    it('First name label text is correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.firstNameLabel().should('contain', 'First name')
-    })
+    Page.verifyOnPage(SearchPage)
+
+    page.errorSummary.shouldExist()
+    page.errorSummary.shouldHaveError(expectedValidationErrors.form)
   })
 
-  describe('Last name field', () => {
-    it('Last name field is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.lastNameField().should('be.visible')
-    })
+  it('Should display first name validation error messages', () => {
+    const page = Page.verifyOnPage(SearchPage)
 
-    it('Last name label is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.lastNameLabel().should('be.visible')
-    })
+    page.form.firstNameField.set('John123')
+    page.form.searchButton.click()
 
-    it('Last name label text is correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.lastNameLabel().should('contain', 'Last name')
-    })
+    Page.verifyOnPage(SearchPage)
+
+    page.errorSummary.shouldExist()
+    page.errorSummary.shouldHaveError(expectedValidationErrors.firstName)
+
+    page.form.firstNameField.shouldHaveValidationMessage(expectedValidationErrors.firstName)
+    page.form.lastNameField.shouldNotHaveValidationMessage()
+    page.form.aliasField.shouldNotHaveValidationMessage()
   })
 
-  describe('Date of birth fields', () => {
-    it('Date of birth fields render', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.dayOfBirthField().should('be.visible')
-      searchPage.yearOfBirthField().should('be.visible')
-      searchPage.monthOfBirthField().should('be.visible')
-    })
+  it('Should display last name validation error messages', () => {
+    const page = Page.verifyOnPage(SearchPage)
 
-    it('Date of birth label texts are correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.dayOfBirthLabel().should('contain', 'Day')
-      searchPage.monthOfBirthLabel().should('contain', 'Month')
-      searchPage.yearOfBirthLabel().should('contain', 'Year')
-    })
+    page.form.lastNameField.set('Smith123')
+    page.form.searchButton.click()
 
-    it('Date of birth legend text is correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.dateOfBirthLegend().should('contain', 'Date of birth')
-    })
+    Page.verifyOnPage(SearchPage)
+
+    page.errorSummary.shouldExist()
+    page.errorSummary.shouldHaveError(expectedValidationErrors.lastName)
+
+    page.form.firstNameField.shouldNotHaveValidationMessage()
+    page.form.lastNameField.shouldHaveValidationMessage(expectedValidationErrors.lastName)
+    page.form.aliasField.shouldNotHaveValidationMessage()
   })
 
-  describe('Alias field', () => {
-    it('Alias field is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.aliasField().should('be.visible')
-    })
+  it('Should display alias validation error messages', () => {
+    const page = Page.verifyOnPage(SearchPage)
 
-    it('Alias label is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.aliasLabel().should('be.visible')
-    })
+    page.form.aliasField.set('John Smith-123')
+    page.form.searchButton.click()
 
-    it('Alias label text is correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.aliasLabel().should('contain', 'Alias')
-    })
-  })
+    Page.verifyOnPage(SearchPage)
 
-  describe('Search button', () => {
-    it('Search button is displayed', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.searchButton().should('be.visible')
-    })
+    page.errorSummary.shouldExist()
+    page.errorSummary.shouldHaveError(expectedValidationErrors.alias)
 
-    it('Search button text is correct', () => {
-      const searchPage = Page.visit(SearchPage)
-      searchPage.searchButton().should('contain', 'Search')
-    })
+    page.form.firstNameField.shouldNotHaveValidationMessage()
+    page.form.lastNameField.shouldNotHaveValidationMessage()
+    page.form.aliasField.shouldHaveValidationMessage(expectedValidationErrors.alias)
   })
 })
