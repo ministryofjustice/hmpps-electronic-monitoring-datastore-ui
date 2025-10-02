@@ -73,7 +73,7 @@ services:
       - CLIENT_SECRET=clientsecret
 
   local-stack-aws:
-    image: localstack/localstack:4.8
+    image: localstack/localstack:4.9
     container_name: local-stack-aws
     networks:
       - hmpps
