@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { AlcoholMonitoringIncidentEvent } from '../../../../server/models/alcoholMonitoring/incidentEvents'
+import { AlcoholMonitoringIncidentEvent } from '../../../../server/data/models/alcoholMonitoringIncidentEvent'
 
 const defaultIncidentEvents = [] as AlcoholMonitoringIncidentEvent[]
 

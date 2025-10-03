@@ -1,3 +1,8 @@
+import { ErrorMessage, ErrorSummary, ErrorsViewModel } from '../models/view-models/utils'
+import { ValidationResult } from '../models/validationResult'
+
+const YEAR_IN_MS = 365.25 * 24 * 60 * 60 * 1000
+
 const properCase = (word: string): string =>
   word.length >= 1 ? word[0].toUpperCase() + word.toLowerCase().slice(1) : word
 
@@ -14,13 +19,204 @@ const properCaseName = (name: string): string => (isBlank(name) ? '' : name.spli
 export const convertToTitleCase = (sentence: string): string =>
   isBlank(sentence) ? '' : sentence.split(' ').map(properCaseName).join(' ')
 
-export const initialiseName = (fullName?: string): string | null => {
+export const initialiseName = (fullName?: string): string | undefined => {
   // this check is for the authError page
-  if (!fullName) return null
+  if (!fullName) return undefined
 
   const array = fullName.split(' ')
   return `${array[0][0]}. ${array.reverse()[0]}`
 }
 
-export const makePageTitle = ({ pageHeading, hasErrors }: { pageHeading: string; hasErrors: boolean }) =>
-  `${hasErrors ? 'Error: ' : ''}${pageHeading}`
+export const calculateAge = (birthDate: string) =>
+  Math.floor((new Date().getTime() - new Date(birthDate).getTime()) / YEAR_IN_MS)
+
+export const serialiseDate = (year: string, month: string, day: string) => {
+  if (isBlank(year) || isBlank(month) || isBlank(day)) {
+    return null
+  }
+
+  return new Date(Date.UTC(parseInt(year, 10), parseInt(month, 10) - 1, parseInt(day, 10))).toISOString()
+}
+
+export const deserialiseDateTime = (dateString: string | null | undefined) => {
+  if (dateString === null || dateString === undefined || dateString === '') {
+    return {
+      hours: '',
+      minutes: '',
+      day: '',
+      month: '',
+      year: '',
+    }
+  }
+
+  const date = new Date(dateString)
+
+  return {
+    minutes: date.getMinutes().toString().padStart(2, '0'),
+    hours: date.getHours().toString().padStart(2, '0'),
+    day: date.getDate().toString().padStart(2, '0'),
+    month: (date.getMonth() + 1).toString().padStart(2, '0'),
+    year: date.getFullYear().toString(),
+  }
+}
+
+export const formatDateTime = (dateToFormat: string): string => {
+  const date = new Date(dateToFormat)
+  const month = date.toLocaleString('default', { month: 'long' })
+  return `${date.getDate()} ${month} ${date.getFullYear()}`
+}
+
+export const serialiseTime = (hour: string, minute: string): string | null => {
+  const hourValid = /\d{1,2}/.test(hour)
+  const minuteValid = /\d{1,2}/.test(minute)
+
+  if (!hourValid || !minuteValid) {
+    return null
+  }
+  return `${hour.padStart(2, '0')}:${minute.padStart(2, '0')}:00`
+}
+
+export const deserialiseTime = (timeString?: string | null): [hours: string, minutes: string] => {
+  if (!timeString || isBlank(timeString)) {
+    return ['', '']
+  }
+  const timeMatch = timeString.match(/(\d{2}):(\d{2}):\d{2}/)
+  if (!timeMatch) {
+    return ['', '']
+  }
+  return [timeMatch[1], timeMatch[2]]
+}
+
+export const trimSeconds = (timeString?: string | null): string => {
+  if (!timeString || isBlank(timeString)) {
+    return ''
+  }
+  return timeString.split(':').slice(0, 2).join(':')
+}
+
+export const getError = (validationErrors: ValidationResult, field: string): ErrorMessage | undefined => {
+  const matchedError = validationErrors.find(e => e.field === field)
+
+  if (matchedError) {
+    return {
+      text: matchedError.error,
+    }
+  }
+
+  return undefined
+}
+
+export const getErrors = (validationErrors: ValidationResult, fields: string[]): ErrorMessage | undefined => {
+  const matchedErrors = validationErrors.filter(e => fields.includes(e.field))
+
+  if (matchedErrors.length > 0) {
+    return {
+      text: matchedErrors.map(e => e.error).join(', '),
+    }
+  }
+
+  return undefined
+}
+
+export const getErrorsViewModel = (validationErrors: ErrorSummary): ErrorsViewModel => {
+  const viewModel: ErrorsViewModel = {}
+  validationErrors.errorList.forEach(error => {
+    viewModel[error.field] = { text: error.message }
+  })
+  return viewModel
+}
+
+export const camelCaseToSentenceCase = (input: string): string => {
+  if (typeof input !== 'string') return input
+
+  const lowerCaseKey = input.replace(/([A-Z])/g, ' $1').toLowerCase()
+
+  const sentenceCaseKey = lowerCaseKey.charAt(0).toUpperCase() + lowerCaseKey.slice(1)
+
+  return sentenceCaseKey.trim()
+}
+
+export const checkType = (input: unknown): string => {
+  if (Array.isArray(input)) {
+    return 'array'
+  }
+  if (typeof input === 'object') {
+    return 'object'
+  }
+  if (typeof input === 'string') {
+    return 'string'
+  }
+  return 'other'
+}
+
+export const isEmpty = (input: unknown): boolean => {
+  if (
+    input === null ||
+    input === undefined ||
+    input === '' ||
+    (Array.isArray(input) && input.length === 0) ||
+    (typeof input === 'object' && Object.keys(input).length === 0)
+  ) {
+    return true
+  }
+  return false
+}
+
+export const convertBooleanToEnum = <T extends string>(
+  value: boolean | null,
+  nullValue: T,
+  truthyValue: T,
+  falsyValue: T,
+) => {
+  if (value === null) {
+    return nullValue
+  }
+
+  if (value) {
+    return truthyValue
+  }
+
+  return falsyValue
+}
+
+export const isNullOrUndefined = <T>(value: T | null | undefined): value is null | undefined => {
+  return value === null || value === undefined
+}
+
+export const isNotNullOrUndefined = <T>(value: T | null | undefined): value is T => !isNullOrUndefined(value)
+
+export const extractParamsAndArgs = (args: unknown[]) => {
+  let params: Record<string, string | number | boolean> = {}
+  let query: Record<string, string | number | boolean> = {}
+
+  if (typeof args[0] !== 'string') {
+    params = args.shift() as Record<string, string | number | boolean>
+    query = args.shift() as Record<string, string | number | boolean>
+  }
+
+  return { params, query }
+}
+
+export const buildUrl = (
+  template: string,
+  params: Record<string, string | number | boolean> = {},
+  query: Record<string, string | number | boolean> = {},
+) => {
+  const parts = template.split('/')
+
+  Object.keys(params).forEach(param => {
+    const index = parts.indexOf(`:${param}`)
+    if (index > -1) {
+      parts[index] = params[param]?.toString() || ''
+    }
+  })
+
+  const uri = parts.join('/')
+
+  const querystring: string[] = []
+  Object.keys(query).forEach(key => {
+    querystring.push(`${key}=${query[key]}`)
+  })
+
+  return `${uri}${querystring.length > 0 ? '?' : ''}${querystring.join('&')}`
+}

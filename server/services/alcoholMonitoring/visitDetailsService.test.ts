@@ -1,7 +1,7 @@
 import nock from 'nock'
 import AlcoholMonitoringVisitDetailsService from './visitDetailsService'
 
-import { AlcoholMonitoringVisitDetails } from '../../models/alcoholMonitoring/visitDetails'
+import { AlcoholMonitoringVisitDetails } from '../../data/models/alcoholMonitoringVisitDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
 

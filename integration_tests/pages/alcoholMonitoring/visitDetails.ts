@@ -8,10 +8,6 @@ export default class VisitDetailsPage extends AppPage {
     super('Visit details', paths.ALCOHOL_MONITORING.VISIT_DETAILS)
   }
 
-  get serviceInformation(): PageElement {
-    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
-  }
-
   get timeline(): TimelineComponent {
     return new TimelineComponent()
   }

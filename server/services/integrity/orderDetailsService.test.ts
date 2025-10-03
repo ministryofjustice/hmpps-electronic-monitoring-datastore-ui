@@ -1,7 +1,7 @@
 import nock from 'nock'
 import IntegrityOrderDetailsService from './orderDetailsService'
 
-import { IntegrityOrderDetails } from '../../models/integrity/orderDetails'
+import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
 
@@ -50,7 +50,7 @@ describe('Integrity order details Service', () => {
         mappa: null,
         technicalBail: null,
         manualRisk: null,
-        offenceRisk: null,
+        offenceRisk: false,
         postCodeRisk: null,
         falseLimbRisk: null,
         migratedRisk: null,
@@ -67,7 +67,7 @@ describe('Integrity order details Service', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).reply(200, expectedResult)
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
 
       const result = await integrityOrderDetailsService.getOrderDetails({ legacySubjectId })
 
@@ -94,7 +94,7 @@ describe('Integrity order details Service', () => {
         mappa: null,
         technicalBail: null,
         manualRisk: null,
-        offenceRisk: null,
+        offenceRisk: false,
         postCodeRisk: null,
         falseLimbRisk: null,
         migratedRisk: null,
@@ -111,7 +111,7 @@ describe('Integrity order details Service', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).reply(200, expectedResult)
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
 
       const result = await integrityOrderDetailsService.getOrderDetails({ legacySubjectId })
 
@@ -119,7 +119,7 @@ describe('Integrity order details Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).reply(401)
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(401)
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
@@ -129,13 +129,71 @@ describe('Integrity order details Service', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/details`).replyWithError('Fake unexpected server error')
+      fakeClient.get(`/orders/integrity/${legacySubjectId}`).replyWithError('Fake unexpected server error')
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving order details: Fake unexpected server error'))
+    })
+  })
+
+  describe('getSearchResults', () => {
+    const userToken = 'fake-user-token'
+    const queryExecutionId = 'query-execution-id'
+
+    it('submits a request containing a query execution ID and returns search results', async () => {
+      fakeClient.get(`/orders/integrity?id=${queryExecutionId}`).reply(200, [])
+
+      const result = await integrityOrderDetailsService.getSearchResults({
+        userToken,
+        queryExecutionId,
+      })
+
+      expect(result).toEqual([])
+    })
+
+    describe('error handling', () => {
+      it('handles invalid query execution ID errors from the datastore client', async () => {
+        fakeClient
+          .get(`/orders/integrity?id=`)
+          .reply(500, {
+            status: 500,
+            userMessage: '',
+            developerMessage: 'QueryExecution ABC was not found (Service: Athena, Status Code: 400, Request ID: ABC',
+          })
+          .persist()
+
+        await expect(
+          integrityOrderDetailsService.getSearchResults({
+            userToken,
+            queryExecutionId: '',
+          }),
+        ).rejects.toThrow('Error retrieving search results: Invalid query execution ID')
+      })
+
+      it('handles other errors from the datastore client', async () => {
+        fakeClient
+          .get(`/orders/integrity?id=`)
+          .reply(500, {
+            status: 500,
+            errorCode: null,
+            userMessage:
+              "Unexpected error: The Amazon Athena query failed to run with error message: TABLE_NOT_FOUND: line 1:111: Table 'xxx.yyy.zzz' does not exist",
+            developerMessage:
+              "The Amazon Athena query failed to run with error message: TABLE_NOT_FOUND: line 1:111: Table 'xxx.yyy.zzz' does not exist",
+            moreInfo: null,
+          })
+          .persist()
+
+        await expect(
+          integrityOrderDetailsService.getSearchResults({
+            userToken,
+            queryExecutionId: '',
+          }),
+        ).rejects.toThrow('Error retrieving search results: Internal Server Error')
+      })
     })
   })
 })

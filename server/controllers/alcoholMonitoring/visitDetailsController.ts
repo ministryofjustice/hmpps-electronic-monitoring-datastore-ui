@@ -2,7 +2,9 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringVisitDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import AlcoholMonitoringVisitDetailsModel from '../../models/view-models/alcoholMonitoring/visitDetails'
+import { AlcoholMonitoringVisitDetailsView } from '../../models/view-models/alcoholMonitoringVisitDetails'
+import paths from '../../constants/paths'
+import { buildUrl } from '../../utils/utils'
 
 export default class AlcoholMonitoringVisitDetailsController {
   constructor(
@@ -23,9 +25,9 @@ export default class AlcoholMonitoringVisitDetailsController {
       legacySubjectId,
     })
 
-    const viewModel = AlcoholMonitoringVisitDetailsModel.construct(
+    const viewModel = AlcoholMonitoringVisitDetailsView.construct(
       legacySubjectId,
-      `/orders/alcohol-monitoring/${legacySubjectId}`,
+      buildUrl(paths.ALCOHOL_MONITORING.SUMMARY, { legacySubjectId }),
       visitDetails,
     )
 

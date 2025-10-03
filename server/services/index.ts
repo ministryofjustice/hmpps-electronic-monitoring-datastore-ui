@@ -2,10 +2,8 @@ import { dataAccess } from '../data'
 import AuditService from './auditService'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
-import IntegrityOrderSummaryService from './integrity/orderSummaryService'
-import AlcoholMonitoringOrderSummaryService from './alcoholMonitoring/orderSummaryService'
-import IntegrityDetailsService from './integrity/orderDetailsService'
-import AlcoholMonitoringDetailsService from './alcoholMonitoring/orderDetailsService'
+import IntegrityOrderDetailsService from './integrity/orderDetailsService'
+import AlcoholMonitoringOrderDetailsService from './alcoholMonitoring/orderDetailsService'
 import IntegrityEventHistoryService from './integrity/eventHistoryService'
 import AlcoholMonitoringEventHistoryService from './alcoholMonitoring/eventHistoryService'
 import IntegritySuspensionOfVisitsService from './integrity/suspensionOfVisitsService'
@@ -23,10 +21,8 @@ export const services = () => {
   const emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClient)
   const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClient)
 
-  const integrityDetailsService = new IntegrityDetailsService(emDatastoreApiClient)
-  const alcoholMonitoringDetailsService = new AlcoholMonitoringDetailsService(emDatastoreApiClient)
-  const integrityOrderSummaryService = new IntegrityOrderSummaryService(emDatastoreApiClient)
-  const alcoholMonitoringOrderSummaryService = new AlcoholMonitoringOrderSummaryService(emDatastoreApiClient)
+  const integrityOrderDetailsService = new IntegrityOrderDetailsService(emDatastoreApiClient)
+  const alcoholMonitoringOrderDetailsService = new AlcoholMonitoringOrderDetailsService(emDatastoreApiClient)
   const integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClient)
   const alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(emDatastoreApiClient)
   const integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(emDatastoreApiClient)
@@ -41,10 +37,8 @@ export const services = () => {
     applicationInfo,
     auditService,
     emDatastoreConnectionService,
-    integrityDetailsService,
-    alcoholMonitoringDetailsService,
-    integrityOrderSummaryService,
-    alcoholMonitoringOrderSummaryService,
+    integrityOrderDetailsService,
+    alcoholMonitoringOrderDetailsService,
     emDatastoreOrderSearchService,
     integrityEventHistoryService,
     alcoholMonitoringEventHistoryService,
@@ -63,10 +57,8 @@ export {
   AuditService,
   EmDatastoreConnectionService,
   EmDatastoreOrderSearchService,
-  IntegrityDetailsService,
-  AlcoholMonitoringDetailsService,
-  IntegrityOrderSummaryService,
-  AlcoholMonitoringOrderSummaryService,
+  IntegrityOrderDetailsService,
+  AlcoholMonitoringOrderDetailsService,
   IntegrityEventHistoryService,
   AlcoholMonitoringEventHistoryService,
   IntegritySuspensionOfVisitsService,

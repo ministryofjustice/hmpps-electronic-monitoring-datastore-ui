@@ -3,7 +3,8 @@ import AuditService, { Page } from '../../services/auditService'
 import AlcoholMonitoringOrderDetailsService from '../../services/alcoholMonitoring/orderDetailsService'
 import AlcoholMonitoringDetailsController from './detailsController'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { OrderRequest } from '../../types/OrderRequest'
+import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
+import { AlcoholMonitoringOrderDetailsView } from '../../models/view-models/alcoholMonitoringOrderDetails'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
@@ -49,7 +50,7 @@ describe('AlcoholMonitoringDetailsController', () => {
 
     it(`calls the DatastoreOrderService for data using the correct legacySubjectId parameter`, async () => {
       const expectedOrderId = 'testId'
-      const expectedOrderServiceParams: OrderRequest = {
+      const expectedOrderServiceParams: GetOrderRequest = {
         userToken: 'fakeUserToken',
         legacySubjectId: expectedOrderId,
       }
@@ -108,7 +109,7 @@ describe('AlcoholMonitoringDetailsController', () => {
 
       const expectedPageData = {
         legacySubjectId: expectedOrderId,
-        backUrl: `/orders/alcohol-monitoring/${expectedOrderId}`,
+        backUrl: `/alcohol-monitoring/${expectedOrderId}`,
         deviceWearerDetails: {
           legacySubjectId: expectedOrderId,
           firstName: 'Testopher',
@@ -117,10 +118,7 @@ describe('AlcoholMonitoringDetailsController', () => {
           dateOfBirth: '1950-01-01T00:00:00',
           legacySex: 'Sex',
           phoneOrMobileNumber: '09876543210',
-          primaryAddressLine1: '123 Fourth Street',
-          primaryAddressLine2: 'Fiveton',
-          primaryAddressLine3: 'Sixbury',
-          primaryAddressPostcode: '7AB 8CD',
+          primaryAddress: ['123 Fourth Street', 'Fiveton', 'Sixbury', '7AB 8CD'],
         },
         orderDetails: {
           orderStartDate: '2010-01-01T00:00:00',
@@ -134,7 +132,7 @@ describe('AlcoholMonitoringDetailsController', () => {
           tagAtSource: 'no',
           specialInstructions: 'Special instructions',
         },
-      }
+      } as AlcoholMonitoringOrderDetailsView
 
       alcoholMonitoringDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce(mockOrderDetails)
 

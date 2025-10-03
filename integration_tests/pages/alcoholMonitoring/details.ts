@@ -8,10 +8,6 @@ export default class AlcoholMonitoringOrderDetailsPage extends AppPage {
     super('Order details', paths.ALCOHOL_MONITORING.DETAILS)
   }
 
-  get serviceInformation(): PageElement {
-    return cy.contains('This service gives you access to all order data that was held by Capita and G4S')
-  }
-
   get deviceWearerDetails(): SummaryListComponent {
     return new SummaryListComponent('Device wearer')
   }
