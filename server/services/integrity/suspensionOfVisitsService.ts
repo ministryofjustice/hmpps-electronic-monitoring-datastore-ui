@@ -10,9 +10,12 @@ export default class IntegritySuspensionOfVisitsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getSuspensionOfVisits(input: GetOrderRequest): Promise<IntegritySuspensionOfVisits[]> {
+    const { restricted } = input
+
     try {
       const results = await this.emDatastoreApiClient.get<IntegritySuspensionOfVisits[]>({
         path: `/orders/integrity/${input.legacySubjectId}/suspension-of-visits`,
+        query: { restricted },
         token: input.userToken,
       })
 

@@ -1,5 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
 import paths from '../../constants/paths'
+import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityOrderDetailsService } from '../../services'
 import { IntegritySearchResultView } from '../../models/view-models/integritySearchResults'
@@ -18,10 +19,12 @@ export default class IntegrityOrderDetailsController {
     })
 
     const { legacySubjectId } = req.params
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     const orderDetails = await this.integrityDetailsService.getOrderDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
+      restricted,
     })
 
     const viewModel = IntegrityOrderDetailsView.construct(legacySubjectId, orderDetails)
@@ -35,6 +38,7 @@ export default class IntegrityOrderDetailsController {
     })
 
     const queryExecutionId = req.query.search_id as string
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     if (!queryExecutionId) {
       res.redirect(paths.SEARCH)
@@ -45,6 +49,7 @@ export default class IntegrityOrderDetailsController {
       const orders = await this.integrityDetailsService.getSearchResults({
         userToken: res.locals.user.token,
         queryExecutionId,
+        restricted,
       })
 
       const viewModel = IntegritySearchResultView.construct(orders)
