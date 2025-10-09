@@ -1,12 +1,12 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringOrderSummaryService } from '../../services'
-import { IntegrityReports } from '../../models/integrity/orderSummary'
+import { AuditService, AlcoholMonitoringOrderDetailsService } from '../../services'
+import { AlcoholMonitoringOrderSummaryView } from '../../models/view-models/alcoholMonitoringOrderSummary'
 
 export default class AlcoholMonitoringSummaryController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly summaryService: AlcoholMonitoringOrderSummaryService,
+    private readonly detailsService: AlcoholMonitoringOrderDetailsService,
   ) {}
 
   summary: RequestHandler = async (req: Request, res: Response) => {
@@ -17,19 +17,12 @@ export default class AlcoholMonitoringSummaryController {
 
     const { legacySubjectId } = req.params
 
-    const summary = await this.summaryService.getOrderSummary({
+    const orderDetails = await this.detailsService.getOrderDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
     })
-    const backUrl: string = '/alcohol-monitoring'
-    const reports: IntegrityReports = {
-      orderDetails: true,
-      visitDetails: true,
-      equipmentDetails: true,
-      suspensionOfVisits: true,
-      allEventHistory: true,
-      services: true,
-    }
-    res.render('pages/alcohol-monitoring/summary', { legacySubjectId, summary, backUrl, reports })
+
+    const viewModel = AlcoholMonitoringOrderSummaryView.construct(legacySubjectId, orderDetails)
+    res.render('pages/alcohol-monitoring/summary', viewModel)
   }
 }

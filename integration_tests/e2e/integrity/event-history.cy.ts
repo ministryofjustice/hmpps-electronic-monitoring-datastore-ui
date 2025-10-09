@@ -78,7 +78,7 @@ context('Event history', () => {
             authorityFirstNotifiedDateTime: '2022-02-03T01:12:12',
 
             agencyAction: 'action of agency',
-            agencyActionDate: '2022-02-03T01:12:12',
+            agencyResponseDate: '2022-02-03T01:12:12',
 
             investigationOutcomeReason: 'invest outcome',
             enforcementReason: 'enforce reason',

@@ -1,13 +1,9 @@
-import { Request, Response } from 'express'
 import AuditService from '../services/auditService'
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import SearchController from './searchController'
-import SearchForOrdersViewModel from '../models/view-models/searchForOrders'
-import orders from '../data/mockData/orders'
-import ordersView from '../data/mockData/ordersView'
+import { OrderSearchView } from '../models/view-models/orderSearch'
 import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
-import { ParsedSearchFormData, ParsedSearchFormDataModel } from '../models/form-data/searchOrder'
-import { ErrorMessage, TextField } from '../models/utils'
+import { OrderSearchCriteria } from '../models/requests/SearchOrdersRequest'
 
 jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreOrderSearchService')
@@ -15,40 +11,55 @@ jest.mock('../services/emDatastoreOrderSearchService')
 const queryExecutionId = 'query-execution-id'
 
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
-const emDatastoreOrderSearchService = {
-  isEmptySearch: jest.fn(),
-  validateInput: jest.fn(),
-  submitSearchQuery: jest.fn(),
-  getSearchResults: jest.fn(),
-} as unknown as EmDatastoreOrderSearchService
+const emDatastoreOrderSearchService = { submitSearchQuery: jest.fn() } as unknown as EmDatastoreOrderSearchService
 
-jest.spyOn(SearchForOrdersViewModel, 'construct')
-jest.spyOn(ParsedSearchFormDataModel, 'parse')
+jest.spyOn(OrderSearchView, 'construct')
+jest.spyOn(OrderSearchCriteria, 'safeParse')
 
 describe('SearchController', () => {
   let searchController: SearchController
-  let req: Request
-  let res: Response
-  let next = jest.fn()
+
+  const next = jest.fn()
+
+  beforeEach(() => {
+    jest.clearAllMocks()
+
+    searchController = new SearchController(auditService, emDatastoreOrderSearchService)
+
+    emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue({
+      queryExecutionId,
+    })
+  })
 
   describe('SearchPage', () => {
-    beforeEach(() => {
-      jest.clearAllMocks()
-      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
-
-      req = createMockRequest()
-      res = createMockResponse()
-    })
-
     it('should render page with no data', async () => {
+      const req = createMockRequest({ flash: jest.fn() })
+      const res = createMockResponse()
+
       const expectedViewModel = {
-        dob: {
+        searchType: {
+          value: undefined as string,
+        },
+        legacySubjectId: {
+          value: undefined as string,
+        },
+        firstName: {
+          value: undefined as string,
+        },
+        lastName: {
+          value: undefined as string,
+        },
+        alias: {
+          value: undefined as string,
+        },
+        dateOfBirth: {
           value: {
-            day: '',
-            month: '',
-            year: '',
+            day: undefined as string,
+            month: undefined as string,
+            year: undefined as string,
           },
         },
+        errorSummary: undefined as string,
       }
 
       await searchController.searchPage(req, res, next)
@@ -56,49 +67,70 @@ describe('SearchController', () => {
     })
 
     it('should render page with validation errors and form data', async () => {
-      req.session.validationErrors = [
-        { field: 'firstName', error: 'First name must consist of letters only' },
-        { field: 'dob', error: 'Invalid date format' },
-      ]
-
-      req.session.formData = {
-        searchType: 'integrity',
-        firstName: 'John123',
-        lastName: 'Doe',
-        alias: 'JD',
-        dobDay: '32',
-        dobMonth: '13',
-        dobYear: '2021',
-      }
+      const req = createMockRequest({
+        flash: jest
+          .fn()
+          .mockReturnValueOnce([
+            { field: 'firstName', error: 'First name must consist of letters only' },
+            { field: 'dobDay', error: 'Invalid date format' },
+          ])
+          .mockReturnValueOnce({
+            searchType: 'integrity',
+            legacySubjectId: '123456789',
+            firstName: 'John123',
+            lastName: 'Doe',
+            alias: 'JD',
+            dobDay: 'xx',
+            dobMonth: '13',
+            dobYear: '2021',
+          }),
+      })
+      const res = createMockResponse()
 
       const expectedViewModel = {
         searchType: {
+          error: undefined as string,
           value: 'integrity',
         },
-        legacySubjectId: undefined as TextField | undefined,
+        legacySubjectId: {
+          error: undefined as string,
+          value: '123456789',
+        },
         firstName: {
-          value: 'John123',
           error: {
             text: 'First name must consist of letters only',
           },
+          value: 'John123',
         },
         lastName: {
+          error: undefined as string,
           value: 'Doe',
         },
         alias: {
+          error: undefined as string,
           value: 'JD',
         },
-        dob: {
+        dateOfBirth: {
+          error: undefined as string,
           value: {
-            day: '32',
+            day: 'xx',
             month: '13',
             year: '2021',
           },
-          error: {
-            text: 'Invalid date format',
-          },
         },
-        emptyFormError: undefined as ErrorMessage | undefined,
+        errorSummary: {
+          errorList: [
+            {
+              error: 'First name must consist of letters only',
+              field: 'firstName',
+            },
+            {
+              error: 'Invalid date format',
+              field: 'dobDay',
+            },
+          ],
+          title: 'There is a problem',
+        },
       }
 
       await searchController.searchPage(req, res, jest.fn())
@@ -107,134 +139,104 @@ describe('SearchController', () => {
   })
 
   describe('SubmitSearchQuery', () => {
-    beforeEach(() => {
-      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
-
-      req = createMockRequest()
-      res = createMockResponse()
-      next = jest.fn()
-
-      jest.clearAllMocks()
-    })
-
     it('should redirect to search with appropriate error when validation errors exist', async () => {
-      emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue({
-        queryExecutionId,
+      const req = createMockRequest({
+        flash: jest.fn(),
+        body: {
+          searchType: 'integrity',
+          firstName: 'John@123.com',
+          lastName: 'Doe',
+          alias: 'JD',
+          dobDay: '10',
+          dobMonth: '02',
+          dobYear: '2021',
+        },
       })
-
-      req.body = {
-        firstName: 'John@123.com',
-        lastName: 'Doe',
-        alias: 'JD',
-        'dob-day': '10',
-        'dob-month': '02',
-        'dob-year': '2021',
-      }
-
-      const parsedFormData: ParsedSearchFormData = {
-        searchType: undefined,
-        legacySubjectId: undefined,
-        firstName: 'John@123.com',
-        lastName: 'Doe',
-        alias: 'JD',
-        dobDay: '10',
-        dobMonth: '02',
-        dobYear: '2021',
-      }
+      const res = createMockResponse()
 
       await searchController.submitSearchQuery(req, res, next)
 
-      expect(ParsedSearchFormDataModel.parse).toHaveBeenCalledWith(req.body)
-      expect(req.session.formData).toEqual(parsedFormData)
-      expect(req.session.validationErrors).toEqual([
+      expect(OrderSearchCriteria.safeParse).toHaveBeenCalledWith(req.body)
+      expect(req.flash).toHaveBeenCalledTimes(2)
+      expect(req.flash).toHaveBeenNthCalledWith(1, 'formData', req.body)
+      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', [
         { field: 'firstName', error: 'First name must contain letters only' },
       ])
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 
     it('should redirect to search with appropriate error when no search data supplied', async () => {
-      const validationErrors = [
-        {
-          field: 'emptyForm',
-          error: 'You must enter a value into at least one search field',
+      const req = createMockRequest({
+        flash: jest.fn(),
+        body: {
+          searchType: 'integrity',
+          firstName: '',
+          lastName: '',
+          alias: '',
+          dobDay: '',
+          dobMonth: '',
+          dobYear: '',
         },
-      ]
-
-      req.body = {
-        searchType: 'integrity',
-        firstName: '',
-        lastName: '',
-        alias: '',
-        'dob-day': '',
-        'dob-month': '',
-        'dob-year': '',
-      }
-
-      const parsedFormData = {
-        searchType: 'integrity',
-        firstName: '',
-        lastName: '',
-        alias: '',
-        dobDay: '',
-        dobMonth: '',
-        dobYear: '',
-      }
+      })
+      const res = createMockResponse()
 
       await searchController.submitSearchQuery(req, res, next)
 
-      expect(req.session.formData).toEqual(parsedFormData)
-      expect(req.session.validationErrors).toEqual(validationErrors)
+      expect(req.flash).toHaveBeenCalledTimes(2)
+      expect(req.flash).toHaveBeenNthCalledWith(1, 'formData', req.body)
+      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', [
+        {
+          error: 'You must enter a value into at least one search field',
+          field: '',
+        },
+      ])
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
 
-    it('when input is valid, redirects to the results page with the query execution ID as a URL query parameter', async () => {
+    it('when input is valid, redirects to the integrity results page with the query execution ID as a URL query parameter', async () => {
       emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue({
         queryExecutionId,
       })
 
-      req.body = {
-        searchType: 'integrity',
-        firstName: 'John',
-        lastName: '',
-        alias: '',
-        'dob-day': '',
-        'dob-month': '',
-        'dob-year': '',
-      }
+      const req = createMockRequest({
+        flash: jest.fn(),
+        body: {
+          searchType: 'integrity',
+          firstName: 'John',
+          lastName: '',
+          alias: '',
+          dobDay: '',
+          dobMonth: '',
+          dobYear: '',
+        },
+      })
+      const res = createMockResponse()
 
       await searchController.submitSearchQuery(req, res, next)
       expect(res.redirect).toHaveBeenCalledWith(`/integrity?search_id=${queryExecutionId}`)
     })
-  })
 
-  describe('SearchResultsPage', () => {
-    beforeEach(() => {
-      searchController = new SearchController(auditService, emDatastoreOrderSearchService)
-
-      req = createMockRequest()
-      res = createMockResponse()
-      next = jest.fn()
-
-      jest.clearAllMocks()
-    })
-
-    it('should redirect to the search page when no orderExecutionId is submitted', async () => {
-      emDatastoreOrderSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
-
-      await searchController.searchResultsPage(req, res, next)
-      expect(res.redirect).toHaveBeenCalledWith('/search')
-    })
-
-    it('should render the search results view when a valid orderExecutionId is submitted', async () => {
-      const viewModel = [...ordersView]
-      req.query.search_id = queryExecutionId
-      emDatastoreOrderSearchService.getSearchResults = jest.fn().mockResolvedValue(orders)
-
-      await searchController.searchResultsPage(req, res, next)
-
-      expect(res.render).toHaveBeenCalledWith('pages/searchResults', {
-        viewModel,
+    it('when input is valid, redirects to the alcohol monitoring results page with the query execution ID as a URL query parameter', async () => {
+      emDatastoreOrderSearchService.submitSearchQuery = jest.fn().mockResolvedValue({
+        queryExecutionId,
       })
+
+      const req = createMockRequest({
+        flash: jest.fn(),
+        body: {
+          searchType: 'alcohol-monitoring',
+          firstName: 'John',
+          lastName: '',
+          alias: '',
+          dobDay: '',
+          dobMonth: '',
+          dobYear: '',
+        },
+      })
+      const res = createMockResponse()
+
+      await searchController.submitSearchQuery(req, res, next)
+      expect(res.redirect).toHaveBeenCalledWith(`/alcohol-monitoring?search_id=${queryExecutionId}`)
     })
   })
 })

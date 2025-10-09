@@ -3,7 +3,7 @@ import Page from '../../pages/page'
 import AlcoholMonitoringServiceDetailsPage from '../../pages/alcoholMonitoring/serviceDetails'
 import AlcoholMonitoringOrderSummaryPage from '../../pages/alcoholMonitoring/summary'
 
-import { AlcoholMonitoringServiceDetails } from '../../../server/models/alcoholMonitoring/serviceDetails'
+import { AlcoholMonitoringServiceDetails } from '../../../server/data/models/alcoholMonitoringServiceDetails'
 
 context('Alcohol Monitoring service details', () => {
   const legacySubjectId = '1234567'
@@ -39,7 +39,7 @@ context('Alcohol Monitoring service details', () => {
     })
 
     it('Can go back to the summary page', () => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
       })

@@ -3,12 +3,12 @@ import AuditService from '../../services/auditService'
 import IntegrityEventHistoryService from '../../services/integrity/eventHistoryService'
 import IntegrityEventHistoryController from './eventHistoryController'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityEventHistoryViewModel from '../../models/view-models/integrity/eventHistory'
+import { IntegrityEventHistoryView } from '../../models/view-models/integrityEventHistory'
 import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
-import { IntegrityMonitoringEvent, IntegrityMonitoringEventModel } from '../../models/integrity/monitoringEvents'
-import { IntegrityIncidentEvent, IntegrityIncidentEventModel } from '../../models/integrity/incidentEvents'
-import { IntegrityContactEvent, IntegrityContactEventModel } from '../../models/integrity/contactEvents'
-import { IntegrityViolationEvent, IntegrityViolationEventModel } from '../../models/integrity/violationEvents'
+import { IntegrityMonitoringEvent } from '../../data/models/integrityMonitoringEvent'
+import { IntegrityIncidentEvent } from '../../data/models/integrityIncidentEvent'
+import { IntegrityContactEvent } from '../../data/models/integrityContactEvent'
+import { IntegrityViolationEvent } from '../../data/models/integrityViolationEvent'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/integrity/eventHistoryService')
@@ -16,7 +16,7 @@ jest.mock('../../services/integrity/eventHistoryService')
 const auditService = { logPageView: jest.fn() } as unknown as AuditService
 const integrityEventHistoryService = { getEventHistory: jest.fn() } as unknown as IntegrityEventHistoryService
 
-jest.spyOn(IntegrityEventHistoryViewModel, 'construct')
+jest.spyOn(IntegrityEventHistoryView, 'construct')
 
 describe('IntegrityEventHistoryController', () => {
   let integrityEventHistoryController: IntegrityEventHistoryController
@@ -52,8 +52,8 @@ describe('IntegrityEventHistoryController', () => {
 
     await integrityEventHistoryController.showEventHistory(req, res, next)
 
-    expect(IntegrityEventHistoryViewModel.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
-    expect(IntegrityEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityEventHistoryView.construct).toHaveBeenCalledWith(testOrderId, `/integrity/${testOrderId}`, [])
+    expect(IntegrityEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 
@@ -76,7 +76,7 @@ describe('IntegrityEventHistoryController', () => {
     }
 
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
-      IntegrityMonitoringEventModel.parse({
+      IntegrityMonitoringEvent.parse({
         legacySubjectId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
@@ -86,7 +86,7 @@ describe('IntegrityEventHistoryController', () => {
 
     await integrityEventHistoryController.showEventHistory(req, res, next)
 
-    expect(IntegrityEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 
@@ -109,7 +109,7 @@ describe('IntegrityEventHistoryController', () => {
     }
 
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
-      IntegrityViolationEventModel.parse({
+      IntegrityViolationEvent.parse({
         legacySubjectId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
@@ -119,7 +119,7 @@ describe('IntegrityEventHistoryController', () => {
 
     await integrityEventHistoryController.showEventHistory(req, res, next)
 
-    expect(IntegrityEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 
@@ -142,7 +142,7 @@ describe('IntegrityEventHistoryController', () => {
     }
 
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
-      IntegrityIncidentEventModel.parse({
+      IntegrityIncidentEvent.parse({
         legacySubjectId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
@@ -152,7 +152,7 @@ describe('IntegrityEventHistoryController', () => {
 
     await integrityEventHistoryController.showEventHistory(req, res, next)
 
-    expect(IntegrityEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 
@@ -183,7 +183,7 @@ describe('IntegrityEventHistoryController', () => {
     }
 
     integrityEventHistoryService.getEventHistory = jest.fn().mockResolvedValue([
-      IntegrityContactEventModel.parse({
+      IntegrityContactEvent.parse({
         legacySubjectId: testOrderId,
         type: eventType,
         dateTime: eventDateTime,
@@ -201,7 +201,7 @@ describe('IntegrityEventHistoryController', () => {
 
     await integrityEventHistoryController.showEventHistory(req, res, next)
 
-    expect(IntegrityEventHistoryViewModel.construct).toHaveReturnedWith(expectedViewModel)
+    expect(IntegrityEventHistoryView.construct).toHaveReturnedWith(expectedViewModel)
     expect(res.render).toHaveBeenCalledWith('pages/integrity/event-history', expectedViewModel)
   })
 })

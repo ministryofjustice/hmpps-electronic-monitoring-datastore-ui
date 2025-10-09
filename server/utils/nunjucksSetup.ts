@@ -5,7 +5,7 @@ import express from 'express'
 import fs from 'fs'
 import allMojFilters from '@ministryofjustice/frontend/moj/filters/all'
 import govUKFilters from '@x-govuk/govuk-prototype-filters'
-import { initialiseName, makePageTitle } from './utils'
+import { initialiseName } from './utils'
 import config from '../config'
 import logger from '../../logger'
 
@@ -41,9 +41,6 @@ export default function nunjucksSetup(app: express.Express): void {
 
   njkEnv.addFilter('initialiseName', initialiseName)
   njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
-
-  // globals
-  njkEnv.addGlobal('makePageTitle', makePageTitle)
 
   // Add filters from MOJ Frontend
   const mojFilters = Object.assign(allMojFilters())

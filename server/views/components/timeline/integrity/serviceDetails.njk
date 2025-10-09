@@ -3,7 +3,7 @@
 
 {% macro integrityServiceDetails(event) %}
   {% set addressHtml %}
-    {% if (event.properties.serviceAddress1 or event.properties.serviceAddress2 or event.properties.serviceAddress3 or event.properties.serviceAddressPostcode ) %}
+    {% if (event.properties.serviceAddress1 or event.properties.serviceAddress2 or event.properties.serviceAddress3 or event.properties.serviceAddressPostCode ) %}
     <p class="govuk-body">
         {% if (event.properties.serviceAddress1) %}
           {{ event.properties.serviceAddress1 }}<br/>
@@ -17,7 +17,7 @@
         {% if (event.properties.serviceAddress4) %}
           {{ event.properties.serviceAddress4 }}<br/>
         {% endif %}
-        {{ event.properties.serviceAddressPostcode }}
+        {{ event.properties.serviceAddressPostCode }}
     </p>
     {% endif %}
   {% endset %}

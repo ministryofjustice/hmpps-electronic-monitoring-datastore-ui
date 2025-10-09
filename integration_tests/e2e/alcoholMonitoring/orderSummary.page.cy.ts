@@ -3,7 +3,7 @@ import Page from '../../pages/page'
 import SearchPage from '../../pages/search'
 import AlcoholMonitoringOrderSummaryPage from '../../pages/alcoholMonitoring/summary'
 
-import { AlcoholMonitoringOrderSummary } from '../../../server/models/alcoholMonitoring/orderSummary'
+import { AlcoholMonitoringOrderDetails } from '../../../server/data/models/alcoholMonitoringOrderDetails'
 
 context('Alcohol Monitoring Order Summary', () => {
   const legacySubjectId = '1234567'
@@ -17,7 +17,7 @@ context('Alcohol Monitoring Order Summary', () => {
 
   describe('General page content', () => {
     beforeEach(() => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: {
@@ -32,7 +32,7 @@ context('Alcohol Monitoring Order Summary', () => {
           address3: 'Sixbury',
           orderStartDate: '2010-01-01T00:00:00',
           orderEndDate: '2030-01-01T00:00:00',
-        } as AlcoholMonitoringOrderSummary,
+        } as AlcoholMonitoringOrderDetails,
       })
     })
 
@@ -66,7 +66,7 @@ context('Alcohol Monitoring Order Summary', () => {
 
   describe('Order information', () => {
     it('Displays a summary of the order', () => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: {
@@ -81,7 +81,7 @@ context('Alcohol Monitoring Order Summary', () => {
           address3: 'Sixbury',
           orderStartDate: '2010-01-01T00:00:00',
           orderEndDate: '2030-01-01T00:00:00',
-        } as AlcoholMonitoringOrderSummary,
+        } as AlcoholMonitoringOrderDetails,
       })
 
       const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })
@@ -96,7 +96,7 @@ context('Alcohol Monitoring Order Summary', () => {
     })
 
     it('Summary can be empty and still display', () => {
-      cy.task('stubAlcoholMonitoringGetOrderSummary', {
+      cy.task('stubAlcoholMonitoringGetOrderDetails', {
         httpStatus: 200,
         legacySubjectId,
         body: {
@@ -111,7 +111,7 @@ context('Alcohol Monitoring Order Summary', () => {
           postcode: null,
           orderStartDate: null,
           orderEndDate: null,
-        } as AlcoholMonitoringOrderSummary,
+        } as AlcoholMonitoringOrderDetails,
       })
 
       const page = Page.visit(AlcoholMonitoringOrderSummaryPage, { legacySubjectId })

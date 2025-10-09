@@ -45,40 +45,10 @@ describe('Core page basic GET requests', () => {
     async (route, titleText, auditType) => basicGetTest(route, titleText, auditType),
   )
 
-  it.each<GetRequestFixture>([[paths.CONNECTION_TEST, 'API test page', null]])(
+  it.each<GetRequestFixture>([[paths.CONNECTION_TEST, 'API test page', Page.TEST_CONNECTION_PAGE]])(
     'should render connection test page',
     async (route, titleText, auditType) => basicGetTest(route, titleText, auditType),
   )
-})
-
-describe('Search results page', () => {
-  // TODO: Fix this test by mocking return values of the datastoreSearchService .validateInput() and .search() methods
-  // it('Returns data', async () => {
-  //   const req = createMockRequest({
-  //     session: {
-  //       id: 'mock-session-id',
-  //       cookie: { originalMaxAge: 3600000 } as session.Cookie,
-  //       regenerate: jest.fn(),
-  //       destroy: jest.fn(),
-  //       reload: jest.fn(),
-  //       save: jest.fn(),
-  //       touch: jest.fn(),
-  //       resetMaxAge: jest.fn(),
-  //       returnTo: '/return',
-  //       nowInMinutes: 12345,
-  //       validationErrors: [],
-  //       formData: {},
-  //     } as session.Session & Partial<SessionData>,
-  //   })
-  //   const res = await request(app)
-  //   .post('/search')
-  //   .expect(200) // Expect a 200 OK response
-  //       expect(res.text).toContain('Search results')
-  //       expect(auditService.logPageView).toHaveBeenCalledWith(Page.SEARCH_RESULTS_PAGE, {
-  //         who: user.username,
-  //         correlationId: expect.any(String),
-  //       })
-  // })
 })
 
 export type GetRequestFixture = [route: string, titleText: string, auditType: Page]
@@ -91,6 +61,7 @@ export function basicGetTest(route: string, titleText: string, auditType: Page) 
     .expect('Content-Type', /html/)
     .expect(res => {
       expect(res.text).toContain(titleText)
+
       if (auditType !== null) {
         expect(auditService.logPageView).toHaveBeenCalledWith(auditType, {
           who: user.username,

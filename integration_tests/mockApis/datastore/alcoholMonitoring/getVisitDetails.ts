@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { AlcoholMonitoringVisitDetails } from '../../../../server/models/alcoholMonitoring/visitDetails'
+import { AlcoholMonitoringVisitDetails } from '../../../../server/data/models/alcoholMonitoringVisitDetails'
 
 const defaultVisitDetails: AlcoholMonitoringVisitDetails = {
   legacySubjectId: 'AAMR1234567',

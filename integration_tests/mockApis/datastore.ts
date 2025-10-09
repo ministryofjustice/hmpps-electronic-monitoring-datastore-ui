@@ -1,6 +1,6 @@
-export { stubGetSearchResults as stubIntegrityGetSearchResults } from './datastore/getSearchResults'
+export { stubGetAlcoholMonitoringSearchResults } from './datastore/alcoholMonitoring/getSearchResults'
+export { stubGetIntegritySearchResults } from './datastore/integrity/getSearchResults'
 
-export { stubIntegrityGetOrderSummary } from './datastore/integrity/getOrderSummary'
 export { stubIntegrityGetOrderDetails } from './datastore/integrity/getOrderDetails'
 export { stubIntegrityGetEquipmentDetails } from './datastore/integrity/getEquipmentDetails'
 export { stubIntegrityGetMonitoringEvents } from './datastore/integrity/getMonitoringEvents'
@@ -11,7 +11,6 @@ export { stubIntegrityGetVisitDetails } from './datastore/integrity/getVisitDeta
 export { stubIntegrityGetServiceDetails } from './datastore/integrity/getServiceDetails'
 export { stubIntegrityGetSuspensionOfVisits } from './datastore/integrity/getSuspensionOfVisits'
 
-export { stubAlcoholMonitoringGetOrderSummary } from './datastore/alcoholMonitoring/getOrderSummary'
 export { stubAlcoholMonitoringGetOrderDetails } from './datastore/alcoholMonitoring/getOrderDetails'
 export { stubAlcoholMonitoringGetEquipmentDetails } from './datastore/alcoholMonitoring/getEquipmentDetails'
 export { stubAlcoholMonitoringGetContactEvents } from './datastore/alcoholMonitoring/getContactEvents'
