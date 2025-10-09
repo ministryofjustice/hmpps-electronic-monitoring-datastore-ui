@@ -13,7 +13,7 @@ export default class IntegrityEquipmentDetailsService {
     try {
       const results = await this.emDatastoreApiClient.get<IntegrityEquipmentDetails[]>({
         path: `/orders/integrity/${input.legacySubjectId}/equipment-details`,
-        token: input.legacySubjectId,
+        token: input.userToken,
       })
 
       return results.map(equipmentDetails => IntegrityEquipmentDetails.parse(equipmentDetails))
