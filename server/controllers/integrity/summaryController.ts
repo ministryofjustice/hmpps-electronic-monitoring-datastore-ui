@@ -2,6 +2,7 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityOrderDetailsService } from '../../services'
 import { IntegrityOrderSummaryView } from '../../models/view-models/integrityOrderSummary'
+import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 
 export default class IntegritySummaryController {
   constructor(
@@ -16,10 +17,12 @@ export default class IntegritySummaryController {
     })
 
     const { legacySubjectId } = req.params
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     const orderDetails = await this.integritySummaryService.getOrderDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
+      restricted,
     })
 
     const viewModel = IntegrityOrderSummaryView.construct(legacySubjectId, orderDetails)

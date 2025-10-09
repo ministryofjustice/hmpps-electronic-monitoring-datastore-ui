@@ -5,6 +5,7 @@ import { AuditService, IntegrityEquipmentDetailsService } from '../../services'
 import { IntegrityEquipmentDetailsView } from '../../models/view-models/integrityEquipmentDetails'
 import paths from '../../constants/paths'
 import { buildUrl } from '../../utils/utils'
+import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 
 export default class IntegrityEquipmentDetailsController {
   constructor(
@@ -19,10 +20,12 @@ export default class IntegrityEquipmentDetailsController {
     })
 
     const { legacySubjectId } = req.params
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     const equipmentDetails = await this.integrityEquipmentDetailsService.getEquipmentDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
+      restricted,
     })
 
     const viewModel = IntegrityEquipmentDetailsView.construct(
