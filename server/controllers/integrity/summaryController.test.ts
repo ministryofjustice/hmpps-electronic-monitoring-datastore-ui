@@ -50,6 +50,7 @@ describe('Integrity summary Controller', () => {
       const expectedOrderServiceParams: GetOrderRequest = {
         userToken: 'fakeUserToken',
         legacySubjectId: expectedOrderId,
+        restricted: false,
       }
 
       integrityOrderDetailsService.getOrderDetails = jest.fn().mockResolvedValueOnce({})

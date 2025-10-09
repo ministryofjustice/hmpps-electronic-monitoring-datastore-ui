@@ -26,9 +26,12 @@ export default class IntegrityEventHistoryService {
   }
 
   private async getIncidentEvents(input: GetOrderRequest): Promise<IntegrityIncidentEvent[]> {
+    const { restricted } = input
+
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityIncidentEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/incident-events`,
+        query: { restricted },
         token: input.userToken,
       })
 
@@ -43,9 +46,12 @@ export default class IntegrityEventHistoryService {
   }
 
   private async getContactEvents(input: GetOrderRequest): Promise<IntegrityContactEvent[]> {
+    const { restricted } = input
+
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityContactEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/contact-events`,
+        query: { restricted },
         token: input.userToken,
       })
 
@@ -60,9 +66,12 @@ export default class IntegrityEventHistoryService {
   }
 
   private async getViolationEvents(input: GetOrderRequest): Promise<IntegrityViolationEvent[]> {
+    const { restricted } = input
+
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityViolationEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/violation-events`,
+        query: { restricted },
         token: input.userToken,
       })
 
@@ -77,9 +86,12 @@ export default class IntegrityEventHistoryService {
   }
 
   private async getMonitoringEvents(input: GetOrderRequest): Promise<IntegrityMonitoringEvent[]> {
+    const { restricted } = input
+
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityMonitoringEvent[]>({
         path: `/orders/integrity/${input.legacySubjectId}/monitoring-events`,
+        query: { restricted },
         token: input.userToken,
       })
 

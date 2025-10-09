@@ -5,6 +5,7 @@ import { AuditService, IntegrityEventHistoryService } from '../../services'
 import { IntegrityEventHistoryView } from '../../models/view-models/integrityEventHistory'
 import paths from '../../constants/paths'
 import { buildUrl } from '../../utils/utils'
+import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 
 export default class IntegrityEventHistoryController {
   constructor(
@@ -19,10 +20,12 @@ export default class IntegrityEventHistoryController {
     })
 
     const { legacySubjectId } = req.params
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     const eventHistory = await this.integrityEventHistoryService.getEventHistory({
       userToken: res.locals.user.token,
       legacySubjectId,
+      restricted,
     })
 
     const viewModel = IntegrityEventHistoryView.construct(

@@ -10,9 +10,12 @@ export default class IntegrityEquipmentDetailsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getEquipmentDetails(input: GetOrderRequest): Promise<IntegrityEquipmentDetails[]> {
+    const { restricted } = input
+
     try {
       const results = await this.emDatastoreApiClient.get<IntegrityEquipmentDetails[]>({
         path: `/orders/integrity/${input.legacySubjectId}/equipment-details`,
+        query: { restricted },
         token: input.userToken,
       })
 
