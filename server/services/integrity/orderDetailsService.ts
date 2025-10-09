@@ -11,9 +11,12 @@ export default class IntegrityOrderDetailsService {
   constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
 
   async getOrderDetails(input: GetOrderRequest): Promise<IntegrityOrderDetails> {
+    const { restricted } = input
+
     try {
       const result = await this.emDatastoreApiClient.get<IntegrityOrderDetails>({
         path: `/orders/integrity/${input.legacySubjectId}`,
+        query: { restricted },
         token: input.userToken,
       })
 
@@ -28,9 +31,12 @@ export default class IntegrityOrderDetailsService {
   }
 
   async getSearchResults(input: ListSearchResultsRequest): Promise<IntegrityOrderDetails[]> {
+    const { restricted } = input
+
     try {
       const results = await this.emDatastoreApiClient.get<IntegrityOrderDetails[]>({
-        path: `/orders/integrity?id=${input.queryExecutionId}`,
+        path: `/orders/integrity`,
+        query: { restricted, id: input.queryExecutionId },
         token: input.userToken,
       })
 
