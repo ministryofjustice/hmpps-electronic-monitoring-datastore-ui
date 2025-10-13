@@ -14,7 +14,7 @@ export const stubIntegrityGetMonitoringEvents = (options: GetMonitoringEventsStu
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/integrity/${options.legacySubjectId}/monitoring-events`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}/monitoring-events?restricted=false`,
     },
     response: {
       status: options.httpStatus,
