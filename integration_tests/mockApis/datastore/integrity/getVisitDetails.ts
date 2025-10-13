@@ -14,7 +14,7 @@ export const stubIntegrityGetVisitDetails = (options: GetVisitDetailsStubOptions
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/integrity/${options.legacySubjectId}/visit-details`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}/visit-details?restricted=false`,
     },
     response: {
       status: options.httpStatus,

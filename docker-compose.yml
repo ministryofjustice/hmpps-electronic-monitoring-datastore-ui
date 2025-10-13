@@ -1,6 +1,6 @@
 services:
   redis:
-    image: "bitnami/redis:5.0.5-r11"
+    image: bitnami/redis
     networks:
       - hmpps
     container_name: redis

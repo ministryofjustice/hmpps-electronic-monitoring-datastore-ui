@@ -193,6 +193,7 @@ const defaultGetSearchResultsOptions = {
 
 type GetSearchResultsStubOptions = {
   queryExecutionId: string
+  restricted?: boolean
   httpStatus: number
   results: IntegrityOrderDetails[]
 }
@@ -203,7 +204,7 @@ export const stubGetIntegritySearchResults = (
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/integrity?id=${options.queryExecutionId}`,
+      url: `/datastore/orders/integrity?restricted=${options.restricted || false}&id=${options.queryExecutionId}`,
     },
     response: {
       status: options.httpStatus,

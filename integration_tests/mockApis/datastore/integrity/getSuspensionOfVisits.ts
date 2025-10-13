@@ -21,7 +21,7 @@ export const stubIntegrityGetSuspensionOfVisits = (options: GetSuspensionOfVisit
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/integrity/${options.legacySubjectId}/suspension-of-visits`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}/suspension-of-visits?restricted=false`,
     },
     response: {
       status: options.httpStatus,
