@@ -3,7 +3,7 @@ import IntegritySuspensionOfVisitsService from './suspensionOfVisitsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config, { ApiConfig } from '../../config'
-import { IntegritySuspensionOfVisitsEvent } from '../../models/integrity/suspensionOfVisits'
+import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
 
 describe('Integrity Suspension of visits Service', () => {
   let fakeClient: nock.Scope
@@ -39,7 +39,7 @@ describe('Integrity Suspension of visits Service', () => {
           startDate: null,
           startTime: null,
           endDate: null,
-        } as IntegritySuspensionOfVisitsEvent,
+        } as IntegritySuspensionOfVisits,
       ]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
@@ -60,7 +60,7 @@ describe('Integrity Suspension of visits Service', () => {
           startDate: null,
           startTime: null,
           endDate: null,
-        } as IntegritySuspensionOfVisitsEvent,
+        } as IntegritySuspensionOfVisits,
       ]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
@@ -81,7 +81,7 @@ describe('Integrity Suspension of visits Service', () => {
           startDate: null,
           startTime: null,
           endDate: null,
-        } as IntegritySuspensionOfVisitsEvent,
+        } as IntegritySuspensionOfVisits,
         {
           legacySubjectId: '456',
           suspensionOfVisits: 'no',
@@ -89,7 +89,7 @@ describe('Integrity Suspension of visits Service', () => {
           startDate: null,
           startTime: null,
           endDate: null,
-        } as IntegritySuspensionOfVisitsEvent,
+        } as IntegritySuspensionOfVisits,
         {
           legacySubjectId: '789',
           suspensionOfVisits: 'yes',
@@ -97,7 +97,7 @@ describe('Integrity Suspension of visits Service', () => {
           startDate: null,
           startTime: null,
           endDate: null,
-        } as IntegritySuspensionOfVisitsEvent,
+        } as IntegritySuspensionOfVisits,
       ]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
@@ -110,7 +110,7 @@ describe('Integrity Suspension of visits Service', () => {
     })
 
     it('should fetch an empty list of equipment detail items', async () => {
-      const expectedResult = [] as IntegritySuspensionOfVisitsEvent[]
+      const expectedResult = [] as IntegritySuspensionOfVisits[]
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
 

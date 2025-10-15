@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { IntegrityVisitDetails } from '../../../../server/models/integrity/visitDetails'
+import { IntegrityVisitDetails } from '../../../../server/data/models/integrityVisitDetails'
 
 const defaultVisitDetails = [] as IntegrityVisitDetails[]
 
@@ -14,7 +14,7 @@ export const stubIntegrityGetVisitDetails = (options: GetVisitDetailsStubOptions
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/integrity/${options.legacySubjectId}/visit-details`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}/visit-details?restricted=false`,
     },
     response: {
       status: options.httpStatus,

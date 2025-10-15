@@ -1,8 +1,6 @@
 import type { Request, Response } from 'express'
 
-export const createMockRequest = (
-  overrideProperties: Partial<Request> = { params: { legacySubjectId: '123456789' } },
-): Request => {
+export const createMockRequest = (overrideProperties: Partial<Request> = {}): Request => {
   return {
     // @ts-expect-error stubbing session
     session: {},

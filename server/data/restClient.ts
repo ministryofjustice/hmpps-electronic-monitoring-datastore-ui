@@ -8,7 +8,7 @@ import sanitiseError from '../sanitisedError'
 import type { ApiConfig } from '../config'
 import type { UnsanitisedError } from '../sanitisedError'
 
-interface Request {
+export interface Request {
   path: string
   query?: object | string
   headers?: Record<string, string>

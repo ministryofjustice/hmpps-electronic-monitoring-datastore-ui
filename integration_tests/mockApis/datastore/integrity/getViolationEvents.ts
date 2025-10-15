@@ -1,6 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from '../../wiremock'
-import { IntegrityViolationEvent } from '../../../../server/models/integrity/violationEvents'
+import { IntegrityViolationEvent } from '../../../../server/data/models/integrityViolationEvent'
 
 const defaultViolationEvents = [] as IntegrityViolationEvent[]
 
@@ -14,7 +14,7 @@ export const stubIntegrityGetViolationEvents = (options: GetViolationEventsStubO
   stubFor({
     request: {
       method: 'GET',
-      url: `/datastore/orders/integrity/${options.legacySubjectId}/violation-events`,
+      url: `/datastore/orders/integrity/${options.legacySubjectId}/violation-events?restricted=false`,
     },
     response: {
       status: options.httpStatus,

@@ -2,7 +2,10 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityVisitDetailsService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityVisitDetailsModel from '../../models/view-models/integrity/visitDetails'
+import { IntegrityVisitDetailsView } from '../../models/view-models/integrityVisitDetails'
+import paths from '../../constants/paths'
+import { buildUrl } from '../../utils/utils'
+import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 
 export default class IntegrityVisitDetailsController {
   constructor(
@@ -17,15 +20,17 @@ export default class IntegrityVisitDetailsController {
     })
 
     const { legacySubjectId } = req.params
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     const visitDetails = await this.visitDetailsService.getVisitDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
+      restricted,
     })
 
-    const viewModel = IntegrityVisitDetailsModel.construct(
+    const viewModel = IntegrityVisitDetailsView.construct(
       legacySubjectId,
-      `/integrity/${legacySubjectId}`,
+      buildUrl(paths.INTEGRITY_ORDER.SUMMARY, { legacySubjectId }),
       visitDetails,
     )
 

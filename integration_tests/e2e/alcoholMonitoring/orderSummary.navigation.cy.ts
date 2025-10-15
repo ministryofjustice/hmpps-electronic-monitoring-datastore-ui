@@ -13,7 +13,7 @@ context('Alcohol monitoring Order summary navigation', () => {
     cy.task('reset')
     cy.task('stubSignIn', { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
 
-    cy.task('stubAlcoholMonitoringGetOrderSummary', {
+    cy.task('stubAlcoholMonitoringGetOrderDetails', {
       httpStatus: 200,
       legacySubjectId,
     })

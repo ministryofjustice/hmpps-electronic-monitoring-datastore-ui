@@ -1,12 +1,13 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
-import { AuditService, IntegrityOrderSummaryService } from '../../services'
-import { IntegrityReports } from '../../models/integrity/orderSummary'
+import { AuditService, IntegrityOrderDetailsService } from '../../services'
+import { IntegrityOrderSummaryView } from '../../models/view-models/integrityOrderSummary'
+import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 
 export default class IntegritySummaryController {
   constructor(
     private readonly auditService: AuditService,
-    private readonly integritySummaryService: IntegrityOrderSummaryService,
+    private readonly integritySummaryService: IntegrityOrderDetailsService,
   ) {}
 
   summary: RequestHandler = async (req: Request, res: Response) => {
@@ -16,20 +17,15 @@ export default class IntegritySummaryController {
     })
 
     const { legacySubjectId } = req.params
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
-    const orderInformation = await this.integritySummaryService.getOrderSummary({
+    const orderDetails = await this.integritySummaryService.getOrderDetails({
       userToken: res.locals.user.token,
       legacySubjectId,
+      restricted,
     })
-    const backUrl: string = '/integrity'
-    const reports: IntegrityReports = {
-      orderDetails: true,
-      visitDetails: true,
-      equipmentDetails: true,
-      suspensionOfVisits: true,
-      allEventHistory: true,
-      services: true,
-    }
-    res.render('pages/integrity/summary', { legacySubjectId, data: orderInformation, backUrl, reports })
+
+    const viewModel = IntegrityOrderSummaryView.construct(legacySubjectId, orderDetails)
+    res.render('pages/integrity/summary', viewModel)
   }
 }

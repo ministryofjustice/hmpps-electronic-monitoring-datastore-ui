@@ -2,7 +2,10 @@ import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityEventHistoryService } from '../../services'
 // eslint-disable-next-line import/no-named-as-default
-import IntegrityEventHistoryViewModel from '../../models/view-models/integrity/eventHistory'
+import { IntegrityEventHistoryView } from '../../models/view-models/integrityEventHistory'
+import paths from '../../constants/paths'
+import { buildUrl } from '../../utils/utils'
+import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 
 export default class IntegrityEventHistoryController {
   constructor(
@@ -17,15 +20,17 @@ export default class IntegrityEventHistoryController {
     })
 
     const { legacySubjectId } = req.params
+    const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     const eventHistory = await this.integrityEventHistoryService.getEventHistory({
       userToken: res.locals.user.token,
       legacySubjectId,
+      restricted,
     })
 
-    const viewModel = IntegrityEventHistoryViewModel.construct(
+    const viewModel = IntegrityEventHistoryView.construct(
       legacySubjectId,
-      `/integrity/${legacySubjectId}`,
+      buildUrl(paths.INTEGRITY_ORDER.SUMMARY, { legacySubjectId }),
       eventHistory,
     )
 
