@@ -79,7 +79,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.911.0",
-    "@ministryofjustice/frontend": "^6.0.0",
+    "@ministryofjustice/frontend": "^7.1.0",
     "@x-govuk/govuk-prototype-filters": "^2.0.0",
     "agentkeepalive": "^4.6.0",
     "applicationinsights": "^3.11.0",
