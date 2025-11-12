@@ -107,7 +107,7 @@
     "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@jgoz/esbuild-plugin-typecheck": "^4.0.3",
+    "@jgoz/esbuild-plugin-typecheck": "^4.0.4",
     "@types/bunyan": "^1.8.11",
     "@types/bunyan-format": "^0.2.9",
     "@types/compression": "^1.8.1",
