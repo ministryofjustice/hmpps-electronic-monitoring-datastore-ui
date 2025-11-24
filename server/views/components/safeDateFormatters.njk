@@ -1,11 +1,11 @@
 {% macro safeGovukDate(value) %}
-  {{ value | govukDate if value else "" }}
+  {{ value | mojDate("date") if value else "" }}
 {% endmacro %}
 
 {% macro safeGovukTime(value) %}
-  {{ value | govukTime if value else "" }}
+  {{ value | mojDate("time") if value else "" }}
 {% endmacro %}
 
 {% macro safeGovukDateTime(value) %}
-  {{ value | govukDateTime if value else "" }}
+  {{ value | mojDate('datetime') if value else "" }}
 {% endmacro %}
