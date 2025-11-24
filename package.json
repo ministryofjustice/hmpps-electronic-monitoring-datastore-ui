@@ -80,7 +80,6 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.936.0",
     "@ministryofjustice/frontend": "^7.1.0",
-    "@x-govuk/govuk-prototype-filters": "^2.0.0",
     "agentkeepalive": "^4.6.0",
     "applicationinsights": "^3.12.0",
     "body-parser": "^2.2.0",
@@ -163,7 +162,7 @@
   "overrides": {
     "aws-sdk-client-mock": {
       "sinon": "^21.0.0",
-      "@types/sinon": "^17.0.4"
+      "@types/sinon": "^21.0.0"
     }
   }
 }
