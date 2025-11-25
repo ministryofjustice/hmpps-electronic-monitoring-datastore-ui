@@ -16,6 +16,12 @@ generic-service:
     enabled: true
     host: app-hostname.local # override per environment
     tlsSecretName: hmpps-electronic-monitoring-datastore-cert
+    metadata:
+      annotations:
+        nginx.ingress.kubernetes.io/server-snippet: |
+          if ($server_protocol !~ "^HTTP/2") {
+            return 426;
+          }
 
   livenessProbe:
     httpGet:
