@@ -19,7 +19,7 @@ export default class IntegrityEventHistoryController {
       correlationId: req.id,
     })
 
-    const { legacySubjectId } = req.params
+    const legacySubjectId = req.params.legacySubjectId as string
     const restricted = res.locals.user.userRoles.includes(HMPPS_AUTH_ROLES.ROLE_EM_DATASTORE_RESTRICTED__RO)
 
     const eventHistory = await this.integrityEventHistoryService.getEventHistory({

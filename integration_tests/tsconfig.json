@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
     "target": "es2015",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "noEmit": true,
     "lib": ["es2015", "dom"],
     "types": ["cypress", "express", "express-session"],

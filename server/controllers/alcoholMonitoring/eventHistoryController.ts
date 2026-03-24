@@ -18,7 +18,7 @@ export default class AlcoholMonitoringEventHistoryController {
       correlationId: req.id,
     })
 
-    const { legacySubjectId } = req.params
+    const legacySubjectId = req.params.legacySubjectId as string
 
     const events = await this.alcoholMonitoringEventHistoryService.getEventHistory({
       userToken: res.locals.user.token,

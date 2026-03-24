@@ -17,7 +17,7 @@ export default class OrderDetailsController {
       correlationId: req.id,
     })
 
-    const { legacySubjectId } = req.params
+    const legacySubjectId = req.params.legacySubjectId as string
 
     const orderDetails = await this.alcoholMonitoringDetailsService.getOrderDetails({
       userToken: res.locals.user.token,
