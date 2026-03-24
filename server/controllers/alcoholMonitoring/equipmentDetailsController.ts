@@ -18,7 +18,7 @@ export default class AlcoholMonitoringEquipmentDetailsController {
       correlationId: req.id,
     })
 
-    const { legacySubjectId } = req.params
+    const legacySubjectId = req.params.legacySubjectId as string
 
     const equipmentDetails = await this.alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
       userToken: res.locals.user.token,
