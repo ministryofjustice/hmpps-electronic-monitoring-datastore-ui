@@ -79,7 +79,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.975.0",
-    "@ministryofjustice/frontend": "^8.0.0",
+    "@ministryofjustice/frontend": "^9.0.0",
     "agentkeepalive": "^4.6.0",
     "applicationinsights": "^3.13.0",
     "body-parser": "^2.2.2",
@@ -157,7 +157,7 @@
     "prettier-plugin-jinja-template": "^2.1.0",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.6",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.2"
   },
   "overrides": {
     "aws-sdk-client-mock": {
