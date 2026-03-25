@@ -2,7 +2,6 @@ const { spawn } = require('node:child_process')
 const path = require('node:path')
 
 const { glob } = require('glob')
-const chokidar = require('chokidar')
 const buildAssets = require('./assets.config')
 const buildApp = require('./app.config')
 
@@ -41,10 +40,7 @@ const buildConfig = {
   },
 }
 
-const main = () => {
-  /**
-   * @type {chokidar.WatchOptions}
-   */
+const main = async () => {
   const chokidarOptions = {
     persistent: true,
     ignoreInitial: true,
@@ -59,6 +55,7 @@ const main = () => {
   }
 
   if (args.includes('--dev-server')) {
+    const { default: chokidar } = await import('chokidar')
     let serverProcess = null
     chokidar.watch(['dist']).on('all', () => {
       if (serverProcess) serverProcess.kill()
@@ -67,6 +64,7 @@ const main = () => {
   }
 
   if (args.includes('--watch')) {
+    const { default: chokidar } = await import('chokidar')
     process.stderr.write('\u{1b}[1m\u{1F52D} Watching for changes...\u{1b}[0m\n')
     // Assets
     chokidar
