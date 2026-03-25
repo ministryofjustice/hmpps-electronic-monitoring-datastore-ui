@@ -4,6 +4,9 @@
     "node": true,
     "jest": true
   },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
 
   "plugins": ["import", "no-only-tests"],
 
