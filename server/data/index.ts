@@ -10,23 +10,26 @@ const applicationInfo = applicationInfoSupplier()
 initialiseAppInsights()
 buildAppInsightsClient(applicationInfo)
 
-import HmppsAuthClient from './hmppsAuthClient'
+// eslint-disable-next-line import/order
+import { AuthenticationClient, RedisTokenStore, InMemoryTokenStore } from '@ministryofjustice/hmpps-auth-clients'
 import { createRedisClient } from './redisClient'
-import RedisTokenStore from './tokenStore/redisTokenStore'
-import InMemoryTokenStore from './tokenStore/inMemoryTokenStore'
 import config from '../config'
+import logger from '../../logger'
 import HmppsAuditClient from './hmppsAuditClient'
 import EmDatastoreApiClient from './emDatastoreApiClient'
 
 export const dataAccess = () => ({
   applicationInfo,
-  hmppsAuthClient: new HmppsAuthClient(
-    config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore(),
-  ),
   hmppsAuditClient: new HmppsAuditClient(config.sqs.audit),
-  emDatastoreApiClient: new EmDatastoreApiClient(config.apis.emDatastoreApi),
+  emDatastoreApiClient: new EmDatastoreApiClient(
+    new AuthenticationClient(
+      config.apis.hmppsAuth,
+      logger,
+      config.redis.enabled ? new RedisTokenStore(createRedisClient()) : new InMemoryTokenStore(),
+    ),
+  ),
 })
 
 export type DataAccess = ReturnType<typeof dataAccess>
 
-export { HmppsAuthClient, HmppsAuditClient, EmDatastoreApiClient }
+export { HmppsAuditClient, EmDatastoreApiClient }

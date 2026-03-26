@@ -1,3 +1,4 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
@@ -13,11 +14,13 @@ export default class IntegrityEquipmentDetailsService {
     const { restricted } = input
 
     try {
-      const results = await this.emDatastoreApiClient.get<IntegrityEquipmentDetails[]>({
-        path: `/orders/integrity/${input.legacySubjectId}/equipment-details`,
-        query: { restricted },
-        token: input.userToken,
-      })
+      const results = await this.emDatastoreApiClient.get<IntegrityEquipmentDetails[]>(
+        {
+          path: `/orders/integrity/${input.legacySubjectId}/equipment-details`,
+          query: { restricted },
+        },
+        asUser(input.userToken),
+      )
 
       return results.map(equipmentDetails => IntegrityEquipmentDetails.parse(equipmentDetails))
     } catch (error) {

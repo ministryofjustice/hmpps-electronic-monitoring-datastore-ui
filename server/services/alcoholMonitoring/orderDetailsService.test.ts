@@ -3,7 +3,7 @@ import AlcoholMonitoringOrderDetailsService from './orderDetailsService'
 
 import { AlcoholMonitoringOrderDetails } from '../../data/models/alcoholMonitoringOrderDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 
 describe('Alcohol Monitoring order summary Service', () => {
   let fakeClient: nock.Scope
@@ -13,7 +13,7 @@ describe('Alcohol Monitoring order summary Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     alcoholMonitoringOrderDetailsService = new AlcoholMonitoringOrderDetailsService(emDatastoreApiClient)
   })
 
@@ -57,7 +57,7 @@ describe('Alcohol Monitoring order summary Service', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(200, expectedResult)
 
-      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ legacySubjectId })
+      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -89,7 +89,7 @@ describe('Alcohol Monitoring order summary Service', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(200, expectedResult)
 
-      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ legacySubjectId })
+      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -99,6 +99,7 @@ describe('Alcohol Monitoring order summary Service', () => {
 
       await expect(
         alcoholMonitoringOrderDetailsService.getOrderDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving order details: Unauthorized'))
@@ -109,6 +110,7 @@ describe('Alcohol Monitoring order summary Service', () => {
 
       await expect(
         alcoholMonitoringOrderDetailsService.getOrderDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving order details: Fake unexpected server error'))

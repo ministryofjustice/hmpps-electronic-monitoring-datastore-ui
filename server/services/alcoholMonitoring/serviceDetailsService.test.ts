@@ -3,7 +3,7 @@ import AlcoholMonitoringServiceDetailService from './serviceDetailsService'
 
 import { AlcoholMonitoringServiceDetails } from '../../data/models/alcoholMonitoringServiceDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 
 describe('Alcohol Monitoring Service Details Service', () => {
   let fakeClient: nock.Scope
@@ -13,7 +13,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     alcoholMonitoringServiceDetailService = new AlcoholMonitoringServiceDetailService(emDatastoreApiClient)
   })
 
@@ -47,6 +47,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await alcoholMonitoringServiceDetailService.getServiceDetails({
+        userToken: 'token',
         legacySubjectId,
       })
 
@@ -90,6 +91,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await alcoholMonitoringServiceDetailService.getServiceDetails({
+        userToken: 'token',
         legacySubjectId,
       })
 
@@ -102,6 +104,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`).reply(200, expectedResult)
 
       const result = await alcoholMonitoringServiceDetailService.getServiceDetails({
+        userToken: 'token',
         legacySubjectId,
       })
 
@@ -113,6 +116,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
 
       await expect(
         alcoholMonitoringServiceDetailService.getServiceDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving service details: Unauthorized'))
@@ -125,6 +129,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
 
       await expect(
         alcoholMonitoringServiceDetailService.getServiceDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving service details: Fake unexpected server error'))

@@ -3,7 +3,7 @@ import AlcoholMonitoringEquipmentDetailsService from './equipmentDetailsService'
 
 import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 
 describe('Alcohol Monitoring Equipment Details Service', () => {
   let fakeClient: nock.Scope
@@ -13,7 +13,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(emDatastoreApiClient)
   })
 
@@ -47,7 +47,10 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
-      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
+      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
+        userToken: 'token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -91,7 +94,10 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
-      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
+      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
+        userToken: 'token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -101,7 +107,10 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
-      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({ legacySubjectId })
+      const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
+        userToken: 'token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -111,6 +120,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       await expect(
         alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of equipment details: Unauthorized'))
@@ -123,6 +133,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       await expect(
         alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of equipment details: Fake unexpected server error'))

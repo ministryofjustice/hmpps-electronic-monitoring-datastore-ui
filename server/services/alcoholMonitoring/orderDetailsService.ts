@@ -1,3 +1,4 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
@@ -12,10 +13,12 @@ export default class AlcoholMonitoringDetailsService {
 
   async getOrderDetails(input: GetOrderRequest): Promise<AlcoholMonitoringOrderDetails> {
     try {
-      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringOrderDetails>({
-        path: `/orders/alcohol-monitoring/${input.legacySubjectId}`,
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringOrderDetails>(
+        {
+          path: `/orders/alcohol-monitoring/${input.legacySubjectId}`,
+        },
+        asUser(input.userToken),
+      )
 
       return AlcoholMonitoringOrderDetails.parse(result)
     } catch (error) {
@@ -29,10 +32,12 @@ export default class AlcoholMonitoringDetailsService {
 
   async getSearchResults(input: ListSearchResultsRequest): Promise<AlcoholMonitoringOrderDetails[]> {
     try {
-      const results = await this.emDatastoreApiClient.get<AlcoholMonitoringOrderDetails[]>({
-        path: `/orders/alcohol-monitoring?id=${input.queryExecutionId}`,
-        token: input.userToken,
-      })
+      const results = await this.emDatastoreApiClient.get<AlcoholMonitoringOrderDetails[]>(
+        {
+          path: `/orders/alcohol-monitoring?id=${input.queryExecutionId}`,
+        },
+        asUser(input.userToken),
+      )
 
       return results.map(order => AlcoholMonitoringOrderDetails.parse(order))
     } catch (error) {

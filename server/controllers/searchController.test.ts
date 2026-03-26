@@ -159,7 +159,7 @@ describe('SearchController', () => {
       expect(OrderSearchCriteria.safeParse).toHaveBeenCalledWith(req.body)
       expect(req.flash).toHaveBeenCalledTimes(2)
       expect(req.flash).toHaveBeenNthCalledWith(1, 'formData', req.body)
-      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', [
+      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', 'ValidationResult', [
         { field: 'firstName', error: 'First name must contain letters only' },
       ])
       expect(res.redirect).toHaveBeenCalledWith('/search')
@@ -184,7 +184,7 @@ describe('SearchController', () => {
 
       expect(req.flash).toHaveBeenCalledTimes(2)
       expect(req.flash).toHaveBeenNthCalledWith(1, 'formData', req.body)
-      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', [
+      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', 'ValidationResult', [
         {
           error: 'You must enter a value into at least one search field',
           field: '',

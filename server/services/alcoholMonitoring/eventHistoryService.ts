@@ -1,3 +1,4 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
@@ -21,10 +22,12 @@ export default class AlcoholMonitoringEventHistoryService {
 
   private async getIncidentEvents(input: GetOrderRequest): Promise<AlcoholMonitoringIncidentEvent[]> {
     try {
-      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringIncidentEvent[]>({
-        path: `/orders/alcohol-monitoring/${input.legacySubjectId}/incident-events`,
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringIncidentEvent[]>(
+        {
+          path: `/orders/alcohol-monitoring/${input.legacySubjectId}/incident-events`,
+        },
+        asUser(input.userToken),
+      )
 
       return result.map(incidentEvent => AlcoholMonitoringIncidentEvent.parse(incidentEvent))
     } catch (error) {
@@ -38,10 +41,12 @@ export default class AlcoholMonitoringEventHistoryService {
 
   private async getContactEvents(input: GetOrderRequest): Promise<AlcoholMonitoringContactEvent[]> {
     try {
-      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringContactEvent[]>({
-        path: `/orders/alcohol-monitoring/${input.legacySubjectId}/contact-events`,
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringContactEvent[]>(
+        {
+          path: `/orders/alcohol-monitoring/${input.legacySubjectId}/contact-events`,
+        },
+        asUser(input.userToken),
+      )
 
       return result.map(contactEvent => AlcoholMonitoringContactEvent.parse(contactEvent))
     } catch (error) {
@@ -55,10 +60,12 @@ export default class AlcoholMonitoringEventHistoryService {
 
   private async getViolationEvents(input: GetOrderRequest): Promise<AlcoholMonitoringViolationEvent[]> {
     try {
-      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringViolationEvent[]>({
-        path: `/orders/alcohol-monitoring/${input.legacySubjectId}/violation-events`,
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringViolationEvent[]>(
+        {
+          path: `/orders/alcohol-monitoring/${input.legacySubjectId}/violation-events`,
+        },
+        asUser(input.userToken),
+      )
 
       return result.map(violationEvent => AlcoholMonitoringViolationEvent.parse(violationEvent))
     } catch (error) {

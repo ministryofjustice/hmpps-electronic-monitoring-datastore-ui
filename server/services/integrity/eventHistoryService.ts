@@ -1,3 +1,4 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
@@ -29,11 +30,13 @@ export default class IntegrityEventHistoryService {
     const { restricted } = input
 
     try {
-      const result = await this.emDatastoreApiClient.get<IntegrityIncidentEvent[]>({
-        path: `/orders/integrity/${input.legacySubjectId}/incident-events`,
-        query: { restricted },
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<IntegrityIncidentEvent[]>(
+        {
+          path: `/orders/integrity/${input.legacySubjectId}/incident-events`,
+          query: { restricted },
+        },
+        asUser(input.userToken),
+      )
 
       return result.map(incidentEvent => IntegrityIncidentEvent.parse(incidentEvent))
     } catch (error) {
@@ -49,11 +52,13 @@ export default class IntegrityEventHistoryService {
     const { restricted } = input
 
     try {
-      const result = await this.emDatastoreApiClient.get<IntegrityContactEvent[]>({
-        path: `/orders/integrity/${input.legacySubjectId}/contact-events`,
-        query: { restricted },
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<IntegrityContactEvent[]>(
+        {
+          path: `/orders/integrity/${input.legacySubjectId}/contact-events`,
+          query: { restricted },
+        },
+        asUser(input.userToken),
+      )
 
       return result.map(contactEvent => IntegrityContactEvent.parse(contactEvent))
     } catch (error) {
@@ -69,11 +74,13 @@ export default class IntegrityEventHistoryService {
     const { restricted } = input
 
     try {
-      const result = await this.emDatastoreApiClient.get<IntegrityViolationEvent[]>({
-        path: `/orders/integrity/${input.legacySubjectId}/violation-events`,
-        query: { restricted },
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<IntegrityViolationEvent[]>(
+        {
+          path: `/orders/integrity/${input.legacySubjectId}/violation-events`,
+          query: { restricted },
+        },
+        asUser(input.userToken),
+      )
 
       return result.map(violationEvent => IntegrityViolationEvent.parse(violationEvent))
     } catch (error) {
@@ -89,11 +96,13 @@ export default class IntegrityEventHistoryService {
     const { restricted } = input
 
     try {
-      const result = await this.emDatastoreApiClient.get<IntegrityMonitoringEvent[]>({
-        path: `/orders/integrity/${input.legacySubjectId}/monitoring-events`,
-        query: { restricted },
-        token: input.userToken,
-      })
+      const result = await this.emDatastoreApiClient.get<IntegrityMonitoringEvent[]>(
+        {
+          path: `/orders/integrity/${input.legacySubjectId}/monitoring-events`,
+          query: { restricted },
+        },
+        asUser(input.userToken),
+      )
 
       return result.map(monitoringEvent => IntegrityMonitoringEvent.parse(monitoringEvent))
     } catch (error) {

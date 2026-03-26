@@ -1,3 +1,4 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
 import logger from '../../logger'
 import getSanitisedError, { SanitisedError } from '../sanitisedError'
 import EmDatastoreApiClient from '../data/emDatastoreApiClient'
@@ -12,11 +13,13 @@ export default class EmDatastoreOrderSearchService {
     const { searchType } = data
 
     try {
-      const result = await this.emDatastoreApiClient.post<QueryExecutionResponse>({
-        path: `/orders/${searchType}`,
-        data,
-        token: userToken,
-      })
+      const result = await this.emDatastoreApiClient.post<QueryExecutionResponse>(
+        {
+          path: `/orders/${searchType}`,
+          data,
+        },
+        asUser(userToken),
+      )
 
       return QueryExecutionResponse.parse(result)
     } catch (error) {

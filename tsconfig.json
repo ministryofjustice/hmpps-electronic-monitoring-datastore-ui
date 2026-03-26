@@ -1,9 +1,11 @@
 {
+  "types": ["jest", "mocha", "node"],
   "compileOnSave": true,
   "compilerOptions": {
     "target": "es2018",
-    "module": "esnext",
-    "moduleResolution": "bundler",
+    "module": "node16",
+    "moduleResolution": "node16",
+    "isolatedModules": true,
     "outDir": "./dist",
     "rootDir": ".",
     "sourceMap": true,
@@ -21,6 +23,15 @@
     "experimentalDecorators": true,
     "typeRoots": ["./server/@types", "./node_modules/@types"]
   },
-  "exclude": ["node_modules", "assets/**/*.js", "integration_tests", "dist", "cypress.config.ts", "esbuild"],
+  "exclude": [
+    "node_modules",
+    "assets",
+    "integration_tests",
+    "dist",
+    "cypress.config.ts",
+    "esbuild",
+    "playwright.config.ts",
+    "server/utils/azureAppInsights.test.ts"
+  ],
   "include": ["**/*.js", "**/*.ts"]
 }

@@ -10,6 +10,7 @@ const testAppInfo: ApplicationInfo = {
   buildNumber: '1',
   gitRef: 'long ref',
   gitShortHash: 'short ref',
+  productId: 'XX1234',
   branchName: 'main',
 }
 
@@ -17,9 +18,9 @@ jest.mock('../../applicationInfo', () => {
   return jest.fn(() => testAppInfo)
 })
 
-import { HmppsAuthClient, EmDatastoreApiClient } from '..'
+import { EmDatastoreApiClient } from '..'
 
 jest.mock('..')
 
-export const createMockHmppsAuthClient = () => new HmppsAuthClient(null) as jest.Mocked<HmppsAuthClient>
-export const createMockEmDatastoreApiClient = () => new EmDatastoreApiClient(null) as jest.Mocked<EmDatastoreApiClient>
+const createMockEmDatastoreApiClient = () => new EmDatastoreApiClient() as jest.Mocked<EmDatastoreApiClient>
+export default createMockEmDatastoreApiClient
