@@ -1,7 +1,7 @@
 import nock from 'nock'
 
 import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../config'
+import config from '../config'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
 
 describe('Datastore Search Service', () => {
@@ -17,7 +17,7 @@ describe('Datastore Search Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(emDatastoreApiClient)
   })
 

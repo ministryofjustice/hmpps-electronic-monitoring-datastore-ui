@@ -2,7 +2,7 @@ import nock from 'nock'
 import IntegritySuspensionOfVisitsService from './suspensionOfVisitsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
 
 describe('Integrity Suspension of visits Service', () => {
@@ -13,7 +13,7 @@ describe('Integrity Suspension of visits Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(emDatastoreApiClient)
   })
 
@@ -45,6 +45,7 @@ describe('Integrity Suspension of visits Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -66,6 +67,7 @@ describe('Integrity Suspension of visits Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -103,6 +105,7 @@ describe('Integrity Suspension of visits Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -115,6 +118,7 @@ describe('Integrity Suspension of visits Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -126,6 +130,7 @@ describe('Integrity Suspension of visits Service', () => {
 
       await expect(
         integritySuspensionOfVisitsService.getSuspensionOfVisits({
+          userToken: 'token',
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Unauthorized'))
@@ -138,6 +143,7 @@ describe('Integrity Suspension of visits Service', () => {
 
       await expect(
         integritySuspensionOfVisitsService.getSuspensionOfVisits({
+          userToken: 'token',
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Fake unexpected server error'))

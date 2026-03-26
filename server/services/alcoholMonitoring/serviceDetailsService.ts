@@ -1,3 +1,4 @@
+import { asUser } from '@ministryofjustice/hmpps-rest-client'
 import logger from '../../../logger'
 import getSanitisedError from '../../sanitisedError'
 
@@ -11,10 +12,12 @@ export default class AlcoholMonitoringServiceDetailService {
 
   async getServiceDetails(input: GetOrderRequest): Promise<AlcoholMonitoringServiceDetails[]> {
     try {
-      const results = await this.emDatastoreApiClient.get<AlcoholMonitoringServiceDetails[]>({
-        path: `/orders/alcohol-monitoring/${input.legacySubjectId}/service-details`,
-        token: input.userToken,
-      })
+      const results = await this.emDatastoreApiClient.get<AlcoholMonitoringServiceDetails[]>(
+        {
+          path: `/orders/alcohol-monitoring/${input.legacySubjectId}/service-details`,
+        },
+        asUser(input.userToken),
+      )
 
       return results.map(serviceDetails => AlcoholMonitoringServiceDetails.parse(serviceDetails))
     } catch (error) {

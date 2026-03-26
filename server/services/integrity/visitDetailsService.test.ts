@@ -3,7 +3,7 @@ import IntegrityVisitDetailsService from './visitDetailsService'
 
 import { IntegrityVisitDetails } from '../../data/models/integrityVisitDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 
 describe('Alcohol Monitoring Equipment Details Service', () => {
   let fakeClient: nock.Scope
@@ -13,7 +13,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     integrityVisitDetailsService = new IntegrityVisitDetailsService(emDatastoreApiClient)
   })
 
@@ -45,7 +45,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
+      const result = await integrityVisitDetailsService.getVisitDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -65,7 +65,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
+      const result = await integrityVisitDetailsService.getVisitDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -103,7 +103,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
+      const result = await integrityVisitDetailsService.getVisitDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -113,7 +113,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}/visit-details`).reply(200, expectedResult)
 
-      const result = await integrityVisitDetailsService.getVisitDetails({ legacySubjectId })
+      const result = await integrityVisitDetailsService.getVisitDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -123,6 +123,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       await expect(
         integrityVisitDetailsService.getVisitDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of visit details: Unauthorized'))
@@ -135,6 +136,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
 
       await expect(
         integrityVisitDetailsService.getVisitDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of visit details: Fake unexpected server error'))

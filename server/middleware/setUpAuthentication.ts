@@ -2,10 +2,11 @@ import passport from 'passport'
 import flash from 'connect-flash'
 import { Router } from 'express'
 import { Strategy } from 'passport-oauth2'
+import { VerificationClient, AuthenticatedRequest } from '@ministryofjustice/hmpps-auth-clients'
 import config from '../config'
-import tokenVerifier from '../data/tokenVerification'
 import { HmppsUser } from '../interfaces/hmppsUser'
-import generateOauthClientToken from '../authentication/clientCredentials'
+import generateOauthClientToken from '../utils/clientCredentials'
+import logger from '../../logger'
 
 passport.serializeUser((user, done) => {
   // Not used but required for Passport
@@ -24,7 +25,7 @@ passport.use(
       tokenURL: `${config.apis.hmppsAuth.url}/oauth/token`,
       clientID: config.apis.hmppsAuth.authClientId,
       clientSecret: config.apis.hmppsAuth.authClientSecret,
-      callbackURL: `${config.domain}/sign-in/callback`,
+      callbackURL: `${config.ingressUrl}/sign-in/callback`,
       state: true,
       customHeaders: { Authorization: generateOauthClientToken() },
     },
@@ -36,6 +37,7 @@ passport.use(
 
 export default function setupAuthentication() {
   const router = Router()
+  const tokenVerificationClient = new VerificationClient(config.apis.tokenVerification, logger)
 
   router.use(passport.initialize())
   router.use(passport.session())
@@ -43,7 +45,7 @@ export default function setupAuthentication() {
 
   router.get('/autherror', (req, res) => {
     res.status(401)
-    return res.render('pages/error-pages/401')
+    return res.render('autherror')
   })
 
   router.get('/sign-in', passport.authenticate('oauth2'))
@@ -56,7 +58,7 @@ export default function setupAuthentication() {
   )
 
   const authUrl = config.apis.hmppsAuth.externalUrl
-  const authParameters = `client_id=${config.apis.hmppsAuth.authClientId}&redirect_uri=${config.domain}`
+  const authParameters = `client_id=${config.apis.hmppsAuth.authClientId}&redirect_uri=${config.ingressUrl}`
 
   router.use('/sign-out', (req, res, next) => {
     const authSignOutUrl = `${authUrl}/sign-out?${authParameters}`
@@ -73,7 +75,7 @@ export default function setupAuthentication() {
   })
 
   router.use(async (req, res, next) => {
-    if (req.isAuthenticated() && (await tokenVerifier(req))) {
+    if (req.isAuthenticated() && (await tokenVerificationClient.verifyToken(req as unknown as AuthenticatedRequest))) {
       return next()
     }
     req.session.returnTo = req.originalUrl

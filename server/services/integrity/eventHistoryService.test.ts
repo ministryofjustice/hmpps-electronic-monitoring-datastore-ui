@@ -6,7 +6,7 @@ import { IntegrityContactEvent } from '../../data/models/integrityContactEvent'
 import { IntegrityViolationEvent } from '../../data/models/integrityViolationEvent'
 import { IntegrityMonitoringEvent } from '../../data/models/integrityMonitoringEvent'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 
 describe('Alcohol Monitoring event history Service', () => {
   let fakeClient: nock.Scope
@@ -16,7 +16,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClient)
   })
 
@@ -109,7 +109,7 @@ describe('Alcohol Monitoring event history Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
       fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
 
-      const result = await integrityEventHistoryService.getEventHistory({ legacySubjectId })
+      const result = await integrityEventHistoryService.getEventHistory({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -242,7 +242,7 @@ describe('Alcohol Monitoring event history Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
       fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
 
-      const result = await integrityEventHistoryService.getEventHistory({ legacySubjectId })
+      const result = await integrityEventHistoryService.getEventHistory({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -260,7 +260,7 @@ describe('Alcohol Monitoring event history Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
       fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
 
-      const result = await integrityEventHistoryService.getEventHistory({ legacySubjectId })
+      const result = await integrityEventHistoryService.getEventHistory({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -278,6 +278,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of monitoring events: Unauthorized'))
@@ -297,6 +298,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of monitoring events: Fake unexpected server error'))
@@ -314,6 +316,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of incident events: Unauthorized'))
@@ -333,6 +336,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of incident events: Fake unexpected server error'))
@@ -350,6 +354,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of contact events: Unauthorized'))
@@ -370,6 +375,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of contact events: Fake unexpected server error'))
@@ -387,6 +393,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of violation events: Unauthorized'))
@@ -406,6 +413,7 @@ describe('Alcohol Monitoring event history Service', () => {
 
       await expect(
         integrityEventHistoryService.getEventHistory({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of violation events: Fake unexpected server error'))

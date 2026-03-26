@@ -45,7 +45,7 @@ export default class SearchController {
       const errors = convertZodErrorToValidationError(result.error)
 
       req.flash('formData', req.body)
-      req.flash('validationErrors', errors)
+      req.flash('validationErrors', 'ValidationResult', errors)
 
       res.redirect(paths.SEARCH)
     } else {

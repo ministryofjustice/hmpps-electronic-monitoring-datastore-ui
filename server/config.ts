@@ -23,6 +23,7 @@ export class AgentConfig {
 
 export interface ApiConfig {
   url: string
+  healthPath?: string
   timeout: {
     // sets maximum time to wait for the first byte to arrive from the server, but it does not limit how long the
     // entire download can take.
@@ -71,6 +72,7 @@ export default {
   apis: {
     hmppsAuth: {
       url: get('HMPPS_AUTH_URL', 'http://localhost:9090/auth', requiredInProduction),
+      healthPath: '/health/ping',
       externalUrl: get('HMPPS_AUTH_EXTERNAL_URL', get('HMPPS_AUTH_URL', 'http://localhost:9090/auth')),
       timeout: {
         response: Number(get('HMPPS_AUTH_TIMEOUT_RESPONSE', 10000)),
@@ -84,6 +86,7 @@ export default {
     },
     tokenVerification: {
       url: get('TOKEN_VERIFICATION_API_URL', 'http://localhost:8100', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000)),
         deadline: Number(get('TOKEN_VERIFICATION_API_TIMEOUT_DEADLINE', 5000)),
@@ -93,6 +96,7 @@ export default {
     },
     emDatastoreApi: {
       url: get('EM_DATASTORE_API_URL', 'http://localhost:8080', requiredInProduction),
+      healthPath: '/health/ping',
       timeout: {
         response: Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 30000)),
         deadline: Number(get('EM_DATASTORE_API_TIMEOUT_DEADLINE', 30000)),
@@ -104,6 +108,6 @@ export default {
   sqs: {
     audit: auditConfig(),
   },
-  domain: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
+  ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
 }
