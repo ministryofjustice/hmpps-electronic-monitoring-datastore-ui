@@ -10,7 +10,7 @@ import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchSer
 
 import { HmppsUser } from '../interfaces/hmppsUser'
 import setUpWebSession from '../middleware/setUpWebSession'
-import { createMockEmDatastoreApiClient } from '../data/testUtils/mocks'
+import createMockEmDatastoreApiClient from '../data/testUtils/mocks'
 
 jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreOrderSearchService')

@@ -5,68 +5,29 @@
   "repository": "git@github.com:ministryofjustice/hmpps-electronic-monitoring-datastore-ui.git",
   "license": "MIT",
   "scripts": {
-    "prepare": "husky",
+    "prepare": "hmpps-precommit-hooks-prepare",
     "watch-ts": "tsc -w",
-    "build": "node esbuild/esbuild.config.js --build",
+    "build": "node esbuild/esbuild",
     "start": "node $NODE_OPTIONS dist/server.js | bunyan -o short",
-    "start:dev": "concurrently -k -p \"[{name}]\" -n \"ESBuild,Node\" -c \"yellow.bold,cyan.bold\" \"node esbuild/esbuild.config.js --build --watch\" \"node esbuild/esbuild.config.js --dev-server\"",
-    "start-feature": "DOTENV_CONFIG_PATH=feature.env node $NODE_DEBUG_OPTION -r dotenv/config dist/server.js | bunyan -o short",
-    "start-feature:dev": "DOTENV_CONFIG_PATH=feature.env concurrently -k -p \"[{name}]\" -n \"ESBuild,Node\" -c \"yellow.bold,cyan.bold\" \"node esbuild/esbuild.config.js --build --watch\" \"node esbuild/esbuild.config.js --dev-server\"",
+    "start:dev": "node esbuild/esbuild --watch",
+    "start-feature": " node $NODE_DEBUG_OPTION --env-file=feature.env dist/server.js | bunyan -o short",
+    "start-feature:dev": "node esbuild/esbuild --watch --env feature.env",
     "lint": "eslint . --cache --max-warnings 0",
     "lint-fix": "eslint . --cache --max-warnings 0 --fix",
     "typecheck": "tsc && tsc -p integration_tests",
     "test": "jest",
-    "test:clearCache": "jest --clearCache",
-    "test:watch": "jest --watchAll",
     "test:ci": "jest --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",
     "int-test": "npx cypress run --config video=false",
     "int-test-ui": "npx cypress open --e2e --browser chrome",
-    "clean": "rm -rf dist node_modules",
-    "rebuild": "npm run clean && npm i && npm run build"
+    "int-test-init:ci": "npx cypress install",
+    "clean": "rm -rf dist test_results",
+    "rebuild": "npm run clean && npm run setup && npm run build",
+    "setup": "npm ci && hmpps-npm-script-run-allowlist"
   },
   "engines": {
     "node": "^24",
     "npm": "^11"
-  },
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": [
-        "ts-jest",
-        {
-          "isolatedModules": true
-        }
-      ]
-    },
-    "collectCoverageFrom": [
-      "server/**/*.{ts,js,jsx,mjs}"
-    ],
-    "testMatch": [
-      "<rootDir>/(server|job)/**/?(*.)(cy|test).{ts,js,jsx,mjs}"
-    ],
-    "testEnvironment": "node",
-    "reporters": [
-      "default",
-      [
-        "jest-junit",
-        {
-          "outputDirectory": "test_results/jest/"
-        }
-      ],
-      [
-        "./node_modules/jest-html-reporter",
-        {
-          "outputPath": "test_results/unit-test-reports.html"
-        }
-      ]
-    ],
-    "moduleFileExtensions": [
-      "web.js",
-      "js",
-      "json",
-      "node",
-      "ts"
-    ]
   },
   "lint-staged": {
     "*.{ts,js,css}": [
@@ -80,6 +41,9 @@
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1012.0",
     "@ministryofjustice/frontend": "^9.0.0",
+    "@ministryofjustice/hmpps-auth-clients": "1.0.2",
+    "@ministryofjustice/hmpps-monitoring": "1.0.2",
+    "@ministryofjustice/hmpps-rest-client": "1.2.0",
     "agentkeepalive": "^4.6.0",
     "applicationinsights": "^3.14.0",
     "body-parser": "^2.2.2",
@@ -106,14 +70,21 @@
   },
   "devDependencies": {
     "@jgoz/esbuild-plugin-typecheck": "^4.0.4",
+    "@ministryofjustice/eslint-config-hmpps": "^1.0.3",
+    "@ministryofjustice/frontend-types": "1.0.0-alpha.2",
+    "@ministryofjustice/hmpps-npm-script-allowlist": "0.0.3",
+    "@ministryofjustice/hmpps-precommit-hooks": "2.0.2",
+    "@playwright/test": "^1.58.2",
+    "@tsconfig/node24": "^24.0.4",
     "@types/bunyan": "^1.8.11",
     "@types/bunyan-format": "^0.2.9",
     "@types/compression": "^1.8.1",
     "@types/connect-flash": "0.0.40",
     "@types/express-session": "^1.18.2",
     "@types/http-errors": "^2.0.5",
-    "@types/jest": "^30.0.0",
+    "@types/jest": "30.0.0",
     "@types/jsonwebtoken": "^9.0.10",
+    "@types/mocha": "10.0.10",
     "@types/node": "^22.19.15",
     "@types/nunjucks": "^3.2.6",
     "@types/passport": "^1.0.17",
@@ -130,6 +101,7 @@
     "cypress": "^15.12.0",
     "cypress-axe": "^1.7.0",
     "cypress-multi-reporters": "^2.0.5",
+    "del": "8.0.1",
     "dotenv": "^17.3.1",
     "esbuild": "^0.27.4",
     "esbuild-plugin-clean": "^1.0.1",
@@ -160,6 +132,9 @@
     "typescript": "^5.8.3"
   },
   "overrides": {
+    "@aws-sdk/xml-builder": {
+      "fast-xml-parser": "^5.5.6"
+    },
     "aws-sdk-client-mock": {
       "sinon": "^21.0.3",
       "@types/sinon": "^21.0.0"

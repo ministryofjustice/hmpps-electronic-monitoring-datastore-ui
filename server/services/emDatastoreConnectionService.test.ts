@@ -2,7 +2,7 @@ import nock from 'nock'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 
 import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../config'
+import config from '../config'
 
 describe('EM Datastore connection service', () => {
   let fakeClient: nock.Scope
@@ -12,7 +12,7 @@ describe('EM Datastore connection service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClient)
   })
 

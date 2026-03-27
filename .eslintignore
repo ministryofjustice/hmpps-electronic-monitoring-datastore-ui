@@ -4,3 +4,11 @@ assets
 cypress.json
 reporter-config.json
 dist/
+esbuild/utils.js
+integration_tests/pages/
+integration_tests/specs/
+integration_tests/testUtils.ts
+playwright.config.ts
+server/data/exampleApiClient.ts
+server/services/exampleService.ts
+server/utils/azureAppInsights.test.ts

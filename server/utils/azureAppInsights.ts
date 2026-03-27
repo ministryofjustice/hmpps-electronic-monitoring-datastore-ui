@@ -3,10 +3,14 @@ import {
   DistributedTracingModes,
   getCorrelationContext,
   setup,
-  TelemetryClient,
+  type TelemetryClient,
 } from 'applicationinsights'
-import { RequestHandler } from 'express'
+import { Request, RequestHandler } from 'express'
+import { TelemetryItem as EnvelopeTelemetry } from 'applicationinsights/out/src/declarations/generated'
 import type { ApplicationInfo } from '../applicationInfo'
+
+const requestPrefixesToIgnore = ['GET /assets/', 'GET /health', 'GET /ping', 'GET /info']
+const dependencyPrefixesToIgnore = ['sqs']
 
 export function initialiseAppInsights(): void {
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
@@ -24,22 +28,55 @@ export function buildAppInsightsClient(
   if (process.env.APPLICATIONINSIGHTS_CONNECTION_STRING) {
     defaultClient.context.tags['ai.cloud.role'] = overrideName || applicationName
     defaultClient.context.tags['ai.application.ver'] = buildNumber
-
-    defaultClient.addTelemetryProcessor(({ tags, data }, contextObjects) => {
-      const operationNameOverride = contextObjects.correlationContext?.customProperties?.getProperty('operationName')
-      if (operationNameOverride) {
-        tags['ai.operation.name'] = data.baseData.name = operationNameOverride // eslint-disable-line no-param-reassign,no-multi-assign
-      }
-      return true
-    })
-
+    defaultClient.addTelemetryProcessor(parameterisePaths)
+    defaultClient.addTelemetryProcessor(ignoredRequestsProcessor)
+    defaultClient.addTelemetryProcessor(ignoredDependenciesProcessor)
     return defaultClient
   }
   return null
 }
 
+function parameterisePaths(
+  envelope: EnvelopeTelemetry,
+  contextObjects: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [name: string]: any
+  },
+) {
+  const operationNameOverride = contextObjects.correlationContext?.customProperties?.getProperty('operationName')
+  if (operationNameOverride) {
+    /*  eslint-disable no-param-reassign */
+    envelope.tags['ai.operation.name'] = operationNameOverride
+    envelope.data.baseData.name = operationNameOverride
+    /*  eslint-enable no-param-reassign */
+  }
+  return true
+}
+
+export function ignoredRequestsProcessor(envelope: EnvelopeTelemetry) {
+  if (envelope.data?.baseType === 'RequestData') {
+    const requestData = envelope.data.baseData
+    if (requestData?.success) {
+      const { name } = requestData
+      return requestPrefixesToIgnore.every(prefix => !name?.startsWith(prefix))
+    }
+  }
+  return true
+}
+
+export function ignoredDependenciesProcessor(envelope: EnvelopeTelemetry) {
+  if (envelope.data?.baseType === 'RemoteDependencyData') {
+    const dependencyData = envelope.data.baseData
+    if (dependencyData?.success) {
+      const { target } = dependencyData
+      return dependencyPrefixesToIgnore.every(prefix => !target?.startsWith(prefix))
+    }
+  }
+  return true
+}
+
 export function appInsightsMiddleware(): RequestHandler {
-  return (req, res, next) => {
+  return (req: Request, res, next) => {
     res.prependOnceListener('finish', () => {
       const context = getCorrelationContext()
       if (context && req.route) {

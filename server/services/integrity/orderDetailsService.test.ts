@@ -3,7 +3,7 @@ import IntegrityOrderDetailsService from './orderDetailsService'
 
 import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 
 describe('Integrity order details Service', () => {
   let fakeClient: nock.Scope
@@ -13,7 +13,7 @@ describe('Integrity order details Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     integrityOrderDetailsService = new IntegrityOrderDetailsService(emDatastoreApiClient)
   })
 
@@ -69,7 +69,7 @@ describe('Integrity order details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
 
-      const result = await integrityOrderDetailsService.getOrderDetails({ legacySubjectId })
+      const result = await integrityOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -113,7 +113,7 @@ describe('Integrity order details Service', () => {
 
       fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
 
-      const result = await integrityOrderDetailsService.getOrderDetails({ legacySubjectId })
+      const result = await integrityOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
 
       expect(result).toEqual(expectedResult)
     })
@@ -123,6 +123,7 @@ describe('Integrity order details Service', () => {
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving order details: Unauthorized'))
@@ -133,6 +134,7 @@ describe('Integrity order details Service', () => {
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
+          userToken: 'token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving order details: Fake unexpected server error'))

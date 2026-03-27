@@ -4,7 +4,6 @@ export declare module 'express-session' {
   // Declare that the session will potentially contain these additional fields
   interface SessionData {
     returnTo: string
-    nowInMinutes: number
   }
 }
 
@@ -20,7 +19,6 @@ export declare global {
       verified?: boolean
       id: string
       logout(done: (err: unknown) => void): void
-      flash(type: string, message: unknown): number
     }
 
     interface Locals {

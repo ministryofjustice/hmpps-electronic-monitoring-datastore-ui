@@ -2,7 +2,7 @@ import nock from 'nock'
 import IntegrityEquipmentDetailsService from './equipmentDetailsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config, { ApiConfig } from '../../config'
+import config from '../../config'
 import { IntegrityEquipmentDetails } from '../../data/models/integrityEquipmentDetails'
 
 describe('Integrity Equipment Details Service', () => {
@@ -13,7 +13,7 @@ describe('Integrity Equipment Details Service', () => {
 
   beforeEach(() => {
     fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient(config.apis.emDatastoreApi as ApiConfig)
+    emDatastoreApiClient = new EmDatastoreApiClient()
     integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(emDatastoreApiClient)
   })
 
@@ -40,6 +40,7 @@ describe('Integrity Equipment Details Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -56,6 +57,7 @@ describe('Integrity Equipment Details Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -78,6 +80,7 @@ describe('Integrity Equipment Details Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -90,6 +93,7 @@ describe('Integrity Equipment Details Service', () => {
       fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
+        userToken: 'token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -101,6 +105,7 @@ describe('Integrity Equipment Details Service', () => {
 
       await expect(
         integrityEquipmentDetailsService.getEquipmentDetails({
+          userToken: 'token',
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of equipment details: Unauthorized'))
@@ -113,6 +118,7 @@ describe('Integrity Equipment Details Service', () => {
 
       await expect(
         integrityEquipmentDetailsService.getEquipmentDetails({
+          userToken: 'token',
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of equipment details: Fake unexpected server error'))

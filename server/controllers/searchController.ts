@@ -18,7 +18,7 @@ export default class SearchController {
       correlationId: req.id,
     })
 
-    const errors = req.flash('validationErrors') || []
+    const errors = (req.flash('validationErrors') || []).map(error => JSON.parse(error))
     const formData = req.flash('formData') || {}
 
     const viewModel = OrderSearchView.construct(formData as never, errors as never)
@@ -45,7 +45,10 @@ export default class SearchController {
       const errors = convertZodErrorToValidationError(result.error)
 
       req.flash('formData', req.body)
-      req.flash('validationErrors', errors)
+      req.flash(
+        'validationErrors',
+        errors.map(error => JSON.stringify(error)),
+      )
 
       res.redirect(paths.SEARCH)
     } else {
