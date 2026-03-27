@@ -71,8 +71,8 @@ describe('SearchController', () => {
         flash: jest
           .fn()
           .mockReturnValueOnce([
-            { field: 'firstName', error: 'First name must consist of letters only' },
-            { field: 'dobDay', error: 'Invalid date format' },
+            JSON.stringify({ field: 'firstName', error: 'First name must consist of letters only' }),
+            JSON.stringify({ field: 'dobDay', error: 'Invalid date format' }),
           ])
           .mockReturnValueOnce({
             searchType: 'integrity',
@@ -159,8 +159,8 @@ describe('SearchController', () => {
       expect(OrderSearchCriteria.safeParse).toHaveBeenCalledWith(req.body)
       expect(req.flash).toHaveBeenCalledTimes(2)
       expect(req.flash).toHaveBeenNthCalledWith(1, 'formData', req.body)
-      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', 'ValidationResult', [
-        { field: 'firstName', error: 'First name must contain letters only' },
+      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', [
+        JSON.stringify({ error: 'First name must contain letters only', field: 'firstName' }),
       ])
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
@@ -184,11 +184,11 @@ describe('SearchController', () => {
 
       expect(req.flash).toHaveBeenCalledTimes(2)
       expect(req.flash).toHaveBeenNthCalledWith(1, 'formData', req.body)
-      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', 'ValidationResult', [
-        {
+      expect(req.flash).toHaveBeenNthCalledWith(2, 'validationErrors', [
+        JSON.stringify({
           error: 'You must enter a value into at least one search field',
           field: '',
-        },
+        }),
       ])
       expect(res.redirect).toHaveBeenCalledWith('/search')
     })
