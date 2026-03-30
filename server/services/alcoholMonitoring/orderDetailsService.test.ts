@@ -106,7 +106,10 @@ describe('Alcohol Monitoring order summary Service', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).replyWithError('Fake unexpected server error')
+      fakeClient
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}`)
+        .replyWithError('Fake unexpected server error')
+        .persist()
 
       await expect(
         alcoholMonitoringOrderDetailsService.getOrderDetails({
