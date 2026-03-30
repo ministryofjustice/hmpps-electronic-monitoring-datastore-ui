@@ -1,4 +1,5 @@
 import nock from 'nock'
+import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import IntegrityEventHistoryService from './eventHistoryService'
 
 import { IntegrityIncidentEvent } from '../../data/models/integrityIncidentEvent'
@@ -9,23 +10,21 @@ import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config from '../../config'
 
 describe('Alcohol Monitoring event history Service', () => {
-  let fakeClient: nock.Scope
-  let emDatastoreApiClient: EmDatastoreApiClient
+  let exampleEmDatastoreApiClient: EmDatastoreApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   let integrityEventHistoryService: IntegrityEventHistoryService
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient()
-    integrityEventHistoryService = new IntegrityEventHistoryService(emDatastoreApiClient)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+
+    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
+    integrityEventHistoryService = new IntegrityEventHistoryService(exampleEmDatastoreApiClient)
   })
 
   afterEach(() => {
-    if (!nock.isDone()) {
-      nock.cleanAll()
-      throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
     nock.cleanAll()
     jest.resetAllMocks()
   })
@@ -104,12 +103,27 @@ describe('Alcohol Monitoring event history Service', () => {
         ...violationEventsResponse,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, incidentEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
-      const result = await integrityEventHistoryService.getEventHistory({ userToken: 'token', legacySubjectId })
+      const result = await integrityEventHistoryService.getEventHistory({
+        userToken: 'test-system-token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -237,12 +251,27 @@ describe('Alcohol Monitoring event history Service', () => {
         ...violationEventsResponse,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, incidentEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
-      const result = await integrityEventHistoryService.getEventHistory({ userToken: 'token', legacySubjectId })
+      const result = await integrityEventHistoryService.getEventHistory({
+        userToken: 'test-system-token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -255,12 +284,27 @@ describe('Alcohol Monitoring event history Service', () => {
 
       const expectedResult = [] as (IntegrityIncidentEvent | IntegrityContactEvent | IntegrityViolationEvent)[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, incidentEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
-      const result = await integrityEventHistoryService.getEventHistory({ userToken: 'token', legacySubjectId })
+      const result = await integrityEventHistoryService.getEventHistory({
+        userToken: 'test-system-token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -270,15 +314,27 @@ describe('Alcohol Monitoring event history Service', () => {
       const contactEventsResponse = [] as IntegrityContactEvent[]
       const violationEventsResponse = [] as IntegrityViolationEvent[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, incidentEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of monitoring events: Unauthorized'))
@@ -289,19 +345,30 @@ describe('Alcohol Monitoring event history Service', () => {
       const contactEventsResponse = [] as IntegrityContactEvent[]
       const violationEventsResponse = [] as IntegrityViolationEvent[]
 
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
-        .replyWithError('Fake unexpected server error')
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, incidentEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of monitoring events: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving list of monitoring events: Internal Server Error'))
     })
 
     it('should propagate an error if there is an authorisation error getting incident events', async () => {
@@ -309,14 +376,26 @@ describe('Alcohol Monitoring event history Service', () => {
       const violationEventsResponse = [] as IntegrityViolationEvent[]
       const monitoringEventsResponse = [] as IntegrityMonitoringEvent[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(401)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of incident events: Unauthorized'))
@@ -327,19 +406,30 @@ describe('Alcohol Monitoring event history Service', () => {
       const violationEventsResponse = [] as IntegrityViolationEvent[]
       const monitoringEventsResponse = [] as IntegrityMonitoringEvent[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/integrity/${legacySubjectId}/incident-events`)
-        .replyWithError('Fake unexpected server error')
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of incident events: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving list of incident events: Internal Server Error'))
     })
 
     it('should propagate an error if there is an authorisation error getting contact events', async () => {
@@ -347,14 +437,26 @@ describe('Alcohol Monitoring event history Service', () => {
       const violationEventsResponse = [] as IntegrityViolationEvent[]
       const monitoringEventsResponse = [] as IntegrityMonitoringEvent[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(401)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, incidentEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of contact events: Unauthorized'))
@@ -365,20 +467,31 @@ describe('Alcohol Monitoring event history Service', () => {
       const violationEventsResponse = [] as IntegrityViolationEvent[]
       const monitoringEventsResponse = [] as IntegrityMonitoringEvent[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, incidentEventsResponse)
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, incidentEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/integrity/${legacySubjectId}/contact-events`)
-        .replyWithError('Fake unexpected server error')
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of contact events: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving list of contact events: Internal Server Error'))
     })
 
     it('should propagate an error if there is an authorisation error getting contact events', async () => {
@@ -386,14 +499,26 @@ describe('Alcohol Monitoring event history Service', () => {
       const violationEventsResponse = [] as IntegrityViolationEvent[]
       const monitoringEventsResponse = [] as IntegrityMonitoringEvent[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, violationEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/violation-events`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/violation-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of violation events: Unauthorized'))
@@ -404,19 +529,30 @@ describe('Alcohol Monitoring event history Service', () => {
       const violationEventsResponse = [] as IntegrityViolationEvent[]
       const monitoringEventsResponse = [] as IntegrityMonitoringEvent[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/monitoring-events`).reply(200, monitoringEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/incident-events`).reply(200, contactEventsResponse)
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/contact-events`).reply(200, violationEventsResponse)
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, monitoringEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/incident-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, contactEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/contact-events`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, violationEventsResponse)
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/integrity/${legacySubjectId}/violation-events`)
-        .replyWithError('Fake unexpected server error')
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
 
       await expect(
         integrityEventHistoryService.getEventHistory({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of violation events: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving list of violation events: Internal Server Error'))
     })
   })
 })

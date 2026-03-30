@@ -1,4 +1,5 @@
 import nock from 'nock'
+import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import AlcoholMonitoringOrderDetailsService from './orderDetailsService'
 
 import { AlcoholMonitoringOrderDetails } from '../../data/models/alcoholMonitoringOrderDetails'
@@ -6,23 +7,21 @@ import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config from '../../config'
 
 describe('Alcohol Monitoring order summary Service', () => {
-  let fakeClient: nock.Scope
-  let emDatastoreApiClient: EmDatastoreApiClient
+  let exampleEmDatastoreApiClient: EmDatastoreApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   let alcoholMonitoringOrderDetailsService: AlcoholMonitoringOrderDetailsService
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient()
-    alcoholMonitoringOrderDetailsService = new AlcoholMonitoringOrderDetailsService(emDatastoreApiClient)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+
+    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
+    alcoholMonitoringOrderDetailsService = new AlcoholMonitoringOrderDetailsService(exampleEmDatastoreApiClient)
   })
 
   afterEach(() => {
-    if (!nock.isDone()) {
-      nock.cleanAll()
-      throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
     nock.cleanAll()
     jest.resetAllMocks()
   })
@@ -55,9 +54,15 @@ describe('Alcohol Monitoring order summary Service', () => {
         tagAtSource: null,
       } as AlcoholMonitoringOrderDetails
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
-      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
+      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({
+        userToken: 'test-system-token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -87,45 +92,58 @@ describe('Alcohol Monitoring order summary Service', () => {
         tagAtSource: null,
       } as AlcoholMonitoringOrderDetails
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
-      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
+      const result = await alcoholMonitoringOrderDetailsService.getOrderDetails({
+        userToken: 'test-system-token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
       await expect(
         alcoholMonitoringOrderDetailsService.getOrderDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving order details: Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/alcohol-monitoring/${legacySubjectId}`)
-        .replyWithError('Fake unexpected server error')
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
         .persist()
 
       await expect(
         alcoholMonitoringOrderDetailsService.getOrderDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
-      ).rejects.toEqual(new Error('Error retrieving order details: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving order details: Internal Server Error'))
     })
   })
 
   describe('getSearchResults', () => {
-    const userToken = 'fake-user-token'
+    const userToken = 'test-system-token'
     const queryExecutionId = 'query-execution-id'
 
     it('submits a request containing a query execution ID and returns search results', async () => {
-      fakeClient.get(`/orders/alcohol-monitoring?id=${queryExecutionId}`).reply(200, [])
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring?id=${queryExecutionId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, [])
 
       const result = await alcoholMonitoringOrderDetailsService.getSearchResults({
         userToken,
@@ -137,8 +155,9 @@ describe('Alcohol Monitoring order summary Service', () => {
 
     describe('error handling', () => {
       it('handles invalid query execution ID errors from the datastore client', async () => {
-        fakeClient
+        nock(config.apis.emDatastoreApi.url)
           .get(`/orders/alcohol-monitoring?id=`)
+          .matchHeader('authorization', 'Bearer test-system-token')
           .reply(500, {
             status: 500,
             userMessage: '',
@@ -155,8 +174,9 @@ describe('Alcohol Monitoring order summary Service', () => {
       })
 
       it('handles other errors from the datastore client', async () => {
-        fakeClient
+        nock(config.apis.emDatastoreApi.url)
           .get(`/orders/alcohol-monitoring?id=`)
+          .matchHeader('authorization', 'Bearer test-system-token')
           .reply(500, {
             status: 500,
             errorCode: null,

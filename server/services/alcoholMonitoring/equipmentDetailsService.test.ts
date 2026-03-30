@@ -1,28 +1,27 @@
 import nock from 'nock'
-import AlcoholMonitoringEquipmentDetailsService from './equipmentDetailsService'
-
-import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
+import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config from '../../config'
 
-describe('Alcohol Monitoring Equipment Details Service', () => {
-  let fakeClient: nock.Scope
-  let emDatastoreApiClient: EmDatastoreApiClient
+import AlcoholMonitoringEquipmentDetailsService from './equipmentDetailsService'
+import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
 
+describe('Alcohol Monitoring Equipment Details Service', () => {
+  let exampleEmDatastoreApiClient: EmDatastoreApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
   let alcoholMonitoringEquipmentDetailsService: AlcoholMonitoringEquipmentDetailsService
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient()
-    alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(emDatastoreApiClient)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+
+    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
+    alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(exampleEmDatastoreApiClient)
   })
 
   afterEach(() => {
-    if (!nock.isDone()) {
-      nock.cleanAll()
-      throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
+    // nock.abortPendingRequests()
     nock.cleanAll()
     jest.resetAllMocks()
   })
@@ -45,10 +44,13 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         } as AlcoholMonitoringEquipmentDetails,
       ]
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId,
       })
 
@@ -92,10 +94,13 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         } as AlcoholMonitoringEquipmentDetails,
       ]
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId,
       })
 
@@ -105,10 +110,13 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
     it('should fetch list of equipment details', async () => {
       const expectedResult = [] as AlcoholMonitoringEquipmentDetails[]
 
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId,
       })
 
@@ -116,27 +124,32 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
       await expect(
         alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of equipment details: Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
-        .replyWithError('Fake unexpected server error')
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
 
       await expect(
         alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Internal Server Error'))
     })
   })
 })
