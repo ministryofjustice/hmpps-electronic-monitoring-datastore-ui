@@ -126,6 +126,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
       fakeClient
         .get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`)
         .replyWithError('Fake unexpected server error')
+        .persist()
 
       await expect(
         alcoholMonitoringServiceDetailService.getServiceDetails({
