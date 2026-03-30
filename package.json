@@ -39,7 +39,7 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1014.0",
+    "@aws-sdk/client-sqs": "^3.1016.0",
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "1.0.2",
     "@ministryofjustice/hmpps-monitoring": "1.0.2",
@@ -97,7 +97,7 @@
     "aws-sdk-client-mock": "^4.1.0",
     "axe-core": "^4.11.1",
     "concurrently": "^9.2.1",
-    "cypress": "^15.12.0",
+    "cypress": "^15.13.0",
     "cypress-axe": "^1.7.0",
     "cypress-multi-reporters": "^2.0.5",
     "del": "8.0.1",
@@ -128,11 +128,11 @@
     "prettier-plugin-jinja-template": "^2.1.0",
     "supertest": "^7.2.2",
     "ts-jest": "^29.4.6",
-    "typescript": "^5.8.2"
+    "typescript": "^5.9.3"
   },
   "overrides": {
     "@aws-sdk/xml-builder": {
-      "fast-xml-parser": "^5.5.8"
+      "fast-xml-parser": "^5.5.9"
     },
     "aws-sdk-client-mock": {
       "sinon": "^21.0.3",
