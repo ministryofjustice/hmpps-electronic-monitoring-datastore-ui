@@ -3,10 +3,10 @@ import { Request, Response } from 'express'
 import AuditService from '../../services/auditService'
 import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
 import IntegrityEquipmentDetailsController from './equipmentDetailsController'
-// eslint-disable-next-line import/no-named-as-default
+
 import { IntegrityEquipmentDetailsView } from '../../models/view-models/integrityEquipmentDetails'
 import { IntegrityTimelineEvent } from '../../models/view-models/integrityTimelineEvent'
-import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
+import { createMockRequest, createMockResponse } from '../../routes/testutils/mocks/mockExpress'
 import { IntegrityEquipmentDetails } from '../../data/models/integrityEquipmentDetails'
 
 jest.mock('../../services/auditService')

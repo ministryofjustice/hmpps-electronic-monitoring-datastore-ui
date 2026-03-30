@@ -2,9 +2,9 @@ import { Request, Response } from 'express'
 import AuditService from '../../services/auditService'
 import IntegrityEventHistoryService from '../../services/integrity/eventHistoryService'
 import IntegrityEventHistoryController from './eventHistoryController'
-// eslint-disable-next-line import/no-named-as-default
+
 import { IntegrityEventHistoryView } from '../../models/view-models/integrityEventHistory'
-import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
+import { createMockRequest, createMockResponse } from '../../routes/testutils/mocks/mockExpress'
 import { IntegrityMonitoringEvent } from '../../data/models/integrityMonitoringEvent'
 import { IntegrityIncidentEvent } from '../../data/models/integrityIncidentEvent'
 import { IntegrityContactEvent } from '../../data/models/integrityContactEvent'

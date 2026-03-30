@@ -1,9 +1,9 @@
-import { validateDateRange } from '../utils/validateDateRange.js'
+import { validateDateRange } from '../utils/validateDateRange.mjs'
 
-function init() {
+export function init() {
   const emsDateFilters = document.getElementsByClassName('ems-date-filter')
 
-  for (let dateFilter of emsDateFilters) {
+  for (const dateFilter of emsDateFilters) {
     const filterButton = dateFilter.querySelector('.ems-date-filter__filter-button')
     const clearFilterButton = dateFilter.querySelector('.ems-date-filter__clear-filter-button')
     const startDateFields = dateFilter.querySelector('#start-date').querySelectorAll('input')
@@ -40,8 +40,8 @@ function init() {
       }
 
       const {
-        startDate: startDate,
-        endDate: endDate,
+        startDate,
+        endDate,
         error: dateRangeError,
         errorFields,
       } = validateDateRange(startDateInputs, endDateInputs)
@@ -51,7 +51,7 @@ function init() {
         errorMessage.classList.remove('hidden')
         errorMessage.textContent = dateRangeError
 
-        for (let field of dateFilter.querySelectorAll('.govuk-input')) {
+        for (const field of dateFilter.querySelectorAll('.govuk-input')) {
           field.classList.remove('govuk-input--error')
         }
         errorFields.forEach(field => dateFilter.querySelector(`#${field}`).classList.add('govuk-input--error'))
@@ -59,20 +59,20 @@ function init() {
         dateFilter.classList.remove('ems-date-filter--error')
         errorMessage.classList.add('hidden')
         errorMessage.textContent = ''
-        for (let field of dateFilter.querySelectorAll('.govuk-input')) {
+        for (const field of dateFilter.querySelectorAll('.govuk-input')) {
           field.classList.remove('govuk-input--error')
         }
 
-        for (let table of filterableTables) {
+        for (const table of filterableTables) {
           const rows = table.querySelectorAll('[data-filter-date]')
-          for (let row of rows) {
-            const filterDate = parseInt(row.dataset.filterDate)
+          for (const row of rows) {
+            const filterDate = parseInt(row.dataset.filterDate, 10)
             filterElement(row, startDate, endDate, filterDate)
           }
           table.getElementsByClassName('moj-pagination__item--link')[0].click()
         }
 
-        for (let item of timelineItems) {
+        for (const item of timelineItems) {
           const filterDate = item.querySelector('time').dateTime.split('T')[0].split('-').join('')
           filterElement(item, startDate, endDate, filterDate)
         }
@@ -86,20 +86,20 @@ function init() {
     }
 
     const clearFilter = () => {
-      for (let dateField of startDateFields) {
+      for (const dateField of startDateFields) {
         dateField.value = ''
       }
-      for (let dateField of endDateFields) {
+      for (const dateField of endDateFields) {
         dateField.value = ''
       }
     }
 
-    filterButton.addEventListener('click', function (event) {
+    filterButton.addEventListener('click', event => {
       event.preventDefault()
       applyFilter()
     })
 
-    clearFilterButton.addEventListener('click', function (event) {
+    clearFilterButton.addEventListener('click', event => {
       event.preventDefault()
       clearFilter()
       applyFilter()
@@ -108,4 +108,4 @@ function init() {
   }
 }
 
-export { init }
+export default { init }

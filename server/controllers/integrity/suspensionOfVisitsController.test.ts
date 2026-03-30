@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import AuditService from '../../services/auditService'
 import IntegritySuspensionOfVisitsService from '../../services/integrity/suspensionOfVisitsService'
 import SuspensionOfVisitsController from './suspensionOfVisitsController'
-import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
+import { createMockRequest, createMockResponse } from '../../routes/testutils/mocks/mockExpress'
 import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
 import {
   IntegritySuspensionOfVisitsView,

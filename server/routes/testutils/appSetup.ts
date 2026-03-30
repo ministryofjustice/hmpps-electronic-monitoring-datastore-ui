@@ -5,12 +5,28 @@ import { randomUUID } from 'crypto'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
-import type { Services } from '../../services'
+import {
+  EmDatastoreConnectionService,
+  IntegrityOrderDetailsService,
+  AlcoholMonitoringOrderDetailsService,
+  EmDatastoreOrderSearchService,
+  IntegrityEventHistoryService,
+  AlcoholMonitoringEventHistoryService,
+  IntegritySuspensionOfVisitsService,
+  IntegrityEquipmentDetailsService,
+  AlcoholMonitoringEquipmentDetailsService,
+  IntegrityVisitDetailsService,
+  AlcoholMonitoringVisitDetailsService,
+  IntegrityServiceDetailsService,
+  AlcoholMonitoringServiceDetailsService,
+  type Services,
+} from '../../services'
 import AuditService from '../../services/auditService'
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
 
 jest.mock('../../services/auditService')
+jest.mock('../../services/alcoholMonitoring/orderDetailsService')
 
 export const user: HmppsUser = {
   name: 'FIRST LAST',
@@ -57,6 +73,37 @@ export function appWithAllRoutes({
   production = false,
   services = {
     auditService: new AuditService(null) as jest.Mocked<AuditService>,
+    alcoholMonitoringOrderDetailsService: new AlcoholMonitoringOrderDetailsService(
+      null,
+    ) as jest.Mocked<AlcoholMonitoringOrderDetailsService>,
+    emDatastoreConnectionService: new EmDatastoreConnectionService(null) as jest.Mocked<EmDatastoreConnectionService>,
+    integrityOrderDetailsService: new IntegrityOrderDetailsService(null) as jest.Mocked<IntegrityOrderDetailsService>,
+    emDatastoreOrderSearchService: new EmDatastoreOrderSearchService(
+      null,
+    ) as jest.Mocked<EmDatastoreOrderSearchService>,
+    integrityEventHistoryService: new IntegrityEventHistoryService(null) as jest.Mocked<IntegrityEventHistoryService>,
+    alcoholMonitoringEventHistoryService: new AlcoholMonitoringEventHistoryService(
+      null,
+    ) as jest.Mocked<AlcoholMonitoringEventHistoryService>,
+    integritySuspensionOfVisitsService: new IntegritySuspensionOfVisitsService(
+      null,
+    ) as jest.Mocked<IntegritySuspensionOfVisitsService>,
+    integrityEquipmentDetailsService: new IntegrityEquipmentDetailsService(
+      null,
+    ) as jest.Mocked<IntegrityEquipmentDetailsService>,
+    alcoholMonitoringEquipmentDetailsService: new AlcoholMonitoringEquipmentDetailsService(
+      null,
+    ) as jest.Mocked<AlcoholMonitoringEquipmentDetailsService>,
+    integrityVisitDetailsService: new IntegrityVisitDetailsService(null) as jest.Mocked<IntegrityVisitDetailsService>,
+    alcoholMonitoringVisitDetailsService: new AlcoholMonitoringVisitDetailsService(
+      null,
+    ) as jest.Mocked<AlcoholMonitoringVisitDetailsService>,
+    integrityServiceDetailsService: new IntegrityServiceDetailsService(
+      null,
+    ) as jest.Mocked<IntegrityServiceDetailsService>,
+    alcoholMonitoringServiceDetailsService: new AlcoholMonitoringServiceDetailsService(
+      null,
+    ) as jest.Mocked<AlcoholMonitoringServiceDetailsService>,
   },
   userSupplier = () => user,
 }: {

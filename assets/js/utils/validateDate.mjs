@@ -1,8 +1,8 @@
-function validateDate(dateInputs) {
+export function validateDate(dateInputs) {
   const { day, month, year, dateName, isPast, isMandatory } = dateInputs
 
   const date = {
-    dateStamp: new Date(`${year + '/' + month + '/' + day}`),
+    dateStamp: new Date(`${`${year}/${month}/${day}`}`),
     date: null,
     error: null,
     errorFields: null,
@@ -12,16 +12,17 @@ function validateDate(dateInputs) {
 
   const isNumericalString = string => string.match(/^\d+$/)
 
-  if (!day & !month & !year && isMandatory) {
+  if (!day && !month && !year && isMandatory) {
     date.error = 'Enter a date.'
     date.errorFieldss = ['day', 'month', 'year']
     return date
-  } else if (!day & !month & !year) {
+  }
+  if (!day && !month && !year) {
     date.dateStamp = null
     return date
   }
 
-  if (isNaN(date.dateStamp)) {
+  if (Number.isNaN(date.dateStamp)) {
     date.error = `${dateName} must be a real date.`
     date.errorFields = ['day', 'month', 'year']
     return date
@@ -51,7 +52,7 @@ function validateDate(dateInputs) {
     return date
   }
 
-  if (year && year.length != 4) {
+  if (year && year.length !== 4) {
     date.error = `Enter a full year (eg. 2001).`
     date.errorFields = ['year']
     return date
@@ -65,9 +66,9 @@ function validateDate(dateInputs) {
 
   const offset = date.dateStamp.getTimezoneOffset()
   const offsetDate = new Date(date.dateStamp.getTime() - offset * 60 * 1000)
-  date.date = parseInt(offsetDate.toISOString().split('T')[0].replaceAll('-', ''))
+  date.date = parseInt(offsetDate.toISOString().split('T')[0].replaceAll('-', ''), 10)
 
   return date
 }
 
-export { validateDate }
+export default { validateDate }

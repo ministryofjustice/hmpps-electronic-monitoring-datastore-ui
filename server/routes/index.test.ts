@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 import request from 'supertest'
 import paths from '../constants/paths'
-import { appWithAllRoutes, user } from '../testutils/appSetup'
+import { appWithAllRoutes, user } from './testutils/appSetup'
 import { Page } from '../services/auditService'
 import { AuditService, EmDatastoreOrderSearchService, EmDatastoreConnectionService } from '../services'
 

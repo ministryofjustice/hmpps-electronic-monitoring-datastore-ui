@@ -1,6 +1,6 @@
-import { validateDate } from './validateDate.js'
+import { validateDate } from './validateDate.mjs'
 
-function validateDateRange(startDateInputs, endDateInputs) {
+export function validateDateRange(startDateInputs, endDateInputs) {
   const startDate = validateDate(startDateInputs)
   const endDate = validateDate(endDateInputs)
 
@@ -32,4 +32,4 @@ function validateDateRange(startDateInputs, endDateInputs) {
   return dateRange
 }
 
-export { validateDateRange }
+export default { validateDateRange }

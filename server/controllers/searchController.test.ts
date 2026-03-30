@@ -2,7 +2,7 @@ import AuditService from '../services/auditService'
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import SearchController from './searchController'
 import { OrderSearchView } from '../models/view-models/orderSearch'
-import { createMockRequest, createMockResponse } from '../testutils/mocks/mockExpress'
+import { createMockRequest, createMockResponse } from '../routes/testutils/mocks/mockExpress'
 import { OrderSearchCriteria } from '../models/requests/SearchOrdersRequest'
 
 jest.mock('../services/auditService')
