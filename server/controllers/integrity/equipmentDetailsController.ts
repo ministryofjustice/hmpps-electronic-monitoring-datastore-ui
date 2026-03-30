@@ -1,7 +1,7 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityEquipmentDetailsService } from '../../services'
-// eslint-disable-next-line import/no-named-as-default
+
 import { IntegrityEquipmentDetailsView } from '../../models/view-models/integrityEquipmentDetails'
 import paths from '../../constants/paths'
 import { buildUrl } from '../../utils/utils'

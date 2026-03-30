@@ -1,9 +1,9 @@
-import { validateDate } from '../utils/validateDate.js'
+import { validateDate } from '../utils/validateDate.mjs'
 
-function init() {
+export function init() {
   const emsSearchForms = document.querySelectorAll('.ems-search-form')
 
-  for (let searchForm of emsSearchForms) {
+  for (const searchForm of emsSearchForms) {
     const dateForm = searchForm.querySelector('.ems-form-group__date')
     const dateErrorMessage = dateForm.querySelector('#date-of-birth-error')
     const dateFields = dateForm.querySelectorAll('.govuk-input')
@@ -28,22 +28,21 @@ function init() {
         dateErrorMessage.classList.remove('govuk-visually-hidden')
         dateErrorMessage.textContent = errorMessage
 
-        for (let field of dateFields) {
+        for (const field of dateFields) {
           field.classList.remove('govuk-input--error')
         }
         errorFields.forEach(field => {
           dateForm.querySelector(`#date-of-birth-${field}`).classList.add('govuk-input--error')
         })
 
-        return false
-      } else {
-        dateForm.classList.remove('govuk-form-group--error')
-        dateErrorMessage.classList.add('govuk-visually-hidden')
-        dateErrorMessage.textContent = ''
+        return
+      }
+      dateForm.classList.remove('govuk-form-group--error')
+      dateErrorMessage.classList.add('govuk-visually-hidden')
+      dateErrorMessage.textContent = ''
 
-        for (let field of dateFields) {
-          field.classList.remove('govuk-input--error')
-        }
+      for (const field of dateFields) {
+        field.classList.remove('govuk-input--error')
       }
     }
 
@@ -61,4 +60,4 @@ function init() {
   }
 }
 
-export { init }
+export default { init }

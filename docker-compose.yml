@@ -1,16 +1,4 @@
 services:
-  redis:
-    image: bitnami/redis
-    networks:
-      - hmpps
-    container_name: redis
-    ports:
-      - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-
   hmpps-auth:
     image: ghcr.io/ministryofjustice/hmpps-auth:latest
     networks:
@@ -19,12 +7,24 @@ services:
     ports:
       - "9090:8080"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/auth/health"]
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080"]
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
 
   hmpps-electronic-monitoring-ui:
+    image: ghcr.io/ministryofjustice/hmpps-electronic-monitoring-ui:latest
+    networks:
+      - hmpps
+    container_name: hmpps-electronic-monitoring-ui
+    ports:
+      - "8080:8080"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080"]
+    environment:
+      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
+
+  app:
     build:
       context: .
       args:
@@ -35,6 +35,8 @@ services:
       - hmpps
     ports:
       - "3000:3000"
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/3000"]
     environment:
       - PRODUCT_ID=HMPPS529
       - REDIS_ENABLED=false

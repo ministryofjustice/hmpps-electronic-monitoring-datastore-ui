@@ -1,7 +1,7 @@
 import type { Request, RequestHandler, Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, AlcoholMonitoringEventHistoryService } from '../../services'
-// eslint-disable-next-line import/no-named-as-default
+
 import { AlcoholMonitoringEventHistoryView } from '../../models/view-models/alcoholMonitoringEventHistory'
 import paths from '../../constants/paths'
 import { buildUrl } from '../../utils/utils'

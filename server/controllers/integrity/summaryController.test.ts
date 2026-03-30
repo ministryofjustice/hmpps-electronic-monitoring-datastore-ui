@@ -2,7 +2,7 @@ import { Response } from 'express'
 import { Page } from '../../services/auditService'
 import { AuditService, IntegrityOrderDetailsService } from '../../services'
 import IntegritySummaryController from './summaryController'
-import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
+import { createMockRequest, createMockResponse } from '../../routes/testutils/mocks/mockExpress'
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 import { IntegrityOrderSummaryView } from '../../models/view-models/integrityOrderSummary'
 

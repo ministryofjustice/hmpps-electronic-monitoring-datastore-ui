@@ -1,10 +1,10 @@
 import { Request, Response } from 'express'
 import { AuditService, AlcoholMonitoringVisitDetailsService } from '../../services'
 import AlcoholMonitoringVisitDetailsController from './visitDetailsController'
-// eslint-disable-next-line import/no-named-as-default
+
 import { AlcoholMonitoringVisitDetailsView } from '../../models/view-models/alcoholMonitoringVisitDetails'
 import { AlcoholMonitoringTimelineEvent } from '../../models/view-models/alcoholMonitoringTimelineEvent'
-import { createMockRequest, createMockResponse } from '../../testutils/mocks/mockExpress'
+import { createMockRequest, createMockResponse } from '../../routes/testutils/mocks/mockExpress'
 import { AlcoholMonitoringVisitDetails } from '../../data/models/alcoholMonitoringVisitDetails'
 
 jest.mock('../../services/auditService')

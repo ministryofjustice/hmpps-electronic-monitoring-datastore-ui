@@ -1,37 +1,45 @@
 {
-  "types": ["jest", "mocha", "node"],
+  "extends": "@tsconfig/node24/tsconfig.json",
   "compileOnSave": true,
   "compilerOptions": {
-    "target": "es2018",
-    "module": "node16",
-    "moduleResolution": "node16",
     "isolatedModules": true,
     "outDir": "./dist",
-    "rootDir": ".",
     "sourceMap": true,
-    "skipLibCheck": true,
     "noEmit": false,
-    "allowJs": true,
-    "checkJs": true,
+    "allowJs": false,
+    "strict": false,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
-    "strictNullChecks": false,
-    "useUnknownInCatchVariables": false,
-    "types": ["jest", "node"],
     "experimentalDecorators": true,
-    "typeRoots": ["./server/@types", "./node_modules/@types"]
+    "typeRoots": [
+      "./server/@types",
+      "./node_modules/@types"
+    ]
+  },
+  "typeAcquisition": {
+    "include": [
+      "jest"
+    ]
   },
   "exclude": [
     "node_modules",
     "assets",
     "integration_tests",
     "dist",
-    "cypress.config.ts",
     "esbuild",
-    "playwright.config.ts",
-    "server/utils/azureAppInsights.test.ts"
+    "eslint.config.mjs",
+    "cypress.config.ts",
+    "cypress"
   ],
-  "include": ["**/*.js", "**/*.ts"]
+  "include": [
+    "**/*.js",
+    "**/*.ts",
+    "assets/js/ems.mjs",
+    "assets/js/utils/validateDateRange.mjs",
+    "assets/js/utils/validateDate.mjs",
+    "assets/js/components/emsSortableTable.mjs",
+    "assets/js/components/emsSearchForm.mjs",
+    "assets/js/components/emsDateFilter.mjs"
+  ]
 }
