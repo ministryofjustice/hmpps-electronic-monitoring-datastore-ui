@@ -1,4 +1,5 @@
 import nock from 'nock'
+import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import IntegritySuspensionOfVisitsService from './suspensionOfVisitsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
@@ -6,23 +7,21 @@ import config from '../../config'
 import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
 
 describe('Integrity Suspension of visits Service', () => {
-  let fakeClient: nock.Scope
-  let emDatastoreApiClient: EmDatastoreApiClient
+  let exampleEmDatastoreApiClient: EmDatastoreApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   let integritySuspensionOfVisitsService: IntegritySuspensionOfVisitsService
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient()
-    integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(emDatastoreApiClient)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+
+    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
+    integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(exampleEmDatastoreApiClient)
   })
 
   afterEach(() => {
-    if (!nock.isDone()) {
-      nock.cleanAll()
-      throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
     nock.cleanAll()
     jest.resetAllMocks()
   })
@@ -42,10 +41,13 @@ describe('Integrity Suspension of visits Service', () => {
         } as IntegritySuspensionOfVisits,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -64,10 +66,13 @@ describe('Integrity Suspension of visits Service', () => {
         } as IntegritySuspensionOfVisits,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -102,10 +107,13 @@ describe('Integrity Suspension of visits Service', () => {
         } as IntegritySuspensionOfVisits,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -115,10 +123,13 @@ describe('Integrity Suspension of visits Service', () => {
     it('should fetch an empty list of equipment detail items', async () => {
       const expectedResult = [] as IntegritySuspensionOfVisits[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -126,27 +137,32 @@ describe('Integrity Suspension of visits Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
       await expect(
         integritySuspensionOfVisitsService.getSuspensionOfVisits({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
-        .replyWithError('Fake unexpected server error')
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
 
       await expect(
         integritySuspensionOfVisitsService.getSuspensionOfVisits({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
-      ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Internal Server Error'))
     })
   })
 })

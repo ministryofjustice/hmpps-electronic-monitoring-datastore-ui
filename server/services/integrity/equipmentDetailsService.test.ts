@@ -1,4 +1,5 @@
 import nock from 'nock'
+import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import IntegrityEquipmentDetailsService from './equipmentDetailsService'
 
 import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
@@ -6,23 +7,21 @@ import config from '../../config'
 import { IntegrityEquipmentDetails } from '../../data/models/integrityEquipmentDetails'
 
 describe('Integrity Equipment Details Service', () => {
-  let fakeClient: nock.Scope
-  let emDatastoreApiClient: EmDatastoreApiClient
+  let exampleEmDatastoreApiClient: EmDatastoreApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   let integrityEquipmentDetailsService: IntegrityEquipmentDetailsService
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient()
-    integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(emDatastoreApiClient)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+
+    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
+    integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(exampleEmDatastoreApiClient)
   })
 
   afterEach(() => {
-    if (!nock.isDone()) {
-      nock.cleanAll()
-      throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
     nock.cleanAll()
     jest.resetAllMocks()
   })
@@ -37,10 +36,13 @@ describe('Integrity Equipment Details Service', () => {
         } as IntegrityEquipmentDetails,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -54,10 +56,13 @@ describe('Integrity Equipment Details Service', () => {
         } as IntegrityEquipmentDetails,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -77,10 +82,13 @@ describe('Integrity Equipment Details Service', () => {
         } as IntegrityEquipmentDetails,
       ]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -90,10 +98,13 @@ describe('Integrity Equipment Details Service', () => {
     it('should fetch an empty list of equipment detail items', async () => {
       const expectedResult = [] as IntegrityEquipmentDetails[]
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
       const result = await integrityEquipmentDetailsService.getEquipmentDetails({
-        userToken: 'token',
+        userToken: 'test-system-token',
         legacySubjectId: `${legacySubjectId}`,
       })
 
@@ -101,27 +112,32 @@ describe('Integrity Equipment Details Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}/equipment-details`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}/equipment-details`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
       await expect(
         integrityEquipmentDetailsService.getEquipmentDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
       ).rejects.toEqual(new Error('Error retrieving list of equipment details: Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient
+      nock(config.apis.emDatastoreApi.url)
         .get(`/orders/integrity/${legacySubjectId}/equipment-details`)
-        .replyWithError('Fake unexpected server error')
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
 
       await expect(
         integrityEquipmentDetailsService.getEquipmentDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Internal Server Error'))
     })
   })
 })

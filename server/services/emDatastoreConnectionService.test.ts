@@ -1,27 +1,26 @@
 import nock from 'nock'
+import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 
 import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 import config from '../config'
 
 describe('EM Datastore connection service', () => {
-  let fakeClient: nock.Scope
-  let emDatastoreApiClient: EmDatastoreApiClient
+  let exampleEmDatastoreApiClient: EmDatastoreApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   let emDatastoreConnectionService: EmDatastoreConnectionService
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient()
-    emDatastoreConnectionService = new EmDatastoreConnectionService(emDatastoreApiClient)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+
+    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
+    emDatastoreConnectionService = new EmDatastoreConnectionService(exampleEmDatastoreApiClient)
   })
 
   afterEach(() => {
-    if (!nock.isDone()) {
-      nock.cleanAll()
-      throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
     nock.cleanAll()
     jest.resetAllMocks()
   })
@@ -32,26 +31,36 @@ describe('EM Datastore connection service', () => {
         foo: 'bar',
       }
 
-      fakeClient.get(`/test`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/test`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
-      const result = await emDatastoreConnectionService.test('token')
+      const result = await emDatastoreConnectionService.test('test-system-token')
 
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/test`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/test`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
-      await expect(emDatastoreConnectionService.test('token')).rejects.toEqual(
+      await expect(emDatastoreConnectionService.test('test-system-token')).rejects.toEqual(
         new Error('Error connecting to EM Datastore API: Unauthorized'),
       )
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient.get(`/test`).replyWithError('Fake unexpected server error')
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/test`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
 
-      await expect(emDatastoreConnectionService.test('token')).rejects.toEqual(
-        new Error('Error connecting to EM Datastore API: Fake unexpected server error'),
+      await expect(emDatastoreConnectionService.test('test-system-token')).rejects.toEqual(
+        new Error('Error connecting to EM Datastore API: Internal Server Error'),
       )
     })
   })

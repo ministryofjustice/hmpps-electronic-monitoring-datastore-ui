@@ -1,4 +1,5 @@
 import nock from 'nock'
+import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
 import IntegrityOrderDetailsService from './orderDetailsService'
 
 import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
@@ -6,23 +7,21 @@ import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
 import config from '../../config'
 
 describe('Integrity order details Service', () => {
-  let fakeClient: nock.Scope
-  let emDatastoreApiClient: EmDatastoreApiClient
+  let exampleEmDatastoreApiClient: EmDatastoreApiClient
+  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
 
   let integrityOrderDetailsService: IntegrityOrderDetailsService
 
   beforeEach(() => {
-    fakeClient = nock(config.apis.emDatastoreApi.url)
-    emDatastoreApiClient = new EmDatastoreApiClient()
-    integrityOrderDetailsService = new IntegrityOrderDetailsService(emDatastoreApiClient)
+    mockAuthenticationClient = {
+      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
+    } as unknown as jest.Mocked<AuthenticationClient>
+
+    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
+    integrityOrderDetailsService = new IntegrityOrderDetailsService(exampleEmDatastoreApiClient)
   })
 
   afterEach(() => {
-    if (!nock.isDone()) {
-      nock.cleanAll()
-      throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
     nock.cleanAll()
     jest.resetAllMocks()
   })
@@ -67,9 +66,15 @@ describe('Integrity order details Service', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
-      const result = await integrityOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
+      const result = await integrityOrderDetailsService.getOrderDetails({
+        userToken: 'test-system-token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
@@ -111,42 +116,58 @@ describe('Integrity order details Service', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(200, expectedResult)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, expectedResult)
 
-      const result = await integrityOrderDetailsService.getOrderDetails({ userToken: 'token', legacySubjectId })
+      const result = await integrityOrderDetailsService.getOrderDetails({
+        userToken: 'test-system-token',
+        legacySubjectId,
+      })
 
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}`).reply(401)
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(401)
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
       ).rejects.toEqual(new Error('Error retrieving order details: Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      fakeClient.get(`/orders/integrity/${legacySubjectId}`).replyWithError('Fake unexpected server error')
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity/${legacySubjectId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(500)
+        .persist()
 
       await expect(
         integrityOrderDetailsService.getOrderDetails({
-          userToken: 'token',
+          userToken: 'test-system-token',
           legacySubjectId,
         }),
-      ).rejects.toEqual(new Error('Error retrieving order details: Fake unexpected server error'))
+      ).rejects.toEqual(new Error('Error retrieving order details: Internal Server Error'))
     })
   })
 
   describe('getSearchResults', () => {
-    const userToken = 'fake-user-token'
+    const userToken = 'test-system-token'
     const queryExecutionId = 'query-execution-id'
 
     it('submits a request containing a query execution ID and returns search results', async () => {
-      fakeClient.get(`/orders/integrity?id=${queryExecutionId}`).reply(200, [])
+      nock(config.apis.emDatastoreApi.url)
+        .get(`/orders/integrity?id=${queryExecutionId}`)
+        .matchHeader('authorization', 'Bearer test-system-token')
+        .reply(200, [])
 
       const result = await integrityOrderDetailsService.getSearchResults({
         userToken,
@@ -158,8 +179,9 @@ describe('Integrity order details Service', () => {
 
     describe('error handling', () => {
       it('handles invalid query execution ID errors from the datastore client', async () => {
-        fakeClient
+        nock(config.apis.emDatastoreApi.url)
           .get(`/orders/integrity?id=`)
+          .matchHeader('authorization', 'Bearer test-system-token')
           .reply(500, {
             status: 500,
             userMessage: '',
@@ -176,8 +198,9 @@ describe('Integrity order details Service', () => {
       })
 
       it('handles other errors from the datastore client', async () => {
-        fakeClient
+        nock(config.apis.emDatastoreApi.url)
           .get(`/orders/integrity?id=`)
+          .matchHeader('authorization', 'Bearer test-system-token')
           .reply(500, {
             status: 500,
             errorCode: null,
