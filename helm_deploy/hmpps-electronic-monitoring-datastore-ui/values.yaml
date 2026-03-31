@@ -49,8 +49,11 @@ generic-service:
     # These secrets are created by terraform.
     hmpps-electronic-monitoring-datastore-ui:
       APPINSIGHTS_INSTRUMENTATIONKEY: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+      AUTH_CODE_CLIENT_ID: 'AUTH_CODE_CLIENT_ID'                      # <-- need to move this secret
+      AUTH_CODE_CLIENT_SECRET: 'AUTH_CODE_CLIENT_SECRET'              # <-- need to move this secret
       CLIENT_CREDS_CLIENT_ID: 'CLIENT_CREDS_CLIENT_ID'
       CLIENT_CREDS_CLIENT_SECRET: 'CLIENT_CREDS_CLIENT_SECRET'
+      SESSION_SECRET: 'SESSION_SECRET'                                # <-- need to move this secret
     hmpps-electronic-monitoring-datastore-ui-auth-code:
       AUTH_CODE_CLIENT_ID: 'AUTH_CODE_CLIENT_ID'
       AUTH_CODE_CLIENT_SECRET: 'AUTH_CODE_CLIENT_SECRET'
