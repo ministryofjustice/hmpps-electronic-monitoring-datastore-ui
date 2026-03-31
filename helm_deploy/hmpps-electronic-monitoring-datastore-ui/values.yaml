@@ -50,18 +50,21 @@ generic-service:
     # These secrets are created by terraform.
     hmpps-electronic-monitoring-datastore-ui:
       APPINSIGHTS_INSTRUMENTATIONKEY: 'APPINSIGHTS_INSTRUMENTATIONKEY'
+      AUTH_CODE_CLIENT_ID: 'AUTH_CODE_CLIENT_ID'                      # <-- need to move this secret
+      AUTH_CODE_CLIENT_SECRET: 'AUTH_CODE_CLIENT_SECRET'              # <-- need to move this secret
       CLIENT_CREDS_CLIENT_ID: 'CLIENT_CREDS_CLIENT_ID'
       CLIENT_CREDS_CLIENT_SECRET: 'CLIENT_CREDS_CLIENT_SECRET'
+      SESSION_SECRET: 'SESSION_SECRET'                                # <-- need to move this secret
     hmpps-electronic-monitoring-datastore-ui-auth-code:
       AUTH_CODE_CLIENT_ID: 'AUTH_CODE_CLIENT_ID'
       AUTH_CODE_CLIENT_SECRET: 'AUTH_CODE_CLIENT_SECRET'
-    hmpps-template-typescript-session-secret:
+    hmpps-electronic-monitoring-datastore-session-secret:
       SESSION_SECRET: 'SESSION_SECRET'
     hmpps-electronic-monitoring-datastore-ui-elasticache-redis:
       REDIS_HOST: 'primary_endpoint_address'
       REDIS_AUTH_TOKEN: 'auth_token'
-    hmpps-template-typescript-application-insights:
-      APPLICATIONINSIGHTS_CONNECTION_STRING: 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+    hmpps-electronic-monitoring-datastore-application-insights:
+      APPLICATIONINSIGHTS_CONNECTION_STRING: 'InstrumentationKey=$(APPINSIGHTS_INSTRUMENTATIONKEY);IngestionEndpoint=https://northeurope-0.in.applicationinsights.azure.com/;LiveEndpoint=https://northeurope.livediagnostics.monitor.azure.com/'
     # This secret will need to be created in your namespace (note it isn't in hmpps-templates-dev)
     # IRSA configuration in your namespace will also be required, and then uncomment serviceAccountName above.
     sqs-hmpps-audit-secret:
