@@ -1,6 +1,6 @@
 import { Response } from 'express'
-import { Page } from '../../services/auditService'
-import { AuditService, IntegrityOrderDetailsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import IntegrityOrderDetailsService from '../../services/integrity/orderDetailsService'
 import IntegritySummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../routes/testutils/mocks/mockExpress'
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'

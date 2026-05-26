@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../services/auditService'
-import { AuditService, IntegrityOrderDetailsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import IntegrityOrderDetailsService from '../../services/integrity/orderDetailsService'
 import { IntegrityOrderSummaryView } from '../../models/view-models/integrityOrderSummary'
 import { HMPPS_AUTH_ROLES } from '../../constants/roles'
 

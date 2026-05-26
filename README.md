@@ -62,10 +62,12 @@ These credentials are configured using the following env variables:
 
 ### Client Credentials flow
 
-These are used by the application to request tokens to make calls to APIs. These are system accounts that will have their own sets of roles.
+These are used by the application to request tokens to make calls to APIs. These are system accounts that will have
+their own sets of roles.
 
 Most API calls that occur as part of the request/response cycle will be on behalf of a user.
-To make a call on behalf of a user, a username should be passed when requesting a system token. The username will then become part of the JWT and can be used downstream for auditing purposes.
+To make a call on behalf of a user, a username should be passed when requesting a system token. The username will then
+become part of the JWT and can be used downstream for auditing purposes.
 
 These tokens are cached until expiration.
 
@@ -74,11 +76,13 @@ These credentials are configured using the following env variables:
 - CLIENT_CREDS_CLIENT_ID
 - CLIENT_CREDS_CLIENT_SECRET
 
-## Dependencies
+### Dependencies
 
 ### HMPPS Auth
 
-To allow authenticated users to access your application you need to point it to a running instance of `hmpps-auth`. By default the application is configured to run against an instance running in docker that can be started via `docker-compose`.
+To allow authenticated users to access your application you need to point it to a running instance of `hmpps-auth`.
+By default the application is configured to run against an instance running in docker that can be started
+via `docker-compose`.
 
 **NB:** It's common for developers to run against the instance of auth running in the development/T3 environment for
 local development.

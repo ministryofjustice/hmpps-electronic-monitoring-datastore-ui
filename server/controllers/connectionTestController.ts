@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../services/auditService'
-import { AuditService, EmDatastoreConnectionService } from '../services'
+import AuditService, { Page } from '../services/auditService'
+import EmDatastoreConnectionService from '../services/emDatastoreConnectionService'
 
 export default class ConnectionTestController {
   constructor(

@@ -1,11 +1,21 @@
 {
+  "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
     "target": "es2015",
     "module": "esnext",
     "moduleResolution": "bundler",
     "noEmit": true,
-    "lib": ["es2015", "dom"],
-    "types": ["cypress", "express", "express-session"],
+    "lib": [
+      "es2015",
+      "es5",
+      "dom",
+      "es2015.promise"
+    ],
+    "types": [
+      "cypress",
+      "node",
+      "@playwright/test"
+    ],
     "esModuleInterop": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
@@ -14,5 +24,7 @@
     "noImplicitAny": false,
     "useUnknownInCatchVariables": false
   },
-  "include": ["**/*.ts"]
+  "include": [
+    "**/*.ts"
+  ]
 }

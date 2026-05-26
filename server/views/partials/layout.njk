@@ -7,14 +7,14 @@
   <link href="{{ '/assets/css/application.css' | assetMap }}" rel="stylesheet"/>
 {% endblock %}
 
-{% block pageTitle %}{{ heading }}{{ " - " if heading }}{{ applicationName }}{% endblock %}
+{% block pageTitle %}{{ pageTitle | default(applicationName) }}{% endblock %}
 
 {% block header %}
   {% include "./header.njk" %}
 
   {{ govukPhaseBanner({
     tag: {
-      text: "Beta"
+      text: "BETA"
     },
     html: 'This is a new service. Help us improve it and give your feedback'
   }) }}

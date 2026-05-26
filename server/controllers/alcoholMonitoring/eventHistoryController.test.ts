@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { AuditService, AlcoholMonitoringEventHistoryService } from '../../services'
+import AuditService from '../../services/auditService'
+import AlcoholMonitoringEventHistoryService from '../../services/alcoholMonitoring/eventHistoryService'
 import AlcoholMonitoringEventHistoryController from './eventHistoryController'
 
 import { AlcoholMonitoringEventHistoryView } from '../../models/view-models/alcoholMonitoringEventHistory'

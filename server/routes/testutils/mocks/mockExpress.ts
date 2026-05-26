@@ -1,8 +1,7 @@
 import type { Request, Response } from 'express'
 
 export const createMockRequest = (overrideProperties: Partial<Request> = {}): Request => {
-  return {
-    // @ts-expect-error stubbing session
+  const request = {
     session: {},
     query: {},
     params: {},
@@ -13,11 +12,12 @@ export const createMockRequest = (overrideProperties: Partial<Request> = {}): Re
     },
     ...overrideProperties,
   }
+
+  return request as Request
 }
 
 export const createMockResponse = (): Response => {
-  // @ts-expect-error stubbing res.render
-  return {
+  const response: Partial<Response> = {
     locals: {
       user: {
         username: 'fakeUserName',
@@ -29,6 +29,12 @@ export const createMockResponse = (): Response => {
         userRoles: ['fakeRole'],
         staffId: 123,
       },
+      cspNonce: '',
+      csrfToken: '',
+      asset_path: '',
+      applicationName: '',
+      environmentName: '',
+      environmentNameColour: '',
     },
     redirect: jest.fn(),
     render: jest.fn(),
@@ -36,4 +42,6 @@ export const createMockResponse = (): Response => {
     send: jest.fn(),
     status: jest.fn(),
   }
+
+  return response as Response
 }

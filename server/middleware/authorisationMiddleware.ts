@@ -2,7 +2,6 @@ import { jwtDecode } from 'jwt-decode'
 import type { RequestHandler } from 'express'
 
 import logger from '../../logger'
-import asyncMiddleware from './asyncMiddleware'
 import { HMPPS_AUTH_ROLES } from '../constants/roles'
 
 export const emDatastoreApiAuthorisedRoles = () => {
@@ -10,7 +9,7 @@ export const emDatastoreApiAuthorisedRoles = () => {
 }
 
 export default function authorisationMiddleware(authorisedRoles: string[] = []): RequestHandler {
-  return asyncMiddleware((req, res, next) => {
+  return (req, res, next) => {
     // authorities in the user token will always be prefixed by ROLE_.
     // Convert roles that are passed into this function without the prefix so that we match correctly.
     const authorisedAuthorities = authorisedRoles.map(role => (role.startsWith('ROLE_') ? role : `ROLE_${role}`))
@@ -27,5 +26,5 @@ export default function authorisationMiddleware(authorisedRoles: string[] = []):
 
     req.session.returnTo = req.originalUrl
     return res.redirect('/sign-in')
-  })
+  }
 }
