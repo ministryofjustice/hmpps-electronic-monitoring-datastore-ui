@@ -106,12 +106,12 @@
     "mocha-junit-reporter": "^2.2.1",
     "nock": "^14.0.15",
     "supertest": "^7.2.2",
-    "ts-jest": "^29.4.10",
+    "ts-jest": "^29.4.11",
     "typescript": "^5.9.3"
   },
   "overrides": {
     "@aws-sdk/xml-builder": {
-      "fast-xml-parser": "^5.5.9"
+      "fast-xml-parser": "^5.8.0"
     }
   }
 }
