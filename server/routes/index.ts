@@ -1,8 +1,12 @@
-import { type RequestHandler, Router } from 'express'
+import { Router } from 'express'
+import { type RequestHandler } from 'express'
+
+import type { Services } from '../services'
+import { Page } from '../services/auditService'
+
 import paths from '../constants/paths'
 
 import asyncMiddleware from '../middleware/asyncMiddleware'
-import { Page } from '../services/auditService'
 
 import ConnectionTestController from '../controllers/connectionTestController'
 import SearchController from '../controllers/searchController'
@@ -24,21 +28,19 @@ import AmVisitDetailsController from '../controllers/alcoholMonitoring/visitDeta
 import AmServiceDetailsController from '../controllers/alcoholMonitoring/serviceDetailsController'
 import AmEventHistoryController from '../controllers/alcoholMonitoring/eventHistoryController'
 
-import { Services } from '../services'
-
 export default function routes({
   auditService,
   emDatastoreConnectionService,
   emDatastoreOrderSearchService,
 
-  integrityOrderDetailsService: integrityDetailsService,
+  integrityOrderDetailsService,
   integrityEquipmentDetailsService,
   integrityVisitDetailsService,
   integrityServiceDetailsService,
   integrityEventHistoryService,
   integritySuspensionOfVisitsService,
 
-  alcoholMonitoringOrderDetailsService: alcoholMonitoringDetailsService,
+  alcoholMonitoringOrderDetailsService,
   alcoholMonitoringEquipmentDetailsService,
   alcoholMonitoringVisitDetailsService,
   alcoholMonitoringServiceDetailsService,
@@ -52,8 +54,8 @@ export default function routes({
   const searchController = new SearchController(auditService, emDatastoreOrderSearchService)
 
   // integrity
-  const integritySummaryController = new IntegritySummaryController(auditService, integrityDetailsService)
-  const integrityDetailsController = new IntegrityOrderDetailsController(auditService, integrityDetailsService)
+  const integritySummaryController = new IntegritySummaryController(auditService, integrityOrderDetailsService)
+  const integrityDetailsController = new IntegrityOrderDetailsController(auditService, integrityOrderDetailsService)
   const integrityEquipmentDetailsController = new IntegrityEquipmentDetailsController(
     auditService,
     integrityEquipmentDetailsService,
@@ -76,8 +78,8 @@ export default function routes({
   )
 
   // alcohol monitoring
-  const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringDetailsService)
-  const amDetailsController = new AmDetailsController(auditService, alcoholMonitoringDetailsService)
+  const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringOrderDetailsService)
+  const amDetailsController = new AmDetailsController(auditService, alcoholMonitoringOrderDetailsService)
   const amEquipmentDetailsController = new AmEquipmentDetailsController(
     auditService,
     alcoholMonitoringEquipmentDetailsService,

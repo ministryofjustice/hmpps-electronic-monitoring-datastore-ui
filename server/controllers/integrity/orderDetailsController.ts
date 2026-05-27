@@ -1,8 +1,8 @@
 import type { Request, RequestHandler, Response } from 'express'
 import paths from '../../constants/paths'
 import { HMPPS_AUTH_ROLES } from '../../constants/roles'
-import { Page } from '../../services/auditService'
-import { AuditService, IntegrityOrderDetailsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import IntegrityOrderDetailsService from '../../services/integrity/orderDetailsService'
 import { IntegritySearchResultView } from '../../models/view-models/integritySearchResults'
 import { IntegrityOrderDetailsView } from '../../models/view-models/integrityOrderDetails'
 

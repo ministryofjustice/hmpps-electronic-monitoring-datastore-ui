@@ -4,7 +4,7 @@
 {% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
 {% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
 
-{% set heading = "Suspension of visits" %}
+{% set pageTitle = "Suspension of visits" %}
 
 {% block innerContent %}
   {% if events | length %}
@@ -12,8 +12,8 @@
 
     {{ emsEventTimeline(events) }}
   {% else %}
-    <h3 class="govuk-heading-m no-results-heading">No {{ heading | lower }} found</h3>
+    <h3 class="govuk-heading-m no-results-heading">No {{ pageTitle | lower }} found</h3>
 
-    <p class="no-results-message">No {{ heading | lower }} information was found for this order</p>
+    <p class="no-results-message">No {{ pageTitle | lower }} information was found for this order</p>
   {% endif %}
 {% endblock %}

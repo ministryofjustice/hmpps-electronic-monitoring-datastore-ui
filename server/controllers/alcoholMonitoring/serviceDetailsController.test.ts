@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { AuditService, AlcoholMonitoringServiceDetailsService } from '../../services'
+import AuditService from '../../services/auditService'
+import AlcoholMonitoringServiceDetailsService from '../../services/alcoholMonitoring/serviceDetailsService'
 import AlcoholMonitoringServiceDetailsController from './serviceDetailsController'
 
 import { AlcoholMonitoringServiceDetailsView } from '../../models/view-models/alcoholMonitoringServiceDetails'

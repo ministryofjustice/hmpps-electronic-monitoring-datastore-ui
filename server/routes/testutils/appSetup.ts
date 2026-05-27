@@ -5,25 +5,28 @@ import { randomUUID } from 'crypto'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
-import {
-  EmDatastoreConnectionService,
-  IntegrityOrderDetailsService,
-  AlcoholMonitoringOrderDetailsService,
-  EmDatastoreOrderSearchService,
-  IntegrityEventHistoryService,
-  AlcoholMonitoringEventHistoryService,
-  IntegritySuspensionOfVisitsService,
-  IntegrityEquipmentDetailsService,
-  AlcoholMonitoringEquipmentDetailsService,
-  IntegrityVisitDetailsService,
-  AlcoholMonitoringVisitDetailsService,
-  IntegrityServiceDetailsService,
-  AlcoholMonitoringServiceDetailsService,
-  type Services,
-} from '../../services'
+import type { Services } from '../../services'
 import AuditService from '../../services/auditService'
+
+import EmDatastoreConnectionService from '../../services/emDatastoreConnectionService'
+import EmDatastoreOrderSearchService from '../../services/emDatastoreOrderSearchService'
+
+import IntegrityOrderDetailsService from '../../services/integrity/orderDetailsService'
+import IntegrityEventHistoryService from '../../services/integrity/eventHistoryService'
+import IntegritySuspensionOfVisitsService from '../../services/integrity/suspensionOfVisitsService'
+import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
+import IntegrityVisitDetailsService from '../../services/integrity/visitDetailsService'
+import IntegrityServiceDetailsService from '../../services/integrity/serviceDetailsService'
+
+import AlcoholMonitoringOrderDetailsService from '../../services/alcoholMonitoring/orderDetailsService'
+import AlcoholMonitoringEventHistoryService from '../../services/alcoholMonitoring/eventHistoryService'
+import AlcoholMonitoringEquipmentDetailsService from '../../services/alcoholMonitoring/equipmentDetailsService'
+import AlcoholMonitoringVisitDetailsService from '../../services/alcoholMonitoring/visitDetailsService'
+import AlcoholMonitoringServiceDetailsService from '../../services/alcoholMonitoring/serviceDetailsService'
+
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
+import HmppsAuditClient from '../../data/hmppsAuditClient'
 
 jest.mock('../../services/auditService')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
@@ -53,17 +56,23 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
     req.flash = flashProvider
     res.locals = {
       user: { ...req.user } as HmppsUser,
+      cspNonce: '',
+      csrfToken: '',
+      asset_path: '',
+      applicationName: '',
+      environmentName: '',
+      environmentNameColour: '',
     }
     next()
   })
-  app.use((req, res, next) => {
+  app.use((req, _res, next) => {
     req.id = randomUUID()
     next()
   })
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
   app.use(routes(services))
-  app.use((req, res, next) => next(new NotFound()))
+  app.use((_req, _res, next) => next(new NotFound()))
   app.use(errorHandler(production))
 
   return app
@@ -72,7 +81,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 export function appWithAllRoutes({
   production = false,
   services = {
-    auditService: new AuditService(null) as jest.Mocked<AuditService>,
+    auditService: new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>,
     alcoholMonitoringOrderDetailsService: new AlcoholMonitoringOrderDetailsService(
       null,
     ) as jest.Mocked<AlcoholMonitoringOrderDetailsService>,

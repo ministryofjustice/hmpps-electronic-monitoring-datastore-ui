@@ -1,6 +1,6 @@
 import { Response } from 'express'
-import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringOrderDetailsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import AlcoholMonitoringOrderDetailsService from '../../services/alcoholMonitoring/orderDetailsService'
 import AlcoholMonitoringSummaryController from './summaryController'
 import { createMockRequest, createMockResponse } from '../../routes/testutils/mocks/mockExpress'
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'

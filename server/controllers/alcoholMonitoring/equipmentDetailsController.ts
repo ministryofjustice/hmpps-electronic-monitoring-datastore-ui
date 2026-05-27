@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringEquipmentDetailsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import AlcoholMonitoringEquipmentDetailsService from '../../services/alcoholMonitoring/equipmentDetailsService'
 
 import { AlcoholMonitoringEquipmentDetailsView } from '../../models/view-models/alcoholMonitoringEquipmentDetails'
 import paths from '../../constants/paths'
