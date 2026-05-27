@@ -13,8 +13,7 @@
     ],
     "types": [
       "cypress",
-      "node",
-      "@playwright/test"
+      "node"
     ],
     "esModuleInterop": true,
     "skipLibCheck": true,
