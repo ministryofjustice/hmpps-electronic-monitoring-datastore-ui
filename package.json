@@ -39,7 +39,7 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1051.0",
+    "@aws-sdk/client-sqs": "^3.1053.0",
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^2.0.0",
     "@ministryofjustice/hmpps-monitoring": "^2.1.0",
@@ -54,7 +54,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "govuk-frontend": "^6.1.0",
-    "helmet": "^8.1.0",
+    "helmet": "^8.2.0",
     "http-errors": "^2.0.1",
     "jwt-decode": "^4.0.0",
     "nocache": "^4.0.0",
