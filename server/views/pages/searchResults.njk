@@ -1,10 +1,13 @@
-{% extends "../partials/layout-full-width.njk" %}
+{%- extends "../partials/layout-full-width.njk" -%}
 
-{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
-{% from "govuk/components/table/macro.njk" import govukTable %}
-{% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/back-link/macro.njk" import govukBackLink %}
-{% from '../components/safeDateFormatters.njk' import safeGovukDate %}
+{%- from "govuk/components/warning-text/macro.njk" import govukWarningText -%}
+{%- from "govuk/components/table/macro.njk" import govukTable -%}
+{%- from "govuk/components/button/macro.njk" import govukButton -%}
+{%- from "govuk/components/back-link/macro.njk" import govukBackLink -%}
+{%- from "govuk/components/pagination/macro.njk" import govukPagination -%}
+{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+
+{%- from '../components/safeDateFormatters.njk' import safeGovukDate -%}
 
 {% set orders = viewModel %}
 {% set pageTitle = "Search results" %}
@@ -68,7 +71,6 @@
   ), rows) %}
 {% endfor %}
 
-
 {% block innerContent %}
   {% if orders | length %}
     <div class="ems-sortable-table" data-page-size={{ pageSize }} data-current-page={{ currentPage }}>
@@ -129,31 +131,38 @@
       {# TODO: This <p> isn't required in this page and should be removed. To remove it, the javascript for this component also needs to be updated (assets/js/emsSortableTable.js).  #}
       <p class="ems-sortable-table__no-results hidden">No results found.</p>
 
-      <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
-        <ul class="moj-pagination__list">
-          <li class="moj-pagination__item  moj-pagination__item--prev">
-            <a class="moj-pagination__link" href="">Previous<span class="govuk-visually-hidden"> page</span></a>
-          </li>
+      {% set paginationItems = [] %}
+        {% for i in range(1, totalPages + 1) %}
+          {% set paginationItems = (paginationItems.push({
+            text: i,
+            href: "#",
+            selected: i == currentPage
+          }), paginationItems) %}
 
-          {% for i in range(1, totalPages + 1) %}
-            <li class="moj-pagination__item moj-pagination__item--link" data-button-number="{{ i }}">
-              <a class="moj-pagination__link" href="#" aria-label="Page {{ i }} of {{ totalPages }}">
-                {{ i }}
-              </a>
-            </li>
+          {% if (i == 1) or (i == totalPages - 1) %}
+            {% set paginationItems = (paginationItems.push({
+              type: "dots"
+            }), paginationItems) %}
+          {% endif %}
+        {% endfor %}
 
-            {% if (i == 1) or (i == totalPages - 1) %}
-              <li class="moj-pagination__item moj-pagination__item--dots hidden">…</li>
-            {% endif %}
-          {% endfor %}
-
-          <li class="moj-pagination__item  moj-pagination__item--next">
-            <a class="moj-pagination__link" href="">Next<span class="govuk-visually-hidden"> page</span></a>
-          </li>
-        </ul>
-
-        <p class="moj-pagination__results">Showing <b></b> to <b></b> of <b></b> results</p>
-      </nav>
+        {{ mojPagination({
+          items: paginationItems,
+          results: {
+            count: totalPages * pageSize,
+            from: 1,
+            to: pageSize,
+            text: "results"
+          },
+          previous: {
+            text: "Previous",
+            href: "#"
+          },
+          next: {
+            text: "Next",
+            href: "#"
+          }
+        }) }}
     </div>
   {% else %}
     <div class="govuk-grid-row">

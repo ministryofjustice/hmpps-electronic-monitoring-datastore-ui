@@ -65,7 +65,7 @@ export default class SearchResultsComponent {
   }
 
   private get results(): PageElement {
-    return this.element.find('.govuk-table__body .govuk-table__row', { log: false })
+    return this.element.find('.govuk-table__body .govuk-table__row', { log: false }).should('be.visible')
   }
 
   result(index: number): SearchResultRow {

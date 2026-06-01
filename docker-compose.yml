@@ -5,24 +5,12 @@ services:
       - hmpps
     container_name: hmpps-auth
     ports:
-      - "9090:8080"
+      - "8090:8080"
     healthcheck:
       test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080"]
     environment:
       - SPRING_PROFILES_ACTIVE=dev
       - APPLICATION_AUTHENTICATION_UI_ALLOWLIST=0.0.0.0/0
-
-  hmpps-electronic-monitoring-ui:
-    image: ghcr.io/ministryofjustice/hmpps-electronic-monitoring-ui:latest
-    networks:
-      - hmpps
-    container_name: hmpps-electronic-monitoring-ui
-    ports:
-      - "8080:8080"
-    healthcheck:
-      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080"]
-    environment:
-      - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
 
   app:
     build:
