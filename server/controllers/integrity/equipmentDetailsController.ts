@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../services/auditService'
-import { AuditService, IntegrityEquipmentDetailsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
 
 import { IntegrityEquipmentDetailsView } from '../../models/view-models/integrityEquipmentDetails'
 import paths from '../../constants/paths'

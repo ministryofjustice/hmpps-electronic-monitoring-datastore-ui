@@ -1,3 +1,5 @@
+import { AgentConfig } from '@ministryofjustice/hmpps-rest-client'
+
 const production = process.env.NODE_ENV === 'production'
 
 function get<T>(name: string, fallback: T, options = { requireInProduction: false }): T | string {
@@ -12,29 +14,6 @@ function get<T>(name: string, fallback: T, options = { requireInProduction: fals
 
 const requiredInProduction = { requireInProduction: true }
 
-export class AgentConfig {
-  // Sets the working socket to timeout after timeout milliseconds of inactivity on the working socket.
-  timeout: number
-
-  constructor(timeout = 8000) {
-    this.timeout = timeout
-  }
-}
-
-export interface ApiConfig {
-  url: string
-  healthPath?: string
-  timeout: {
-    // sets maximum time to wait for the first byte to arrive from the server, but it does not limit how long the
-    // entire download can take.
-    response: number
-    // sets a deadline for the entire request (including all uploads, redirects, server processing time) to complete.
-    // If the response isn't fully downloaded within that time, the request will be aborted.
-    deadline: number
-  }
-  agent: AgentConfig
-}
-
 const auditConfig = () => {
   const auditEnabled = get('AUDIT_ENABLED', 'false') === 'true'
   return {
@@ -42,9 +21,9 @@ const auditConfig = () => {
     queueUrl: get(
       'AUDIT_SQS_QUEUE_URL',
       'http://localhost:4566/000000000000/mainQueue',
-      auditEnabled && requiredInProduction,
+      auditEnabled ? requiredInProduction : undefined,
     ),
-    serviceName: get('AUDIT_SERVICE_NAME', 'UNASSIGNED', auditEnabled && requiredInProduction),
+    serviceName: get('AUDIT_SERVICE_NAME', 'UNASSIGNED', auditEnabled ? requiredInProduction : undefined),
     region: get('AUDIT_SQS_REGION', 'eu-west-2'),
   }
 }

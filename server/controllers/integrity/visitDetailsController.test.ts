@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
-import { AuditService, IntegrityVisitDetailsService } from '../../services'
+import AuditService from '../../services/auditService'
+import IntegrityVisitDetailsService from '../../services/integrity/visitDetailsService'
 import IntegrityVisitDetailsController from './visitDetailsController'
 
 import { IntegrityVisitDetailsView } from '../../models/view-models/integrityVisitDetails'

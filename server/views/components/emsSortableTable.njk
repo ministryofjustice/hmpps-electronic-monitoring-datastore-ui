@@ -1,5 +1,7 @@
-{% macro emsSortableTable(records, pageSize) %}
+{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+{%- from "govuk/components/pagination/macro.njk" import govukPagination -%}
 
+{% macro emsSortableTable(records, pageSize) %}
   {% set totalPages = (records.length / pageSize) | round(0, 'ceil') %}
   {% set currentPage = 1 %}
 
@@ -68,42 +70,44 @@
             >{{ record.time }}</td>
 
             <td class="govuk-table__cell">{{ record.notes }}</td>
-            
+
           </tr>
         {% endfor %}
       </tbody>
     </table>
 
+    {% set paginationItems = [] %}
+    {% for i in range(1, totalPages + 1) %}
+      {% set paginationItems = (paginationItems.push({
+        text: i,
+        href: "#",
+        selected: i == currentPage
+      }), paginationItems) %}
 
-    <nav class="moj-pagination{% if totalPages <= 1 %} hidden{% endif %}" aria-label="Pagination navigation">
+      {% if (i == 1) or (i == totalPages - 1) %}
+        {% set paginationItems = (paginationItems.push({
+          type: "dots"
+        }), paginationItems) %}
+      {% endif %}
+    {% endfor %}
 
-      <ul class="moj-pagination__list">
-        <li class="moj-pagination__item  moj-pagination__item--prev">
-          <a class="moj-pagination__link" href="">Previous<span class="govuk-visually-hidden"> page</span></a>
-        </li>
-
-        {% for i in range(1, totalPages + 1) %}
-          <li
-            class="moj-pagination__item moj-pagination__item--link"
-            data-button-number="{{ i }}"
-          >
-            <a class="moj-pagination__link" href="#" aria-label="Page {{ i }} of {{ totalPages }}">
-              {{ i }}
-            </a>
-          </li>
-
-          {% if (i == 1) or (i == totalPages - 1) %}
-            <li class="moj-pagination__item moj-pagination__item--dots hidden">…</li>
-          {% endif %}
-        {% endfor %}
-
-        <li class="moj-pagination__item  moj-pagination__item--next">
-          <a class="moj-pagination__link" href="">Next<span class="govuk-visually-hidden"> page</span></a>
-        </li>
-      </ul>
-      <p class="moj-pagination__results">Showing <b></b> to <b></b> of <b></b> results</p>
-    </nav>
-
+    {{ mojPagination({
+      items: paginationItems,
+      results: {
+        count: totalPages * pageSize,
+        from: 1,
+        to: pageSize,
+        text: "results"
+      },
+      previous: {
+        text: "Previous",
+        href: "#"
+      },
+      next: {
+        text: "Next",
+        href: "#"
+      }
+    }) }}
   </div>
 
 {% endmacro %}
