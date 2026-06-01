@@ -39,7 +39,7 @@
     ]
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1051.0",
+    "@aws-sdk/client-sqs": "3.1053.0",
     "@ministryofjustice/frontend": "^9.0.0",
     "@ministryofjustice/hmpps-auth-clients": "^2.0.0",
     "@ministryofjustice/hmpps-azure-telemetry": "^1.0.0",
@@ -54,7 +54,7 @@
     "express": "^5.2.1",
     "express-session": "^1.19.0",
     "govuk-frontend": "^6.1.0",
-    "helmet": "^8.1.0",
+    "helmet": "^8.2.0",
     "http-errors": "^2.0.1",
     "jwt-decode": "^4.0.0",
     "nocache": "^4.0.0",
@@ -89,8 +89,8 @@
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
     "axe-core": "^4.11.4",
-    "cypress": "^15.15.0",
-    "cypress-axe": "^1.7.0",
+    "cypress": "15.15.0",
+    "cypress-axe": "1.7.0",
     "cypress-multi-reporters": "^2.0.5",
     "del": "8.0.1",
     "esbuild": "^0.28.0",
