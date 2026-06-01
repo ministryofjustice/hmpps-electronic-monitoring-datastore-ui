@@ -1,9 +1,16 @@
 import { PageElement } from '../page'
 
+const paginationSelector = '.moj-pagination'
+const pageLinkSelector = '.govuk-pagination__item .govuk-pagination__link'
+const currentPageLinkSelector = '.govuk-pagination__item--current .govuk-pagination__link'
+
+const nextText = 'Next'
+const previousText = 'Previous'
+
 export default class PaginationComponent {
   private elementCacheId: string
 
-  private className: string = '.moj-pagination'
+  private className: string = paginationSelector
 
   private get element(): PageElement {
     if (!this.elementCacheId) {
@@ -19,19 +26,19 @@ export default class PaginationComponent {
   }
 
   pageLink(page: number): PageElement {
-    return this.element.contains('.moj-pagination__item--link', `${page}`, { log: false })
+    return this.element.contains(pageLinkSelector, `${page}`, { log: false })
   }
 
-  get activePageLink(): PageElement {
-    return this.element.get('.moj-pagination__item--active', { log: false })
+  get currentPageLink(): PageElement {
+    return this.element.get(currentPageLinkSelector, { log: false })
   }
 
   get nextLink(): PageElement {
-    return this.element.contains('Next', { log: false })
+    return this.element.contains(nextText, { log: false })
   }
 
   get previousLink(): PageElement {
-    return this.element.contains('Previous', { log: false })
+    return this.element.contains(previousText, { log: false })
   }
 
   // Helpers
@@ -55,6 +62,6 @@ export default class PaginationComponent {
   }
 
   shouldShowActivePage(page: number) {
-    this.activePageLink.contains(page)
+    this.currentPageLink.contains(page)
   }
 }

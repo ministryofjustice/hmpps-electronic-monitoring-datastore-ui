@@ -69,7 +69,7 @@ export function init() {
             const filterDate = parseInt(row.dataset.filterDate, 10)
             filterElement(row, startDate, endDate, filterDate)
           }
-          table.getElementsByClassName('moj-pagination__item--link')[0].click()
+          table.getElementsByClassName('govuk-pagination__item--link')[0].click()
         }
 
         for (const item of timelineItems) {

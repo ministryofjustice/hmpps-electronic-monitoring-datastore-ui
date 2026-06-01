@@ -2,16 +2,19 @@ import type { Express } from 'express'
 import request from 'supertest'
 import paths from '../constants/paths'
 import { appWithAllRoutes, user } from './testutils/appSetup'
-import { Page } from '../services/auditService'
-import { AuditService, EmDatastoreOrderSearchService, EmDatastoreConnectionService } from '../services'
+import AuditService, { Page } from '../services/auditService'
+import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
+import EmDatastoreConnectionService from '../services/emDatastoreConnectionService'
+import HmppsAuditClient from '../data/hmppsAuditClient'
+import EmDatastoreApiClient from '../data/emDatastoreApiClient'
 
 jest.mock('../services/auditService')
 jest.mock('../services/emDatastoreOrderSearchService')
 jest.mock('../services/emDatastoreConnectionService')
 
-const auditService = new AuditService(null) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>
 const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(
-  null,
+  {} as EmDatastoreApiClient,
 ) as jest.Mocked<EmDatastoreOrderSearchService>
 const emDatastoreConnectionService = new EmDatastoreConnectionService(null) as jest.Mocked<EmDatastoreConnectionService>
 

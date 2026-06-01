@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../services/auditService'
-import { AuditService, EmDatastoreOrderSearchService } from '../services'
+import AuditService, { Page } from '../services/auditService'
+import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import strings from '../constants/strings'
 import paths from '../constants/paths'
 import { convertZodErrorToValidationError, OrderSearchView } from '../models/view-models/orderSearch'
