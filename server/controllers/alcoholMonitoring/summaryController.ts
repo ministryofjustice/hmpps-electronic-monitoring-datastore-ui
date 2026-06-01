@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../services/auditService'
-import { AuditService, AlcoholMonitoringOrderDetailsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import AlcoholMonitoringOrderDetailsService from '../../services/alcoholMonitoring/orderDetailsService'
 import { AlcoholMonitoringOrderSummaryView } from '../../models/view-models/alcoholMonitoringOrderSummary'
 
 export default class AlcoholMonitoringSummaryController {

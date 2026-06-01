@@ -1,6 +1,6 @@
 import type { Request, RequestHandler, Response } from 'express'
-import { Page } from '../../services/auditService'
-import { AuditService, IntegritySuspensionOfVisitsService } from '../../services'
+import AuditService, { Page } from '../../services/auditService'
+import IntegritySuspensionOfVisitsService from '../../services/integrity/suspensionOfVisitsService'
 
 import { IntegritySuspensionOfVisitsView } from '../../models/view-models/integritySuspensionOfVisits'
 import paths from '../../constants/paths'

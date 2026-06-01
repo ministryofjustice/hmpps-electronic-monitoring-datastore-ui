@@ -1,3 +1,12 @@
+const paginationSelector = '.moj-pagination'
+const itemsSelector = '.govuk-pagination__item' // '.moj-pagination__item'
+const prevItemSelector = '.govuk-pagination__prev' // '.moj-pagination__item--prev'
+const nextItemSelector = '.govuk-pagination__next' // '.moj-pagination__item--next'
+const ellipsisSelector = '.govuk-pagination__item--ellipsis' // '.moj-pagination__item--dots'
+const paginationResultsSelector = '.moj-pagination__results' // '.moj-pagination__results'
+
+const currentItemClassName = 'govuk-pagination__item--current' // 'moj-pagination__item--active'
+
 export function init() {
   const emsSortableTables = document.getElementsByClassName('ems-sortable-table')
 
@@ -33,13 +42,12 @@ export function init() {
     } else {
       displayRecords()
 
-      const pagination = table.querySelector('.moj-pagination')
-      const allPaginationButtons = pagination.querySelectorAll('.moj-pagination__item')
-      const prevButton = pagination.querySelector('.moj-pagination__item--prev')
-      const nextButton = pagination.querySelector('.moj-pagination__item--next')
-      const pageButtons = pagination.getElementsByClassName('moj-pagination__item--link')
-      const dots = pagination.getElementsByClassName('moj-pagination__item--dots')
-      const paginationResults = pagination.querySelector('.moj-pagination__results').getElementsByTagName('b')
+      const pagination = table.querySelector(paginationSelector)
+      const allPaginationButtons = pagination.querySelectorAll(itemsSelector)
+      const prevButton = pagination.querySelector(prevItemSelector)
+      const nextButton = pagination.querySelector(nextItemSelector)
+      const ellipses = pagination.querySelectorAll(ellipsisSelector)
+      const paginationResults = pagination.querySelector(paginationResultsSelector)
 
       const updateTable = () => {
         setRowsAndPages()
@@ -62,45 +70,19 @@ export function init() {
       }
 
       const updatePagination = () => {
+        const firstRecord = totalPages === 0 ? 0 : (currentPage - 1) * pageSize + 1
+        const lastRecord = currentPage * pageSize
+        const totalRecords = Math.min(lastRecord, totalRows)
+
         setRowsAndPages()
 
-        if (currentPage === 1) {
-          prevButton.classList.add('hidden')
-        } else {
-          prevButton.classList.remove('hidden')
-        }
-
-        if (currentPage === totalPages) {
-          nextButton.classList.add('hidden')
-        } else {
-          nextButton.classList.remove('hidden')
-        }
-
-        if (totalPages > 5) {
-          if (currentPage < 4) {
-            dots[0].classList.add('hidden')
-          } else {
-            dots[0].classList.remove('hidden')
-          }
-
-          if (currentPage > totalPages - 3 && dots[1]) {
-            dots[1].classList.add('hidden')
-          } else {
-            dots[1].classList.remove('hidden')
-          }
-        } else {
-          for (const dotsElement of dots) {
-            dotsElement.classList.add('hidden')
-          }
-        }
-
-        for (const button of pageButtons) {
-          const buttonNumber = parseInt(button.dataset.buttonNumber, 10)
+        for (const button of allPaginationButtons) {
+          const buttonNumber = parseInt(button.innerText, 10)
 
           if (buttonNumber === currentPage) {
-            button.classList.add('moj-pagination__item--active')
+            button.classList.add(currentItemClassName)
           } else {
-            button.classList.remove('moj-pagination__item--active')
+            button.classList.remove(currentItemClassName)
           }
 
           if (buttonNumber !== 1 && buttonNumber !== totalPages) {
@@ -124,17 +106,43 @@ export function init() {
           }
         }
 
-        for (const button of allPaginationButtons) {
-          if (totalPages <= 1) {
-            button.classList.add('hidden')
+        if (totalPages <= 1) {
+          pagination.classList.add('hidden')
+        } else {
+          pagination.classList.remove('hidden')
+        }
+
+        if (currentPage === 1) {
+          prevButton.classList.add('hidden')
+        } else {
+          prevButton.classList.remove('hidden')
+        }
+
+        if (currentPage === totalPages) {
+          nextButton.classList.add('hidden')
+        } else {
+          nextButton.classList.remove('hidden')
+        }
+
+        if (totalPages > 5) {
+          if (currentPage < 4) {
+            ellipses[0].classList.add('hidden')
+          } else {
+            ellipses[0].classList.remove('hidden')
+          }
+
+          if (ellipses[1] && currentPage > totalPages - 3) {
+            ellipses[1].classList.add('hidden')
+          } else {
+            ellipses[1].classList.remove('hidden')
+          }
+        } else {
+          for (const ellipsis of ellipses) {
+            ellipsis.classList.add('hidden')
           }
         }
 
-        const firstRecord = totalPages === 0 ? 0 : (currentPage - 1) * pageSize + 1
-        const lastRecord = currentPage * pageSize
-        paginationResults[0].innerHTML = firstRecord
-        paginationResults[1].innerHTML = Math.min(lastRecord, totalRows)
-        paginationResults[2].innerHTML = totalRows
+        paginationResults.innerText = `Showing ${firstRecord} to ${totalRecords} of ${totalRows} results`
       }
 
       const initialisePaginationButtons = () => {
@@ -160,14 +168,14 @@ export function init() {
 
         const pageButtonEventHandler = button => event => {
           event.preventDefault()
-          const newPage = parseInt(button.dataset.buttonNumber, 10)
+          const newPage = parseInt(button.innerText, 10)
           currentPage = newPage
           updateTable()
           updatePagination()
           return false
         }
 
-        for (const button of pageButtons) {
+        for (const button of allPaginationButtons) {
           button.addEventListener('click', pageButtonEventHandler(button))
         }
       }

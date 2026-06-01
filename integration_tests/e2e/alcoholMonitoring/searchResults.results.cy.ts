@@ -467,15 +467,14 @@ context('Alcohol monitoring search results', () => {
 
     it('Can navigate back to first page', () => {
       let page = Page.visit(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      page.results.shouldHaveCount(12)
       page.pagination.pageLink(2).click()
 
       page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
-      page.results.shouldHaveCount(12)
       page.pagination.pageLink(1).click()
 
       page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
       page.results.shouldHaveCount(12)
+      page.pagination.shouldShowSummary(1, 10, 12)
       page.pagination.shouldShowActivePage(1)
     })
 
@@ -487,6 +486,8 @@ context('Alcohol monitoring search results', () => {
       page.pagination.previousLink.click()
 
       page = Page.verifyOnPage(AlcoholMonitoringSearchResultsPage, {}, { search_id: queryExecutionId })
+      page.results.shouldHaveCount(12)
+      page.pagination.shouldShowSummary(1, 10, 12)
       page.pagination.shouldShowActivePage(1)
     })
   })
