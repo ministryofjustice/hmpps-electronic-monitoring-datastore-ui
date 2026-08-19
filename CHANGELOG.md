@@ -1,5 +1,12 @@
 # Change log
 
+**August 19th 2026** - Allow setting default log level per environment
+
+Provide a mechanism to specify the log level via environmental variables.
+Note: this also changes the default log level to be `debug`
+
+See PR [#804](https://github.com/ministryofjustice/hmpps-template-typescript/pull/804)
+
 **August 14th 2026** - Move to npm 12
 
 As part of this we can remove reliance on the [hmpps allowlist scripts library](https://github.com/ministryofjustice/hmpps-typescript-lib/tree/main/packages/npm-script-allowlist) as this functionality is included in npm.
