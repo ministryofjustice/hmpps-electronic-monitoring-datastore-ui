@@ -20,6 +20,7 @@ export enum Page {
   AM_EQUIPMENT_DETAILS_PAGE = 'ALCOHOL_MONITORING_EQUIPMENT_DETAILS_PAGE',
   AM_SERVICE_DETAILS_PAGE = 'ALCOHOL_MONITORING_SERVICE_DETAILS_PAGE',
   AM_EVENT_HISTORY_PAGE = 'ALCOHOL_MONITORING_EVENT_HISTORY_PAGE',
+  SEARCH_OFFENDERS = 'SEARCH_OFFENDERS',
 }
 
 export interface PageViewEventDetails {
@@ -27,7 +28,7 @@ export interface PageViewEventDetails {
   subjectId?: string
   subjectType?: string
   correlationId?: string
-  details?: object
+  details?: Record<string, unknown>
 }
 
 export default class AuditService {
