@@ -1,5 +1,5 @@
+import { AuditServiceFactory } from '@ministryofjustice/hmpps-audit-client'
 import { dataAccess } from '../data'
-import AuditService from './auditService'
 
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
@@ -17,12 +17,17 @@ import AlcoholMonitoringEquipmentDetailsService from './alcoholMonitoring/equipm
 import AlcoholMonitoringVisitDetailsService from './alcoholMonitoring/visitDetailsService'
 import AlcoholMonitoringServiceDetailsService from './alcoholMonitoring/serviceDetailsService'
 
+import logger from '../../logger'
+import config from '../config'
+
 export const services = () => {
-  const { applicationInfo, hmppsAuditClient, emDatastoreApiClient } = dataAccess()
+  const { applicationInfo, emDatastoreApiClient } = dataAccess()
+
+  const auditService = AuditServiceFactory.createInstance(config.sqs.audit, logger)
 
   return {
     applicationInfo,
-    auditService: new AuditService(hmppsAuditClient),
+    auditService,
 
     emDatastoreConnectionService: new EmDatastoreConnectionService(emDatastoreApiClient),
     emDatastoreOrderSearchService: new EmDatastoreOrderSearchService(emDatastoreApiClient),

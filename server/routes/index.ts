@@ -1,7 +1,6 @@
 import { Router } from 'express'
 
 import type { Services } from '../services'
-import { Page } from '../services/auditService'
 
 import ConnectionTestController from '../controllers/connectionTestController'
 import SearchController from '../controllers/searchController'
