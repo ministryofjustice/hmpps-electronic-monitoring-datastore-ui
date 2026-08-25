@@ -1,11 +1,11 @@
 import express, { Express } from 'express'
 import { NotFound } from 'http-errors'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
 
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
 import type { Services } from '../../services'
-import AuditService from '../../services/auditService'
 
 import EmDatastoreConnectionService from '../../services/emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from '../../services/emDatastoreOrderSearchService'
@@ -25,10 +25,9 @@ import AlcoholMonitoringServiceDetailsService from '../../services/alcoholMonito
 
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
-import HmppsAuditClient from '../../data/hmppsAuditClient'
 import type { ApplicationInfo } from '../../applicationInfo'
 
-jest.mock('../../services/auditService')
+jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
 
 export const user: HmppsUser = {
@@ -90,7 +89,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 export function appWithAllRoutes({
   production = false,
   services = {
-    auditService: new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>,
+    auditService: new AuditService(null) as jest.Mocked<AuditService>,
     alcoholMonitoringOrderDetailsService: new AlcoholMonitoringOrderDetailsService(
       null,
     ) as jest.Mocked<AlcoholMonitoringOrderDetailsService>,
