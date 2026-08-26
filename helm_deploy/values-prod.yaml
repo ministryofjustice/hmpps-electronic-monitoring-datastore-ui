@@ -10,8 +10,6 @@ generic-service:
     HMPPS_AUTH_URL: 'https://sign-in.hmpps.service.justice.gov.uk/auth'
     TOKEN_VERIFICATION_API_URL: 'https://token-verification-api.prison.service.justice.gov.uk'
     EM_DATASTORE_API_URL: 'https://electronic-monitoring-datastore-api.hmpps.service.justice.gov.uk'
-    ENVIRONMENT_NAME: PRODUCTION
-    AUDIT_ENABLED: 'true'
 
   allowlist:
     # Configure groups as appropriate to give the minimum ingress access required:
