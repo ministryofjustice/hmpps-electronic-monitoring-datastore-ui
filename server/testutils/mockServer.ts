@@ -32,12 +32,6 @@ export class MockServer {
   }
 
   clearMocks() {
-    if (!nock.isDone()) {
-      console.error('active mocks: %j', this.request.activeMocks())
-      nock.cleanAll()
-      // throw new Error('Not all nock interceptors were used!')
-    }
-    nock.abortPendingRequests()
     nock.cleanAll()
   }
 }
