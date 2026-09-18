@@ -6,6 +6,7 @@ import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
 import authorisationMiddleware, { emDatastoreApiAuthorisedRoles } from './middleware/authorisationMiddleware'
 
+import setUpRateLimiting from './middleware/setUpRateLimiting'
 import setUpAuthentication from './middleware/setUpAuthentication'
 import setUpCsrf from './middleware/setUpCsrf'
 import setUpCurrentUser from './middleware/setUpCurrentUser'
@@ -25,6 +26,7 @@ export default function createApp(services: Services): express.Application {
   app.set('trust proxy', true)
   app.set('port', process.env.PORT || 3000)
 
+  app.use(setUpRateLimiting())
   app.use(setUpHealthChecks(services.applicationInfo))
   app.use(setUpWebSecurity())
   app.use(setUpWebSession())
