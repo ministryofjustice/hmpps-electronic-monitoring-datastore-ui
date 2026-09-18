@@ -1,38 +1,30 @@
-import nock from 'nock'
-import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
-import AlcoholMonitoringServiceDetailService from './serviceDetailsService'
+import { AlcoholMonitoringDatastoreClient } from '../../data'
+import AlcoholMonitoringServiceDetailsService from './serviceDetailsService'
 
 import { AlcoholMonitoringServiceDetails } from '../../data/models/alcoholMonitoringServiceDetails'
-import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config from '../../config'
 
-describe('Alcohol Monitoring Service Details Service', () => {
-  let exampleEmDatastoreApiClient: EmDatastoreApiClient
-  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
+jest.mock('../../data')
 
-  let alcoholMonitoringServiceDetailService: AlcoholMonitoringServiceDetailService
+describe('Alcohol Monitoring service details service', () => {
+  let alcoholMonitoringDatastoreClient: AlcoholMonitoringDatastoreClient
+  let alcoholMonitoringServiceDetailService: AlcoholMonitoringServiceDetailsService
 
   beforeEach(() => {
-    mockAuthenticationClient = {
-      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
-    } as unknown as jest.Mocked<AuthenticationClient>
-
-    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
-    alcoholMonitoringServiceDetailService = new AlcoholMonitoringServiceDetailService(exampleEmDatastoreApiClient)
+    alcoholMonitoringDatastoreClient = {
+      getServiceDetails: jest.fn(),
+    } as unknown as jest.Mocked<AlcoholMonitoringDatastoreClient>
+    alcoholMonitoringServiceDetailService = new AlcoholMonitoringServiceDetailsService(alcoholMonitoringDatastoreClient)
   })
 
   afterEach(() => {
-    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getServiceDetails', () => {
-    const legacySubjectId = '123'
-
     it('should fetch a list of one service detail item', async () => {
       const expectedResult = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_021',
           serviceStartDate: null,
           serviceEndDate: null,
           serviceAddress: null,
@@ -43,14 +35,11 @@ describe('Alcohol Monitoring Service Details Service', () => {
         } as AlcoholMonitoringServiceDetails,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      alcoholMonitoringDatastoreClient.getServiceDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await alcoholMonitoringServiceDetailService.getServiceDetails({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_021',
       })
 
       expect(result).toEqual(expectedResult)
@@ -59,7 +48,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
     it('should fetch a list of multiple service detail items', async () => {
       const expectedResult = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_022',
           serviceStartDate: null,
           serviceEndDate: null,
           serviceAddress: null,
@@ -69,7 +58,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
           deviceSerialNumber: null,
         } as AlcoholMonitoringServiceDetails,
         {
-          legacySubjectId: '456',
+          legacySubjectId: 'legacy_subject_022',
           serviceStartDate: null,
           serviceEndDate: null,
           serviceAddress: null,
@@ -79,7 +68,7 @@ describe('Alcohol Monitoring Service Details Service', () => {
           deviceSerialNumber: null,
         } as AlcoholMonitoringServiceDetails,
         {
-          legacySubjectId: '789',
+          legacySubjectId: 'legacy_subject_022',
           serviceStartDate: null,
           serviceEndDate: null,
           serviceAddress: null,
@@ -90,14 +79,11 @@ describe('Alcohol Monitoring Service Details Service', () => {
         } as AlcoholMonitoringServiceDetails,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      alcoholMonitoringDatastoreClient.getServiceDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await alcoholMonitoringServiceDetailService.getServiceDetails({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_022',
       })
 
       expect(result).toEqual(expectedResult)
@@ -106,46 +92,38 @@ describe('Alcohol Monitoring Service Details Service', () => {
     it('should fetch an empty list of service detail items', async () => {
       const expectedResult = [] as AlcoholMonitoringServiceDetails[]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      alcoholMonitoringDatastoreClient.getServiceDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await alcoholMonitoringServiceDetailService.getServiceDetails({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_023',
       })
 
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
+      alcoholMonitoringDatastoreClient.getServiceDetails = jest.fn().mockRejectedValue(new Error('Unauthorized'))
 
       await expect(
         alcoholMonitoringServiceDetailService.getServiceDetails({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_024',
         }),
-      ).rejects.toEqual(new Error('Error retrieving service details: Unauthorized'))
+      ).rejects.toEqual(new Error('Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
+      alcoholMonitoringDatastoreClient.getServiceDetails = jest
+        .fn()
+        .mockRejectedValue(new Error('Internal Server Error'))
 
       await expect(
         alcoholMonitoringServiceDetailService.getServiceDetails({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_025',
         }),
-      ).rejects.toEqual(new Error('Error retrieving service details: Internal Server Error'))
+      ).rejects.toEqual(new Error('Internal Server Error'))
     })
   })
 })

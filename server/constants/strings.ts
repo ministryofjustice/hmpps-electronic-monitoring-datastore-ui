@@ -1,4 +1,4 @@
-const strings: Record<string, Record<string, string>> = {
+export const strings: Record<string, Record<string, string>> = {
   errors: {
     invalidSubjectID: '__PLACE_HOLDER_FOR_INVALID_SUBJECT_ID__',
     invalidFirstName: 'First name must contain letters only',

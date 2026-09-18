@@ -47,7 +47,7 @@ export const createErrorSummary = (validationErrors: ValidationResult): ErrorSum
 }
 
 export type OrderSearchView = ViewModel<{
-  searchType: string
+  searchType: 'integrity' | 'alcohol-monitoring'
   legacySubjectId?: string
   firstName?: string
   lastName?: string

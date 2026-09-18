@@ -1,40 +1,32 @@
-import nock from 'nock'
-import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import { AlcoholMonitoringDatastoreClient } from '../../data'
 import AlcoholMonitoringEventHistoryService from './eventHistoryService'
 
-import { AlcoholMonitoringIncidentEvent } from '../../data/models/alcoholMonitoringIncidentEvent'
 import { AlcoholMonitoringContactEvent } from '../../data/models/alcoholMonitoringContactEvent'
+import { AlcoholMonitoringIncidentEvent } from '../../data/models/alcoholMonitoringIncidentEvent'
 import { AlcoholMonitoringViolationEvent } from '../../data/models/alcoholMonitoringViolationEvent'
-import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config from '../../config'
 
-describe('Alcohol Monitoring event history Service', () => {
-  let exampleEmDatastoreApiClient: EmDatastoreApiClient
-  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
+jest.mock('../../data')
 
+describe('Alcohol Monitoring event history service', () => {
+  let alcoholMonitoringDatastoreClient: AlcoholMonitoringDatastoreClient
   let alcoholMonitoringEventHistoryService: AlcoholMonitoringEventHistoryService
 
   beforeEach(() => {
-    mockAuthenticationClient = {
-      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
-    } as unknown as jest.Mocked<AuthenticationClient>
-
-    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
-    alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(exampleEmDatastoreApiClient)
+    alcoholMonitoringDatastoreClient = {
+      getEquipmentDetails: jest.fn(),
+    } as unknown as jest.Mocked<AlcoholMonitoringDatastoreClient>
+    alcoholMonitoringEventHistoryService = new AlcoholMonitoringEventHistoryService(alcoholMonitoringDatastoreClient)
   })
 
   afterEach(() => {
-    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getEventHistory', () => {
-    const legacySubjectId = '123'
-
     it('should fetch event history with one of each event type', async () => {
       const contactEventsResponse = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_001',
           type: 'contact',
           dateTime: '2002-02-02T02:02:02',
           details: {
@@ -54,7 +46,7 @@ describe('Alcohol Monitoring event history Service', () => {
       ] as AlcoholMonitoringContactEvent[]
       const incidentEventsResponse = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_001',
           type: 'incident',
           dateTime: '2003-03-03T03:03:03',
           details: {
@@ -72,7 +64,7 @@ describe('Alcohol Monitoring event history Service', () => {
       ] as AlcoholMonitoringIncidentEvent[]
       const violationEventsResponse = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_001',
           type: 'violation',
           dateTime: '2004-04-04T04:04:04',
           details: {
@@ -92,33 +84,22 @@ describe('Alcohol Monitoring event history Service', () => {
         },
       ] as AlcoholMonitoringViolationEvent[]
 
-      const expectedResult = [...contactEventsResponse, ...incidentEventsResponse, ...violationEventsResponse]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, contactEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, incidentEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockResolvedValue(contactEventsResponse)
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockResolvedValue(incidentEventsResponse)
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockResolvedValue(violationEventsResponse)
 
       const result = await alcoholMonitoringEventHistoryService.getEventHistory({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_001',
       })
 
-      expect(result).toEqual(expectedResult)
+      expect(result).toEqual([...contactEventsResponse, ...incidentEventsResponse, ...violationEventsResponse])
     })
 
     it('should fetch event history with multiple of each event type', async () => {
       const contactEventsResponse = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_002',
           type: 'contact',
           dateTime: '2002-02-02T02:02:02',
           details: {
@@ -137,7 +118,7 @@ describe('Alcohol Monitoring event history Service', () => {
         },
 
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_002',
           type: 'contact',
           dateTime: '2005-05-05T05:05:05',
           details: {
@@ -157,7 +138,7 @@ describe('Alcohol Monitoring event history Service', () => {
       ] as AlcoholMonitoringContactEvent[]
       const incidentEventsResponse = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_002',
           type: 'incident',
           dateTime: '2003-03-03T03:03:03',
           details: {
@@ -173,7 +154,7 @@ describe('Alcohol Monitoring event history Service', () => {
           },
         },
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_002',
           type: 'incident',
           dateTime: '2006-06-06T06:06:06',
           details: {
@@ -191,7 +172,7 @@ describe('Alcohol Monitoring event history Service', () => {
       ] as AlcoholMonitoringIncidentEvent[]
       const violationEventsResponse = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_002',
           type: 'violation',
           dateTime: '2004-04-04T04:04:04',
           details: {
@@ -210,7 +191,7 @@ describe('Alcohol Monitoring event history Service', () => {
           },
         },
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_002',
           type: 'violation',
           dateTime: '2007-07-07T07:07:07',
           details: {
@@ -230,212 +211,113 @@ describe('Alcohol Monitoring event history Service', () => {
         },
       ] as AlcoholMonitoringViolationEvent[]
 
-      const expectedResult = [...contactEventsResponse, ...incidentEventsResponse, ...violationEventsResponse]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, contactEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, incidentEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockResolvedValue(contactEventsResponse)
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockResolvedValue(incidentEventsResponse)
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockResolvedValue(violationEventsResponse)
 
       const result = await alcoholMonitoringEventHistoryService.getEventHistory({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_002',
       })
 
-      expect(result).toEqual(expectedResult)
+      expect(result).toEqual([...contactEventsResponse, ...incidentEventsResponse, ...violationEventsResponse])
     })
 
     it('should fetch event history even if no events found', async () => {
-      const incidentEventsResponse = [] as AlcoholMonitoringIncidentEvent[]
-      const contactEventsResponse = [] as AlcoholMonitoringContactEvent[]
-      const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
-
-      const expectedResult = [] as (
-        | AlcoholMonitoringIncidentEvent
-        | AlcoholMonitoringContactEvent
-        | AlcoholMonitoringViolationEvent
-      )[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, incidentEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, contactEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockResolvedValue([])
 
       const result = await alcoholMonitoringEventHistoryService.getEventHistory({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_003',
       })
 
-      expect(result).toEqual(expectedResult)
+      expect(result).toEqual([])
     })
 
     it('should propagate an error if there is an authorisation error getting incident events', async () => {
-      const contactEventsResponse = [] as AlcoholMonitoringContactEvent[]
-      const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, contactEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockRejectedValue(new Error('Unauthorized'))
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockResolvedValue([])
 
       await expect(
         alcoholMonitoringEventHistoryService.getEventHistory({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_004',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of incident events: Unauthorized'))
+      ).rejects.toEqual(new Error('Unauthorized'))
     })
 
     it('should propagate an error if there is a server error getting incident events', async () => {
-      const contactEventsResponse = [] as AlcoholMonitoringContactEvent[]
-      const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, contactEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest
+        .fn()
+        .mockRejectedValue(new Error('Internal Server Error'))
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockResolvedValue([])
 
       await expect(
         alcoholMonitoringEventHistoryService.getEventHistory({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_005',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of incident events: Internal Server Error'))
+      ).rejects.toEqual(new Error('Internal Server Error'))
     })
 
     it('should propagate an error if there is an authorisation error getting contact events', async () => {
-      const incidentEventsResponse = [] as AlcoholMonitoringIncidentEvent[]
-      const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, incidentEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockRejectedValue(new Error('Unauthorized'))
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockResolvedValue([])
 
       await expect(
         alcoholMonitoringEventHistoryService.getEventHistory({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_006',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of contact events: Unauthorized'))
+      ).rejects.toEqual(new Error('Unauthorized'))
     })
 
     it('should propagate an error if there is a server error getting contact events', async () => {
-      const incidentEventsResponse = [] as AlcoholMonitoringIncidentEvent[]
-      const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, incidentEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getContactEvents = jest
+        .fn()
+        .mockRejectedValue(new Error('Internal Server Error'))
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockResolvedValue([])
 
       await expect(
         alcoholMonitoringEventHistoryService.getEventHistory({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_007',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of contact events: Internal Server Error'))
+      ).rejects.toEqual(new Error('Internal Server Error'))
     })
 
-    it('should propagate an error if there is an authorisation error getting contact events', async () => {
-      const contactEventsResponse = [] as AlcoholMonitoringContactEvent[]
-      const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, contactEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
+    it('should propagate an error if there is an authorisation error getting violation events', async () => {
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest.fn().mockRejectedValue(new Error('Unauthorized'))
 
       await expect(
         alcoholMonitoringEventHistoryService.getEventHistory({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_008',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of violation events: Unauthorized'))
+      ).rejects.toEqual(new Error('Unauthorized'))
     })
 
-    it('should propagate an error if there is a server error getting contact events', async () => {
-      const contactEventsResponse = [] as AlcoholMonitoringContactEvent[]
-      const violationEventsResponse = [] as AlcoholMonitoringViolationEvent[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/incident-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, contactEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/contact-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, violationEventsResponse)
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/violation-events`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
+    it('should propagate an error if there is a server error getting violation events', async () => {
+      alcoholMonitoringDatastoreClient.getIncidentEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getContactEvents = jest.fn().mockResolvedValue([])
+      alcoholMonitoringDatastoreClient.getViolationEvents = jest
+        .fn()
+        .mockRejectedValue(new Error('Internal Server Error'))
 
       await expect(
         alcoholMonitoringEventHistoryService.getEventHistory({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_009',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of violation events: Internal Server Error'))
+      ).rejects.toEqual(new Error('Internal Server Error'))
     })
   })
 })

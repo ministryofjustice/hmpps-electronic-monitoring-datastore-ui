@@ -1,34 +1,28 @@
-import nock from 'nock'
-import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
-import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config from '../../config'
-
+import { AlcoholMonitoringDatastoreClient } from '../../data'
 import AlcoholMonitoringEquipmentDetailsService from './equipmentDetailsService'
+
 import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
 
+jest.mock('../../data')
+
 describe('Alcohol Monitoring Equipment Details Service', () => {
-  let exampleEmDatastoreApiClient: EmDatastoreApiClient
-  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
+  let alcoholMonitoringDatastoreClient: AlcoholMonitoringDatastoreClient
   let alcoholMonitoringEquipmentDetailsService: AlcoholMonitoringEquipmentDetailsService
 
   beforeEach(() => {
-    mockAuthenticationClient = {
-      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
-    } as unknown as jest.Mocked<AuthenticationClient>
-
-    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
-    alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(exampleEmDatastoreApiClient)
+    alcoholMonitoringDatastoreClient = {
+      getEquipmentDetails: jest.fn(),
+    } as unknown as jest.Mocked<AlcoholMonitoringDatastoreClient>
+    alcoholMonitoringEquipmentDetailsService = new AlcoholMonitoringEquipmentDetailsService(
+      alcoholMonitoringDatastoreClient,
+    )
   })
 
   afterEach(() => {
-    // nock.abortPendingRequests()
-    nock.cleanAll()
     jest.resetAllMocks()
   })
 
   describe('getEquipmentDetails', () => {
-    const legacySubjectId = '123'
-
     it('should fetch list of equipment details', async () => {
       const expectedResult = [
         {
@@ -44,14 +38,11 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         } as AlcoholMonitoringEquipmentDetails,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      alcoholMonitoringDatastoreClient.getEquipmentDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_003',
       })
 
       expect(result).toEqual(expectedResult)
@@ -60,7 +51,7 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
     it('should fetch list of multiple equipment detail items', async () => {
       const expectedResult = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_004',
           deviceType: null,
           deviceSerialNumber: null,
           deviceAddressType: null,
@@ -94,62 +85,49 @@ describe('Alcohol Monitoring Equipment Details Service', () => {
         } as AlcoholMonitoringEquipmentDetails,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      alcoholMonitoringDatastoreClient.getEquipmentDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_004',
       })
 
       expect(result).toEqual(expectedResult)
     })
 
     it('should fetch list of equipment details', async () => {
-      const expectedResult = [] as AlcoholMonitoringEquipmentDetails[]
-
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      alcoholMonitoringDatastoreClient.getEquipmentDetails = jest.fn().mockResolvedValue([])
 
       const result = await alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
         userToken: 'test-system-token',
-        legacySubjectId,
+        legacySubjectId: 'legacy_subject_006',
       })
 
-      expect(result).toEqual(expectedResult)
+      expect(result).toEqual([])
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
+      alcoholMonitoringDatastoreClient.getEquipmentDetails = jest.fn().mockRejectedValue(new Error('Unauthorized'))
 
       await expect(
         alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_008',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Unauthorized'))
+      ).rejects.toEqual(new Error('Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
+      alcoholMonitoringDatastoreClient.getEquipmentDetails = jest
+        .fn()
+        .mockRejectedValue(new Error('Internal Server Error'))
 
       await expect(
         alcoholMonitoringEquipmentDetailsService.getEquipmentDetails({
           userToken: 'test-system-token',
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_009',
         }),
-      ).rejects.toEqual(new Error('Error retrieving list of equipment details: Internal Server Error'))
+      ).rejects.toEqual(new Error('Internal Server Error'))
     })
   })
 })

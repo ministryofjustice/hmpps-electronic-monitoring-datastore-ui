@@ -1,21 +1,9 @@
-import { asUser } from '@ministryofjustice/hmpps-rest-client'
-import logger from '../../logger'
-import getSanitisedError from '../sanitisedError'
-
-import EmDatastoreApiClient from '../data/emDatastoreApiClient'
+import IntegrityDatastoreClient from '../data/integrityDatastoreClient'
 
 export default class EmDatastoreConnectionService {
-  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
+  constructor(private readonly integrityDatastoreClient: IntegrityDatastoreClient) {}
 
   async test(token: string): Promise<JSON> {
-    try {
-      return await this.emDatastoreApiClient.get<JSON>({ path: '/test' }, asUser(token))
-    } catch (error) {
-      const userFreindlyMessage = 'Error connecting to EM Datastore API'
-      const sanitisedError = getSanitisedError(error)
-      logger.error(sanitisedError, userFreindlyMessage)
-      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return this.integrityDatastoreClient.testConnection(token)
   }
 }

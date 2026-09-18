@@ -30,7 +30,7 @@ const getSignInUrl = (): Promise<string> =>
     method: 'GET',
     urlPath: '/auth/oauth/authorize',
   }).then(data => {
-    const { requests } = data.body
+    const { requests } = JSON.parse(data[0].body)
     const stateValue = requests[requests.length - 1].queryParams.state.values[0]
     return `/sign-in/callback?code=codexxxx&state=${stateValue}`
   })

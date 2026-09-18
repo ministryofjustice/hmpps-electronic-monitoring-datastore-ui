@@ -1,6 +1,8 @@
 import type { RequestHandler } from 'express'
+
+import type { Page } from '../constants/pages'
+
 import { Services } from '../services'
-import type { Page } from '../routes'
 
 /**
  * Example middleware which audits search requests with the correct subject.

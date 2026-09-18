@@ -2,7 +2,7 @@ import AppPage from '../appPage'
 import PageElement from '../PageElement'
 import SearchResultsComponent from '../components/searchResultsComponent'
 import PaginationComponent from '../components/paginationComponent'
-import paths from '../../../server/constants/paths'
+import { paths } from '../../../server/constants/paths'
 
 export default class IntegritySearchResultsPage extends AppPage {
   constructor() {

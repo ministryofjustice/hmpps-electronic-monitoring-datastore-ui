@@ -1,67 +1,29 @@
-import { asUser } from '@ministryofjustice/hmpps-rest-client'
-import logger from '../../../logger'
-import getSanitisedError from '../../sanitisedError'
-
-import { EmDatastoreApiClient } from '../../data'
+import { IntegrityDatastoreClient } from '../../data'
 
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 import { ListSearchResultsRequest } from '../../models/requests/ListSearchResultsRequest'
 
 export default class IntegrityOrderDetailsService {
-  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
+  constructor(private readonly integrityDatastoreClient: IntegrityDatastoreClient) {}
 
   async getOrderDetails(input: GetOrderRequest): Promise<IntegrityOrderDetails> {
-    const { restricted } = input
+    const { legacySubjectId, userToken, restricted } = input
 
-    try {
-      const result = await this.emDatastoreApiClient.get<IntegrityOrderDetails>(
-        {
-          path: `/orders/integrity/${input.legacySubjectId}`,
-          query: { restricted },
-        },
-        asUser(input.userToken),
-      )
+    const result = await this.integrityDatastoreClient.getOrderDetails(legacySubjectId, userToken, restricted)
 
-      return IntegrityOrderDetails.parse(result)
-    } catch (error) {
-      const userFreindlyMessage = 'Error retrieving order details'
-      const sanitisedError = getSanitisedError(error)
-      logger.error(sanitisedError, userFreindlyMessage)
-      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return IntegrityOrderDetails.parse(result)
   }
 
   async getSearchResults(input: ListSearchResultsRequest): Promise<IntegrityOrderDetails[]> {
-    const { restricted } = input
+    const { queryExecutionId, userToken, restricted } = input
 
-    try {
-      const results = await this.emDatastoreApiClient.get<IntegrityOrderDetails[]>(
-        {
-          path: `/orders/integrity`,
-          query: { restricted, id: input.queryExecutionId },
-        },
-        asUser(input.userToken),
-      )
+    const results = await this.integrityDatastoreClient.listOrderDetailsByQueryExecutionId(
+      queryExecutionId,
+      userToken,
+      restricted,
+    )
 
-      return results.map(order => IntegrityOrderDetails.parse(order))
-    } catch (error) {
-      let userFriendlyMessage = 'Error retrieving search results'
-      const sanitisedError = getSanitisedError(error)
-
-      const errorMessage: string | undefined = error.data?.developerMessage
-      if (
-        errorMessage &&
-        errorMessage.includes('QueryExecution') &&
-        errorMessage.includes('was not found (Service: Athena, Status Code: 400, Request ID:')
-      ) {
-        userFriendlyMessage += ': Invalid query execution ID'
-      }
-
-      logger.error(sanitisedError, userFriendlyMessage)
-      sanitisedError.message = `${userFriendlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return results.map((order: unknown) => IntegrityOrderDetails.parse(order))
   }
 }
