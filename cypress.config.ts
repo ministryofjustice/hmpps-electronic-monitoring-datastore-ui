@@ -1,6 +1,6 @@
 import { defineConfig } from 'cypress'
 import { resetStubs } from './integration_tests/mockApis/wiremock'
-import auth from './integration_tests/mockApis/auth'
+import hmppsAuth from './integration_tests/mockApis/hmppsAuth'
 import tokenVerification from './integration_tests/mockApis/tokenVerification'
 import * as datastore from './integration_tests/mockApis/datastore'
 
@@ -19,7 +19,7 @@ export default defineConfig({
     setupNodeEvents(on) {
       on('task', {
         reset: resetStubs,
-        ...auth,
+        ...hmppsAuth,
         ...tokenVerification,
         ...datastore,
         /*

@@ -36,7 +36,7 @@ describe('Integrity Datastore Client', () => {
     it('posts an integrity search query and returns an order execution ID', async () => {
       const expectedResponse = { queryExecutionId: 'abcd' }
       mockServer.withMockedPostResponse(
-        `/orders/integrity`,
+        `/orders/integrity?restricted=false`,
         {
           legacySubjectId: '',
           firstName: 'John',
@@ -62,44 +62,13 @@ describe('Integrity Datastore Client', () => {
       expect(result).toEqual(expectedResponse)
     })
 
-    it('posts an alcohol monitoring search query and returns an order execution ID', async () => {
-      const expectedResponse = { queryExecutionId: 'abcd' }
-      mockServer.withMockedPostResponse(
-        `/orders/alcohol-monitoring`,
-        {
-          legacySubjectId: '',
-          firstName: 'John',
-          lastName: 'Doe',
-          alias: 'JD',
-          dateOfBirth: '2021-02-10',
-        },
-        expectedResponse,
-      )
-
-      const result = await datastoreApiClient.runSearchQuery(
-        'alcohol-monitoring',
-        {
-          legacySubjectId: '',
-          firstName: 'John',
-          lastName: 'Doe',
-          alias: 'JD',
-          dateOfBirth: '2021-02-10',
-        },
-        'test-system-token',
-        false,
-      )
-      expect(result).toEqual(expectedResponse)
-    })
-
     it.skip('handles auth errors from the datastore client', async () => {
       mockServer.withMockedAuthErrorPostResponse(`/orders/integrity`, {
         legacySubjectId: '',
         firstName: 'John',
         lastName: 'Doe',
         alias: 'JD',
-        dobDay: '10',
-        dobMonth: '02',
-        dobYear: '2021',
+        dateOfBirth: '2021-02-10',
       })
 
       expect(
@@ -113,20 +82,17 @@ describe('Integrity Datastore Client', () => {
             dateOfBirth: '2021-02-10',
           },
           'test-system-token',
-          false,
         ),
       ).rejects.toThrow('Error submitting search query')
     })
 
     it.skip('handles errors from the datastore client', async () => {
-      mockServer.withMockedServerErrorPostResponse(`/orders/integrity`, {
+      mockServer.withMockedServerErrorPostResponse('/orders/integrity', {
         legacySubjectId: '',
         firstName: 'John',
         lastName: 'Doe',
         alias: 'JD',
-        dobDay: '10',
-        dobMonth: '02',
-        dobYear: '2021',
+        dateOfBirth: '2021-02-10',
       })
 
       expect(
@@ -140,7 +106,6 @@ describe('Integrity Datastore Client', () => {
             dateOfBirth: '2021-02-10',
           },
           'test-system-token',
-          false,
         ),
       ).rejects.toThrow('Error submitting search query')
     })
@@ -163,7 +128,10 @@ describe('Integrity Datastore Client', () => {
           hmuRemovedDateTime: null,
         } as IntegrityEquipmentDetails,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/equipment-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/equipment-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getEquipmentDetails(legacySubjectId, 'test-system-token')
 
@@ -206,7 +174,10 @@ describe('Integrity Datastore Client', () => {
           hmuRemovedDateTime: null,
         } as IntegrityEquipmentDetails,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/equipment-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/equipment-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getEquipmentDetails(legacySubjectId, 'test-system-token')
 
@@ -215,7 +186,10 @@ describe('Integrity Datastore Client', () => {
 
     it('should fetch list of equipment details', async () => {
       const expectedResult = [] as IntegrityEquipmentDetails[]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/equipment-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/equipment-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getEquipmentDetails(legacySubjectId, 'test-system-token')
 
@@ -223,7 +197,9 @@ describe('Integrity Datastore Client', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/equipment-details`)
+      mockServer.withMockedAuthErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/equipment-details?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getEquipmentDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -231,7 +207,9 @@ describe('Integrity Datastore Client', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/equipment-details`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/equipment-details?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getEquipmentDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -261,7 +239,10 @@ describe('Integrity Datastore Client', () => {
           },
         } as IntegrityIncidentEvent,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/incident-events`, incidentEventsResponse)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/incident-events?restricted=false`,
+        incidentEventsResponse,
+      )
 
       const result = await datastoreApiClient.getIncidentEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual(incidentEventsResponse)
@@ -304,7 +285,10 @@ describe('Integrity Datastore Client', () => {
           },
         } as IntegrityIncidentEvent,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/incident-events`, incidentEventsResponse)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/incident-events?restricted=false`,
+        incidentEventsResponse,
+      )
 
       const result = await datastoreApiClient.getIncidentEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual(incidentEventsResponse)
@@ -313,7 +297,7 @@ describe('Integrity Datastore Client', () => {
     it('should fetch incident event history when there are no events', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/incident-events`, [])
+      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/incident-events?restricted=false`, [])
 
       const result = await datastoreApiClient.getIncidentEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual([])
@@ -322,7 +306,7 @@ describe('Integrity Datastore Client', () => {
     it('should return unauthorized error when fetching incident event history without proper auth', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/incident-events`)
+      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/incident-events?restricted=false`)
 
       await expect(datastoreApiClient.getIncidentEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -332,7 +316,9 @@ describe('Integrity Datastore Client', () => {
     it('should return internal server error when fetching incident event history when server fails', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/incident-events`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/incident-events?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getIncidentEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -364,7 +350,10 @@ describe('Integrity Datastore Client', () => {
           },
         } as IntegrityContactEvent,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/contact-events`, contactEventsResponse)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/contact-events?restricted=false`,
+        contactEventsResponse,
+      )
 
       const result = await datastoreApiClient.getContactEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual(contactEventsResponse)
@@ -411,7 +400,10 @@ describe('Integrity Datastore Client', () => {
           },
         } as IntegrityContactEvent,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/contact-events`, contactEventsResponse)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/contact-events?restricted=false`,
+        contactEventsResponse,
+      )
 
       const result = await datastoreApiClient.getContactEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual(contactEventsResponse)
@@ -420,7 +412,7 @@ describe('Integrity Datastore Client', () => {
     it('should fetch contact event history when there are no events', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/contact-events`, [])
+      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/contact-events?restricted=false`, [])
 
       const result = await datastoreApiClient.getContactEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual([])
@@ -429,7 +421,7 @@ describe('Integrity Datastore Client', () => {
     it('should return unauthorized error when fetching contact event history without proper auth', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/contact-events`)
+      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/contact-events?restricted=false`)
 
       await expect(datastoreApiClient.getContactEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -439,7 +431,9 @@ describe('Integrity Datastore Client', () => {
     it('should return internal server error when fetching contact event history when server fails', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/contact-events`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/contact-events?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getContactEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -472,7 +466,10 @@ describe('Integrity Datastore Client', () => {
           },
         } as IntegrityViolationEvent,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/violation-events`, violationEventsResponse)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/violation-events?restricted=false`,
+        violationEventsResponse,
+      )
 
       const result = await datastoreApiClient.getViolationEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual(violationEventsResponse)
@@ -521,7 +518,10 @@ describe('Integrity Datastore Client', () => {
           },
         } as IntegrityViolationEvent,
       ]
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/violation-events`, violationEventsResponse)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/violation-events?restricted=false`,
+        violationEventsResponse,
+      )
 
       const result = await datastoreApiClient.getViolationEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual(violationEventsResponse)
@@ -530,7 +530,7 @@ describe('Integrity Datastore Client', () => {
     it('should fetch violation event history when there are no events', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/violation-events`, [])
+      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/violation-events?restricted=false`, [])
 
       const result = await datastoreApiClient.getViolationEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual([])
@@ -539,7 +539,9 @@ describe('Integrity Datastore Client', () => {
     it('should return unauthorized error when fetching violation event history without proper auth', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/violation-events`)
+      mockServer.withMockedAuthErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/violation-events?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getViolationEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -549,7 +551,9 @@ describe('Integrity Datastore Client', () => {
     it('should return internal server error when fetching violation event history when server fails', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/violation-events`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/violation-events?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getViolationEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -583,7 +587,7 @@ describe('Integrity Datastore Client', () => {
         } as IntegrityMonitoringEvent,
       ]
       mockServer.withMockedGetResponse(
-        `/orders/integrity/${legacySubjectId}/monitoring-events`,
+        `/orders/integrity/${legacySubjectId}/monitoring-events?restricted=false`,
         monitoringEventsResponse,
       )
 
@@ -635,7 +639,7 @@ describe('Integrity Datastore Client', () => {
         } as IntegrityMonitoringEvent,
       ]
       mockServer.withMockedGetResponse(
-        `/orders/integrity/${legacySubjectId}/monitoring-events`,
+        `/orders/integrity/${legacySubjectId}/monitoring-events?restricted=false`,
         monitoringEventsResponse,
       )
 
@@ -646,7 +650,7 @@ describe('Integrity Datastore Client', () => {
     it('should fetch monitoring event history when there are no events', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/monitoring-events`, [])
+      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/monitoring-events?restricted=false`, [])
 
       const result = await datastoreApiClient.getMonitoringEvents(legacySubjectId, 'test-system-token')
       expect(result).toEqual([])
@@ -655,7 +659,9 @@ describe('Integrity Datastore Client', () => {
     it('should return unauthorized error when fetching monitoring event history without proper auth', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+      mockServer.withMockedAuthErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/monitoring-events?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getMonitoringEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -665,7 +671,9 @@ describe('Integrity Datastore Client', () => {
     it('should return internal server error when fetching monitoring event history when server fails', async () => {
       const legacySubjectId = Math.random().toString(10).substring(2, 7)
 
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/monitoring-events`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/monitoring-events?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getMonitoringEvents(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -713,7 +721,7 @@ describe('Integrity Datastore Client', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}`, expectedResult)
+      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}?restricted=false`, expectedResult)
 
       const result = await datastoreApiClient.getOrderDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
@@ -756,14 +764,14 @@ describe('Integrity Datastore Client', () => {
         responsibleOrganisationDetailsRegion: null,
       } as IntegrityOrderDetails
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}`, expectedResult)
+      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}?restricted=false`, expectedResult)
 
       const result = await datastoreApiClient.getOrderDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}`)
+      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}?restricted=false`)
 
       await expect(datastoreApiClient.getOrderDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -771,7 +779,7 @@ describe('Integrity Datastore Client', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}`)
+      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}?restricted=false`)
 
       await expect(datastoreApiClient.getOrderDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -783,7 +791,7 @@ describe('Integrity Datastore Client', () => {
     it('submits a request containing a query execution ID and returns search results', async () => {
       const queryExecutionId = 'query-execution-id'
 
-      mockServer.withMockedGetResponse(`/orders/integrity?id=${queryExecutionId}`, [])
+      mockServer.withMockedGetResponse(`/orders/integrity?id=${queryExecutionId}&restricted=false`, [])
 
       const result = await datastoreApiClient.listOrderDetailsByQueryExecutionId(queryExecutionId, 'test-system-token')
       expect(result).toEqual([])
@@ -791,7 +799,7 @@ describe('Integrity Datastore Client', () => {
 
     describe('error handling', () => {
       it('handles invalid query execution ID errors from the datastore client', async () => {
-        mockServer.withMockedServerErrorGetResponse(`/orders/integrity?id=`, {
+        mockServer.withMockedServerErrorGetResponse(`/orders/integrity?id=&restricted=false`, {
           status: 500,
           userMessage: '',
           developerMessage: 'QueryExecution ABC was not found (Service: Athena, Status Code: 400, Request ID: ABC',
@@ -803,7 +811,7 @@ describe('Integrity Datastore Client', () => {
       })
 
       it('handles other errors from the datastore client', async () => {
-        mockServer.withMockedServerErrorGetResponse(`/orders/integrity?id=`, {
+        mockServer.withMockedServerErrorGetResponse(`/orders/integrity?id=&restricted=false`, {
           status: 500,
           errorCode: null,
           userMessage:
@@ -846,7 +854,10 @@ describe('Integrity Datastore Client', () => {
         },
       ] as IntegrityServiceDetails[]
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/service-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/service-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getServiceDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
@@ -913,7 +924,10 @@ describe('Integrity Datastore Client', () => {
         },
       ] as IntegrityServiceDetails[]
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/service-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/service-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getServiceDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
@@ -922,14 +936,17 @@ describe('Integrity Datastore Client', () => {
     it('should fetch an empty list of service detail items', async () => {
       const expectedResult = [] as IntegrityServiceDetails[]
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/service-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/service-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getServiceDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/service-details`)
+      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/service-details?restricted=false`)
 
       await expect(datastoreApiClient.getServiceDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -937,7 +954,9 @@ describe('Integrity Datastore Client', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/service-details`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/service-details?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getServiceDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -958,7 +977,10 @@ describe('Integrity Datastore Client', () => {
         endDate: null,
       } as IntegritySuspensionOfVisits
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/suspension-of-visits`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/suspension-of-visits?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getSuspensionOfVisits(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
@@ -974,14 +996,19 @@ describe('Integrity Datastore Client', () => {
         endDate: null,
       } as IntegritySuspensionOfVisits
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/suspension-of-visits`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/suspension-of-visits?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getSuspensionOfVisits(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+      mockServer.withMockedAuthErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/suspension-of-visits?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getSuspensionOfVisits(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -989,7 +1016,9 @@ describe('Integrity Datastore Client', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/suspension-of-visits?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getSuspensionOfVisits(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -997,7 +1026,9 @@ describe('Integrity Datastore Client', () => {
     })
 
     it('should propagate an error if there is a server error when fetching suspension of visits', async () => {
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
+      mockServer.withMockedServerErrorGetResponse(
+        `/orders/integrity/${legacySubjectId}/suspension-of-visits?restricted=false`,
+      )
 
       await expect(datastoreApiClient.getSuspensionOfVisits(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),
@@ -1021,7 +1052,10 @@ describe('Integrity Datastore Client', () => {
         },
       ] as IntegrityVisitDetails[]
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/visit-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/visit-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getVisitDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
@@ -1040,7 +1074,10 @@ describe('Integrity Datastore Client', () => {
         },
       ] as IntegrityVisitDetails[]
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/visit-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/visit-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getVisitDetails(legacySubjectId, 'test-system-token')
 
@@ -1078,7 +1115,10 @@ describe('Integrity Datastore Client', () => {
         },
       ] as IntegrityVisitDetails[]
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/visit-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/visit-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getVisitDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
@@ -1087,14 +1127,17 @@ describe('Integrity Datastore Client', () => {
     it('should fetch list of visit details', async () => {
       const expectedResult = [] as IntegrityVisitDetails[]
 
-      mockServer.withMockedGetResponse(`/orders/integrity/${legacySubjectId}/visit-details`, expectedResult)
+      mockServer.withMockedGetResponse(
+        `/orders/integrity/${legacySubjectId}/visit-details?restricted=false`,
+        expectedResult,
+      )
 
       const result = await datastoreApiClient.getVisitDetails(legacySubjectId, 'test-system-token')
       expect(result).toEqual(expectedResult)
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/visit-details`)
+      mockServer.withMockedAuthErrorGetResponse(`/orders/integrity/${legacySubjectId}/visit-details?restricted=false`)
 
       await expect(datastoreApiClient.getVisitDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Unauthorized'),
@@ -1102,7 +1145,7 @@ describe('Integrity Datastore Client', () => {
     })
 
     it('should propagate an error if there is a server error', async () => {
-      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/visit-details`)
+      mockServer.withMockedServerErrorGetResponse(`/orders/integrity/${legacySubjectId}/visit-details?restricted=false`)
 
       await expect(datastoreApiClient.getVisitDetails(legacySubjectId, 'test-system-token')).rejects.toEqual(
         new Error('Internal Server Error'),

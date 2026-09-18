@@ -23,7 +23,8 @@ export default class AlcoholMonitoringDatastoreClient extends RestClient {
     try {
       return this.get<AlcoholMonitoringOrderDetails[]>(
         {
-          path: `${this.rootPath}?id=${queryExecutionId}`,
+          path: this.rootPath,
+          query: { id: queryExecutionId },
         },
         asUser(userToken),
       )
