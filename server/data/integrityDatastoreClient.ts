@@ -34,7 +34,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     const result = await this.post<QueryExecutionResponse>(
       {
         path: `/orders/${searchType}`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
         data,
       },
       asUser(userToken),
@@ -47,8 +47,8 @@ export default class IntegrityDatastoreClient extends RestClient {
     try {
       return await this.get<IntegrityOrderDetails[]>(
         {
-          path: `${this.rootPath}?id=${queryExecutionId}`,
-          query: restricted ? { restricted } : undefined,
+          path: this.rootPath,
+          query: { restricted, id: queryExecutionId },
         },
         asUser(userToken),
       )
@@ -74,7 +74,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityOrderDetails>(
       {
         path: `${this.rootPath}/${legacySubjectId}`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -84,7 +84,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityEquipmentDetails[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/equipment-details`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -94,7 +94,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityServiceDetails[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/service-details`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -104,7 +104,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityVisitDetails[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/visit-details`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -114,7 +114,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityIncidentEvent[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/incident-events`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -124,7 +124,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityContactEvent[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/contact-events`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -134,7 +134,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityViolationEvent[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/violation-events`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -144,7 +144,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegrityMonitoringEvent[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/monitoring-events`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
@@ -154,7 +154,7 @@ export default class IntegrityDatastoreClient extends RestClient {
     return this.get<IntegritySuspensionOfVisits[]>(
       {
         path: `${this.rootPath}/${legacySubjectId}/suspension-of-visits`,
-        query: restricted ? { restricted } : undefined,
+        query: { restricted },
       },
       asUser(userToken),
     )
