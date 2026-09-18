@@ -1,4 +1,4 @@
-import strings from '../../constants/strings'
+import { strings } from '../../constants/strings'
 import { OrderSearchFirstName, OrderSearchLastName, OrderSearchAlias } from '../../models/requests/SearchOrdersRequest'
 
 describe('NameValidator Class', () => {

@@ -1,125 +1,100 @@
-import { Router } from 'express'
-import { type RequestHandler } from 'express'
+import { Request, Response, NextFunction, Router } from 'express'
+
+import { Page } from '../constants/pages'
+import { paths } from '../constants/paths'
+import { strings } from '../constants/strings'
+import auditPageViewRequest from '../middleware/auditPageViewRequest'
+import auditSearchRequest from '../middleware/auditSearchRequest'
 
 import type { Services } from '../services'
-import { Page } from '../services/auditService'
 
-import paths from '../constants/paths'
+import integrityRouter from './integrity'
+import alcoholMonitoringRouter from './alcoholMonitoring'
 
-import asyncMiddleware from '../middleware/asyncMiddleware'
+import { OrderSearchCriteria } from '../models/requests/SearchOrdersRequest'
+import { convertZodErrorToValidationError, OrderSearchView } from '../models/view-models/orderSearch'
 
-import ConnectionTestController from '../controllers/connectionTestController'
-import SearchController from '../controllers/searchController'
+const orderSearchCriteria = OrderSearchCriteria
 
-// integrity orders
-import IntegritySummaryController from '../controllers/integrity/summaryController'
-import IntegrityOrderDetailsController from '../controllers/integrity/orderDetailsController'
-import IntegrityEquipmentDetailsController from '../controllers/integrity/equipmentDetailsController'
-import IntegrityVisitDetailsController from '../controllers/integrity/visitDetailsController'
-import IntegrityServiceDetailsController from '../controllers/integrity/serviceDetailsController'
-import IntegrityEventHistoryController from '../controllers/integrity/eventHistoryController'
-import SuspensionOfVisitsController from '../controllers/integrity/suspensionOfVisitsController'
-
-// alcohol monitoring orders
-import AmSummaryController from '../controllers/alcoholMonitoring/summaryController'
-import AmDetailsController from '../controllers/alcoholMonitoring/detailsController'
-import AmEquipmentDetailsController from '../controllers/alcoholMonitoring/equipmentDetailsController'
-import AmVisitDetailsController from '../controllers/alcoholMonitoring/visitDetailsController'
-import AmServiceDetailsController from '../controllers/alcoholMonitoring/serviceDetailsController'
-import AmEventHistoryController from '../controllers/alcoholMonitoring/eventHistoryController'
-
-export default function routes({
-  auditService,
-  emDatastoreConnectionService,
-  emDatastoreOrderSearchService,
-
-  integrityOrderDetailsService,
-  integrityEquipmentDetailsService,
-  integrityVisitDetailsService,
-  integrityServiceDetailsService,
-  integrityEventHistoryService,
-  integritySuspensionOfVisitsService,
-
-  alcoholMonitoringOrderDetailsService,
-  alcoholMonitoringEquipmentDetailsService,
-  alcoholMonitoringVisitDetailsService,
-  alcoholMonitoringServiceDetailsService,
-  alcoholMonitoringEventHistoryService,
-}: Services): Router {
+export default function routes(services: Services): Router {
   const router = Router()
-  const get = (path: string | string[], handler: RequestHandler) => router.get(path, asyncMiddleware(handler))
-  const post = (path: string | string[], handler: RequestHandler) => router.post(path, asyncMiddleware(handler))
 
-  const connectionTestController = new ConnectionTestController(auditService, emDatastoreConnectionService)
-  const searchController = new SearchController(auditService, emDatastoreOrderSearchService)
-
-  // integrity
-  const integritySummaryController = new IntegritySummaryController(auditService, integrityOrderDetailsService)
-  const integrityDetailsController = new IntegrityOrderDetailsController(auditService, integrityOrderDetailsService)
-  const integrityEquipmentDetailsController = new IntegrityEquipmentDetailsController(
-    auditService,
-    integrityEquipmentDetailsService,
-  )
-  const integrityVisitDetailsController = new IntegrityVisitDetailsController(
-    auditService,
-    integrityVisitDetailsService,
-  )
-  const integrityServiceDetailsController = new IntegrityServiceDetailsController(
-    auditService,
-    integrityServiceDetailsService,
-  )
-  const integrityEventHistoryController = new IntegrityEventHistoryController(
-    auditService,
-    integrityEventHistoryService,
-  )
-  const suspensionOfVisitsController = new SuspensionOfVisitsController(
-    auditService,
-    integritySuspensionOfVisitsService,
+  router.get(
+    paths.START,
+    auditPageViewRequest({ services, page: Page.START }),
+    async (_req: Request, res: Response, _next: NextFunction) => {
+      res.render('pages/index')
+    },
   )
 
-  // alcohol monitoring
-  const amSummaryController = new AmSummaryController(auditService, alcoholMonitoringOrderDetailsService)
-  const amDetailsController = new AmDetailsController(auditService, alcoholMonitoringOrderDetailsService)
-  const amEquipmentDetailsController = new AmEquipmentDetailsController(
-    auditService,
-    alcoholMonitoringEquipmentDetailsService,
+  router.get(
+    paths.API_CONNECTION_TEST,
+    auditPageViewRequest({ services, page: Page.API_CONNECTION_TEST }),
+    async (_req: Request, res: Response, _next: NextFunction) => {
+      const { token } = res.locals.user
+      const apiResult = await services.emDatastoreConnectionService.test(token)
+
+      const viewModel = { data: apiResult }
+      res.render('pages/apiTest', viewModel)
+    },
   )
-  const amVisitDetailsController = new AmVisitDetailsController(auditService, alcoholMonitoringVisitDetailsService)
-  const amServiceDetailsController = new AmServiceDetailsController(
-    auditService,
-    alcoholMonitoringServiceDetailsService,
+
+  router.get(
+    paths.SEARCH,
+    auditPageViewRequest({ services, page: Page.SEARCH }),
+    async (req: Request, res: Response, _next: NextFunction) => {
+      const errors = (req.flash('validationErrors') || []).map(error => JSON.parse(error))
+      const formData = req.flash('formData') || {}
+
+      const viewModel = OrderSearchView.construct(formData as never, errors as never)
+
+      res.locals = {
+        ...res.locals,
+        page: {
+          title: strings.pageHeadings.searchOrderForm,
+        },
+      }
+
+      res.render('pages/search', viewModel)
+    },
   )
-  const amEventHistoryController = new AmEventHistoryController(auditService, alcoholMonitoringEventHistoryService)
 
-  get(paths.START, async (req, res, next) => {
-    await auditService.logPageView(Page.START_PAGE, { who: res.locals.user.username, correlationId: req.id })
+  router.post(
+    paths.SEARCH,
+    auditSearchRequest({ services, page: Page.SEARCH }),
+    async (req: Request, res: Response) => {
+      const { token } = res.locals.user
+      const { searchType } = req.body
+      const invalidInput = req.body
+      const { data, error, success } = orderSearchCriteria.safeParse(invalidInput)
 
-    res.render('pages/index')
-  })
+      if (!success) {
+        const errors = convertZodErrorToValidationError(error)
 
-  get(paths.CONNECTION_TEST, connectionTestController.testConnection)
+        req.flash('formData', req.body)
+        req.flash(
+          'validationErrors',
+          errors.map(validationError => JSON.stringify(validationError)),
+        )
 
-  get(paths.SEARCH, searchController.searchPage)
-  post(paths.SEARCH, searchController.submitSearchQuery)
+        res.redirect(paths.SEARCH)
+        return
+      }
 
-  // integrity
-  get(paths.INTEGRITY_ORDER.INDEX, integrityDetailsController.searchResults)
-  get(paths.INTEGRITY_ORDER.SUMMARY, integritySummaryController.summary)
-  get(paths.INTEGRITY_ORDER.DETAILS, integrityDetailsController.details)
-  get(paths.INTEGRITY_ORDER.VISIT_DETAILS, integrityVisitDetailsController.showVisitDetails)
-  get(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, integrityEquipmentDetailsController.showEquipmentDetails)
-  get(paths.INTEGRITY_ORDER.SERVICE_DETAILS, integrityServiceDetailsController.showServiceDetails)
-  get(paths.INTEGRITY_ORDER.EVENT_HISTORY, integrityEventHistoryController.showEventHistory)
-  get(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, suspensionOfVisitsController.showSuspensionOfVisits)
+      const queryExecutionResponse = await services.emDatastoreOrderSearchService.submitSearchQuery(
+        searchType,
+        data,
+        token,
+      )
 
-  // alcohol monitoring
-  get(paths.ALCOHOL_MONITORING.INDEX, amDetailsController.searchResults)
-  get(paths.ALCOHOL_MONITORING.SUMMARY, amSummaryController.summary)
-  get(paths.ALCOHOL_MONITORING.DETAILS, amDetailsController.details)
-  get(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, amEquipmentDetailsController.showEquipmentDetails)
-  get(paths.ALCOHOL_MONITORING.VISIT_DETAILS, amVisitDetailsController.showVisitDetails)
-  get(paths.ALCOHOL_MONITORING.SERVICE_DETAILS, amServiceDetailsController.showServiceDetails)
-  get(paths.ALCOHOL_MONITORING.EVENT_HISTORY, amEventHistoryController.showEventHistory)
+      const redirectUrl =
+        searchType === 'alcohol-monitoring' ? paths.ALCOHOL_MONITORING.INDEX : paths.INTEGRITY_ORDER.INDEX
+      res.redirect(`${redirectUrl}?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
+    },
+  )
+
+  router.use(integrityRouter(services))
+  router.use(alcoholMonitoringRouter(services))
 
   return router
 }

@@ -1,6 +1,6 @@
 import AppPage from '../appPage'
 import PageElement from '../PageElement'
-import paths from '../../../server/constants/paths'
+import { paths } from '../../../server/constants/paths'
 import SummaryListComponent from '../components/summaryListComponent'
 
 export default class AlcoholMonitoringOrderSummaryPage extends AppPage {

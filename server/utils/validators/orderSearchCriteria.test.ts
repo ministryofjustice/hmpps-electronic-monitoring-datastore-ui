@@ -5,6 +5,22 @@ describe('OrderSearchCriteria', () => {
     it('returns a validation error when the form is empty', async () => {
       const invalidInput = {
         searchType: 'integrity',
+      }
+
+      const result = OrderSearchCriteria.safeParse(invalidInput)
+
+      expect(result.error).toBeDefined()
+      expect(result.error.issues).toEqual([
+        expect.objectContaining({
+          path: [],
+          message: 'You must enter a value into at least one search field',
+        }),
+      ])
+    })
+
+    it('returns a validation error when the form is blank', async () => {
+      const invalidInput = {
+        searchType: 'integrity',
         legacySubjectId: '',
         firstName: '',
         lastName: '',
@@ -25,9 +41,32 @@ describe('OrderSearchCriteria', () => {
       ])
     })
 
+    it('returns a validation error when searchType is not recognised', async () => {
+      const invalidInput = {
+        searchType: 'bob',
+        legacySubjectId: '',
+        firstName: 'John',
+        lastName: '',
+        alias: '',
+        dobDay: '10',
+        dobMonth: '02',
+        dobYear: '2021',
+      }
+
+      const result = OrderSearchCriteria.safeParse(invalidInput)
+
+      expect(result.error).toBeDefined()
+      expect(result.error.issues).toEqual([
+        expect.objectContaining({
+          path: ['searchType'],
+          message: 'Invalid option: expected one of "integrity"|"alcohol-monitoring"',
+        }),
+      ])
+    })
+
     it('returns a validation error when firstName is invalid', async () => {
       const invalidInput = {
-        searchType: '',
+        searchType: 'integrity',
         legacySubjectId: '',
         firstName: 'John123',
         lastName: '',
@@ -50,7 +89,7 @@ describe('OrderSearchCriteria', () => {
 
     it('returns a validation error when dob is invalid', async () => {
       const invalidInput = {
-        searchType: '',
+        searchType: 'alcohol-monitoring',
         legacySubjectId: '',
         firstName: 'John',
         lastName: '',
@@ -73,7 +112,7 @@ describe('OrderSearchCriteria', () => {
 
     it('returns multiple errors when multiple fields are invalid', async () => {
       const invalidInput = {
-        searchType: '',
+        searchType: 'integrity',
         legacySubjectId: '',
         firstName: 'John123',
         lastName: '',
@@ -104,7 +143,7 @@ describe('OrderSearchCriteria', () => {
 
     it('returns no errors when form data is valid', async () => {
       const validInput = {
-        searchType: '',
+        searchType: 'integrity',
         legacySubjectId: '',
         firstName: 'John',
         lastName: '',

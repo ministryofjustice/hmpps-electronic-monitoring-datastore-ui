@@ -1,34 +1,16 @@
-import { asUser } from '@ministryofjustice/hmpps-rest-client'
-import logger from '../../../logger'
-import getSanitisedError from '../../sanitisedError'
-
-import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
+import { IntegrityDatastoreClient } from '../../data'
 
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
 
 export default class IntegritySuspensionOfVisitsService {
-  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
+  constructor(private readonly integrityDatastoreClient: IntegrityDatastoreClient) {}
 
   async getSuspensionOfVisits(input: GetOrderRequest): Promise<IntegritySuspensionOfVisits[]> {
-    const { restricted } = input
+    const { legacySubjectId, userToken, restricted } = input
 
-    try {
-      const results = await this.emDatastoreApiClient.get<IntegritySuspensionOfVisits[]>(
-        {
-          path: `/orders/integrity/${input.legacySubjectId}/suspension-of-visits`,
-          query: { restricted },
-        },
-        asUser(input.userToken),
-      )
+    const results = await this.integrityDatastoreClient.getSuspensionOfVisits(legacySubjectId, userToken, restricted)
 
-      return results.map(suspensionOfVisits => IntegritySuspensionOfVisits.parse(suspensionOfVisits))
-    } catch (error) {
-      const userFreindlyMessage = 'Error retrieving suspension of visits data'
-      const sanitisedError = getSanitisedError(error)
-      logger.error(sanitisedError, userFreindlyMessage)
-      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return results.map(suspensionOfVisits => IntegritySuspensionOfVisits.parse(suspensionOfVisits))
   }
 }

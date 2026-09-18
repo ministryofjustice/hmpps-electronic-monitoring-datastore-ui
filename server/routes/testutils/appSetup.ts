@@ -1,12 +1,11 @@
 import express, { Express } from 'express'
 import { NotFound } from 'http-errors'
+import { AuditService } from '@ministryofjustice/hmpps-audit-client'
 
-import { randomUUID } from 'crypto'
 import routes from '../index'
 import nunjucksSetup from '../../utils/nunjucksSetup'
 import errorHandler from '../../errorHandler'
 import type { Services } from '../../services'
-import AuditService from '../../services/auditService'
 
 import EmDatastoreConnectionService from '../../services/emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from '../../services/emDatastoreOrderSearchService'
@@ -26,9 +25,9 @@ import AlcoholMonitoringServiceDetailsService from '../../services/alcoholMonito
 
 import { HmppsUser } from '../../interfaces/hmppsUser'
 import setUpWebSession from '../../middleware/setUpWebSession'
-import HmppsAuditClient from '../../data/hmppsAuditClient'
+import type { ApplicationInfo } from '../../applicationInfo'
 
-jest.mock('../../services/auditService')
+jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/alcoholMonitoring/orderDetailsService')
 
 export const user: HmppsUser = {
@@ -40,6 +39,15 @@ export const user: HmppsUser = {
   authSource: 'nomis',
   staffId: 1234,
   userRoles: [],
+}
+
+const applicationInfo: ApplicationInfo = {
+  applicationName: 'hmpps-template-typescript',
+  buildNumber: '123',
+  gitRef: 'abc123',
+  gitShortHash: 'abc',
+  productId: 'DPSXYZ',
+  branchName: 'main',
 }
 
 export const flashProvider = jest.fn()
@@ -66,12 +74,12 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
     next()
   })
   app.use((req, _res, next) => {
-    req.id = randomUUID()
+    req.id = '4d0fd4da-ecc1-454d-8308-cdee6b8b91f7'
     next()
   })
   app.use(express.json())
   app.use(express.urlencoded({ extended: true }))
-  app.use(routes(services))
+  app.use(routes({ applicationInfo, ...services }))
   app.use((_req, _res, next) => next(new NotFound()))
   app.use(errorHandler(production))
 
@@ -81,7 +89,7 @@ function appSetup(services: Services, production: boolean, userSupplier: () => H
 export function appWithAllRoutes({
   production = false,
   services = {
-    auditService: new AuditService({} as HmppsAuditClient) as jest.Mocked<AuditService>,
+    auditService: new AuditService(null) as jest.Mocked<AuditService>,
     alcoholMonitoringOrderDetailsService: new AlcoholMonitoringOrderDetailsService(
       null,
     ) as jest.Mocked<AlcoholMonitoringOrderDetailsService>,

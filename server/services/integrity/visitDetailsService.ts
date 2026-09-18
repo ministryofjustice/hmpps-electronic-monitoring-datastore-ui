@@ -1,34 +1,16 @@
-import { asUser } from '@ministryofjustice/hmpps-rest-client'
-import logger from '../../../logger'
-import getSanitisedError from '../../sanitisedError'
-
-import { EmDatastoreApiClient } from '../../data'
+import { IntegrityDatastoreClient } from '../../data'
 
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 import { IntegrityVisitDetails } from '../../data/models/integrityVisitDetails'
 
 export default class IntegrityVisitDetailsService {
-  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
+  constructor(private readonly integrityDatastoreClient: IntegrityDatastoreClient) {}
 
   async getVisitDetails(input: GetOrderRequest): Promise<IntegrityVisitDetails[]> {
-    const { restricted } = input
+    const { legacySubjectId, userToken, restricted } = input
 
-    try {
-      const results = await this.emDatastoreApiClient.get<IntegrityVisitDetails[]>(
-        {
-          path: `/orders/integrity/${input.legacySubjectId}/visit-details`,
-          query: { restricted },
-        },
-        asUser(input.userToken),
-      )
+    const results = await this.integrityDatastoreClient.getVisitDetails(legacySubjectId, userToken, restricted)
 
-      return results.map(visitDetails => IntegrityVisitDetails.parse(visitDetails))
-    } catch (error) {
-      const userFreindlyMessage = 'Error retrieving list of visit details'
-      const sanitisedError = getSanitisedError(error)
-      logger.error(sanitisedError, userFreindlyMessage)
-      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return results.map(visitDetails => IntegrityVisitDetails.parse(visitDetails))
   }
 }

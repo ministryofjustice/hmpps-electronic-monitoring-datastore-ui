@@ -52,9 +52,7 @@ export const AlcoholMonitoringEventHistoryView = {
     legacySubjectId: string,
     backUrl: string,
     eventHistory: (
-      | AlcoholMonitoringContactEvent
-      | AlcoholMonitoringIncidentEvent
-      | AlcoholMonitoringViolationEvent
+      AlcoholMonitoringContactEvent | AlcoholMonitoringIncidentEvent | AlcoholMonitoringViolationEvent
     )[] = [],
   ): AlcoholMonitoringEventHistoryView {
     return createViewModelFromApiDto(legacySubjectId, backUrl, eventHistory)

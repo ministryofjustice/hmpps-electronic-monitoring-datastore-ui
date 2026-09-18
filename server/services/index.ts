@@ -1,5 +1,5 @@
+import { AuditServiceFactory } from '@ministryofjustice/hmpps-audit-client'
 import { dataAccess } from '../data'
-import AuditService from './auditService'
 
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 import EmDatastoreOrderSearchService from './emDatastoreOrderSearchService'
@@ -17,28 +17,37 @@ import AlcoholMonitoringEquipmentDetailsService from './alcoholMonitoring/equipm
 import AlcoholMonitoringVisitDetailsService from './alcoholMonitoring/visitDetailsService'
 import AlcoholMonitoringServiceDetailsService from './alcoholMonitoring/serviceDetailsService'
 
+import logger from '../../logger'
+import config from '../config'
+
 export const services = () => {
-  const { applicationInfo, hmppsAuditClient, emDatastoreApiClient } = dataAccess()
+  const { applicationInfo, integrityDatastoreClient, alcoholMonitoringDatastoreClient } = dataAccess()
+
+  const auditService = AuditServiceFactory.createInstance(config.sqs.audit, logger)
 
   return {
     applicationInfo,
-    auditService: new AuditService(hmppsAuditClient),
+    auditService,
 
-    emDatastoreConnectionService: new EmDatastoreConnectionService(emDatastoreApiClient),
-    emDatastoreOrderSearchService: new EmDatastoreOrderSearchService(emDatastoreApiClient),
+    emDatastoreConnectionService: new EmDatastoreConnectionService(integrityDatastoreClient),
+    emDatastoreOrderSearchService: new EmDatastoreOrderSearchService(integrityDatastoreClient),
 
-    integrityOrderDetailsService: new IntegrityOrderDetailsService(emDatastoreApiClient),
-    integrityEventHistoryService: new IntegrityEventHistoryService(emDatastoreApiClient),
-    integritySuspensionOfVisitsService: new IntegritySuspensionOfVisitsService(emDatastoreApiClient),
-    integrityEquipmentDetailsService: new IntegrityEquipmentDetailsService(emDatastoreApiClient),
-    integrityVisitDetailsService: new IntegrityVisitDetailsService(emDatastoreApiClient),
-    integrityServiceDetailsService: new IntegrityServiceDetailsService(emDatastoreApiClient),
+    integrityOrderDetailsService: new IntegrityOrderDetailsService(integrityDatastoreClient),
+    integrityEventHistoryService: new IntegrityEventHistoryService(integrityDatastoreClient),
+    integritySuspensionOfVisitsService: new IntegritySuspensionOfVisitsService(integrityDatastoreClient),
+    integrityEquipmentDetailsService: new IntegrityEquipmentDetailsService(integrityDatastoreClient),
+    integrityVisitDetailsService: new IntegrityVisitDetailsService(integrityDatastoreClient),
+    integrityServiceDetailsService: new IntegrityServiceDetailsService(integrityDatastoreClient),
 
-    alcoholMonitoringOrderDetailsService: new AlcoholMonitoringOrderDetailsService(emDatastoreApiClient),
-    alcoholMonitoringEventHistoryService: new AlcoholMonitoringEventHistoryService(emDatastoreApiClient),
-    alcoholMonitoringEquipmentDetailsService: new AlcoholMonitoringEquipmentDetailsService(emDatastoreApiClient),
-    alcoholMonitoringVisitDetailsService: new AlcoholMonitoringVisitDetailsService(emDatastoreApiClient),
-    alcoholMonitoringServiceDetailsService: new AlcoholMonitoringServiceDetailsService(emDatastoreApiClient),
+    alcoholMonitoringOrderDetailsService: new AlcoholMonitoringOrderDetailsService(alcoholMonitoringDatastoreClient),
+    alcoholMonitoringEventHistoryService: new AlcoholMonitoringEventHistoryService(alcoholMonitoringDatastoreClient),
+    alcoholMonitoringEquipmentDetailsService: new AlcoholMonitoringEquipmentDetailsService(
+      alcoholMonitoringDatastoreClient,
+    ),
+    alcoholMonitoringVisitDetailsService: new AlcoholMonitoringVisitDetailsService(alcoholMonitoringDatastoreClient),
+    alcoholMonitoringServiceDetailsService: new AlcoholMonitoringServiceDetailsService(
+      alcoholMonitoringDatastoreClient,
+    ),
   }
 }
 

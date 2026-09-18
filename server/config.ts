@@ -1,3 +1,4 @@
+import { AuditClientConfig } from '@ministryofjustice/hmpps-audit-client'
 import { AgentConfig } from '@ministryofjustice/hmpps-rest-client'
 
 const production = process.env.NODE_ENV === 'production'
@@ -14,7 +15,7 @@ function get<T>(name: string, fallback: T, options = { requireInProduction: fals
 
 const requiredInProduction = { requireInProduction: true }
 
-const auditConfig = () => {
+const auditConfig = (): AuditClientConfig => {
   const auditEnabled = get('AUDIT_ENABLED', 'false') === 'true'
   return {
     enabled: auditEnabled,
@@ -73,7 +74,17 @@ export default {
       agent: new AgentConfig(Number(get('TOKEN_VERIFICATION_API_TIMEOUT_RESPONSE', 5000))),
       enabled: get('TOKEN_VERIFICATION_ENABLED', 'false') === 'true',
     },
-    emDatastoreApi: {
+    integrityDatastoreApi: {
+      url: get('EM_DATASTORE_API_URL', 'http://localhost:8080', requiredInProduction),
+      healthPath: '/health/ping',
+      timeout: {
+        response: Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 30000)),
+        deadline: Number(get('EM_DATASTORE_API_TIMEOUT_DEADLINE', 30000)),
+      },
+      agent: new AgentConfig(Number(get('EM_DATASTORE_API_TIMEOUT_RESPONSE', 15000))),
+      enabled: get('EM_DATASTORE_API_ENABLED', 'false') === 'true',
+    },
+    alcoholMonitoringDatastoreApi: {
       url: get('EM_DATASTORE_API_URL', 'http://localhost:8080', requiredInProduction),
       healthPath: '/health/ping',
       timeout: {
