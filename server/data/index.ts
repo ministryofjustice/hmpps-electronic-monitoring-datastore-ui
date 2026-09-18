@@ -2,7 +2,8 @@ import { AuthenticationClient, InMemoryTokenStore, RedisTokenStore } from '@mini
 import { createRedisClient } from './redisClient'
 import config from '../config'
 import logger from '../../logger'
-import EmDatastoreApiClient from './emDatastoreApiClient'
+import IntegrityDatastoreClient from './integrityDatastoreClient'
+import AlcoholMonitoringDatastoreClient from './alcoholMonitoringDatastoreClient'
 import applicationInfoSupplier from '../applicationInfo'
 
 const applicationInfo = applicationInfoSupplier()
@@ -17,10 +18,11 @@ export const dataAccess = () => {
   return {
     applicationInfo,
     hmppsAuthClient,
-    emDatastoreApiClient: new EmDatastoreApiClient(hmppsAuthClient),
+    integrityDatastoreClient: new IntegrityDatastoreClient(hmppsAuthClient),
+    alcoholMonitoringDatastoreClient: new AlcoholMonitoringDatastoreClient(hmppsAuthClient),
   }
 }
 
 export type DataAccess = ReturnType<typeof dataAccess>
 
-export { AuthenticationClient, EmDatastoreApiClient }
+export { AuthenticationClient, IntegrityDatastoreClient, AlcoholMonitoringDatastoreClient }

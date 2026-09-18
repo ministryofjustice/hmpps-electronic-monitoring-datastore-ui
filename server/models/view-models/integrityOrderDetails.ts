@@ -1,4 +1,4 @@
-import paths from '../../constants/paths'
+import { paths } from '../../constants/paths'
 import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 import { buildUrl } from '../../utils/utils'
 

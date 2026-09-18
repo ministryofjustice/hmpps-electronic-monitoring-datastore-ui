@@ -1,31 +1,15 @@
-import { asUser } from '@ministryofjustice/hmpps-rest-client'
-import logger from '../../../logger'
-import getSanitisedError from '../../sanitisedError'
-
-import { EmDatastoreApiClient } from '../../data'
+import { AlcoholMonitoringDatastoreClient } from '../../data'
 
 import { GetOrderRequest } from '../../models/requests/GetOrderRequest'
 import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
 
 export default class AlcoholMonitoringEquipmentDetailsService {
-  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
+  constructor(private readonly alcoholMonitoringDatastoreApiClient: AlcoholMonitoringDatastoreClient) {}
 
   async getEquipmentDetails(input: GetOrderRequest): Promise<AlcoholMonitoringEquipmentDetails[]> {
-    try {
-      const result = await this.emDatastoreApiClient.get<AlcoholMonitoringEquipmentDetails[]>(
-        {
-          path: `/orders/alcohol-monitoring/${input.legacySubjectId}/equipment-details`,
-        },
-        asUser(input.userToken),
-      )
+    const { legacySubjectId, userToken } = input
+    const result = await this.alcoholMonitoringDatastoreApiClient.getEquipmentDetails(legacySubjectId, userToken)
 
-      return result.map(equipmentDetails => AlcoholMonitoringEquipmentDetails.parse(equipmentDetails))
-    } catch (error) {
-      const userFreindlyMessage = 'Error retrieving list of equipment details'
-      const sanitisedError = getSanitisedError(error)
-      logger.error(sanitisedError, userFreindlyMessage)
-      sanitisedError.message = `${userFreindlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return result.map((equipmentDetails: unknown) => AlcoholMonitoringEquipmentDetails.parse(equipmentDetails))
   }
 }

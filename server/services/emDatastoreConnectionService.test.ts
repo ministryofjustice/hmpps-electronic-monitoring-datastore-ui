@@ -1,27 +1,20 @@
-import nock from 'nock'
-import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import { IntegrityDatastoreClient } from '../data'
 import EmDatastoreConnectionService from './emDatastoreConnectionService'
 
-import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import config from '../config'
+jest.mock('../data')
 
 describe('EM Datastore connection service', () => {
-  let exampleEmDatastoreApiClient: EmDatastoreApiClient
-  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
-
+  let integrityDatastoreClient: jest.Mocked<IntegrityDatastoreClient>
   let emDatastoreConnectionService: EmDatastoreConnectionService
 
   beforeEach(() => {
-    mockAuthenticationClient = {
-      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
-    } as unknown as jest.Mocked<AuthenticationClient>
-
-    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
-    emDatastoreConnectionService = new EmDatastoreConnectionService(exampleEmDatastoreApiClient)
+    integrityDatastoreClient = {
+      testConnection: jest.fn(),
+    } as unknown as jest.Mocked<IntegrityDatastoreClient>
+    emDatastoreConnectionService = new EmDatastoreConnectionService(integrityDatastoreClient)
   })
 
   afterEach(() => {
-    nock.cleanAll()
     jest.resetAllMocks()
   })
 
@@ -31,10 +24,7 @@ describe('EM Datastore connection service', () => {
         foo: 'bar',
       }
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/test`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.testConnection.mockResolvedValue(expectedResult as unknown as JSON)
 
       const result = await emDatastoreConnectionService.test('test-system-token')
 
@@ -42,25 +32,16 @@ describe('EM Datastore connection service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/test`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
+      integrityDatastoreClient.testConnection.mockRejectedValue(new Error('Unauthorized'))
 
-      await expect(emDatastoreConnectionService.test('test-system-token')).rejects.toEqual(
-        new Error('Error connecting to EM Datastore API: Unauthorized'),
-      )
+      await expect(emDatastoreConnectionService.test('test-system-token')).rejects.toEqual(new Error('Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/test`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
+      integrityDatastoreClient.testConnection.mockRejectedValue(new Error('Internal Server Error'))
 
       await expect(emDatastoreConnectionService.test('test-system-token')).rejects.toEqual(
-        new Error('Error connecting to EM Datastore API: Internal Server Error'),
+        new Error('Internal Server Error'),
       )
     })
   })

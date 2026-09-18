@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import strings from '../../constants/strings'
+import { strings } from '../../constants/strings'
 import { Token } from '../../interfaces/token'
 
 export type OrderSearchRequest = Token & {
@@ -69,7 +69,7 @@ export type RawOrderSearchCriteria = z.input<typeof OrderSearchCriteria>
 export type OrderSearchCriteria = z.infer<typeof OrderSearchCriteria>
 export const OrderSearchCriteria = z
   .object({
-    searchType: z.string().default('integrity'),
+    searchType: z.enum(['integrity', 'alcohol-monitoring']).default('integrity'),
     legacySubjectId: z.string().nullish(),
     firstName: z
       .string()

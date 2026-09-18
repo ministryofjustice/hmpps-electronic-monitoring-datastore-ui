@@ -45,10 +45,7 @@ export const IntegrityEventHistoryView = {
     legacySubjectId: string,
     backUrl: string,
     eventHistory: (
-      | IntegrityContactEvent
-      | IntegrityIncidentEvent
-      | IntegrityMonitoringEvent
-      | IntegrityViolationEvent
+      IntegrityContactEvent | IntegrityIncidentEvent | IntegrityMonitoringEvent | IntegrityViolationEvent
     )[] = [],
   ): IntegrityEventHistoryView {
     return createViewModelFromApiDto(legacySubjectId, backUrl, eventHistory)

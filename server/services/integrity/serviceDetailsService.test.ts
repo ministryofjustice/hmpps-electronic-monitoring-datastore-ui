@@ -1,28 +1,22 @@
-import nock from 'nock'
-import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import { IntegrityDatastoreClient } from '../../data'
 import IntegrityServiceDetailsService from './serviceDetailsService'
 
-import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config from '../../config'
 import { IntegrityServiceDetails } from '../../data/models/integrityServiceDetails'
 
-describe('Integrity Service Details Service', () => {
-  let exampleEmDatastoreApiClient: EmDatastoreApiClient
-  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
+jest.mock('../../data')
 
+describe('Integrity service details Service', () => {
+  let integrityDatastoreClient: IntegrityDatastoreClient
   let integrityServiceDetailsService: IntegrityServiceDetailsService
 
   beforeEach(() => {
-    mockAuthenticationClient = {
-      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
-    } as unknown as jest.Mocked<AuthenticationClient>
-
-    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
-    integrityServiceDetailsService = new IntegrityServiceDetailsService(exampleEmDatastoreApiClient)
+    integrityDatastoreClient = {
+      getServiceDetails: jest.fn(),
+    } as unknown as jest.Mocked<IntegrityDatastoreClient>
+    integrityServiceDetailsService = new IntegrityServiceDetailsService(integrityDatastoreClient)
   })
 
   afterEach(() => {
-    nock.cleanAll()
     jest.resetAllMocks()
   })
 
@@ -52,10 +46,7 @@ describe('Integrity Service Details Service', () => {
         } as IntegrityServiceDetails,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getServiceDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integrityServiceDetailsService.getServiceDetails({
         userToken: 'test-system-token',
@@ -88,10 +79,7 @@ describe('Integrity Service Details Service', () => {
         } as IntegrityServiceDetails,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getServiceDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integrityServiceDetailsService.getServiceDetails({
         userToken: 'test-system-token',
@@ -162,10 +150,7 @@ describe('Integrity Service Details Service', () => {
         } as IntegrityServiceDetails,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getServiceDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integrityServiceDetailsService.getServiceDetails({
         userToken: 'test-system-token',
@@ -178,10 +163,7 @@ describe('Integrity Service Details Service', () => {
     it('should fetch an empty list of service detail items', async () => {
       const expectedResult = [] as IntegrityServiceDetails[]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getServiceDetails = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integrityServiceDetailsService.getServiceDetails({
         userToken: 'test-system-token',
@@ -192,32 +174,25 @@ describe('Integrity Service Details Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
+      integrityDatastoreClient.getServiceDetails = jest.fn().mockRejectedValue(new Error('Unauthorized'))
 
       await expect(
         integrityServiceDetailsService.getServiceDetails({
           userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
-      ).rejects.toEqual(new Error('Error retrieving service details: Unauthorized'))
+      ).rejects.toEqual(new Error('Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/service-details`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
+      integrityDatastoreClient.getServiceDetails = jest.fn().mockRejectedValue(new Error('Internal Server Error'))
 
       await expect(
         integrityServiceDetailsService.getServiceDetails({
           userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
-      ).rejects.toEqual(new Error('Error retrieving service details: Internal Server Error'))
+      ).rejects.toEqual(new Error('Internal Server Error'))
     })
   })
 })

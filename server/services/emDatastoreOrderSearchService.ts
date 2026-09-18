@@ -1,32 +1,17 @@
-import { asUser } from '@ministryofjustice/hmpps-rest-client'
-import logger from '../../logger'
-import getSanitisedError, { SanitisedError } from '../sanitisedError'
-import EmDatastoreApiClient from '../data/emDatastoreApiClient'
-import { OrderSearchRequest } from '../models/requests/SearchOrdersRequest'
+import { IntegrityDatastoreClient } from '../data'
+
+import { OrderSearchCriteria } from '../data/models/orderSearchCriteria'
 import { QueryExecutionResponse } from '../models/queryExecutionResponse'
 
 export default class EmDatastoreOrderSearchService {
-  constructor(private readonly emDatastoreApiClient: EmDatastoreApiClient) {}
+  constructor(private readonly integrityDatastoreClient: IntegrityDatastoreClient) {}
 
-  async submitSearchQuery(input: OrderSearchRequest): Promise<QueryExecutionResponse> {
-    const { data, userToken } = input
-    const { searchType } = data
-
-    try {
-      const result = await this.emDatastoreApiClient.post<QueryExecutionResponse>(
-        {
-          path: `/orders/${searchType}`,
-          data,
-        },
-        asUser(userToken),
-      )
-
-      return QueryExecutionResponse.parse(result)
-    } catch (error) {
-      const sanitisedError: SanitisedError = getSanitisedError(error)
-      logger.error(sanitisedError, 'Error submitting search query')
-      sanitisedError.message = 'Error submitting search query'
-      throw sanitisedError
-    }
+  async submitSearchQuery(
+    searchType: string,
+    data: OrderSearchCriteria,
+    userToken: string,
+  ): Promise<QueryExecutionResponse> {
+    const result = await this.integrityDatastoreClient.runSearchQuery(searchType, data, userToken)
+    return QueryExecutionResponse.parse(result)
   }
 }

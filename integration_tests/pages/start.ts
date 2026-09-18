@@ -1,5 +1,5 @@
 import AppPage from './appPage'
-import paths from '../../server/constants/paths'
+import { paths } from '../../server/constants/paths'
 
 export default class StartPage extends AppPage {
   constructor() {

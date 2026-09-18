@@ -1,4 +1,4 @@
-const paths = {
+export const paths = {
   START: '/',
   SEARCH: '/search',
 
@@ -23,7 +23,7 @@ const paths = {
     SERVICE_DETAILS: '/alcohol-monitoring/:legacySubjectId/service-details',
   },
 
-  CONNECTION_TEST: '/test',
+  API_CONNECTION_TEST: '/test',
 }
 
 export default paths

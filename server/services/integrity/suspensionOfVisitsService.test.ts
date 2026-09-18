@@ -1,28 +1,22 @@
-import nock from 'nock'
-import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
+import { IntegrityDatastoreClient } from '../../data'
 import IntegritySuspensionOfVisitsService from './suspensionOfVisitsService'
 
-import EmDatastoreApiClient from '../../data/emDatastoreApiClient'
-import config from '../../config'
 import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
 
-describe('Integrity Suspension of visits Service', () => {
-  let exampleEmDatastoreApiClient: EmDatastoreApiClient
-  let mockAuthenticationClient: jest.Mocked<AuthenticationClient>
+jest.mock('../../data')
 
+describe('Integrity Suspension of visits Service', () => {
+  let integrityDatastoreClient: IntegrityDatastoreClient
   let integritySuspensionOfVisitsService: IntegritySuspensionOfVisitsService
 
   beforeEach(() => {
-    mockAuthenticationClient = {
-      getToken: jest.fn().mockResolvedValue('unused-test-system-token'),
-    } as unknown as jest.Mocked<AuthenticationClient>
-
-    exampleEmDatastoreApiClient = new EmDatastoreApiClient(mockAuthenticationClient)
-    integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(exampleEmDatastoreApiClient)
+    integrityDatastoreClient = {
+      getSuspensionOfVisits: jest.fn(),
+    } as unknown as jest.Mocked<IntegrityDatastoreClient>
+    integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(integrityDatastoreClient)
   })
 
   afterEach(() => {
-    nock.cleanAll()
     jest.resetAllMocks()
   })
 
@@ -32,7 +26,7 @@ describe('Integrity Suspension of visits Service', () => {
     it('should fetch a list of one suspension of visits item', async () => {
       const expectedResult = [
         {
-          legacySubjectId,
+          legacySubjectId: 'legacy_subject_001',
           suspensionOfVisits: 'yes',
           requestedDate: null,
           startDate: null,
@@ -41,10 +35,7 @@ describe('Integrity Suspension of visits Service', () => {
         } as IntegritySuspensionOfVisits,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getSuspensionOfVisits = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
         userToken: 'test-system-token',
@@ -54,7 +45,7 @@ describe('Integrity Suspension of visits Service', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should fetch a list of one equipment detail item', async () => {
+    it('should fetch a list of one suspension of visits item', async () => {
       const expectedResult = [
         {
           legacySubjectId,
@@ -66,10 +57,7 @@ describe('Integrity Suspension of visits Service', () => {
         } as IntegritySuspensionOfVisits,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getSuspensionOfVisits = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
         userToken: 'test-system-token',
@@ -79,7 +67,7 @@ describe('Integrity Suspension of visits Service', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should fetch a list of multiple equipment detail items', async () => {
+    it('should fetch a list of multiple suspension of visits items', async () => {
       const expectedResult = [
         {
           legacySubjectId,
@@ -107,10 +95,7 @@ describe('Integrity Suspension of visits Service', () => {
         } as IntegritySuspensionOfVisits,
       ]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getSuspensionOfVisits = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
         userToken: 'test-system-token',
@@ -120,13 +105,10 @@ describe('Integrity Suspension of visits Service', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should fetch an empty list of equipment detail items', async () => {
+    it('should fetch an empty list of suspension of visits items', async () => {
       const expectedResult = [] as IntegritySuspensionOfVisits[]
 
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(200, expectedResult)
+      integrityDatastoreClient.getSuspensionOfVisits = jest.fn().mockResolvedValue(expectedResult)
 
       const result = await integritySuspensionOfVisitsService.getSuspensionOfVisits({
         userToken: 'test-system-token',
@@ -137,32 +119,25 @@ describe('Integrity Suspension of visits Service', () => {
     })
 
     it('should propagate an error if there is an authorization error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(401)
+      integrityDatastoreClient.getSuspensionOfVisits = jest.fn().mockRejectedValue(new Error('Unauthorized'))
 
       await expect(
         integritySuspensionOfVisitsService.getSuspensionOfVisits({
           userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
-      ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Unauthorized'))
+      ).rejects.toEqual(new Error('Unauthorized'))
     })
 
     it('should propagate an error if there is a server error', async () => {
-      nock(config.apis.emDatastoreApi.url)
-        .get(`/orders/integrity/${legacySubjectId}/suspension-of-visits`)
-        .matchHeader('authorization', 'Bearer test-system-token')
-        .reply(500)
-        .persist()
+      integrityDatastoreClient.getSuspensionOfVisits = jest.fn().mockRejectedValue(new Error('Internal Server Error'))
 
       await expect(
         integritySuspensionOfVisitsService.getSuspensionOfVisits({
           userToken: 'test-system-token',
           legacySubjectId: `${legacySubjectId}`,
         }),
-      ).rejects.toEqual(new Error('Error retrieving suspension of visits data: Internal Server Error'))
+      ).rejects.toEqual(new Error('Internal Server Error'))
     })
   })
 })

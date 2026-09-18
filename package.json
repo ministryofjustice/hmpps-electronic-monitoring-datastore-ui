@@ -23,7 +23,8 @@
     "int-test-init:ci": "npx cypress install",
     "clean": "rm -rf dist test_results",
     "rebuild": "npm run clean && npm run setup && npm run build",
-    "setup": "npm ci"
+    "setup": "npm ci",
+    "check": "bash ./.git/hooks/pre-commit"
   },
   "engines": {
     "node": "^24",
@@ -80,7 +81,7 @@
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
     "axe-core": "^4.11.4",
-    "cypress": "^15.15.0",
+    "cypress": "15.21.1",
     "cypress-axe": "^1.7.0",
     "cypress-multi-reporters": "^2.0.5",
     "del": "8.0.1",
@@ -109,7 +110,6 @@
     "cypress@15.21.1": true,
     "dtrace-provider@0.8.8": false,
     "fsevents@2.3.3": true,
-    "fsevents@2.3.2": true,
     "unrs-resolver@1.12.2": true,
     "esbuild@0.28.2": true
   }

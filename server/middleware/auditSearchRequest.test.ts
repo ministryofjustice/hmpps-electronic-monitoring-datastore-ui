@@ -1,8 +1,9 @@
 import type { Request, Response } from 'express'
 
+import { Page } from '../constants/pages'
+
 import auditSearchRequest from './auditSearchRequest'
 import { Services } from '../services'
-import { Page } from '../routes'
 
 describe('auditSearchRequest', () => {
   const logAuditEvent = jest.fn()
@@ -26,12 +27,12 @@ describe('auditSearchRequest', () => {
   })
 
   it('logs an audit event with details from the request and user', async () => {
-    await auditSearchRequest({ services, page: Page.SEARCH_OFFENDERS })(req, res, next)
+    await auditSearchRequest({ services, page: Page.SEARCH })(req, res, next)
 
     expect(logAuditEvent).toHaveBeenCalledWith({
       correlationId: 'request123',
       who: 'user1',
-      what: Page.SEARCH_OFFENDERS,
+      what: Page.SEARCH,
       subjectType: 'SEARCH_TERM',
       subjectId: 'X123456',
       details: { build: 'abc1234', userRoles: ['ROLE_EXAMPLE'] },
@@ -39,7 +40,7 @@ describe('auditSearchRequest', () => {
   })
 
   it('calls next after logging the audit event', async () => {
-    await auditSearchRequest({ services, page: Page.SEARCH_OFFENDERS })(req, res, next)
+    await auditSearchRequest({ services, page: Page.SEARCH })(req, res, next)
 
     expect(next).toHaveBeenCalled()
   })
@@ -47,7 +48,7 @@ describe('auditSearchRequest', () => {
   it('does not audit when search query body param is missing', async () => {
     const reqWithoutSearchTerm = { body: {} } as unknown as Request
 
-    await auditSearchRequest({ services, page: Page.SEARCH_OFFENDERS })(reqWithoutSearchTerm, res, next)
+    await auditSearchRequest({ services, page: Page.SEARCH })(reqWithoutSearchTerm, res, next)
     expect(logAuditEvent).not.toHaveBeenCalled()
     expect(next).toHaveBeenCalled()
   })

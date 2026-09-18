@@ -1,4 +1,4 @@
-import paths from '../../constants/paths'
+import { paths } from '../../constants/paths'
 import { AlcoholMonitoringOrderDetails } from '../../data/models/alcoholMonitoringOrderDetails'
 
 export type AlcoholMonitoringOrderSummaryView = {
