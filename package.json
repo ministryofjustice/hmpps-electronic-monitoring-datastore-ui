@@ -112,9 +112,16 @@
     "typescript": "^6.0.3"
   },
   "overrides": {
+    "@humanfs/node": "0.17.0",
     "@opentelemetry/core": "2.11.0",
     "brace-expansion": "5.0.9",
-    "js-yaml": "5.4.1"
+    "form-data": "4.0.6",
+    "immutable": "5.1.9",
+    "ip-address": "10.7.2",
+    "js-yaml": "5.4.2",
+    "systeminformation": "5.33.12",
+    "tar": "7.5.22",
+    "qs": "6.16.0"
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
