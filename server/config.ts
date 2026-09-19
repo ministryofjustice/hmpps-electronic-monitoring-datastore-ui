@@ -100,4 +100,8 @@ export default {
   },
   ingressUrl: get('INGRESS_URL', 'http://localhost:3000', requiredInProduction),
   environmentName: get('ENVIRONMENT_NAME', ''),
+  rateLimiting: {
+    windowMs: get('RATE_LIMITING_WINDOW_MS', 60 * 1000), // 1 minute
+    limit: get('RATE_LIMITING_LIMIT', 30), // max 30 requests per windowMs
+  },
 }
