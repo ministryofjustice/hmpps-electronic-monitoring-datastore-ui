@@ -1,18 +1,18 @@
 import { defineConfig } from 'cypress'
-import { resetStubs } from './integration_tests/mockApis/wiremock'
-import hmppsAuth from './integration_tests/mockApis/hmppsAuth'
-import tokenVerification from './integration_tests/mockApis/tokenVerification'
-import * as datastore from './integration_tests/mockApis/datastore'
+import { resetStubs } from './integration_tests_cypress/mockApis/wiremock'
+import hmppsAuth from './integration_tests_cypress/mockApis/hmppsAuth'
+import tokenVerification from './integration_tests_cypress/mockApis/tokenVerification'
+import * as datastore from './integration_tests_cypress/mockApis/datastore'
 
 export default defineConfig({
   allowCypressEnv: false,
   chromeWebSecurity: false,
-  fixturesFolder: 'integration_tests/fixtures',
-  screenshotsFolder: 'integration_tests/screenshots',
-  videosFolder: 'integration_tests/videos',
+  fixturesFolder: 'integration_tests_cypress/fixtures',
+  screenshotsFolder: 'integration_tests_cypress/screenshots',
+  videosFolder: 'integration_tests_cypress/videos',
   reporter: 'cypress-multi-reporters',
   reporterOptions: {
-    configFile: 'reporter-config.json',
+    configFile: 'integration_tests_cypress/reporter-config.json',
   },
   taskTimeout: 60000,
   e2e: {
@@ -44,7 +44,7 @@ export default defineConfig({
     },
     baseUrl: 'http://localhost:3007',
     excludeSpecPattern: '**/!(*.cy).ts',
-    specPattern: 'integration_tests/e2e/**/*.cy.{js,jsx,ts,tsx}',
-    supportFile: 'integration_tests/support/index.ts',
+    specPattern: 'integration_tests_cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
+    supportFile: 'integration_tests_cypress/support/index.ts',
   },
 })
