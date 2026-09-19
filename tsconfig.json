@@ -16,7 +16,7 @@
     "types": ["node", "jest"],
     "rootDir": "."
   },
-  "exclude": [ "node_modules", "assets", "integration_tests", "dist", "esbuild", "eslint.config.mjs", "cypress.config.ts", "cypress" ],
+  "exclude": [ "node_modules", "assets", "integration_tests", "dist", "esbuild", "eslint.config.mjs", "cypress.config.ts", "cypress", "integration_tests_cypress" ],
   "include": [ "**/*.js", "**/*.ts", "**/*.mjs" ],
   "typeAcquisition": {
     "include": [
