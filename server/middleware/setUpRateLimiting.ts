@@ -2,7 +2,7 @@ import express, { Router } from 'express'
 import RateLimit, { type Options } from 'express-rate-limit'
 import config from '../config'
 
-export default function setUpWebSession(): Router {
+export default function setUpRateLimiting(): Router {
   const router = express.Router()
 
   // set up rate limiter: maximum of 30 requests per minute
