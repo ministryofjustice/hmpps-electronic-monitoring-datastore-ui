@@ -185,18 +185,6 @@ export const isNullOrUndefined = <T>(value: T | null | undefined): value is null
 
 export const isNotNullOrUndefined = <T>(value: T | null | undefined): value is T => !isNullOrUndefined(value)
 
-export const extractParamsAndArgs = (args: unknown[]) => {
-  let params: Record<string, string | number | boolean> = {}
-  let query: Record<string, string | number | boolean> = {}
-
-  if (typeof args[0] !== 'string') {
-    params = args.shift() as Record<string, string | number | boolean>
-    query = args.shift() as Record<string, string | number | boolean>
-  }
-
-  return { params, query }
-}
-
 export const buildUrl = (
   template: string,
   params: Record<string, string | number | boolean> = {},

@@ -14,14 +14,14 @@ describe('NameValidator Class', () => {
       const invalidName = 'Alice123'
       const result = OrderSearchFirstName.safeParse(invalidName)
       expect(result.success).toBeFalsy()
-      expect(result.error.issues[0].message).toBe(strings.errors.invalidFirstName)
+      expect(result.error!.issues[0].message).toBe(strings.errors.invalidFirstName)
     })
 
     it('should reject invalid first names with special characters', () => {
       const invalidName = 'Alice@!'
       const result = OrderSearchFirstName.safeParse(invalidName)
       expect(result.success).toBeFalsy()
-      expect(result.error.issues[0].message).toBe(strings.errors.invalidFirstName)
+      expect(result.error!.issues[0].message).toBe(strings.errors.invalidFirstName)
     })
 
     it('should accept an empty first name as optional', () => {
@@ -43,14 +43,14 @@ describe('NameValidator Class', () => {
       const invalidName = 'Smith123'
       const result = OrderSearchLastName.safeParse(invalidName)
       expect(result.success).toBeFalsy()
-      expect(result.error.issues[0].message).toBe(strings.errors.invalidLastName)
+      expect(result.error!.issues[0].message).toBe(strings.errors.invalidLastName)
     })
 
     it('should reject invalid last names with special characters', () => {
       const invalidName = 'Smith@!'
       const result = OrderSearchLastName.safeParse(invalidName)
       expect(result.success).toBeFalsy()
-      expect(result.error.issues[0].message).toBe(strings.errors.invalidLastName)
+      expect(result.error!.issues[0].message).toBe(strings.errors.invalidLastName)
     })
 
     it('should accept an empty last name as optional', () => {
@@ -78,14 +78,14 @@ describe('NameValidator Class', () => {
       const invalidAlias = 'Nickname123'
       const result = OrderSearchAlias.safeParse(invalidAlias)
       expect(result.success).toBeFalsy()
-      expect(result.error.issues[0].message).toBe(strings.errors.invalidAlias)
+      expect(result.error!.issues[0].message).toBe(strings.errors.invalidAlias)
     })
 
     it('should reject invalid aliases with special characters', () => {
       const invalidAlias = 'Nickname@!'
       const result = OrderSearchAlias.safeParse(invalidAlias)
       expect(result.success).toBeFalsy()
-      expect(result.error.issues[0].message).toBe(strings.errors.invalidAlias)
+      expect(result.error!.issues[0].message).toBe(strings.errors.invalidAlias)
     })
 
     it('should accept an empty alias as optional', () => {

@@ -4,7 +4,7 @@ import { getError } from '../../utils/utils'
 
 import { OrderSearchCriteria } from '../requests/SearchOrdersRequest'
 import { ValidationError, ValidationResult } from '../validationResult'
-import { Date, ViewModel, ErrorSummary } from './utils'
+import { Date, ViewModel, ErrorSummary, ErrorListItem } from './utils'
 
 export const convertZodErrorToValidationError = (error: ZodError): ValidationResult => {
   type ZodIssueWithParams = z.core.$ZodIssue & {
@@ -40,19 +40,19 @@ export const createErrorSummary = (validationErrors: ValidationResult): ErrorSum
     errorList: validationErrors.map(issue => {
       return {
         field: issue.field,
-        error: issue.error,
-      }
+        message: issue.error,
+      } as ErrorListItem
     }),
   }
 }
 
 export type OrderSearchView = ViewModel<{
   searchType: 'integrity' | 'alcohol-monitoring'
-  legacySubjectId?: string
-  firstName?: string
-  lastName?: string
-  alias?: string
-  dateOfBirth?: Date
+  legacySubjectId: string
+  firstName: string
+  lastName: string
+  alias: string
+  dateOfBirth: Date
 }>
 export const OrderSearchView = {
   construct(formData: OrderSearchCriteria, errors?: ValidationResult): OrderSearchView {
@@ -61,7 +61,7 @@ export const OrderSearchView = {
 }
 
 const constructFromFormData = (formData: OrderSearchCriteria, validationErrors?: ValidationResult): OrderSearchView => {
-  if (validationErrors && validationErrors?.length === 0) {
+  if (!validationErrors || validationErrors.length === 0) {
     return {
       searchType: {
         value: formData.searchType,

@@ -1,10 +1,11 @@
 import express from 'express'
+import { telemetryMiddleware } from '@ministryofjustice/hmpps-azure-telemetry'
 
 import createError from 'http-errors'
 
 import nunjucksSetup from './utils/nunjucksSetup'
 import errorHandler from './errorHandler'
-import authorisationMiddleware, { emDatastoreApiAuthorisedRoles } from './middleware/authorisationMiddleware'
+import authorisationMiddleware from './middleware/authorisationMiddleware'
 
 import setUpRateLimiting from './middleware/setUpRateLimiting'
 import setUpAuthentication from './middleware/setUpAuthentication'
@@ -34,9 +35,11 @@ export default function createApp(services: Services): express.Application {
   app.use(setUpStaticResources())
   nunjucksSetup(app)
   app.use(setUpAuthentication())
-  app.use(authorisationMiddleware(emDatastoreApiAuthorisedRoles()))
+  app.use(authorisationMiddleware())
   app.use(setUpCsrf())
   app.use(setUpCurrentUser())
+  // For prison users, register the `addUserMetadataToTelemetry` middleware after middleware that retrieves caseload data.
+  app.use(telemetryMiddleware.addUserMetadataToTelemetry())
 
   app.use(routes(services))
 

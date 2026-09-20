@@ -1,6 +1,5 @@
 import { RestClient, asUser } from '@ministryofjustice/hmpps-rest-client'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
-import getSanitisedError from '../sanitisedError'
 
 import config from '../config'
 import logger from '../../logger'
@@ -44,30 +43,13 @@ export default class IntegrityDatastoreClient extends RestClient {
   }
 
   async listOrderDetailsByQueryExecutionId(queryExecutionId: string, userToken: string, restricted: boolean = false) {
-    try {
-      return await this.get<IntegrityOrderDetails[]>(
-        {
-          path: this.rootPath,
-          query: { restricted, id: queryExecutionId },
-        },
-        asUser(userToken),
-      )
-    } catch (error) {
-      let userFriendlyMessage = 'Error retrieving search results'
-      const sanitisedError = getSanitisedError(error)
-
-      const errorMessage: string | undefined = error.data?.developerMessage
-      if (
-        errorMessage &&
-        errorMessage.includes('QueryExecution') &&
-        errorMessage.includes('was not found (Service: Athena, Status Code: 400, Request ID:')
-      ) {
-        userFriendlyMessage += 'Invalid query execution ID'
-      }
-
-      sanitisedError.message = `${userFriendlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return this.get<IntegrityOrderDetails[]>(
+      {
+        path: this.rootPath,
+        query: { restricted, id: queryExecutionId },
+      },
+      asUser(userToken),
+    )
   }
 
   async getOrderDetails(legacySubjectId: string, userToken: string, restricted: boolean = false) {

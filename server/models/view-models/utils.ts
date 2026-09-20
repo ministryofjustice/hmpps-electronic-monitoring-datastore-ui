@@ -1,12 +1,12 @@
 export type ErrorSummary = {
-  title?: string
+  title: string
   description?: string
   errorList: Array<ErrorListItem>
 }
 
 export type ErrorListItem = {
-  field?: string
-  message?: string
+  field: string
+  message: string
 }
 
 export type ErrorMessage = {
@@ -18,13 +18,13 @@ export type FormField = {
 }
 
 export type TextField = FormField & {
-  value: string
+  value?: string
 }
 
 export type Date = {
-  day: string
-  month: string
-  year: string
+  day?: string | number | null
+  month?: string | number | null
+  year?: string | number | null
 }
 
 export type DateField = FormField & {
@@ -36,7 +36,7 @@ export type MultipleChoiceField = FormField & {
 }
 
 export type ViewModel<T> = {
-  errorSummary: ErrorSummary | null
+  errorSummary: ErrorSummary | null | undefined
 } & {
   [K in keyof T]: T[K] extends Date ? DateField : T[K] extends string[] ? MultipleChoiceField : TextField
 }

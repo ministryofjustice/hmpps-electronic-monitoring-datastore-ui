@@ -5,21 +5,23 @@
 {% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
 {% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
 
+{% set mainClasses = "govuk-body" %}
+
 {% block beforeContent %}
-  {% if backUrl %}
-    {{ govukBackLink({
+{% if backUrl %}
+{{ govukBackLink({
       text: (backText if backText or "back"),
       href: backUrl
     }) }}
-  {% endif %}
+{% endif %}
 {% endblock %}
 
 {% block content %}
-  {{ emsServiceInformation() }}
+{{ emsServiceInformation() }}
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      {{
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    {{
         mojSubNavigation({
           label: "Order navigation",
           items: [
@@ -50,17 +52,17 @@
           ]
         })
       }}
-    </div>
   </div>
+</div>
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
-      {% if subHeading %}
-        <p class="govuk-body">{{ subHeading }}</p>
-      {% endif %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+    {% if subHeading %}
+    <p class="govuk-body">{{ subHeading }}</p>
+    {% endif %}
 
-      {% block innerContent %}{% endblock %}
-    </div>
+    {% block innerContent %}{% endblock %}
   </div>
+</div>
 {% endblock %}

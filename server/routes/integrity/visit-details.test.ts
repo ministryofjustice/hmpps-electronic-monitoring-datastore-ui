@@ -15,7 +15,7 @@ import { IntegrityVisitDetails } from '../../data/models/integrityVisitDetails'
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/integrity/visitDetailsService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const integrityVisitDetailsService = new IntegrityVisitDetailsService(
   {} as IntegrityDatastoreClient,
 ) as jest.Mocked<IntegrityVisitDetailsService>
