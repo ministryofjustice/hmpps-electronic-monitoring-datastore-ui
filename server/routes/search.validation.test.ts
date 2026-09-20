@@ -5,18 +5,15 @@ import request from 'supertest'
 import { paths } from '../constants/paths'
 import { appWithAllRoutes, flashProvider, user } from './testutils/appSetup'
 
-import IntegrityDatastoreClient from '../data/integrityDatastoreClient'
-
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import { QueryExecutionResponse } from '../models/queryExecutionResponse'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../services/emDatastoreOrderSearchService')
-jest.mock('../services/emDatastoreConnectionService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(
-  {} as IntegrityDatastoreClient,
+  {} as never,
 ) as jest.Mocked<EmDatastoreOrderSearchService>
 
 let app: Express

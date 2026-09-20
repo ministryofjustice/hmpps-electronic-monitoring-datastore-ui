@@ -1,13 +1,13 @@
 import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensionOfVisits'
 
 export type IntegritySuspensionOfVisitsViewEvent = {
-  isoDateTime: string
-  eventType: string
-  suspensionOfVisits: string
-  requestedDate: string
-  startDate: string
-  startTime: string
-  endDate: string
+  isoDateTime?: string | null
+  eventType?: string | null
+  suspensionOfVisits?: string | null
+  requestedDate?: string | null
+  startDate?: string | null
+  startTime?: string | null
+  endDate?: string | null
 }
 
 export type IntegritySuspensionOfVisitsView = {
@@ -18,7 +18,7 @@ export type IntegritySuspensionOfVisitsView = {
 
 const parseEvents = (events: IntegritySuspensionOfVisits[]): IntegritySuspensionOfVisitsViewEvent[] =>
   events
-    .sort((a, b) => new Date(a.requestedDate).getTime() - new Date(b.requestedDate).getTime())
+    .sort((a, b) => new Date(a.requestedDate || '').getTime() - new Date(b.requestedDate || '').getTime())
     .map(event => {
       return {
         isoDateTime: event.requestedDate,

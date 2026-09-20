@@ -35,15 +35,15 @@ ARG GIT_REF
 ARG GIT_BRANCH
 
 COPY --from=build --chown=appuser:appgroup \
-  /app/package.json \
-  /app/package-lock.json \
-  ./
+        /app/package.json \
+        /app/package-lock.json \
+        ./
 
 COPY --from=build --chown=appuser:appgroup \
-  /app/dist ./dist
+        /app/dist ./dist
 
 COPY --from=build --chown=appuser:appgroup \
-  /app/node_modules ./node_modules
+        /app/node_modules ./node_modules
 
 EXPOSE 3000
 ENV BUILD_NUMBER=${BUILD_NUMBER}

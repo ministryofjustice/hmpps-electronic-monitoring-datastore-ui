@@ -7,17 +7,15 @@ import { Page } from '../../constants/pages'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import { buildUrl } from '../../utils/utils'
 
-import IntegrityDatastoreClient from '../../data/integrityDatastoreClient'
-
 import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
 import { IntegrityEquipmentDetails } from '../../data/models/integrityEquipmentDetails'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/integrity/equipmentDetailsService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(
-  {} as IntegrityDatastoreClient,
+  {} as never,
 ) as jest.Mocked<IntegrityEquipmentDetailsService>
 
 let app: Express

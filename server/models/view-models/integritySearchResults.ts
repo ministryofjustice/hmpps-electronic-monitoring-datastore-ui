@@ -2,16 +2,16 @@ import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 
 export type IntegritySearchResult = {
   legacySubjectId?: string
-  name?: string
-  primaryAddress?: string[]
+  name?: string | null
+  primaryAddress?: (string | null | undefined)[]
   alias?: string | null
-  dateOfBirth?: string
-  orderStartDate?: string
-  orderEndDate?: string
-  sortAddress?: string
-  sortDateOfBirth?: number
-  sortOrderStartDate?: number
-  sortOrderEndDate?: number
+  dateOfBirth?: string | null
+  orderStartDate?: string | null
+  orderEndDate?: string | null
+  sortAddress?: string | null
+  sortDateOfBirth?: number | null
+  sortOrderStartDate?: number | null
+  sortOrderEndDate?: number | null
 }
 
 export type IntegritySearchResultView = IntegritySearchResult[]
@@ -34,9 +34,9 @@ export const IntegritySearchResultView = {
         orderStartDate: order.orderStartDate,
         orderEndDate: order.orderEndDate,
         sortAddress: primaryAddress.filter(n => n && n !== '').join(' '),
-        sortDateOfBirth: new Date(`${order.dateOfBirth}Z`).getTime(),
-        sortOrderStartDate: new Date(`${order.orderStartDate}Z`).getTime(),
-        sortOrderEndDate: new Date(`${order.orderEndDate}Z`).getTime(),
+        sortDateOfBirth: order.dateOfBirth ? new Date(`${order.dateOfBirth}Z`).getTime() : null,
+        sortOrderStartDate: order.orderStartDate ? new Date(`${order.orderStartDate}Z`).getTime() : null,
+        sortOrderEndDate: order.orderEndDate ? new Date(`${order.orderEndDate}Z`).getTime() : null,
       } as IntegritySearchResult
     })
   },

@@ -10,12 +10,11 @@ import { QueryExecutionResponse } from '../models/queryExecutionResponse'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../services/emDatastoreOrderSearchService')
-jest.mock('../services/emDatastoreConnectionService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
-const emDatastoreOrderSearchService = {
-  submitSearchQuery: jest.fn(),
-} as unknown as jest.Mocked<EmDatastoreOrderSearchService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
+const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(
+  {} as never,
+) as jest.Mocked<EmDatastoreOrderSearchService>
 
 let app: Express
 

@@ -5,13 +5,13 @@ export type IntegrityOrderSummaryView = {
   legacySubjectId: string
   orderSummary: {
     legacySubjectId: string
-    name?: string
-    alias?: string
-    dateOfBirth?: string
-    primaryAddress?: string[]
-    specials?: string
-    orderStartDate?: string
-    orderEndDate?: string
+    name?: string | null
+    alias?: string | null
+    dateOfBirth?: string | null
+    primaryAddress?: (string | null | undefined)[]
+    specials?: string | null
+    orderStartDate?: string | null
+    orderEndDate?: string | null
   }
   backUrl: string
 }

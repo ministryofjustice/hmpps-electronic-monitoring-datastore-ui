@@ -28,10 +28,10 @@ describe('Integrity Suspension of visits Service', () => {
         {
           legacySubjectId: 'legacy_subject_001',
           suspensionOfVisits: 'yes',
-          requestedDate: null,
-          startDate: null,
-          startTime: null,
-          endDate: null,
+          requestedDate: '',
+          startDate: '',
+          startTime: '',
+          endDate: '',
         } as IntegritySuspensionOfVisits,
       ]
 
@@ -50,10 +50,10 @@ describe('Integrity Suspension of visits Service', () => {
         {
           legacySubjectId,
           suspensionOfVisits: 'no',
-          requestedDate: null,
-          startDate: null,
-          startTime: null,
-          endDate: null,
+          requestedDate: '',
+          startDate: '',
+          startTime: '',
+          endDate: '',
         } as IntegritySuspensionOfVisits,
       ]
 
@@ -72,26 +72,26 @@ describe('Integrity Suspension of visits Service', () => {
         {
           legacySubjectId,
           suspensionOfVisits: 'yes',
-          requestedDate: null,
-          startDate: null,
-          startTime: null,
-          endDate: null,
+          requestedDate: '',
+          startDate: '',
+          startTime: '',
+          endDate: '',
         } as IntegritySuspensionOfVisits,
         {
           legacySubjectId: '456',
           suspensionOfVisits: 'no',
-          requestedDate: null,
-          startDate: null,
-          startTime: null,
-          endDate: null,
+          requestedDate: '',
+          startDate: '',
+          startTime: '',
+          endDate: '',
         } as IntegritySuspensionOfVisits,
         {
           legacySubjectId: '789',
           suspensionOfVisits: 'yes',
-          requestedDate: null,
-          startDate: null,
-          startTime: null,
-          endDate: null,
+          requestedDate: '',
+          startDate: '',
+          startTime: '',
+          endDate: '',
         } as IntegritySuspensionOfVisits,
       ]
 

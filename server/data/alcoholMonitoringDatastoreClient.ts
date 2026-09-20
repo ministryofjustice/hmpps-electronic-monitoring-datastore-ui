@@ -1,6 +1,5 @@
 import { RestClient, asUser } from '@ministryofjustice/hmpps-rest-client'
 import type { AuthenticationClient } from '@ministryofjustice/hmpps-auth-clients'
-import getSanitisedError from '../sanitisedError'
 import config from '../config'
 import logger from '../../logger'
 
@@ -20,30 +19,13 @@ export default class AlcoholMonitoringDatastoreClient extends RestClient {
   rootPath = '/orders/alcohol-monitoring'
 
   listOrderDetailsByQueryExecutionId(queryExecutionId: string, userToken: string) {
-    try {
-      return this.get<AlcoholMonitoringOrderDetails[]>(
-        {
-          path: this.rootPath,
-          query: { id: queryExecutionId },
-        },
-        asUser(userToken),
-      )
-    } catch (error) {
-      let userFriendlyMessage = 'Error retrieving search results'
-      const sanitisedError = getSanitisedError(error)
-
-      const errorMessage: string | undefined = error.data?.developerMessage
-      if (
-        errorMessage &&
-        errorMessage.includes('QueryExecution') &&
-        errorMessage.includes('was not found (Service: Athena, Status Code: 400, Request ID:')
-      ) {
-        userFriendlyMessage += ': Invalid query execution ID'
-      }
-
-      sanitisedError.message = `${userFriendlyMessage}: ${sanitisedError.message}`
-      throw sanitisedError
-    }
+    return this.get<AlcoholMonitoringOrderDetails[]>(
+      {
+        path: this.rootPath,
+        query: { id: queryExecutionId },
+      },
+      asUser(userToken),
+    )
   }
 
   async getOrderDetails(legacySubjectId: string, userToken: string) {

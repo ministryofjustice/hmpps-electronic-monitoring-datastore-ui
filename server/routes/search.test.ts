@@ -6,17 +6,14 @@ import { paths } from '../constants/paths'
 import { Page } from '../constants/pages'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 
-import IntegrityDatastoreClient from '../data/integrityDatastoreClient'
-
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../services/emDatastoreOrderSearchService')
-jest.mock('../services/emDatastoreConnectionService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(
-  {} as IntegrityDatastoreClient,
+  {} as never,
 ) as jest.Mocked<EmDatastoreOrderSearchService>
 
 let app: Express
@@ -37,7 +34,7 @@ afterEach(() => {
 
 describe('Order details search page', () => {
   it(`should render the order details search page successfully`, async () => {
-    auditService.logPageView.mockResolvedValue(null)
+    auditService.logPageView.mockResolvedValue()
 
     return request(app)
       .get(paths.SEARCH)

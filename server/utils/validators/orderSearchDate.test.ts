@@ -121,7 +121,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(1)
+      expect(result.error!.issues).toHaveLength(1)
     })
 
     it(`returns false if invalid month: 01/13/1965`, () => {
@@ -134,7 +134,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(1)
+      expect(result.error!.issues).toHaveLength(1)
     })
 
     it(`returns false if year too early: 01/07/1000`, () => {
@@ -147,7 +147,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(1)
+      expect(result.error!.issues).toHaveLength(1)
     })
 
     it(`returns false if not numbers: q/q/q`, () => {
@@ -160,7 +160,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(3)
+      expect(result.error!.issues).toHaveLength(3)
     })
 
     it(`returns false if only one part: 1//`, () => {
@@ -173,7 +173,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(1)
+      expect(result.error!.issues).toHaveLength(1)
     })
 
     it(`returns false if missing the day: /1/1990`, () => {
@@ -186,7 +186,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(1)
+      expect(result.error!.issues).toHaveLength(1)
     })
 
     it(`returns false if missing the year: 5/5/`, () => {
@@ -199,7 +199,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(1)
+      expect(result.error!.issues).toHaveLength(1)
     })
 
     it(`returns false if not number and missing parts: q//`, () => {
@@ -212,7 +212,7 @@ describe('OrderSearchCriteria', () => {
 
       expect(result.error).toBeDefined()
       expect(result.success).toBeFalsy()
-      expect(result.error.issues).toHaveLength(1)
+      expect(result.error!.issues).toHaveLength(1)
     })
   })
 

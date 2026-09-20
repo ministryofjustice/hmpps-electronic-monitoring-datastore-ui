@@ -44,7 +44,8 @@ export default function integrityRouter(services: Services): Router {
           restricted,
         })
       } catch (error) {
-        if (error.message === 'Error retrieving search results: Invalid query execution ID') {
+        const e = error as { message: string }
+        if (e.message === 'Error retrieving search results: Invalid query execution ID') {
           res.redirect(paths.SEARCH)
           return
         }

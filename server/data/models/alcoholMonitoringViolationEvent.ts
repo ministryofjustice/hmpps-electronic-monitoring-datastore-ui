@@ -2,18 +2,18 @@ import z from 'zod'
 
 export type AlcoholMonitoringViolationEventDetails = z.infer<typeof AlcoholMonitoringViolationEventDetails>
 export const AlcoholMonitoringViolationEventDetails = z.object({
-  enforcementId: z.string().nullish(),
-  nonComplianceReason: z.string().nullish(),
-  nonComplianceDateTime: z.string().nullish(),
-  violationAlertId: z.string().nullish(),
-  violationAlertDescription: z.string().nullish(),
-  violationEventNotificationDateTime: z.string().nullish(),
-  actionTakenEms: z.string().nullish(),
-  nonComplianceOutcome: z.string().nullish(),
-  nonComplianceResolved: z.string().nullish(),
-  dateResolved: z.string().nullish(),
-  openClosed: z.string().nullish(),
-  visitRequired: z.string().nullish(),
+  enforcementId: z.string().optional(),
+  nonComplianceReason: z.string().optional(),
+  nonComplianceDateTime: z.string().optional(),
+  violationAlertId: z.string().optional(),
+  violationAlertDescription: z.string().optional(),
+  violationEventNotificationDateTime: z.string().optional(),
+  actionTakenEms: z.string().optional(),
+  nonComplianceOutcome: z.string().optional(),
+  nonComplianceResolved: z.string().optional(),
+  dateResolved: z.string().optional(),
+  openClosed: z.string().optional(),
+  visitRequired: z.string().optional(),
 })
 
 export type AlcoholMonitoringViolationEvent = z.infer<typeof AlcoholMonitoringViolationEvent>

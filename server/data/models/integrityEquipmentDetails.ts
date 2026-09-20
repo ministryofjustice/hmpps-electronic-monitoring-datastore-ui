@@ -3,8 +3,8 @@ import z from 'zod'
 export type IntegrityEquipmentDetail = z.infer<typeof IntegrityEquipmentDetail>
 export const IntegrityEquipmentDetail = z.object({
   id: z.string(),
-  equipmentCategoryDescription: z.string().nullish(),
-  installedDateTime: z.string().nullish(),
+  equipmentCategoryDescription: z.string().optional(),
+  installedDateTime: z.string().optional(),
   removedDateTime: z.union([z.string(), z.undefined()]).optional(),
 })
 

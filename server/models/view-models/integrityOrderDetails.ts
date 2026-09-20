@@ -7,36 +7,36 @@ export type IntegrityOrderDetailsView = {
   deviceWearerDetails: {
     specials: string
     legacySubjectId: string
-    firstName: string
-    lastName: string
-    alias: string
-    dateOfBirth: string
-    adultOrChild: string
-    sex: string
-    contact: string
-    primaryAddress: string[]
-    phoneOrMobileNumber: string
-    ppo: string
-    mappa: string
-    technicalBail: string
-    manualRisk: string
-    offenseRisk: string
-    postCodeRisk: string
-    falseLimbRisk: string
-    migratedRisk: string
-    rangeRisk: string
-    reportRisk: string
+    firstName?: string | null
+    lastName?: string | null
+    alias?: string | null
+    dateOfBirth?: string | null
+    adultOrChild?: string | null
+    sex?: string | null
+    contact?: string | null
+    primaryAddress?: (string | null | undefined)[]
+    phoneOrMobileNumber?: string | null
+    ppo?: string | null
+    mappa?: string | null
+    technicalBail?: string | null
+    manualRisk?: string | null
+    offenseRisk?: string | null
+    postCodeRisk?: string | null
+    falseLimbRisk?: string | null
+    migratedRisk?: string | null
+    rangeRisk?: string | null
+    reportRisk?: string | null
   }
   orderDetails: {
-    orderStartDate: string
-    orderEndDate: string
-    orderType: string
-    orderTypeDescription: string
-    orderTypeDetail: string
-    wearingWristPid: string
-    notifyingOrganisationDetailsName: string
-    responsibleOrganisation: string
-    responsibleOrganisationDetailsRegion: string
+    orderStartDate?: string | null
+    orderEndDate?: string | null
+    orderType?: string | null
+    orderTypeDescription?: string | null
+    orderTypeDetail?: string | null
+    wearingWristPid?: string | null
+    notifyingOrganisationDetailsName?: string | null
+    responsibleOrganisation?: string | null
+    responsibleOrganisationDetailsRegion?: string | null
   }
   backUrl: string
 }

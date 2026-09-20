@@ -30,7 +30,6 @@ const auditConfig = (): AuditClientConfig => {
 }
 
 export default {
-  applicationName: 'Electronic Monitoring Datastore',
   buildNumber: get('BUILD_NUMBER', '1_0_0', requiredInProduction),
   productId: get('PRODUCT_ID', 'UNASSIGNED', requiredInProduction),
   gitRef: get('GIT_REF', 'xxxxxxxxxxxxxxxxxxx', requiredInProduction),

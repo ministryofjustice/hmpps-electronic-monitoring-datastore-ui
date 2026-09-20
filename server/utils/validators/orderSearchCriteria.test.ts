@@ -10,7 +10,7 @@ describe('OrderSearchCriteria', () => {
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: [],
           message: 'You must enter a value into at least one search field',
@@ -33,7 +33,7 @@ describe('OrderSearchCriteria', () => {
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: [],
           message: 'You must enter a value into at least one search field',
@@ -56,7 +56,7 @@ describe('OrderSearchCriteria', () => {
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: ['searchType'],
           message: 'Invalid option: expected one of "integrity"|"alcohol-monitoring"',
@@ -79,7 +79,7 @@ describe('OrderSearchCriteria', () => {
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: ['firstName'],
           message: 'First name must contain letters only',
@@ -102,7 +102,7 @@ describe('OrderSearchCriteria', () => {
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: ['dob'],
           message: 'Please enter a real date in the format DD/MM/YYYY. For example, 24/10/2020',
@@ -125,7 +125,7 @@ describe('OrderSearchCriteria', () => {
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual(
+      expect(result.error!.issues).toEqual(
         expect.arrayContaining([
           expect.objectContaining({
             path: ['firstName'],

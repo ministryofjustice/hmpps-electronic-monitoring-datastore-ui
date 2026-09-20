@@ -9,15 +9,15 @@ export type OrderSearchRequest = Token & {
 export const OrderSearchFirstName = z
   .string()
   .regex(/^[a-zA-Z]*$/, { message: strings.errors.invalidFirstName })
-  .nullish()
+  .optional()
 export const OrderSearchLastName = z
   .string()
   .regex(/^[a-zA-Z]*$/, { message: strings.errors.invalidLastName })
-  .nullish()
+  .optional()
 export const OrderSearchAlias = z
   .string()
   .regex(/^[a-zA-Z\s]*$/, { message: strings.errors.invalidAlias })
-  .nullish()
+  .optional()
 
 const atLeastOneDefined = (obj: Record<string | number | symbol, unknown>): boolean =>
   Object.values({ ...obj, searchType: undefined }).some(v => v !== '' && v !== undefined && v !== null)
@@ -70,31 +70,34 @@ export type OrderSearchCriteria = z.infer<typeof OrderSearchCriteria>
 export const OrderSearchCriteria = z
   .object({
     searchType: z.enum(['integrity', 'alcohol-monitoring']).default('integrity'),
-    legacySubjectId: z.string().nullish(),
+    legacySubjectId: z.string().optional(),
     firstName: z
       .string()
       .regex(/^[a-zA-Z]*$/, { message: strings.errors.invalidFirstName, abort: false })
-      .nullish(),
+      .optional(),
     lastName: z
       .string()
       .regex(/^[a-zA-Z]*$/, { message: strings.errors.invalidLastName, abort: false })
-      .nullish(),
+      .optional(),
     alias: z
       .string()
       .regex(/^[a-zA-Z\s]*$/, { message: strings.errors.invalidAlias, abort: false })
-      .nullish(),
+      .optional(),
     dobDay: z.coerce
       .string()
       .regex(/^[\d]*$/, { message: strings.errors.unrealDate, abort: false })
-      .nullish(),
+      .nullish()
+      .optional(),
     dobMonth: z.coerce
       .string()
       .regex(/^[\d]*$/, { message: strings.errors.unrealDate, abort: false })
-      .nullish(),
+      .nullish()
+      .optional(),
     dobYear: z.coerce
       .string()
       .regex(/^[\d]*$/, { message: strings.errors.unrealDate, abort: false })
-      .nullish(),
+      .nullish()
+      .optional(),
   })
   .refine(atLeastOneDefined, {
     path: [],
