@@ -7,15 +7,15 @@ export class MockServer {
     this.request = nock(this.url)
   }
 
-  withMockedGetResponse(path: string, expectedResult: unknown) {
+  withMockedGetResponse(path: string, expectedResult?: nock.Body) {
     this.request.get(path).matchHeader('authorization', 'Bearer test-system-token').reply(200, expectedResult)
   }
 
-  withMockedPostResponse(path: string, data: RequestBodyMatcher, expectedResult: unknown) {
+  withMockedPostResponse(path: string, data: RequestBodyMatcher, expectedResult?: nock.Body) {
     this.request.post(path, data).matchHeader('authorization', 'Bearer test-system-token').reply(200, expectedResult)
   }
 
-  withMockedAuthErrorGetResponse(path: string, expectedResult: unknown = null) {
+  withMockedAuthErrorGetResponse(path: string, expectedResult?: nock.Body) {
     this.request.get(path).matchHeader('authorization', 'Bearer test-system-token').reply(401, expectedResult)
   }
 
@@ -23,7 +23,7 @@ export class MockServer {
     this.request.post(path, data).matchHeader('authorization', 'Bearer test-system-token').reply(401)
   }
 
-  withMockedServerErrorGetResponse(path: string, expectedResult: unknown = null) {
+  withMockedServerErrorGetResponse(path: string, expectedResult?: nock.Body) {
     this.request.get(path).matchHeader('authorization', 'Bearer test-system-token').reply(500, expectedResult).persist()
   }
 

@@ -1,12 +1,11 @@
 import { expect, test } from '@playwright/test'
-import exampleApi from '../mockApis/exampleApi'
 import hmppsAuth from '../mockApis/hmppsAuth'
 import tokenVerification from '../mockApis/tokenVerification'
 
 import { resetStubs } from '../testUtils'
 
-// NB: add new mock apis here:
-const mockApis = [hmppsAuth, tokenVerification, exampleApi]
+// NB: add new mock APIs here:
+const mockApis = [hmppsAuth, tokenVerification]
 
 test.describe('Health', () => {
   test.afterEach(async () => {
@@ -33,7 +32,7 @@ test.describe('Health', () => {
     test('Info is accessible', async ({ page }) => {
       const response = await page.request.get('/info')
       const payload = await response.json()
-      expect(payload.build.name).toBe('hmpps-template-typescript')
+      expect(payload.build.name).toBe('hmpps-electronic-monitoring-datastore-ui')
     })
   })
 

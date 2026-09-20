@@ -38,7 +38,8 @@ export default function alcoholMonitoringRouter(services: Services): Router {
         const viewModel = AlchoholMonitoringSearchResultView.construct(orders)
         res.render('pages/searchResults', { viewModel, orderType: 'alcohol-monitoring' })
       } catch (error) {
-        if (error.message === 'Error retrieving search results: Invalid query execution ID') {
+        const e = error as { message: string }
+        if (e.message === 'Error retrieving search results: Invalid query execution ID') {
           res.redirect(paths.SEARCH)
           return
         }

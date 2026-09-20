@@ -4,26 +4,26 @@ import { buildUrl } from '../../utils/utils'
 
 export type AlcoholMonitoringDeviceWearer = {
   legacySubjectId: string
-  firstName?: string
-  lastName?: string
-  alias?: string
-  legacySex?: string
-  dateOfBirth?: string
-  primaryAddress?: string[]
-  phoneOrMobileNumber?: string
+  firstName?: string | null
+  lastName?: string | null
+  alias?: string | null
+  legacySex?: string | null
+  dateOfBirth?: string | null
+  primaryAddress?: (string | null | undefined)[]
+  phoneOrMobileNumber?: string | null
 }
 
 export type AlcoholMonitoringOrder = {
-  orderStartDate?: string
-  orderEndDate?: string
-  orderType?: string
-  orderTypeDescription?: string
-  orderEndOutcome?: string
-  specialInstructions?: string
-  enforceableCondition?: string
-  tagAtSource?: string
-  responsibleOrganisationPhoneNumber?: string
-  responsibleOrganisationEmail?: string
+  orderStartDate?: string | null
+  orderEndDate?: string | null
+  orderType?: string | null
+  orderTypeDescription?: string | null
+  orderEndOutcome?: string | null
+  specialInstructions?: string | null
+  enforceableCondition?: string | null
+  tagAtSource?: string | null
+  responsibleOrganisationPhoneNumber?: string | null
+  responsibleOrganisationEmail?: string | null
 }
 
 export type AlcoholMonitoringOrderDetailsView = {
