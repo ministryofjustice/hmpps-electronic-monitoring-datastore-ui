@@ -2,7 +2,7 @@ import z, { ZodError } from 'zod'
 
 import { getError } from '../../utils/utils'
 
-import { OrderSearchCriteria } from '../requests/SearchOrdersRequest'
+import { OrderSearchCriteria } from '../requests/OrderSearchRequest'
 import { ValidationError, ValidationResult } from '../validationResult'
 import { Date, ViewModel, ErrorSummary, ErrorListItem } from './utils'
 
@@ -60,35 +60,10 @@ export const OrderSearchView = {
   },
 }
 
-const constructFromFormData = (formData: OrderSearchCriteria, validationErrors?: ValidationResult): OrderSearchView => {
-  if (!validationErrors || validationErrors.length === 0) {
-    return {
-      searchType: {
-        value: formData.searchType,
-      },
-      legacySubjectId: {
-        value: formData.legacySubjectId,
-      },
-      firstName: {
-        value: formData.firstName,
-      },
-      lastName: {
-        value: formData.lastName,
-      },
-      alias: {
-        value: formData.alias,
-      },
-      dateOfBirth: {
-        value: {
-          day: formData.dobDay,
-          month: formData.dobMonth,
-          year: formData.dobYear,
-        },
-      },
-      errorSummary: undefined,
-    }
-  }
-
+const constructFromFormData = (
+  formData: OrderSearchCriteria,
+  validationErrors: ValidationResult = [],
+): OrderSearchView => {
   return {
     searchType: {
       value: formData.searchType,
@@ -112,11 +87,15 @@ const constructFromFormData = (formData: OrderSearchCriteria, validationErrors?:
     },
     dateOfBirth: {
       value: {
-        day: formData.dobDay,
-        month: formData.dobMonth,
-        year: formData.dobYear,
+        day: formData['dob-day'],
+        month: formData['dob-month'],
+        year: formData['dob-year'],
       },
-      error: getError(validationErrors, 'dateOfBirth'),
+      error:
+        getError(validationErrors, 'dob') ||
+        getError(validationErrors, 'dob-day') ||
+        getError(validationErrors, 'dob-month') ||
+        getError(validationErrors, 'dob-year'),
     },
     errorSummary: createErrorSummary(validationErrors),
   }

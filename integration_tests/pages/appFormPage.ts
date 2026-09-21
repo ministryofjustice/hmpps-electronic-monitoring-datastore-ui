@@ -1,12 +1,12 @@
-import type { Page } from '@playwright/test'
+import { type Page } from '@playwright/test'
 
 import AppPage from './appPage'
 
 import FormComponent from './components/formComponent'
 import ErrorSummaryComponent from './components/errorSummaryComponent'
 
-export default class AppFormPage extends AppPage {
-  protected formComponent: FormComponent | undefined
+export default class AppFormPage<T extends FormComponent> extends AppPage {
+  protected formComponent: T | undefined
 
   readonly errorSummary: ErrorSummaryComponent
 
@@ -16,15 +16,7 @@ export default class AppFormPage extends AppPage {
     this.errorSummary = new ErrorSummaryComponent(this.page)
   }
 
-  get form() {
-    return this.formComponent
-  }
-
-  async checkOnPage(): Promise<void> {
-    await super.checkOnPage()
-
-    if (this.formComponent) {
-      await this.formComponent.checkHasForm()
-    }
+  get form(): T {
+    return this.formComponent!
   }
 }

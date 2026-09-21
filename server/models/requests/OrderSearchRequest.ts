@@ -83,22 +83,25 @@ export const OrderSearchCriteria = z
       .string()
       .regex(/^[a-zA-Z\s]*$/, { message: strings.errors.invalidAlias, abort: false })
       .optional(),
-    dobDay: z.coerce
+    'dob-day': z.coerce
       .string()
       .regex(/^[\d]*$/, { message: strings.errors.unrealDate, abort: false })
-      .nullish()
       .optional(),
-    dobMonth: z.coerce
+    'dob-month': z.coerce
       .string()
       .regex(/^[\d]*$/, { message: strings.errors.unrealDate, abort: false })
-      .nullish()
       .optional(),
-    dobYear: z.coerce
+    'dob-year': z.coerce
       .string()
       .regex(/^[\d]*$/, { message: strings.errors.unrealDate, abort: false })
-      .nullish()
       .optional(),
   })
+  .transform(data => ({
+    ...data,
+    dobDay: data['dob-day'],
+    dobMonth: data['dob-month'],
+    dobYear: data['dob-year'],
+  }))
   .refine(atLeastOneDefined, {
     path: [],
     message: 'You must enter a value into at least one search field',

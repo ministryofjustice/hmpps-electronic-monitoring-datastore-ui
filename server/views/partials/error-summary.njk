@@ -1,15 +1,13 @@
-{% if errors %}
-  {{ govukErrorSummary({
-    titleText: "There is a problem",
-    errorList: [
-      {
-        text: "Enter your full name",
-        href: "#"
-      },
-      {
-        text: "The date your passport was issued must be in the past",
-        href: "#"
-      }
-    ]
+{% if errorSummary %}
+{% set errorList = [] %}
+{% for entry in errorSummary.errorList %}
+{% set errorList = (errorList.push({
+      text: entry.message,
+      href: ("#" + entry.field) if entry.field !== '' else ''
+    }), errorList) %}
+{% endfor %}
+{{ govukErrorSummary({
+    titleText: errorSummary.title,
+    errorList: errorList
   }) }}
 {% endif %}
