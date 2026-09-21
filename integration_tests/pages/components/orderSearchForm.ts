@@ -1,10 +1,9 @@
-import { type Locator } from '@playwright/test'
+import type { Locator } from '@playwright/test'
+import type { Page } from 'playwright-core'
 
 import FormComponent from './formComponent'
-
-// import FormDateComponent from '../formDateComponent'
-// import FormInputComponent from '../formInputComponent'
-// import FormRadiosComponent from '../formRadiosComponent'
+import FormInputComponent from './formInputComponent'
+import FormDateComponent from './formDateComponent'
 
 export type OrderSearchFormData = {
   orderType: string
@@ -18,49 +17,38 @@ export type OrderSearchFormData = {
 export default class OrderSearchFormComponent extends FormComponent {
   // FIELDS
 
-  /*
-  get orderTypeField(): FormRadiosComponent {
-    const label = 'Order type'
-    return new FormRadiosComponent(this.form, label, ['Integrity', 'Alcohol monitoring'])
+  readonly orderType: Locator
+
+  readonly legacySubjectId: FormInputComponent
+
+  readonly firstName: FormInputComponent
+
+  readonly lastName: FormInputComponent
+
+  readonly alias: FormInputComponent
+
+  readonly dateOfBirth: FormDateComponent
+
+  readonly searchButton: Locator
+
+  constructor(page: Page) {
+    super(page)
+
+    this.orderType = this.element.getByRole('radio', { name: 'Order type' })
+
+    this.legacySubjectId = new FormInputComponent(this.element, 'Legacy subject id')
+    this.firstName = new FormInputComponent(this.element, 'First name')
+    this.lastName = new FormInputComponent(this.element, 'Last name')
+    this.alias = new FormInputComponent(this.element, 'Alias')
+    this.dateOfBirth = new FormDateComponent(this.element, 'Date of birth')
+
+    this.searchButton = this.element.getByRole('button', { name: 'Search' })
   }
-
-  get legacySubjectIdField(): FormInputComponent {
-    const label = 'Legacy subject id'
-    return new FormInputComponent(this.form, label)
-  }
-
-  get firstNameField(): FormInputComponent {
-    const label = 'First name'
-    return new FormInputComponent(this.form, label)
-  }
-
-  get lastNameField(): FormInputComponent {
-    const label = 'Last name'
-    return new FormInputComponent(this.form, label)
-  }
-
-  get aliasField(): FormInputComponent {
-    const label = 'Alias'
-    return new FormInputComponent(this.form, label)
-  }
-
-  get dateOfBirthField(): FormDateComponent {
-    const label = 'Date of birth'
-    return new FormDateComponent(this.form, label)
-  }
-  */
-
-  // ACTIONS
-
-  get searchButton(): Locator {
-    return this.element.getByRole('button', { name: 'Search' })
-  }
-
-  /*
 
   // FORM HELPERS
 
-  fillInWith = (criteria: OrderSearchFormData): undefined => {
+  /*
+  fill = (criteria: OrderSearchFormData): undefined => {
     if (criteria.orderType) {
       this.orderTypeField.set(criteria.orderType)
     }
@@ -85,18 +73,11 @@ export default class OrderSearchFormComponent extends FormComponent {
       this.dateOfBirthField.set(criteria.dateOfBirth)
     }
   }
+  */
 
-  shouldBeValid(): void {
+  /*
+  isValid(): boolean {
     this.orderTypeField.shouldNotHaveValidationMessage()
   }
-
-  shouldBeDisabled(): void {
-    this.orderTypeField.shouldBeDisabled()
-  }
-
-  shouldNotBeDisabled(): void {
-    this.orderTypeField.shouldNotBeDisabled()
-  }
-
   */
 }

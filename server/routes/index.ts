@@ -11,10 +11,8 @@ import type { Services } from '../services'
 import integrityRouter from './integrity'
 import alcoholMonitoringRouter from './alcoholMonitoring'
 
-import { OrderSearchCriteria } from '../models/requests/SearchOrdersRequest'
+import { OrderSearchCriteria } from '../models/requests/OrderSearchRequest'
 import { convertZodErrorToValidationError, OrderSearchView } from '../models/view-models/orderSearch'
-
-const orderSearchCriteria = OrderSearchCriteria
 
 export default function routes(services: Services): Router {
   const router = Router()
@@ -53,6 +51,8 @@ export default function routes(services: Services): Router {
         page: {
           title: strings.pageHeadings.searchOrderForm,
         },
+        debugViewModel: { ...viewModel },
+        formData,
       }
 
       res.render('pages/search', viewModel)
@@ -66,7 +66,7 @@ export default function routes(services: Services): Router {
       const { token } = res.locals.user
       const { searchType } = req.body
       const invalidInput = req.body
-      const { data, error, success } = orderSearchCriteria.safeParse(invalidInput)
+      const { data, error, success } = OrderSearchCriteria.safeParse(invalidInput)
 
       if (!success) {
         const errors = convertZodErrorToValidationError(error)

@@ -3,6 +3,8 @@ import tokenVerification from './mockApis/tokenVerification'
 import hmppsAuth, { type UserToken } from './mockApis/hmppsAuth'
 import { resetStubs } from './mockApis/wiremock'
 
+import './playwright.matchers'
+
 export { resetStubs }
 
 const DEFAULT_ROLES = ['ROLE_SOME_REQUIRED_ROLE']
