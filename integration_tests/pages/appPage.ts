@@ -27,20 +27,19 @@ export default class AppPage extends AbstractPage {
     title: string,
     params?: object,
     query?: object,
-    ...args: Args
   ): Promise<T>
 
   static async verifyOnPage<T extends AppPage, Args extends unknown[]>(
     constructor: new (...args: Args) => T,
     page: Page,
     title: string,
-    ...args: Args
+    params?: object,
   ): Promise<T>
 
   static async verifyOnPage<T extends AppPage, Args extends unknown[]>(
     constructor: new (...args: Args) => T,
     page: Page,
-    ...args: Args
+    title: string,
   ): Promise<T>
 
   static async verifyOnPage<T extends AppPage, Args extends unknown[]>(
@@ -69,24 +68,34 @@ export default class AppPage extends AbstractPage {
     page: Page,
     params?: object,
     query?: object,
-    ...args: Args
+  ): Promise<T>
+
+  static async visit<T extends AppPage, Args extends unknown[]>(
+    constructor: new (...args: Args) => T,
+    page: Page,
+    params?: object,
+  ): Promise<T>
+
+  static async visit<T extends AppPage, Args extends unknown[]>(
+    constructor: new (...args: Args) => T,
+    page: Page,
   ): Promise<T>
 
   static async visit<T extends AppPage, Args extends unknown[]>(
     constructor: new (...args: Args) => T,
     ...args: Args
   ): Promise<T> {
-    const { params, query } = extractParamsAndArgs(args)
-    const page = new constructor(...args)
+    const { page, params, query } = extractParamsAndArgs(args)
+    const expectedPage = new constructor(...([page, ...args] as Args))
 
-    if (!page.uri) {
+    if (!expectedPage.uri) {
       throw new Error(`${constructor} has no <uri: string> defined so it is not possible to visit it.`)
     }
-    const url = buildUrl(page.uri as string, params, query)
-    await page.page.goto(url)
+    const url = buildUrl(expectedPage.uri as string, params, query)
+    await page.goto(url)
 
-    await page.checkOnPage()
-    return page
+    await expectedPage.checkOnPage()
+    return expectedPage
   }
 
   readonly title: string
@@ -99,6 +108,8 @@ export default class AppPage extends AbstractPage {
 
   readonly backLink: Locator
 
+  readonly serviceInformation: Locator
+
   constructor(page: Page, title: string, uri?: string | RegExp, subtitle?: string) {
     super(page)
 
@@ -109,6 +120,7 @@ export default class AppPage extends AbstractPage {
     this.header = this.page.locator('h1', { hasText: this.title })
 
     this.backLink = this.page.getByRole('link', { name: 'Back', exact: true })
+    this.serviceInformation = this.page.locator('.service-information')
   }
 
   async checkOnPage(): Promise<void> {
@@ -137,12 +149,6 @@ export default class AppPage extends AbstractPage {
   }
 
   async goBack(): Promise<void> {
-    await this.page.getByRole('link', { name: 'Back', exact: true }).click()
-  }
-
-  async serviceInformation(): Promise<Locator> {
-    return this.page.getByText('This service gives you access to all order data that was held by Capita and G4S', {
-      exact: true,
-    })
+    await this.backLink.click()
   }
 }
