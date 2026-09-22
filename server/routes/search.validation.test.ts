@@ -43,13 +43,14 @@ describe('Order details search request validation', () => {
       .expect(302)
       .expect('Location', paths.SEARCH)
       .expect(_res => {
-        expect(flashProvider).toHaveBeenCalledWith('formData', {})
-        expect(flashProvider).toHaveBeenCalledWith('validationErrors', [
+        expect(flashProvider).toHaveBeenCalledWith('formData', '{}')
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
           JSON.stringify({
             error: 'You must enter a value into at least one search field',
             field: '',
           }),
-        ])
+        )
       })
   })
 
@@ -84,17 +85,25 @@ describe('Order details search request validation', () => {
 
   // This will need to be done in cypress
   it('renders page with validation errors and form data', async () => {
-    flashProvider.mockImplementationOnce(() => [
-      JSON.stringify({
-        error: 'First name must consist of letters only',
-        field: 'firstName',
-      }),
-      JSON.stringify({
-        error: 'Invalid date format',
-        field: 'dateOfBirth',
-      }),
-    ])
-    flashProvider.mockImplementationOnce(() => {})
+    flashProvider.mockImplementation(key => {
+      if (key === 'formData') {
+        return [JSON.stringify({})]
+      }
+      if (key === 'validationErrors') {
+        return [
+          JSON.stringify({
+            error: 'First name must consist of letters only',
+            field: 'firstName',
+          }),
+          JSON.stringify({
+            error: 'Invalid date format',
+            field: 'dateOfBirth',
+          }),
+        ]
+      }
+
+      return undefined
+    })
 
     return request(app)
       .get(`${paths.SEARCH}`)

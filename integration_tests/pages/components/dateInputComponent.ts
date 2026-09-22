@@ -38,10 +38,16 @@ export default class DateInputComponent {
     await this.yearField.fill(value.toString())
   }
 
-  async fill(day: number | string, month: number | string, year: number | string) {
-    await this.fillDay(day)
-    await this.fillMonth(month)
-    await this.fillYear(year)
+  async fill(dateOfBirth: { day?: number | string; month?: number | string; year?: number | string }) {
+    if (dateOfBirth.day !== undefined) {
+      await this.fillDay(dateOfBirth.day)
+    }
+    if (dateOfBirth.month !== undefined) {
+      await this.fillMonth(dateOfBirth.month)
+    }
+    if (dateOfBirth.year !== undefined) {
+      await this.fillYear(dateOfBirth.year)
+    }
   }
 
   async isVisible() {
