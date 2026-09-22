@@ -20,14 +20,14 @@ const defaultOrderDetails = (legacySubjectId: string, restricted: boolean) =>
 
 const apiGetStubFor = (
   httpStatus: number,
-  url: string,
+  urlPath: string,
   queryParameters: Record<string, { equalTo: string } | { matches: string }> | undefined,
   body: unknown,
 ): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      url,
+      urlPath,
       queryParameters,
     },
     response: {
@@ -38,6 +38,24 @@ const apiGetStubFor = (
   })
 
 export default {
+  stubPostOrderSearch: (
+    queryExecutionId: string,
+    restricted: boolean = false,
+    httpStatus: number = 200,
+  ): SuperAgentRequest =>
+    stubFor({
+      request: {
+        method: 'POST',
+        urlPath: `/datastore/orders/integrity`,
+        queryParameters: { restricted: { equalTo: `${restricted}` } },
+      },
+      response: {
+        status: httpStatus,
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        jsonBody: httpStatus === 200 ? { queryExecutionId } : undefined,
+      },
+    }),
+
   stubGetSearchResults: (
     queryExecutionId: string,
     legacySubjectId: string = 'default_legacy_subject_001',
@@ -47,7 +65,7 @@ export default {
   ): SuperAgentRequest =>
     apiGetStubFor(
       httpStatus,
-      `/datastore/orders/integrity/${legacySubjectId}`,
+      `/datastore/orders/integrity`,
       { restricted: { equalTo: `${restricted}` }, id: { equalTo: `${queryExecutionId}` } },
       body || [defaultOrderDetails(legacySubjectId, restricted)],
     ),

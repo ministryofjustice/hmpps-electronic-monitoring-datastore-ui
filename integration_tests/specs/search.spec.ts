@@ -2,9 +2,14 @@ import { expect, test } from '@playwright/test'
 
 import { login, resetStubs } from '../testUtils'
 
+import mockIntegrityApi from '../mockApis/integrityDatastoreApi'
+import mockAlcoholMonitoringApi from '../mockApis/alcoholMonitoringDatastoreApi'
+
 import AppPage from '../pages/appPage'
 import StartPage from '../pages/startPage'
 import SearchPage from '../pages/searchPage'
+import IntegritySearchResultsPage from '../pages/integritySearchResults'
+import AlcoholMonitoringSearchResultsPage from '../pages/alcoholMonitoringSearchResults'
 
 test.describe('Search', () => {
   test.beforeEach(async ({ page }) => {
@@ -53,6 +58,12 @@ test.describe('Search', () => {
   })
 
   test.describe('Order search form', () => {
+    test('Displays Order type field', async ({ page }) => {
+      const searchPage = await AppPage.visit(SearchPage, page)
+      await expect(searchPage.form.orderType).toBeVisibleWithinForm()
+      await expect(searchPage.form.orderType).not.toBeDisabledWithinForm()
+    })
+
     test('Displays Legacy subject ID field', async ({ page }) => {
       const searchPage = await AppPage.visit(SearchPage, page)
       await expect(searchPage.form.legacySubjectId).toBeVisibleWithinForm()
@@ -167,6 +178,38 @@ test.describe('Search', () => {
       await expect(searchPage.form.firstName).not.toHaveValidationError()
       await expect(searchPage.form.lastName).not.toHaveValidationError()
       await expect(searchPage.form.alias).toHaveValidationErrorText('Alias must contain letters and spaces only')
+    })
+  })
+
+  test.describe('Submitting an order search request', () => {
+    test('Should submit an integrity order search request successfully', async ({ page }) => {
+      await mockIntegrityApi.stubPostOrderSearch('1234566', false)
+      await mockIntegrityApi.stubGetSearchResults('1234566', '0988765', false, [])
+
+      const searchPage = await AppPage.visit(SearchPage, page)
+
+      await searchPage.form.orderType.check('Integrity')
+      await searchPage.form.firstName.fill('John')
+      await searchPage.form.lastName.fill('Smith')
+      await searchPage.form.alias.fill('Johnny')
+      await searchPage.form.searchButton.click()
+
+      await AppPage.verifyOnPage(IntegritySearchResultsPage, page)
+    })
+
+    test('Should submit an alcohol monitoring order search request successfully', async ({ page }) => {
+      await mockAlcoholMonitoringApi.stubPostOrderSearch('1234566')
+      await mockAlcoholMonitoringApi.stubGetSearchResults('1234566', '0988765', [])
+
+      const searchPage = await AppPage.visit(SearchPage, page)
+
+      await searchPage.form.orderType.check('Alcohol monitoring data only')
+      await searchPage.form.firstName.fill('Robert')
+      await searchPage.form.lastName.fill('Marshall')
+      await searchPage.form.alias.fill('Bobby')
+      await searchPage.form.searchButton.click()
+
+      await AppPage.verifyOnPage(AlcoholMonitoringSearchResultsPage, page)
     })
   })
 })

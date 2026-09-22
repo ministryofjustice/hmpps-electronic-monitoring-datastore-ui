@@ -1,5 +1,6 @@
 import { SuperAgentRequest } from 'superagent'
 import { stubFor } from './wiremock'
+
 import { AlcoholMonitoringOrderDetails } from '../../server/data/models/alcoholMonitoringOrderDetails'
 import { AlcoholMonitoringEquipmentDetails } from '../../server/data/models/alcoholMonitoringEquipmentDetails'
 import { AlcoholMonitoringServiceDetails } from '../../server/data/models/alcoholMonitoringServiceDetails'
@@ -8,9 +9,9 @@ import { AlcoholMonitoringContactEvent } from '../../server/data/models/alcoholM
 import { AlcoholMonitoringIncidentEvent } from '../../server/data/models/alcoholMonitoringIncidentEvent'
 import { AlcoholMonitoringViolationEvent } from '../../server/data/models/alcoholMonitoringViolationEvent'
 
-const defaultOrderDetails = (legacySubjectId: string, restricted: boolean) =>
+const defaultOrderDetails = (legacySubjectId: string) =>
   ({
-    specials: restricted ? 'yes' : 'no',
+    specials: 'no',
     legacySubjectId,
     firstName: 'John',
     lastName: 'Smith',
@@ -36,14 +37,14 @@ const defaultOrderDetails = (legacySubjectId: string, restricted: boolean) =>
 
 const apiGetStubFor = (
   httpStatus: number,
-  url: string,
+  urlPath: string,
   queryParameters: Record<string, { equalTo: string } | { matches: string }> | undefined,
   body: unknown,
 ): SuperAgentRequest =>
   stubFor({
     request: {
       method: 'GET',
-      url,
+      urlPath,
       queryParameters,
     },
     response: {
@@ -54,31 +55,43 @@ const apiGetStubFor = (
   })
 
 export default {
+  stubPostOrderSearch: (queryExecutionId: string, httpStatus: number = 200): SuperAgentRequest =>
+    stubFor({
+      request: {
+        method: 'POST',
+        urlPath: `/datastore/orders/alcohol-monitoring`,
+        queryParameters: { restricted: { equalTo: `false` } },
+      },
+      response: {
+        status: httpStatus,
+        headers: { 'Content-Type': 'application/json;charset=UTF-8' },
+        jsonBody: httpStatus === 200 ? { queryExecutionId } : undefined,
+      },
+    }),
+
   stubGetSearchResults: (
     queryExecutionId: string,
     legacySubjectId: string = 'default_legacy_subject_001',
-    restricted: boolean = false,
     body: AlcoholMonitoringOrderDetails[] | undefined = undefined,
     httpStatus: number = 200,
   ): SuperAgentRequest =>
     apiGetStubFor(
       httpStatus,
-      `/datastore/orders/alcohol-monitoring/${legacySubjectId}`,
-      { restricted: { equalTo: `${restricted}` }, id: { equalTo: `${queryExecutionId}` } },
-      body || [defaultOrderDetails(legacySubjectId, restricted)],
+      `/datastore/orders/alcohol-monitoring`,
+      { id: { equalTo: `${queryExecutionId}` } },
+      body || [defaultOrderDetails(legacySubjectId)],
     ),
 
   stubGetOrderDetails: (
     legacySubjectId: string,
-    restricted: boolean = false,
     body: AlcoholMonitoringOrderDetails | undefined = undefined,
     httpStatus: number = 200,
   ): SuperAgentRequest =>
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}`,
-      { restricted: { equalTo: `${restricted}` } },
-      body || defaultOrderDetails(legacySubjectId, restricted),
+      { restricted: { equalTo: `false` } },
+      body || defaultOrderDetails(legacySubjectId),
     ),
 
   stubGetEquipmentDetails: (
@@ -90,7 +103,7 @@ export default {
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`,
-      { restricted: { equalTo: `${restricted}` } },
+      { restricted: { equalTo: `false` } },
       body,
     ),
 
@@ -103,7 +116,7 @@ export default {
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}/service-details`,
-      { restricted: { equalTo: `${restricted}` } },
+      { restricted: { equalTo: `false` } },
       body,
     ),
 
@@ -116,7 +129,7 @@ export default {
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}/visit-details`,
-      { restricted: { equalTo: `${restricted}` } },
+      { restricted: { equalTo: `false` } },
       body,
     ),
 
@@ -129,7 +142,7 @@ export default {
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}/contact-events`,
-      { restricted: { equalTo: `${restricted}` } },
+      { restricted: { equalTo: `false` } },
       body,
     ),
 
@@ -142,7 +155,7 @@ export default {
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}/incident-events`,
-      { restricted: { equalTo: `${restricted}` } },
+      { restricted: { equalTo: `false` } },
       body,
     ),
 
@@ -155,7 +168,7 @@ export default {
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}/violation-events`,
-      { restricted: { equalTo: `${restricted}` } },
+      { restricted: { equalTo: `false` } },
       body,
     ),
 }

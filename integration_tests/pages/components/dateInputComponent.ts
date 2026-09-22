@@ -1,6 +1,6 @@
 import { type Locator } from '@playwright/test'
 
-export default class FormDateComponent {
+export default class DateInputComponent {
   readonly element: Locator
 
   readonly dayField: Locator
@@ -42,5 +42,17 @@ export default class FormDateComponent {
     await this.fillDay(day)
     await this.fillMonth(month)
     await this.fillYear(year)
+  }
+
+  async isVisible() {
+    return Promise.all([this.dayField.isVisible(), this.monthField.isVisible(), this.yearField.isVisible()]).then(
+      ([dayVisible, monthVisible, yearVisible]) => dayVisible && monthVisible && yearVisible,
+    )
+  }
+
+  async isDisabled() {
+    return Promise.all([this.dayField.isDisabled(), this.monthField.isDisabled(), this.yearField.isDisabled()]).then(
+      ([dayDisabled, monthDisabled, yearDisabled]) => dayDisabled && monthDisabled && yearDisabled,
+    )
   }
 }
