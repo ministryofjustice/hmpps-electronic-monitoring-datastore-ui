@@ -1,0 +1,16 @@
+{%- from "govuk/components/error-summary/macro.njk" import govukErrorSummary -%}
+
+{%- macro validationErrorSummary(errorSummary) -%}
+{%- set errorList = [] -%}
+{%- for entry in errorSummary.errorList -%}
+{%- set errorList = (errorList.push({
+    text: entry.message,
+    href: ("#" + entry.field) if entry.field !== '' else ''
+  }), errorList) -%}
+{%- endfor -%}
+
+{{ govukErrorSummary({
+  titleText: errorSummary.title,
+  errorList: errorList
+}) }}
+{%- endmacro -%}

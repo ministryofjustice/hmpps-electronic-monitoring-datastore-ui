@@ -3,25 +3,24 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
 {% set pageTitle = "Electronic Monitoring Datastore" %}
-{% set searchUrl = "/search" %}
 
 {% block innerContent %}
-  <p>Use this service for CMT users to search historial electronic monitoring data.</p>
+<p>This service is for Contracts Management Team (CMT) users to search historial electronic monitoring data.</p>
 
-  <div class="govuk-button-group">
-    {{ govukButton({
+<div class="govuk-button-group">
+  {{ govukButton({
       text: "Go to search page",
-      href: searchUrl,
+      href: "/search",
       isStartButton: true
     }) }}
 
-    {% if (environmentName | upper == 'DEV') %}
-      {{ govukButton({
+  {% if (environmentName | upper == 'DEV') %}
+  {{ govukButton({
         text: "Test API connection",
         href: "/test",
         isStartButton: true,
         classes: "govuk-button--secondary"
       }) }}
-    {% endif %}
-  </div>
+  {% endif %}
+</div>
 {% endblock %}
