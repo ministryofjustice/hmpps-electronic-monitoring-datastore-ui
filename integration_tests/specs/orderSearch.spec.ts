@@ -33,8 +33,8 @@ test.describe('Order search', () => {
 
     test('Can see service information', async ({ page }) => {
       const searchPage = await AppPage.visit(SearchPage, page)
-      await expect(searchPage.serviceInformation).toBeVisible()
-      await expect(searchPage.serviceInformation).toContainText(
+      await expect(searchPage.serviceInformationBanner).toBeVisible()
+      await expect(searchPage.serviceInformationBanner).toContainText(
         'This service gives you access to all order data that was held by Capita and G4S',
       )
     })

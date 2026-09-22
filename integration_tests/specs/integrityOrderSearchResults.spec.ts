@@ -54,8 +54,8 @@ test.describe('Integrity order search results', () => {
         { search_id: '3333333' },
       )
 
-      await expect(integritySearchResultsPage.serviceInformation).toBeVisible()
-      await expect(integritySearchResultsPage.serviceInformation).toContainText(
+      await expect(integritySearchResultsPage.serviceInformationBanner).toBeVisible()
+      await expect(integritySearchResultsPage.serviceInformationBanner).toContainText(
         'This service gives you access to all order data that was held by Capita and G4S',
       )
     })
@@ -144,9 +144,9 @@ test.describe('Integrity order search results', () => {
         { search_id: '6666666' },
       )
 
-      await expect(integritySearchResultsPage.searchResults).toBeVisible()
-      await expect(integritySearchResultsPage.searchResults).toContainText('1234567 JOHN DOE')
-      await expect(integritySearchResultsPage.searchResults).toContainText('0987654 BOB FLEMM')
+      await expect(integritySearchResultsPage.orderSearchResults).toBeVisible()
+      await expect(integritySearchResultsPage.orderSearchResults).toContainText('1234567 JOHN DOE')
+      await expect(integritySearchResultsPage.orderSearchResults).toContainText('0987654 BOB FLEMM')
     })
 
     test('Is accessible', async ({ page }) => {

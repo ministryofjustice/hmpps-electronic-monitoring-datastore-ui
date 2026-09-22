@@ -54,8 +54,8 @@ test.describe('Alcohol monitoring order search results', () => {
         { search_id: '3333333' },
       )
 
-      await expect(integritySearchResultsPage.serviceInformation).toBeVisible()
-      await expect(integritySearchResultsPage.serviceInformation).toContainText(
+      await expect(integritySearchResultsPage.serviceInformationBanner).toBeVisible()
+      await expect(integritySearchResultsPage.serviceInformationBanner).toContainText(
         'This service gives you access to all order data that was held by Capita and G4S',
       )
     })
@@ -140,9 +140,9 @@ test.describe('Alcohol monitoring order search results', () => {
         { search_id: '6666666' },
       )
 
-      await expect(alcoholMonitoringSearchResultsPage.searchResults).toBeVisible()
-      await expect(alcoholMonitoringSearchResultsPage.searchResults).toContainText('1234567 JOHN DOE')
-      await expect(alcoholMonitoringSearchResultsPage.searchResults).toContainText('0987654 BOB FLEMM')
+      await expect(alcoholMonitoringSearchResultsPage.orderSearchResults).toBeVisible()
+      await expect(alcoholMonitoringSearchResultsPage.orderSearchResults).toContainText('1234567 JOHN DOE')
+      await expect(alcoholMonitoringSearchResultsPage.orderSearchResults).toContainText('0987654 BOB FLEMM')
     })
 
     test('Is accessible', async ({ page }) => {
