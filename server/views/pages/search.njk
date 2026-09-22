@@ -1,17 +1,19 @@
 {% extends "../partials/layout-default.njk" %}
 
-{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "../partials/validation-error-summary/macro.njk" import validationErrorSummary %}
 
 {% set pageTitle = page.title %}
 {% set pageTitle = page.title %}
 {% set backUrl = "/" %}
 
 {% block innerContent %}
-{% include "../partials/error-summary.njk" %}
+{%- if errorSummary -%}
+{{ validationErrorSummary(errorSummary) }}
+{%- endif -%}
 
 <form role="form" action="" method="post" {{ formEncoding }} novalidate>
   <input type="hidden" name="_csrf" value="{{ csrfToken }}">
