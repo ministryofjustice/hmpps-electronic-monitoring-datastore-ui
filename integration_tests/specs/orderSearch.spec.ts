@@ -11,7 +11,7 @@ import SearchPage from '../pages/searchPage'
 import IntegritySearchResultsPage from '../pages/integritySearchResults'
 import AlcoholMonitoringSearchResultsPage from '../pages/alcoholMonitoringSearchResults'
 
-test.describe('Search', () => {
+test.describe('Order search', () => {
   test.beforeEach(async ({ page }) => {
     await login(page, { name: 'M. Tester' })
   })

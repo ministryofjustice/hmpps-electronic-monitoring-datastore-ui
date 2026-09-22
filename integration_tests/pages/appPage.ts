@@ -98,24 +98,19 @@ export default class AppPage extends AbstractPage {
     return expectedPage
   }
 
-  readonly title: string
-
-  readonly uri?: string | RegExp
-
-  readonly subtitle?: string
-
   readonly header: Locator
 
   readonly backLink: Locator
 
   readonly serviceInformation: Locator
 
-  constructor(page: Page, title: string, uri?: string | RegExp, subtitle?: string) {
+  constructor(
+    page: Page,
+    readonly title: string,
+    readonly uri?: string | RegExp,
+    readonly subtitle?: string,
+  ) {
     super(page)
-
-    this.title = title
-    this.uri = uri
-    this.subtitle = subtitle
 
     this.header = this.page.locator('h1', { hasText: this.title })
 
