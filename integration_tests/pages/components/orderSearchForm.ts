@@ -12,7 +12,11 @@ export type OrderSearchFormData = {
   firstName?: string
   lastName?: string
   alias?: string
-  dateOfBirth?: Date
+  dateOfBirth?: {
+    day?: string
+    month?: string
+    year?: string
+  }
 }
 
 export default class OrderSearchFormComponent extends FormComponent {
@@ -48,33 +52,29 @@ export default class OrderSearchFormComponent extends FormComponent {
 
   // FORM HELPERS
 
-  fill = (criteria: OrderSearchFormData): undefined => {
+  async fill(criteria: OrderSearchFormData): Promise<void> {
     if (criteria.orderType) {
-      this.orderType.check(criteria.orderType)
+      await this.orderType.check(criteria.orderType)
     }
 
     if (criteria.legacySubjectId) {
-      this.legacySubjectId.fill(criteria.legacySubjectId)
+      await this.legacySubjectId.fill(criteria.legacySubjectId)
     }
 
     if (criteria.firstName) {
-      this.firstName.fill(criteria.firstName)
+      await this.firstName.fill(criteria.firstName)
     }
 
     if (criteria.lastName) {
-      this.lastName.fill(criteria.lastName)
+      await this.lastName.fill(criteria.lastName)
     }
 
     if (criteria.alias) {
-      this.alias.fill(criteria.alias)
+      await this.alias.fill(criteria.alias)
     }
 
     if (criteria.dateOfBirth) {
-      this.dateOfBirth.fill(
-        criteria.dateOfBirth.getDate(),
-        criteria.dateOfBirth.getMonth() + 1,
-        criteria.dateOfBirth.getFullYear(),
-      )
+      await this.dateOfBirth.fill(criteria.dateOfBirth)
     }
   }
 

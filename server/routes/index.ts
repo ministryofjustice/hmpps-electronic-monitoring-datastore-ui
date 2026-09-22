@@ -41,18 +41,16 @@ export default function routes(services: Services): Router {
     paths.SEARCH,
     auditPageViewRequest({ services, page: Page.SEARCH }),
     async (req: Request, res: Response, _next: NextFunction) => {
-      const errors = (req.flash('validationErrors') || []).map(error => JSON.parse(error))
-      const formData = req.flash('formData') || {}
+      const validationErrors = (req.flash('validationErrors') || []).map(validationError => JSON.parse(validationError))
+      const formData = (req.flash('formData') || []).map(data => JSON.parse(data))[0] || {}
 
-      const viewModel = OrderSearchView.construct(formData as never, errors as never)
+      const viewModel = OrderSearchView.construct(formData, validationErrors)
 
       res.locals = {
         ...res.locals,
         page: {
           title: strings.pageHeadings.searchOrderForm,
         },
-        debugViewModel: { ...viewModel },
-        formData,
       }
 
       res.render('pages/search', viewModel)
@@ -65,17 +63,13 @@ export default function routes(services: Services): Router {
     async (req: Request, res: Response) => {
       const { token } = res.locals.user
       const { searchType } = req.body
-      const invalidInput = req.body
-      const { data, error, success } = OrderSearchCriteria.safeParse(invalidInput)
+      const { data, error, success } = OrderSearchCriteria.safeParse(req.body)
 
       if (!success) {
         const errors = convertZodErrorToValidationError(error)
 
-        req.flash('formData', req.body)
-        req.flash(
-          'validationErrors',
-          errors.map(validationError => JSON.stringify(validationError)),
-        )
+        req.flash('formData', JSON.stringify(req.body))
+        errors.map(validationError => req.flash('validationErrors', JSON.stringify(validationError)))
 
         res.redirect(paths.SEARCH)
         return

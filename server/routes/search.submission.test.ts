@@ -3,7 +3,7 @@ import { AuditService } from '@ministryofjustice/hmpps-audit-client'
 import request from 'supertest'
 
 import { paths } from '../constants/paths'
-import { appWithAllRoutes, user } from './testutils/appSetup'
+import { appWithAllRoutes, flashProvider, user } from './testutils/appSetup'
 
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import { QueryExecutionResponse } from '../models/queryExecutionResponse'
@@ -49,6 +49,8 @@ describe('Order details search request', () => {
           },
           'token',
         )
+
+        expect(flashProvider).not.toHaveBeenCalled()
       })
   })
 
@@ -69,6 +71,8 @@ describe('Order details search request', () => {
           },
           'token',
         )
+
+        expect(flashProvider).not.toHaveBeenCalled()
       })
   })
 
@@ -84,6 +88,14 @@ describe('Order details search request', () => {
       .expect(302)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
+        expect(flashProvider).toHaveBeenCalledWith('formData', JSON.stringify({ searchType: 'integrity' }))
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
+          JSON.stringify({
+            error: 'You must enter a value into at least one search field',
+            field: '',
+          }),
+        )
       })
   })
 
@@ -93,7 +105,7 @@ describe('Order details search request', () => {
     return request(app)
       .post(paths.SEARCH)
       .send({
-        searchType: 1,
+        searchType: '1',
         firstName: 'bar',
       })
       .expect('Content-Type', /text\/plain/)
@@ -101,6 +113,14 @@ describe('Order details search request', () => {
       .expect('Location', paths.SEARCH)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
+        expect(flashProvider).toHaveBeenCalledWith('formData', JSON.stringify({ searchType: '1', firstName: 'bar' }))
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
+          JSON.stringify({
+            error: 'Invalid option: expected one of "integrity"|"alcohol-monitoring"',
+            field: 'searchType',
+          }),
+        )
       })
   })
 
@@ -119,6 +139,14 @@ describe('Order details search request', () => {
       .expect('Location', paths.SEARCH)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
+        expect(flashProvider).toHaveBeenCalledWith('formData', JSON.stringify({ searchType: 'foo', firstName: 'bar' }))
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
+          JSON.stringify({
+            error: 'Invalid option: expected one of "integrity"|"alcohol-monitoring"',
+            field: 'searchType',
+          }),
+        )
       })
   })
 
@@ -129,12 +157,23 @@ describe('Order details search request', () => {
       .post(paths.SEARCH)
       .send({
         searchType: 'integrity',
-        firstName: 1,
+        firstName: '1',
       })
       .expect(302)
       .expect('Location', paths.SEARCH)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
+        expect(flashProvider).toHaveBeenCalledWith(
+          'formData',
+          JSON.stringify({ searchType: 'integrity', firstName: '1' }),
+        )
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
+          JSON.stringify({
+            error: 'First name must contain letters only',
+            field: 'firstName',
+          }),
+        )
       })
   })
 
@@ -145,12 +184,23 @@ describe('Order details search request', () => {
       .post(paths.SEARCH)
       .send({
         searchType: 'integrity',
-        lastName: 1,
+        lastName: '1',
       })
       .expect(302)
       .expect('Location', paths.SEARCH)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
+        expect(flashProvider).toHaveBeenCalledWith(
+          'formData',
+          JSON.stringify({ searchType: 'integrity', lastName: '1' }),
+        )
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
+          JSON.stringify({
+            error: 'Last name must contain letters only',
+            field: 'lastName',
+          }),
+        )
       })
   })
 
@@ -164,6 +214,14 @@ describe('Order details search request', () => {
       .expect('Location', paths.SEARCH)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
+        expect(flashProvider).not.toHaveBeenCalledWith('formData', JSON.stringify({ searchType: /.*/ }))
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
+          JSON.stringify({
+            error: 'You must enter a value into at least one search field',
+            field: '',
+          }),
+        )
       })
   })
 

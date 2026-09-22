@@ -60,7 +60,7 @@ test.describe('Integrity order search results', () => {
       )
     })
 
-    test('Can see no order search results', async ({ page }) => {
+    test('Can go back to the search page', async ({ page }) => {
       await mockIntegrityApi.stubGetSearchResults('4444444', '0988765', false, [])
 
       const integritySearchResultsPage = await AppPage.visit(
@@ -69,13 +69,56 @@ test.describe('Integrity order search results', () => {
         {},
         { search_id: '4444444' },
       )
+      await integritySearchResultsPage.backLink.click()
+
+      await AppPage.verifyOnPage(SearchPage, page)
+    })
+  })
+
+  test.describe('When no results are found', () => {
+    test.beforeEach(async () => {
+      await mockIntegrityApi.stubGetSearchResults('5555555', '0988765', false, [])
+    })
+
+    test('Can see no order search results', async ({ page }) => {
+      const integritySearchResultsPage = await AppPage.visit(
+        IntegritySearchResultsPage,
+        page,
+        {},
+        { search_id: '5555555' },
+      )
 
       await expect(integritySearchResultsPage.noResults).toBeVisible()
       await expect(integritySearchResultsPage.noResults).toContainText('Sorry, no results were found for this search')
     })
 
-    test('Can see order search results', async ({ page }) => {
-      await mockIntegrityApi.stubGetSearchResults('4444444', '0988765', false, [
+    test('Can return to the search page', async ({ page }) => {
+      const integritySearchResultsPage = await AppPage.visit(
+        IntegritySearchResultsPage,
+        page,
+        {},
+        { search_id: '5555555' },
+      )
+      await integritySearchResultsPage.returnToSearchButton.click()
+
+      await AppPage.verifyOnPage(SearchPage, page)
+    })
+
+    test('Is accessible', async ({ page }) => {
+      const integritySearchResultsPage = await AppPage.visit(
+        IntegritySearchResultsPage,
+        page,
+        {},
+        { search_id: '5555555' },
+      )
+
+      await integritySearchResultsPage.checkIsAccessible()
+    })
+  })
+
+  test.describe('When some results are found', () => {
+    test.beforeEach(async () => {
+      await mockIntegrityApi.stubGetSearchResults('6666666', '0988765', false, [
         {
           specials: 'no',
           legacySubjectId: '1234567',
@@ -91,45 +134,19 @@ test.describe('Integrity order search results', () => {
           offenceRisk: false,
         },
       ])
+    })
 
+    test('Can see order search results', async ({ page }) => {
       const integritySearchResultsPage = await AppPage.visit(
         IntegritySearchResultsPage,
         page,
         {},
-        { search_id: '4444444' },
+        { search_id: '6666666' },
       )
 
       await expect(integritySearchResultsPage.searchResults).toBeVisible()
       await expect(integritySearchResultsPage.searchResults).toContainText('1234567 JOHN DOE')
       await expect(integritySearchResultsPage.searchResults).toContainText('0987654 BOB FLEMM')
-    })
-
-    test('Can return to the search page', async ({ page }) => {
-      await mockIntegrityApi.stubGetSearchResults('5555555', '0988765', false, [])
-
-      const integritySearchResultsPage = await AppPage.visit(
-        IntegritySearchResultsPage,
-        page,
-        {},
-        { search_id: '5555555' },
-      )
-      await integritySearchResultsPage.returnToSearchButton.click()
-
-      await AppPage.verifyOnPage(SearchPage, page)
-    })
-
-    test('Can go back to the search page', async ({ page }) => {
-      await mockIntegrityApi.stubGetSearchResults('5555555', '0988765', false, [])
-
-      const integritySearchResultsPage = await AppPage.visit(
-        IntegritySearchResultsPage,
-        page,
-        {},
-        { search_id: '5555555' },
-      )
-      await integritySearchResultsPage.backLink.click()
-
-      await AppPage.verifyOnPage(SearchPage, page)
     })
 
     test('Is accessible', async ({ page }) => {
