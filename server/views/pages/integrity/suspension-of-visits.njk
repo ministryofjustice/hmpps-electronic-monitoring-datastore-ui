@@ -2,18 +2,17 @@
 
 {% from "../../components/emsDateFilter.njk" import emsDateFilter %}
 {% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
-{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
 
 {% set pageTitle = "Suspension of visits" %}
 
 {% block innerContent %}
-  {% if events | length %}
-    {{ emsDateFilter() }}
+{% if events | length %}
+{{ emsDateFilter() }}
 
-    {{ emsEventTimeline(events) }}
-  {% else %}
-    <h3 class="govuk-heading-m no-results-heading">No {{ pageTitle | lower }} found</h3>
+{{ emsEventTimeline(events) }}
+{% else %}
+<h3 class="govuk-heading-m no-results-heading">No {{ pageTitle | lower }} found</h3>
 
-    <p class="no-results-message">No {{ pageTitle | lower }} information was found for this order</p>
-  {% endif %}
+<p class="no-results-message">No {{ pageTitle | lower }} information was found for this order</p>
+{% endif %}
 {% endblock %}

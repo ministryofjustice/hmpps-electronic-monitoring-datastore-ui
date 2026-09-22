@@ -31,7 +31,7 @@ export const convertZodErrorToValidationError = (error: ZodError): ValidationRes
   }, [] as ValidationResult)
 }
 
-export const createErrorSummary = (validationErrors: ValidationResult): ErrorSummary | null => {
+export const createErrorSummary = (validationErrors: ValidationResult = []): ErrorSummary | null => {
   if (validationErrors.length === 0) {
     return null
   }
@@ -55,48 +55,41 @@ export type OrderSearchView = ViewModel<{
   dateOfBirth: Date
 }>
 export const OrderSearchView = {
-  construct(formData: OrderSearchCriteria, errors?: ValidationResult): OrderSearchView {
-    return constructFromFormData(formData, errors)
-  },
-}
-
-const constructFromFormData = (
-  formData: OrderSearchCriteria,
-  validationErrors: ValidationResult = [],
-): OrderSearchView => {
-  return {
-    searchType: {
-      value: formData.searchType,
-      error: getError(validationErrors, 'searchType'),
-    },
-    legacySubjectId: {
-      value: formData.legacySubjectId,
-      error: getError(validationErrors, 'legacySubjectId'),
-    },
-    firstName: {
-      value: formData.firstName,
-      error: getError(validationErrors, 'firstName'),
-    },
-    lastName: {
-      value: formData.lastName,
-      error: getError(validationErrors, 'lastName'),
-    },
-    alias: {
-      value: formData.alias,
-      error: getError(validationErrors, 'alias'),
-    },
-    dateOfBirth: {
-      value: {
-        day: formData['dob-day'],
-        month: formData['dob-month'],
-        year: formData['dob-year'],
+  construct(formData: OrderSearchCriteria, validationErrors?: ValidationResult): OrderSearchView {
+    return {
+      searchType: {
+        value: formData.searchType,
+        error: getError('searchType', validationErrors),
       },
-      error:
-        getError(validationErrors, 'dob') ||
-        getError(validationErrors, 'dob-day') ||
-        getError(validationErrors, 'dob-month') ||
-        getError(validationErrors, 'dob-year'),
-    },
-    errorSummary: createErrorSummary(validationErrors),
-  }
+      legacySubjectId: {
+        value: formData.legacySubjectId,
+        error: getError('legacySubjectId', validationErrors),
+      },
+      firstName: {
+        value: formData.firstName,
+        error: getError('firstName', validationErrors),
+      },
+      lastName: {
+        value: formData.lastName,
+        error: getError('lastName', validationErrors),
+      },
+      alias: {
+        value: formData.alias,
+        error: getError('alias', validationErrors),
+      },
+      dateOfBirth: {
+        value: {
+          day: formData['dob-day'],
+          month: formData['dob-month'],
+          year: formData['dob-year'],
+        },
+        error:
+          getError('dob', validationErrors) ||
+          getError('dob-day', validationErrors) ||
+          getError('dob-month', validationErrors) ||
+          getError('dob-year', validationErrors),
+      },
+      errorSummary: createErrorSummary(validationErrors),
+    }
+  },
 }

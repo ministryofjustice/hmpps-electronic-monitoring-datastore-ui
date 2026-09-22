@@ -102,7 +102,7 @@ export default class AppPage extends AbstractPage {
 
   readonly backLink: Locator
 
-  readonly serviceInformation: Locator
+  readonly serviceInformationBanner: Locator
 
   constructor(
     page: Page,
@@ -115,7 +115,7 @@ export default class AppPage extends AbstractPage {
     this.header = this.page.locator('h1', { hasText: this.title })
 
     this.backLink = this.page.getByRole('link', { name: 'Back', exact: true })
-    this.serviceInformation = this.page.locator('.service-information')
+    this.serviceInformationBanner = this.page.locator('.service-information-banner')
   }
 
   async checkOnPage(): Promise<void> {

@@ -1,0 +1,151 @@
+{%- from "govuk/components/button/macro.njk" import govukButton -%}
+{%- from "govuk/components/table/macro.njk" import govukTable -%}
+{%- from "moj/components/pagination/macro.njk" import mojPagination -%}
+
+{%- from '../../components/safeDateFormatters.njk' import safeGovukDate -%}
+
+
+{%- macro orderSearchResults(orders=[], pageSize=20, currentPage=1) -%}
+{%- set totalPages = (orders.length / pageSize) | round(0, 'ceil') -%}
+
+{%- set rows = [] -%}
+{%- for order in orders -%}
+{%- set legacySubjectIdHtml -%}
+<a href="/{{ orderType }}/{{ order.legacySubjectId }}">{{ order.legacySubjectId }}</a>
+{%- endset -%}
+
+{%- set nameHtml -%}
+{% if (order.name)%}{{ order.name | upper }}{% endif %}
+{% if (order.alias) %}<div class="govuk-body-s">Alias: {{ order.alias }}</div>{% endif %}
+{%- endset -%}
+
+{%- set addressHtml -%}
+{% if (order.primaryAddress ) %}{{ order.primaryAddress | join('<br/>') | safe }}{% endif %}
+{%- endset -%}
+
+{%- set rows = (rows.push([
+  {
+    attributes: {'data-sort-value': order.legacySubjectId },
+    html: legacySubjectIdHtml
+  },
+  {
+    attributes: { 'data-sort-value': order.name },
+    html: nameHtml
+  },
+  {
+    attributes: { 'data-sort-value': order.sortAddress },
+    html: addressHtml
+  },
+  {
+    attributes: { 'data-sort-value': order.sortDateOfBirth },
+    text: safeGovukDate(order.dateOfBirth)
+  },
+  {
+    attributes: { 'data-sort-value': order.sortOrderStartDate },
+    text: safeGovukDate(order.orderStartDate)
+  },
+  {
+    attributes: { 'data-sort-value': order.sortOrderEndDate },
+    text: safeGovukDate(order.orderEndDate)
+  }
+]), rows) %}
+{% endfor -%}
+
+<div class="order-search-results">
+  {%- if rows | length -%}
+  <div class="sortable-table order-search-results__list" data-page-size={{ pageSize }}
+    data-current-page={{ currentPage }}>
+    {{ govukTable({
+        attributes: {
+          'data-module': 'moj-sortable-table'
+        },
+        classes: "order-search-results__table",
+        head: [
+          {
+            text: "Legacy subject ID",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Name",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Address",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Date of birth",
+            attributes: {
+              "aria-sort": "none"
+            }
+          },
+          {
+            text: "Order start date",
+            attributes: {
+              "aria-sort": "none"
+            },
+            format: "numeric"
+          },
+          {
+            text: "Order end date",
+            attributes: {
+              "aria-sort": "none"
+            },
+            format: "numeric"
+          }
+        ],
+        rows: rows
+      }) }}
+
+    {%- set paginationItems = [] -%}
+    {%- for i in range(1, totalPages + 1) -%}
+    {%- set paginationItems = (paginationItems.push({
+      text: i,
+      href: "#",
+      selected: i == currentPage
+    }), paginationItems) %}
+
+    {%- if (i == 1) or (i == totalPages - 1) -%}
+    {%- set paginationItems = (paginationItems.push({
+        type: "dots"
+      }), paginationItems) -%}
+    {%- endif -%}
+    {%- endfor -%}
+
+    {{ mojPagination({
+      previous: {
+        href: "#"
+      },
+      next: {
+        href: "#"
+      },
+      items: paginationItems,
+      results: {
+        count: orders.length,
+        text: "orders"
+      }
+    }) }}
+  </div>
+  {%- else -%}
+  <div class="govuk-grid-row order-search-results__no-results">
+    <div class="govuk-grid-column-two-thirds-from-desktop">
+      <h2 class="govuk-heading-m">No results found</h2>
+    </div>
+
+    <div class="govuk-grid-column-two-thirds">
+      <p class="order-search-results__no-results-message">
+        Sorry, no results were found for this search
+      </p>
+
+      {{ govukButton({ text: "Return to search page", href: searchUrl }) }}
+    </div>
+  </div>
+  {%- endif -%}
+</div>
+{%- endmacro -%}
