@@ -2,8 +2,9 @@ import { expect } from '@playwright/test'
 
 import AppFormPage from './pages/appFormPage'
 import FormComponent from './pages/components/formComponent'
-import FormDateComponent from './pages/components/formDateComponent'
-import FormInputComponent from './pages/components/formInputComponent'
+import DateInputComponent from './pages/components/dateInputComponent'
+import TextInputComponent from './pages/components/textInputComponent'
+import RadiosComponent from './pages/components/radiosComponent'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -59,7 +60,7 @@ const customMatchers = {
     }
   },
 
-  async toHaveValidationError(formComponent: FormDateComponent | FormInputComponent) {
+  async toHaveValidationError(formComponent: DateInputComponent | TextInputComponent | RadiosComponent) {
     const pass = await formComponent.validation.isVisible()
 
     return {
@@ -71,7 +72,10 @@ const customMatchers = {
     }
   },
 
-  async toHaveValidationErrorText(formComponent: FormDateComponent | FormInputComponent, expected: string) {
+  async toHaveValidationErrorText(
+    formComponent: DateInputComponent | TextInputComponent | RadiosComponent,
+    expected: string,
+  ) {
     let pass = await formComponent.validation.isVisible()
     let actual = ''
     if (pass) {
@@ -88,71 +92,25 @@ const customMatchers = {
     }
   },
 
-  async toBeVisibleWithinForm(formComponent: FormDateComponent | FormInputComponent) {
-    switch (formComponent.constructor) {
-      case FormDateComponent: {
-        const dateFormComponent = formComponent as FormDateComponent
+  async toBeVisibleWithinForm(formComponent: DateInputComponent | TextInputComponent | RadiosComponent) {
+    const pass = await formComponent.isVisible()
 
-        const pass =
-          (await dateFormComponent.dayField.isVisible()) &&
-          (await dateFormComponent.monthField.isVisible()) &&
-          (await dateFormComponent.yearField.isVisible())
-
-        return {
-          pass,
-          message: () => (pass ? 'Expected date fields not to be visible' : 'Expected date fields to be visible'),
-        }
-      }
-
-      case FormInputComponent: {
-        const inputFormComponent = formComponent as FormInputComponent
-
-        const pass = await inputFormComponent.field.isVisible()
-
-        return {
-          pass,
-          message: () => (pass ? 'Expected input field not to be visible' : 'Expected input field to be visible'),
-        }
-      }
-
-      default:
-        throw new Error(`Unsupported form component: ${formComponent.constructor.name}`)
+    return {
+      pass,
+      message: () => (pass ? 'Expected field not to be visible' : 'Expected field to be visible'),
     }
   },
 
-  async toBeDisabledWithinForm(formComponent: FormDateComponent | FormInputComponent) {
-    switch (formComponent.constructor) {
-      case FormDateComponent: {
-        const dateFormComponent = formComponent as FormDateComponent
+  async toBeDisabledWithinForm(formComponent: DateInputComponent | TextInputComponent | RadiosComponent) {
+    const pass = await formComponent.isDisabled()
 
-        const pass =
-          (await dateFormComponent.dayField.isDisabled()) &&
-          (await dateFormComponent.monthField.isDisabled()) &&
-          (await dateFormComponent.yearField.isDisabled())
-
-        return {
-          pass,
-          message: () => (pass ? 'Expected date fields not to be disabled' : 'Expected date fields to be disabled'),
-        }
-      }
-
-      case FormInputComponent: {
-        const inputFormComponent = formComponent as FormInputComponent
-
-        const pass = await inputFormComponent.field.isDisabled()
-
-        return {
-          pass,
-          message: () => (pass ? 'Expected input field not to be disabled' : 'Expected input field to be disabled'),
-        }
-      }
-
-      default:
-        throw new Error(`Unsupported form component: ${formComponent.constructor.name}`)
+    return {
+      pass,
+      message: () => (pass ? 'Expected field not to be disabled' : 'Expected field to be disabled'),
     }
   },
 
-  async toHaveDateValue(formComponent: FormDateComponent, expected: number | string | Date) {
+  async toHaveDateValue(formComponent: DateInputComponent, expected: number | string | Date) {
     const expectedDate = new Date(expected)
     const expectedDateString = expectedDate.toISOString().split('T')[0]
 
@@ -167,8 +125,8 @@ const customMatchers = {
       pass,
       message: () =>
         pass
-          ? `Expected date field not to have value "${expected}"`
-          : `Expected date field to have value "${expected}", but found "${actualDateString}"`,
+          ? `Expected field not to have value "${expected}"`
+          : `Expected field to have value "${expected}", but found "${actualDateString}"`,
     }
   },
 }

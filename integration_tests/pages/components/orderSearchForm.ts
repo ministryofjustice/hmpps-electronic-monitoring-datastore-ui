@@ -2,8 +2,9 @@ import type { Locator } from '@playwright/test'
 import type { Page } from 'playwright-core'
 
 import FormComponent from './formComponent'
-import FormInputComponent from './formInputComponent'
-import FormDateComponent from './formDateComponent'
+import TextInputComponent from './textInputComponent'
+import DateInputComponent from './dateInputComponent'
+import RadiosComponent from './radiosComponent'
 
 export type OrderSearchFormData = {
   orderType: string
@@ -17,67 +18,69 @@ export type OrderSearchFormData = {
 export default class OrderSearchFormComponent extends FormComponent {
   // FIELDS
 
-  readonly orderType: Locator
+  readonly orderType: RadiosComponent
 
-  readonly legacySubjectId: FormInputComponent
+  readonly legacySubjectId: TextInputComponent
 
-  readonly firstName: FormInputComponent
+  readonly firstName: TextInputComponent
 
-  readonly lastName: FormInputComponent
+  readonly lastName: TextInputComponent
 
-  readonly alias: FormInputComponent
+  readonly alias: TextInputComponent
 
-  readonly dateOfBirth: FormDateComponent
+  readonly dateOfBirth: DateInputComponent
 
   readonly searchButton: Locator
 
   constructor(page: Page) {
     super(page)
 
-    this.orderType = this.element.getByRole('radio', { name: 'Order type' })
+    this.orderType = new RadiosComponent(this.element, 'What data are you searching for?')
 
-    this.legacySubjectId = new FormInputComponent(this.element, 'Legacy subject id')
-    this.firstName = new FormInputComponent(this.element, 'First name')
-    this.lastName = new FormInputComponent(this.element, 'Last name')
-    this.alias = new FormInputComponent(this.element, 'Alias')
-    this.dateOfBirth = new FormDateComponent(this.element, 'Date of birth')
+    this.legacySubjectId = new TextInputComponent(this.element, 'Legacy subject id')
+    this.firstName = new TextInputComponent(this.element, 'First name')
+    this.lastName = new TextInputComponent(this.element, 'Last name')
+    this.alias = new TextInputComponent(this.element, 'Alias')
+    this.dateOfBirth = new DateInputComponent(this.element, 'Date of birth')
 
     this.searchButton = this.element.getByRole('button', { name: 'Search' })
   }
 
   // FORM HELPERS
 
-  /*
   fill = (criteria: OrderSearchFormData): undefined => {
     if (criteria.orderType) {
-      this.orderTypeField.set(criteria.orderType)
+      this.orderType.check(criteria.orderType)
     }
 
     if (criteria.legacySubjectId) {
-      this.legacySubjectIdField.set(criteria.legacySubjectId)
+      this.legacySubjectId.fill(criteria.legacySubjectId)
     }
 
     if (criteria.firstName) {
-      this.firstNameField.set(criteria.firstName)
+      this.firstName.fill(criteria.firstName)
     }
 
     if (criteria.lastName) {
-      this.lastNameField.set(criteria.lastName)
+      this.lastName.fill(criteria.lastName)
     }
 
     if (criteria.alias) {
-      this.aliasField.set(criteria.alias)
+      this.alias.fill(criteria.alias)
     }
 
     if (criteria.dateOfBirth) {
-      this.dateOfBirthField.set(criteria.dateOfBirth)
+      this.dateOfBirth.fill(
+        criteria.dateOfBirth.getDate(),
+        criteria.dateOfBirth.getMonth() + 1,
+        criteria.dateOfBirth.getFullYear(),
+      )
     }
   }
-  */
 
   /*
   isValid(): boolean {
-    this.orderTypeField.shouldNotHaveValidationMessage()
+    this.orderType.shouldNotHaveValidationMessage()
   }
   */
 }
