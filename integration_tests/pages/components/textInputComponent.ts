@@ -1,6 +1,6 @@
 import { type Locator } from '@playwright/test'
 
-export default class FormInputComponent {
+export default class TextInputComponent {
   readonly element: Locator
 
   readonly field: Locator
@@ -18,7 +18,15 @@ export default class FormInputComponent {
     this.validation = this.element.locator('.govuk-error-message')
   }
 
-  fill(value?: string | number | boolean) {
-    this.field.fill(value as string)
+  async fill(value?: string | number | boolean) {
+    await this.field.fill(value as string)
+  }
+
+  async isVisible() {
+    return this.field.isVisible()
+  }
+
+  async isDisabled() {
+    return this.field.isDisabled()
   }
 }
