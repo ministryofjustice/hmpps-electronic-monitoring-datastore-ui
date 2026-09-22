@@ -60,49 +60,39 @@ test.describe('Alcohol monitoring order search results', () => {
       )
     })
 
-    test('Can see no order search results', async ({ page }) => {
-      await alcoholMonitoringDatastoreApi.stubGetSearchResults('4444444', '0988765', [])
+    test('Can go back to the search page', async ({ page }) => {
+      await alcoholMonitoringDatastoreApi.stubGetSearchResults('44444444', '0988765', [])
 
+      const alcoholMonitoringSearchResultsPage = await AppPage.visit(
+        AlcoholMonitoringSearchResultsPage,
+        page,
+        {},
+        { search_id: '44444444' },
+      )
+      await alcoholMonitoringSearchResultsPage.backLink.click()
+
+      await AppPage.verifyOnPage(SearchPage, page)
+    })
+  })
+
+  test.describe('When no results are found', () => {
+    test.beforeEach(async () => {
+      await alcoholMonitoringDatastoreApi.stubGetSearchResults('5555555', '0988765', [])
+    })
+
+    test('Can see no order search results', async ({ page }) => {
       const integritySearchResultsPage = await AppPage.visit(
         AlcoholMonitoringSearchResultsPage,
         page,
         {},
-        { search_id: '4444444' },
+        { search_id: '5555555' },
       )
 
       await expect(integritySearchResultsPage.noResults).toBeVisible()
       await expect(integritySearchResultsPage.noResults).toContainText('Sorry, no results were found for this search')
     })
 
-    test('Can see order search results', async ({ page }) => {
-      await alcoholMonitoringDatastoreApi.stubGetSearchResults('4444444', '0988765', [
-        {
-          legacySubjectId: '1234567',
-          firstName: 'John',
-          lastName: 'Doe',
-        },
-        {
-          legacySubjectId: '0987654',
-          firstName: 'Bob',
-          lastName: 'Flemm',
-        },
-      ])
-
-      const alcoholMonitoringSearchResultsPage = await AppPage.visit(
-        AlcoholMonitoringSearchResultsPage,
-        page,
-        {},
-        { search_id: '4444444' },
-      )
-
-      await expect(alcoholMonitoringSearchResultsPage.searchResults).toBeVisible()
-      await expect(alcoholMonitoringSearchResultsPage.searchResults).toContainText('1234567 JOHN DOE')
-      await expect(alcoholMonitoringSearchResultsPage.searchResults).toContainText('0987654 BOB FLEMM')
-    })
-
     test('Can return to the search page', async ({ page }) => {
-      await alcoholMonitoringDatastoreApi.stubGetSearchResults('5555555', '0988765', [])
-
       const alcoholMonitoringSearchResultsPage = await AppPage.visit(
         AlcoholMonitoringSearchResultsPage,
         page,
@@ -114,23 +104,48 @@ test.describe('Alcohol monitoring order search results', () => {
       await AppPage.verifyOnPage(SearchPage, page)
     })
 
-    test('Can go back to the search page', async ({ page }) => {
-      await alcoholMonitoringDatastoreApi.stubGetSearchResults('5555555', '0988765', [])
-
+    test('Is accessible', async ({ page }) => {
       const alcoholMonitoringSearchResultsPage = await AppPage.visit(
         AlcoholMonitoringSearchResultsPage,
         page,
         {},
         { search_id: '5555555' },
       )
-      await alcoholMonitoringSearchResultsPage.backLink.click()
 
-      await AppPage.verifyOnPage(SearchPage, page)
+      await alcoholMonitoringSearchResultsPage.checkIsAccessible()
+    })
+  })
+
+  test.describe('When some results are found', () => {
+    test.beforeEach(async () => {
+      await alcoholMonitoringDatastoreApi.stubGetSearchResults('6666666', '0988765', [
+        {
+          legacySubjectId: '1234567',
+          firstName: 'John',
+          lastName: 'Doe',
+        },
+        {
+          legacySubjectId: '0987654',
+          firstName: 'Bob',
+          lastName: 'Flemm',
+        },
+      ])
+    })
+
+    test('Can see order search results', async ({ page }) => {
+      const alcoholMonitoringSearchResultsPage = await AppPage.visit(
+        AlcoholMonitoringSearchResultsPage,
+        page,
+        {},
+        { search_id: '6666666' },
+      )
+
+      await expect(alcoholMonitoringSearchResultsPage.searchResults).toBeVisible()
+      await expect(alcoholMonitoringSearchResultsPage.searchResults).toContainText('1234567 JOHN DOE')
+      await expect(alcoholMonitoringSearchResultsPage.searchResults).toContainText('0987654 BOB FLEMM')
     })
 
     test('Is accessible', async ({ page }) => {
-      await alcoholMonitoringDatastoreApi.stubGetSearchResults('6666666', '0988765', [])
-
       const alcoholMonitoringSearchResultsPage = await AppPage.visit(
         AlcoholMonitoringSearchResultsPage,
         page,

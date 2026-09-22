@@ -101,7 +101,7 @@ test.describe('Order search', () => {
   })
 
   test.describe('Error summary', () => {
-    test('Should display empty form validation error message', async ({ page }) => {
+    test('Displays empty form validation error message', async ({ page }) => {
       const searchPage = await AppPage.visit(SearchPage, page)
 
       await searchPage.form.searchButton.click()
@@ -112,10 +112,10 @@ test.describe('Order search', () => {
       await expect(searchPage).toHaveErrorSummaryText('You must enter a value into at least one search field')
     })
 
-    test('Should display first name validation error messages', async ({ page }) => {
+    test('Displays first name validation error messages', async ({ page }) => {
       const searchPage = await AppPage.visit(SearchPage, page)
 
-      searchPage.form.firstName.fill('John123')
+      await searchPage.form.firstName.fill('John123')
       await searchPage.form.searchButton.click()
 
       await AppPage.verifyOnPage(SearchPage, page)
@@ -128,10 +128,10 @@ test.describe('Order search', () => {
       await expect(searchPage.form.alias).not.toHaveValidationError()
     })
 
-    test('Should display last name validation error messages', async ({ page }) => {
+    test('Displays last name validation error messages', async ({ page }) => {
       const searchPage = await AppPage.visit(SearchPage, page)
 
-      searchPage.form.lastName.fill('Smith123')
+      await searchPage.form.lastName.fill('Smith123')
       await searchPage.form.searchButton.click()
 
       await AppPage.verifyOnPage(SearchPage, page)
@@ -144,7 +144,7 @@ test.describe('Order search', () => {
       await expect(searchPage.form.alias).not.toHaveValidationError()
     })
 
-    test('Should display date of birth day validation error messages', async ({ page }) => {
+    test('Displays date of birth day validation error messages', async ({ page }) => {
       const searchPage = await AppPage.visit(SearchPage, page)
 
       await searchPage.form.dateOfBirth.dayField.fill('Monday')
@@ -164,10 +164,10 @@ test.describe('Order search', () => {
       await expect(searchPage.form.alias).not.toHaveValidationError()
     })
 
-    test('Should display alias validation error messages', async ({ page }) => {
+    test('Displays alias validation error messages', async ({ page }) => {
       const searchPage = await AppPage.visit(SearchPage, page)
 
-      searchPage.form.alias.fill('John Smith-123')
+      await searchPage.form.alias.fill('John Smith-123')
       await searchPage.form.searchButton.click()
 
       await AppPage.verifyOnPage(SearchPage, page)
@@ -179,10 +179,70 @@ test.describe('Order search', () => {
       await expect(searchPage.form.lastName).not.toHaveValidationError()
       await expect(searchPage.form.alias).toHaveValidationErrorText('Alias must contain letters and spaces only')
     })
+
+    test('Displays multiple validation error messages', async ({ page }) => {
+      const searchPage = await AppPage.visit(SearchPage, page)
+
+      await searchPage.form.fill({
+        orderType: 'Integrity',
+        legacySubjectId: 'B3@sT!',
+        firstName: 'John123',
+        lastName: 'Smith123',
+        alias: 'John Smith-123',
+        dateOfBirth: { day: '1', month: 'October', year: '2020' },
+      })
+      await searchPage.form.searchButton.click()
+
+      await AppPage.verifyOnPage(SearchPage, page)
+
+      await expect(searchPage).toHaveErrorSummary()
+      await expect(searchPage).toHaveErrorSummaryText('First name must contain letters only')
+      await expect(searchPage).toHaveErrorSummaryText('Last name must contain letters only')
+      await expect(searchPage).toHaveErrorSummaryText('Alias must contain letters and spaces only')
+      await expect(searchPage).toHaveErrorSummaryText('Please enter a real date. For example, 24 10 2020')
+
+      await expect(searchPage.form.firstName).toHaveValidationErrorText('First name must contain letters only')
+      await expect(searchPage.form.lastName).toHaveValidationErrorText('Last name must contain letters only')
+      await expect(searchPage.form.alias).toHaveValidationErrorText('Alias must contain letters and spaces only')
+      await expect(searchPage.form.dateOfBirth).toHaveValidationErrorText(
+        'Please enter a real date. For example, 24 10 2020',
+      )
+    })
+
+    test('Validation error messages are accessible', async ({ page }) => {
+      const searchPage = await AppPage.visit(SearchPage, page)
+
+      await searchPage.form.fill({
+        orderType: 'Integrity',
+        legacySubjectId: 'B3@sT!',
+        firstName: 'John123',
+        lastName: 'Smith123',
+        alias: 'John Smith-123',
+        dateOfBirth: { day: '1', month: 'October', year: '2020' },
+      })
+      await searchPage.form.searchButton.click()
+
+      await AppPage.verifyOnPage(SearchPage, page)
+
+      await expect(searchPage).toHaveErrorSummary()
+      await expect(searchPage).toHaveErrorSummaryText('First name must contain letters only')
+      await expect(searchPage).toHaveErrorSummaryText('Last name must contain letters only')
+      await expect(searchPage).toHaveErrorSummaryText('Alias must contain letters and spaces only')
+      await expect(searchPage).toHaveErrorSummaryText('Please enter a real date. For example, 24 10 2020')
+
+      await expect(searchPage.form.firstName).toHaveValidationErrorText('First name must contain letters only')
+      await expect(searchPage.form.lastName).toHaveValidationErrorText('Last name must contain letters only')
+      await expect(searchPage.form.alias).toHaveValidationErrorText('Alias must contain letters and spaces only')
+      await expect(searchPage.form.dateOfBirth).toHaveValidationErrorText(
+        'Please enter a real date. For example, 24 10 2020',
+      )
+
+      await searchPage.checkIsAccessible()
+    })
   })
 
   test.describe('Submitting an order search request', () => {
-    test('Should submit an integrity order search request successfully', async ({ page }) => {
+    test('Submits an integrity order search request successfully', async ({ page }) => {
       await mockIntegrityApi.stubPostOrderSearch('1234566', false)
       await mockIntegrityApi.stubGetSearchResults('1234566', '0988765', false, [])
 
@@ -197,7 +257,7 @@ test.describe('Order search', () => {
       await AppPage.verifyOnPage(IntegritySearchResultsPage, page)
     })
 
-    test('Should submit an alcohol monitoring order search request successfully', async ({ page }) => {
+    test('Submits an alcohol monitoring order search request successfully', async ({ page }) => {
       await mockAlcoholMonitoringApi.stubPostOrderSearch('1234566')
       await mockAlcoholMonitoringApi.stubGetSearchResults('1234566', '0988765', [])
 
