@@ -46,6 +46,6 @@ describe('getError', () => {
       expected: { text: 'Field 1 is required' },
     },
   ])('getError($errors, $field)', ({ errors, field, expected }) => {
-    expect(getError(errors, field)).toEqual(expected)
+    expect(getError(field, errors)).toEqual(expected)
   })
 })

@@ -3,7 +3,7 @@
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "moj/components/sub-navigation/macro.njk" import mojSubNavigation %}
-{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from "../partials/service-information-banner/macro.njk" import serviceInformationBanner %}
 
 {% set mainClasses = "govuk-body" %}
 
@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block content %}
-{{ emsServiceInformation() }}
+{{ serviceInformationBanner() }}
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
