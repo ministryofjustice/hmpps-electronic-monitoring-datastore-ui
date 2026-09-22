@@ -7,14 +7,20 @@ import AppPage from './appPage'
 export default class IntegritySearchResultsPage extends AppPage {
   readonly returnToSearchButton: Locator
 
-  readonly backButton: Locator
+  readonly backLink: Locator
+
+  readonly searchResults: Locator
+
+  readonly noResults: Locator
 
   constructor(page: Page) {
     super(page, 'Search results', paths.INTEGRITY_ORDER.INDEX)
 
-    this.returnToSearchButton = page.getByRole('button', { name: 'Return to search page' })
+    this.searchResults = page.locator('.ems-order-search-results__list')
+    this.noResults = page.locator('.ems-order-search-results__no-results')
 
-    this.backButton = page.getByRole('button', { name: 'Back to search form' })
+    this.returnToSearchButton = page.getByRole('button', { name: 'Return to search page' })
+    this.backLink = page.getByRole('link', { name: 'Back to search form' })
   }
 
   /*
