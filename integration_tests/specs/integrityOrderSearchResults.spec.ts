@@ -5,7 +5,7 @@ import { login, resetStubs } from '../testUtils'
 import mockIntegrityApi from '../mockApis/integrityDatastoreApi'
 
 import AppPage from '../pages/appPage'
-import SearchPage from '../pages/searchPage'
+import OrderSearchPage from '../pages/orderSearchPage'
 import IntegritySearchResultsPage from '../pages/integritySearchResults'
 
 test.describe('Integrity order search results', () => {
@@ -71,7 +71,7 @@ test.describe('Integrity order search results', () => {
       )
       await integritySearchResultsPage.backLink.click()
 
-      await AppPage.verifyOnPage(SearchPage, page)
+      await AppPage.verifyOnPage(OrderSearchPage, page)
     })
   })
 
@@ -102,7 +102,7 @@ test.describe('Integrity order search results', () => {
 
       await integritySearchResultsPage.returnToSearchButton.click()
 
-      await AppPage.verifyOnPage(SearchPage, page)
+      await AppPage.verifyOnPage(OrderSearchPage, page)
     })
 
     test('Is accessible', async ({ page }) => {

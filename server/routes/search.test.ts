@@ -41,7 +41,7 @@ describe('Order details search page', () => {
       .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Search for order details')
+        expect(res.text).toContain('Search for orders')
       })
   })
 
@@ -80,7 +80,7 @@ describe('Order details search page', () => {
       .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Search for order details')
+        expect(res.text).toContain('Search for orders')
         expect(res.text).toContain(' value="bar"')
       })
   })

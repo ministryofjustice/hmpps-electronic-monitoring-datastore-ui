@@ -90,85 +90,49 @@ export default {
     apiGetStubFor(
       httpStatus,
       `/datastore/orders/alcohol-monitoring/${legacySubjectId}`,
-      { restricted: { equalTo: `false` } },
+      {},
       body || defaultOrderDetails(legacySubjectId),
     ),
 
   stubGetEquipmentDetails: (
     legacySubjectId: string,
-    restricted: boolean = false,
     body: AlcoholMonitoringEquipmentDetails[] = [],
     httpStatus: number = 200,
   ): SuperAgentRequest =>
-    apiGetStubFor(
-      httpStatus,
-      `/datastore/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`,
-      { restricted: { equalTo: `false` } },
-      body,
-    ),
+    apiGetStubFor(httpStatus, `/datastore/orders/alcohol-monitoring/${legacySubjectId}/equipment-details`, {}, body),
 
   stubGetServiceDetails: (
     legacySubjectId: string,
-    restricted: boolean = false,
     body: AlcoholMonitoringServiceDetails[] = [],
     httpStatus: number = 200,
   ): SuperAgentRequest =>
-    apiGetStubFor(
-      httpStatus,
-      `/datastore/orders/alcohol-monitoring/${legacySubjectId}/service-details`,
-      { restricted: { equalTo: `false` } },
-      body,
-    ),
+    apiGetStubFor(httpStatus, `/datastore/orders/alcohol-monitoring/${legacySubjectId}/service-details`, {}, body),
 
   stubGetVisitDetails: (
     legacySubjectId: string,
-    restricted: boolean = false,
     body: AlcoholMonitoringVisitDetails[] = [],
     httpStatus: number = 200,
   ): SuperAgentRequest =>
-    apiGetStubFor(
-      httpStatus,
-      `/datastore/orders/alcohol-monitoring/${legacySubjectId}/visit-details`,
-      { restricted: { equalTo: `false` } },
-      body,
-    ),
+    apiGetStubFor(httpStatus, `/datastore/orders/alcohol-monitoring/${legacySubjectId}/visit-details`, {}, body),
 
   stubGetContactEvents: (
     legacySubjectId: string,
-    restricted: boolean = false,
     body: AlcoholMonitoringContactEvent[] = [],
     httpStatus: number = 200,
   ): SuperAgentRequest =>
-    apiGetStubFor(
-      httpStatus,
-      `/datastore/orders/alcohol-monitoring/${legacySubjectId}/contact-events`,
-      { restricted: { equalTo: `false` } },
-      body,
-    ),
+    apiGetStubFor(httpStatus, `/datastore/orders/alcohol-monitoring/${legacySubjectId}/contact-events`, {}, body),
 
   stubGetIncidentEvents: (
     legacySubjectId: string,
-    restricted: boolean = false,
     body: AlcoholMonitoringIncidentEvent[] = [],
     httpStatus: number = 200,
   ): SuperAgentRequest =>
-    apiGetStubFor(
-      httpStatus,
-      `/datastore/orders/alcohol-monitoring/${legacySubjectId}/incident-events`,
-      { restricted: { equalTo: `false` } },
-      body,
-    ),
+    apiGetStubFor(httpStatus, `/datastore/orders/alcohol-monitoring/${legacySubjectId}/incident-events`, {}, body),
 
   stubGetViolationEvents: (
     legacySubjectId: string,
-    restricted: boolean = false,
     body: AlcoholMonitoringViolationEvent[] = [],
     httpStatus: number = 200,
   ): SuperAgentRequest =>
-    apiGetStubFor(
-      httpStatus,
-      `/datastore/orders/alcohol-monitoring/${legacySubjectId}/violation-events`,
-      { restricted: { equalTo: `false` } },
-      body,
-    ),
+    apiGetStubFor(httpStatus, `/datastore/orders/alcohol-monitoring/${legacySubjectId}/violation-events`, {}, body),
 }
