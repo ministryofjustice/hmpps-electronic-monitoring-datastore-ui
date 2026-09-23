@@ -19,7 +19,7 @@ export default class IntegrityServiceHistoryPage extends AppPage {
     this.subNavigation = page.locator('.moj-sub-navigation')
   }
 
-  async subNavigationLink(buttonText: string) {
-    return this.subNavigation.locator('.moj-sub-navigation__link', { hasText: buttonText })
+  subNavigationLink(buttonText: string): Locator {
+    return this.subNavigation.getByRole('link', { name: buttonText, exact: true })
   }
 }
