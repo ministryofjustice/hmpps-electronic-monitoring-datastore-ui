@@ -5,7 +5,6 @@ import { login, resetStubs } from '../testUtils'
 import mockIntegrityApi from '../mockApis/integrityDatastoreApi'
 
 import AppPage from '../pages/appPage'
-import SearchPage from '../pages/searchPage'
 import IntegrityOrderSummaryPage from '../pages/integrityOrderSummary'
 import IntegrityOrderDetailsPage from '../pages/integrityOrderDetails'
 import IntegrityEquipmentHistoryPage from '../pages/integrityEquipmentHistory'
@@ -349,85 +348,3 @@ test.describe('Integrity order details', () => {
     })
   })
 })
-
-/*
-  ; (() => {
-    test.beforeEach(({ page }) => {
-      login(page, { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
-
-      mockIntegrityApi.stubGetOrderDetails(
-        '5678',
-        false,
-        {
-          specials: 'no',
-          legacySubjectId: '5678',
-          primaryAddressLine1: 'Address line 1',
-          primaryAddressLine2: 'Address line 2',
-          primaryAddressLine3: 'Address line 3',
-          primaryAddressPostCode: 'PostCode',
-          offenceRisk: false,
-        },
-      )
-    })
-
-    test.describe('Device wearer details', () => {
-
-      test('Includes expected row headers', () => {
-        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
-        orderDetailsPage.deviceWearerDetails.within($summary => {
-          cy.wrap($summary).getBySummaryListKey('Specials').contains('no')
-          cy.wrap($summary).getBySummaryListKey('Legacy subject ID').contains(legacySubjectId)
-
-          cy.wrap($summary).getBySummaryListKey('First name').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Last name').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Alias').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Date of birth').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Adult/child').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Legacy sex').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Contact').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Primary address').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Phone/mobile number').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('PPO').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('MAPPA').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Technical bail').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Manual risk').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Offence risk').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('PostCode risk').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('False limb risk').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Migrated risk').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Range risk').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Report risk').should('be.visible')
-        })
-      })
-
-      test('Displays primary address values in a single cell', () => {
-        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
-        orderDetailsPage.deviceWearerDetails
-          .getBySummaryListKey('Primary address')
-          .contains('Address line 1Address line 2Address line 3PostCode')
-      })
-    })
-
-    test.describe('Order details', () => {
-      test('Renders', () => {
-        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
-        orderDetailsPage.orderDetails.should('be.visible')
-      })
-
-      test('Includes expected row headers', () => {
-        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
-        orderDetailsPage.orderDetails.within($summary => {
-          cy.wrap($summary).getBySummaryListKey('Order start date').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Order end date').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Order type').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Order type description').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Order type detail').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Wearing wrist PID').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Notifying organisation name').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Responsible organisation').should('be.visible')
-          cy.wrap($summary).getBySummaryListKey('Responsible organisation region').should('be.visible')
-        })
-      })
-    })
-  }
-*/
