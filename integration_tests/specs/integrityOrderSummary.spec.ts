@@ -7,6 +7,12 @@ import mockIntegrityApi from '../mockApis/integrityDatastoreApi'
 import AppPage from '../pages/appPage'
 import SearchPage from '../pages/searchPage'
 import IntegrityOrderSummaryPage from '../pages/integrityOrderSummary'
+import IntegrityOrderDetailsPage from '../pages/integrityOrderDetails'
+import IntegrityEquipmentHistoryPage from '../pages/integrityEquipmentHistory'
+import IntegrityServiceHistoryPage from '../pages/integrityServiceHistory'
+import IntegrityVisitHistoryPage from '../pages/integrityVisitHistory'
+import IntegritySuspensionOfVisitsHistoryPage from '../pages/integritySuspensionOfVisitsHistory'
+import IntegrityEventHistoryPage from '../pages/integrityEventHistory'
 
 test.describe('Integrity order search results', () => {
   test.beforeEach(async ({ page }) => {
@@ -124,7 +130,7 @@ test.describe('Integrity order search results', () => {
 
       const summaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, { legacySubjectId: '0987' })
 
-      await expect(summaryPage.summaryDetails).toHaveItems([
+      await expect(summaryPage.orderSummary).toHaveItems([
         ['Specials', 'no'],
         ['Legacy Subject ID', '0987'],
         ['Name', 'Testopher Fakesmith'],
@@ -134,6 +140,182 @@ test.describe('Integrity order search results', () => {
         ['Order start date', '1 January 2010'],
         ['Order end date', '1 January 2030'],
       ])
+    })
+  })
+
+  test.describe('Navigation between order sub-pages', () => {
+    test('Navigates to the order details page', async ({ page }) => {
+      await mockIntegrityApi.stubGetOrderDetails('5678', false, {
+        specials: 'no',
+        legacySubjectId: '5678',
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        offenceRisk: false,
+      })
+
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+        legacySubjectId: '5678',
+      })
+
+      await integrityOrderSummaryPage.subNavigationLink('Order details').click()
+
+      await AppPage.verifyOnPage(IntegrityOrderDetailsPage, page)
+    })
+
+    test('Navigates to the equipment details page', async ({ page }) => {
+      await mockIntegrityApi.stubGetOrderDetails('5678', false, {
+        specials: 'no',
+        legacySubjectId: '5678',
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        offenceRisk: false,
+      })
+
+      await mockIntegrityApi.stubGetEquipmentDetails('5678', false, [
+        {
+          legacySubjectId: '5678',
+        },
+      ])
+
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+        legacySubjectId: '5678',
+      })
+
+      await integrityOrderSummaryPage.subNavigationLink('Equipment').click()
+
+      await AppPage.verifyOnPage(IntegrityEquipmentHistoryPage, page)
+    })
+
+    test('Navigates to the service details page', async ({ page }) => {
+      await mockIntegrityApi.stubGetOrderDetails('5678', false, {
+        specials: 'no',
+        legacySubjectId: '5678',
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        offenceRisk: false,
+      })
+
+      await mockIntegrityApi.stubGetServiceDetails('5678', false, [
+        {
+          legacySubjectId: '5678',
+          serviceId: 1111,
+          monday: 1,
+          tuesday: 1,
+          wednesday: 1,
+          thursday: 1,
+          friday: 1,
+          saturday: 1,
+          sunday: 1,
+        },
+      ])
+
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+        legacySubjectId: '5678',
+      })
+
+      await integrityOrderSummaryPage.subNavigationLink('Services').click()
+
+      await AppPage.verifyOnPage(IntegrityServiceHistoryPage, page)
+    })
+
+    test('Navigates to the visit details page', async ({ page }) => {
+      await mockIntegrityApi.stubGetOrderDetails('5678', false, {
+        specials: 'no',
+        legacySubjectId: '5678',
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        offenceRisk: false,
+      })
+
+      await mockIntegrityApi.stubGetVisitDetails('5678', false, [
+        {
+          legacySubjectId: '5678',
+          actualWorkStartDateTime: '2024-06-01T09:00:00',
+        },
+      ])
+
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+        legacySubjectId: '5678',
+      })
+
+      await integrityOrderSummaryPage.subNavigationLink('Visits').click()
+
+      await AppPage.verifyOnPage(IntegrityVisitHistoryPage, page)
+    })
+
+    test('Navigates to the suspension of visits page', async ({ page }) => {
+      await mockIntegrityApi.stubGetOrderDetails('5678', false, {
+        specials: 'no',
+        legacySubjectId: '5678',
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        offenceRisk: false,
+      })
+
+      await mockIntegrityApi.stubGetSuspensionOfVisits('5678', false, [
+        {
+          legacySubjectId: '5678',
+        },
+      ])
+
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+        legacySubjectId: '5678',
+      })
+
+      await integrityOrderSummaryPage.subNavigationLink('Suspension of visits').click()
+
+      await AppPage.verifyOnPage(IntegritySuspensionOfVisitsHistoryPage, page)
+    })
+
+    test('Navigates to the event history page', async ({ page }) => {
+      await mockIntegrityApi.stubGetOrderDetails('5678', false, {
+        specials: 'no',
+        legacySubjectId: '5678',
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        offenceRisk: false,
+      })
+
+      await mockIntegrityApi.stubGetViolationEvents('5678', false, [
+        {
+          legacySubjectId: '5678',
+          type: 'VIOLATION',
+          dateTime: '2024-06-01T09:00:00',
+          details: {},
+        },
+      ])
+      await mockIntegrityApi.stubGetIncidentEvents('5678', false, [
+        {
+          legacySubjectId: '5678',
+          type: 'INCIDENT',
+          dateTime: '2024-06-01T09:00:00',
+          details: {},
+        },
+      ])
+      await mockIntegrityApi.stubGetMonitoringEvents('5678', false, [
+        {
+          legacySubjectId: '5678',
+          type: 'MONITORING',
+          dateTime: '2024-06-01T09:00:00',
+          details: {},
+        },
+      ])
+      await mockIntegrityApi.stubGetContactEvents('5678', false, [
+        {
+          legacySubjectId: '5678',
+          type: 'CONTACT',
+          dateTime: '2024-06-01T09:00:00',
+          details: {},
+        },
+      ])
+
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+        legacySubjectId: '5678',
+      })
+
+      await integrityOrderSummaryPage.subNavigationLink('Events').click()
+
+      await AppPage.verifyOnPage(IntegrityEventHistoryPage, page)
     })
   })
 })

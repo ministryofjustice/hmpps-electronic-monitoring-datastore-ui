@@ -39,7 +39,7 @@ afterEach(() => {
 describe('AlcoholMonitoring service details', () => {
   it(`creates an ALCOHOL_MONITORING_SERVICE_DETAILS audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_DETAILS, { legacySubjectId: 'service_details_001' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_HISTORY, { legacySubjectId: 'service_details_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.ALCOHOL_MONITORING_SERVICE_DETAILS, {
           who: user.username,
@@ -56,7 +56,7 @@ describe('AlcoholMonitoring service details', () => {
     ] as AlcoholMonitoringServiceDetails[])
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_DETAILS, { legacySubjectId: 'service_details_002' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_HISTORY, { legacySubjectId: 'service_details_002' }))
       .expect(_res => {
         expect(alcoholMonitoringServiceDetailsService.getServiceDetails).toHaveBeenCalledWith({
           legacySubjectId: 'service_details_002',
@@ -71,7 +71,7 @@ describe('AlcoholMonitoring service details', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_DETAILS, { legacySubjectId: 'service_details_003' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_HISTORY, { legacySubjectId: 'service_details_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -93,7 +93,7 @@ describe('AlcoholMonitoring service details', () => {
     ] as AlcoholMonitoringServiceDetails[])
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_DETAILS, { legacySubjectId: 'service_details_004' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.SERVICE_HISTORY, { legacySubjectId: 'service_details_004' }))
       .expect(res => {
         expect(res.text).toContain('Test service address')
         expect(res.text).toContain(' 2 February 2022')

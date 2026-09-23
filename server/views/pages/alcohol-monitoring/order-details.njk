@@ -3,42 +3,44 @@
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from '../../components/safeDateFormatters.njk' import safeGovukDate %}
 
-{% set pageTitle = "Order details" %}
+{% set pageTitle = "Alcohol monitoring order" %}
 
 {% block innerContent %}
-  <h2 class="govuk-heading-m">Device wearer</h2>
+{{ govukSummaryList({
+  card: {
+    title: {
+      text: "Device wearer"
+    }
+  },
+  rows: [
+    { key: { text: 'Legacy subject ID' }, value:  { text: deviceWearerDetails.legacySubjectId } },
+    { key: { text: 'First name' }, value:  { text: deviceWearerDetails.firstName } },
+    { key: { text: 'Last name' }, value:  { text: deviceWearerDetails.lastName } },
+    { key: { text: 'Alias' }, value:  { text: deviceWearerDetails.alias } },
+    { key: { text: 'Date of birth' }, value:  { text: deviceWearerDetails.dateOfBirth | safeGovukDate } },
+    { key: { text: 'Legacy sex' }, value:  { text: deviceWearerDetails.legacySex } },
+    { key: { text: 'Primary address' }, value:  { html: deviceWearerDetails.primaryAddress | join('<br/>') } },
+    { key: { text: 'Phone/mobile number' }, value:  { text: deviceWearerDetails.phoneOrMobileNumber } }
+  ]
+}) }}
 
-  {{
-    govukSummaryList({
-      rows: [
-        { key: { text: 'Legacy subject ID' }, value:  { text: deviceWearerDetails.legacySubjectId } },
-        { key: { text: 'First name' }, value:  { text: deviceWearerDetails.firstName } },
-        { key: { text: 'Last name' }, value:  { text: deviceWearerDetails.lastName } },
-        { key: { text: 'Alias' }, value:  { text: deviceWearerDetails.alias } },
-        { key: { text: 'Date of birth' }, value:  { text: safeGovukDate(deviceWearerDetails.dateOfBirth) } },
-        { key: { text: 'Legacy sex' }, value:  { text: deviceWearerDetails.legacySex } },
-        { key: { text: 'Primary address' }, value:  { html: deviceWearerDetails.primaryAddress | join('<br/>') } },
-        { key: { text: 'Phone/mobile number' }, value:  { text: deviceWearerDetails.phoneOrMobileNumber } }
-      ]
-    })
-  }}
-
-  <h2 class="govuk-heading-m">Order</h2>
-
-  {{
-    govukSummaryList({
-      rows: [
-        { key: { text: 'Order start date' }, value: { text: safeGovukDate(orderDetails.orderStartDate) } },
-        { key: { text: 'Order end date' }, value: { text: safeGovukDate(orderDetails.orderEndDate) } },
-        { key: { text: 'Order type' }, value: { text: orderDetails.orderType } },
-        { key: { text: 'Order type description' }, value: { text: orderDetails.orderTypeDescription } },
-        { key: { text: 'Order end outcome' }, value: { text: orderDetails.orderEndOutcome } },
-        { key: { text: 'Special instructions' }, value: { text: orderDetails.specialInstructions } },
-        { key: { text: 'Enforceable condition' }, value: { text: orderDetails.enforceableCondition } },
-        { key: { text: 'Tag at sourced' }, value: { text: orderDetails.tagAtSource } },
-        { key: { text: 'Responsible organisation phone number' }, value: { text: orderDetails.responsibleOrganisationPhoneNumber } },
-        { key: { text: 'Responsible organisation email' }, value: { text: orderDetails.responsibleOrganisationEmail } }
-      ]
-    })
-  }}
+{{ govukSummaryList({
+  card: {
+    title: {
+      text: "Order details"
+    }
+  },
+  rows: [
+    { key: { text: 'Order start date' }, value: { text: orderDetails.orderStartDate | safeGovukDate } },
+    { key: { text: 'Order end date' }, value: { text: orderDetails.orderEndDate | safeGovukDate } },
+    { key: { text: 'Order type' }, value: { text: orderDetails.orderType } },
+    { key: { text: 'Order type description' }, value: { text: orderDetails.orderTypeDescription } },
+    { key: { text: 'Order end outcome' }, value: { text: orderDetails.orderEndOutcome } },
+    { key: { text: 'Special instructions' }, value: { text: orderDetails.specialInstructions } },
+    { key: { text: 'Enforceable condition' }, value: { text: orderDetails.enforceableCondition } },
+    { key: { text: 'Tag at sourced' }, value: { text: orderDetails.tagAtSource } },
+    { key: { text: 'Responsible organisation phone number' }, value: { text: orderDetails.responsibleOrganisationPhoneNumber } },
+    { key: { text: 'Responsible organisation email' }, value: { text: orderDetails.responsibleOrganisationEmail } }
+  ]
+}) }}
 {% endblock %}

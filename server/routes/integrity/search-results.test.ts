@@ -86,7 +86,7 @@ describe('Integrity orders list', () => {
       .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Search results')
+        expect(res.text).toContain('Integrity orders')
       })
   })
 
