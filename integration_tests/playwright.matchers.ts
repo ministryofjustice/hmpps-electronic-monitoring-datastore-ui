@@ -5,6 +5,7 @@ import FormComponent from './pages/components/formComponent'
 import DateInputComponent from './pages/components/dateInputComponent'
 import TextInputComponent from './pages/components/textInputComponent'
 import RadiosComponent from './pages/components/radiosComponent'
+import SummaryListComponent from './pages/components/summaryListComponent'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -22,6 +23,8 @@ declare global {
       toHaveValidationErrorText(expected: string): Promise<R>
 
       toHaveDateValue(expected: number | string | Date): Promise<R>
+      toHaveItem(key: string, value: string): Promise<R>
+      toHaveItems(items: Array<[string, string]>): Promise<R>
     }
   }
 }
@@ -127,6 +130,30 @@ const customMatchers = {
         pass
           ? `Expected field not to have value "${expected}"`
           : `Expected field to have value "${expected}", but found "${actualDateString}"`,
+    }
+  },
+
+  async toHaveItem(summaryListComponent: SummaryListComponent, key: string, value: string) {
+    const pass = await summaryListComponent.hasItem(key, value)
+
+    return {
+      pass,
+      message: () =>
+        pass
+          ? `Expected summary list not to have item with key "${key}" and value "${value}"`
+          : `Expected summary list to have item with key "${key}" and value "${value}", but it was not found`,
+    }
+  },
+
+  async toHaveItems(summaryListComponent: SummaryListComponent, items: Array<[string, string]>) {
+    const pass = await summaryListComponent.hasItems(items)
+
+    return {
+      pass,
+      message: () =>
+        pass
+          ? `Expected summary list not to have items "${JSON.stringify(items)}"`
+          : `Expected summary list to have items "${JSON.stringify(items)}", but some were not found`,
     }
   },
 }

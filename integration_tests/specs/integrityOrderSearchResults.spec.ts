@@ -99,6 +99,7 @@ test.describe('Integrity order search results', () => {
         {},
         { search_id: '5555555' },
       )
+
       await integritySearchResultsPage.returnToSearchButton.click()
 
       await AppPage.verifyOnPage(SearchPage, page)

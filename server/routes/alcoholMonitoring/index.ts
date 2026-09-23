@@ -36,7 +36,7 @@ export default function alcoholMonitoringRouter(services: Services): Router {
         })
 
         const viewModel = AlchoholMonitoringSearchResultView.construct(orders)
-        res.render('pages/searchResults', { viewModel, orderType: 'alcohol-monitoring' })
+        res.render('pages/search-results', { viewModel, orderType: 'alcohol-monitoring' })
       } catch (error) {
         const e = error as { message: string }
         if (e.message === 'Error retrieving search results: Invalid query execution ID') {
@@ -61,7 +61,7 @@ export default function alcoholMonitoringRouter(services: Services): Router {
       })
 
       const viewModel = AlcoholMonitoringOrderSummaryView.construct(legacySubjectId, orderDetails)
-      res.render('pages/alcohol-monitoring/summary', viewModel)
+      res.render('pages/alcohol-monitoring/order-summary', viewModel)
     },
   )
 
@@ -77,7 +77,7 @@ export default function alcoholMonitoringRouter(services: Services): Router {
       })
 
       const viewModel = AlcoholMonitoringOrderDetailsView.construct(legacySubjectId, orderDetails)
-      res.render('pages/alcohol-monitoring/details', viewModel)
+      res.render('pages/alcohol-monitoring/order-details', viewModel)
     },
   )
 
