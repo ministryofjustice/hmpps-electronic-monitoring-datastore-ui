@@ -14,7 +14,7 @@ import IntegrityVisitHistoryPage from '../pages/integrityVisitHistory'
 import IntegritySuspensionOfVisitsHistoryPage from '../pages/integritySuspensionOfVisitsHistory'
 import IntegrityEventHistoryPage from '../pages/integrityEventHistory'
 
-test.describe('Integrity order summary', () => {
+test.describe('Integrity order details', () => {
   test.beforeEach(async ({ page }) => {
     await login(page, { name: 'M. Tester' }) // , roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] }
   })
@@ -33,7 +33,7 @@ test.describe('Integrity order summary', () => {
         offenceRisk: false,
       })
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '2345',
       })
 
@@ -49,7 +49,7 @@ test.describe('Integrity order summary', () => {
         offenceRisk: false,
       })
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '3456',
       })
 
@@ -65,7 +65,7 @@ test.describe('Integrity order summary', () => {
         offenceRisk: false,
       })
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '4567',
       })
 
@@ -84,13 +84,13 @@ test.describe('Integrity order summary', () => {
         offenceRisk: false,
       })
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '5678',
       })
 
       await integrityOrderSummaryPage.backLink.click()
 
-      await AppPage.verifyOnPage(SearchPage, page)
+      await AppPage.verifyOnPage(IntegrityOrderSummaryPage, page)
     })
 
     test('Is accessible', async ({ page }) => {
@@ -102,7 +102,7 @@ test.describe('Integrity order summary', () => {
         offenceRisk: false,
       })
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '1234',
       })
 
@@ -110,8 +110,8 @@ test.describe('Integrity order summary', () => {
     })
   })
 
-  test.describe('Order information details', () => {
-    test('Display a summary of the order', async ({ page }) => {
+  test.describe('Device wearer information details', () => {
+    test('Displays all details of the device wearer', async ({ page }) => {
       await mockIntegrityApi.stubGetOrderDetails('0987', false, {
         specials: 'no',
         legacySubjectId: '0987',
@@ -119,24 +119,54 @@ test.describe('Integrity order summary', () => {
         lastName: 'Fakesmith',
         alias: 'an old tv show',
         dateOfBirth: '1950-01-01',
-        primaryAddressLine1: '123 Fourth Street',
-        primaryAddressLine2: 'Fiveton',
-        primaryAddressLine3: 'Sixbury',
-        primaryAddressPostCode: '7AB 8CD',
+        adultOrChild: 'adult',
+        sex: 'puppy',
+        contact: 'only when neccessary',
+        primaryAddressLine1: 'a13 Tenth Street',
+        primaryAddressLine2: 'Hiveton',
+        primaryAddressLine3: 'Oxbury',
+        primaryAddressPostCode: '7AN 8XD',
         orderStartDate: '2010-01-01',
         orderEndDate: '2030-01-01',
         offenceRisk: false,
       })
 
-      const summaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, { legacySubjectId: '0987' })
+      const integrityOrderDetailsPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
+        legacySubjectId: '0987',
+      })
 
-      await expect(summaryPage.orderSummary).toHaveItems([
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItems([
         ['Specials', 'no'],
         ['Legacy Subject ID', '0987'],
-        ['Name', 'Testopher Fakesmith'],
+        ['First name', 'Testopher'],
+        ['Last name', 'Fakesmith'],
         ['Alias', 'an old tv show'],
         ['Date of birth', '1 January 1950'],
-        ['Primary address', '123 Fourth Street\nFiveton\nSixbury\n7AB 8CD'],
+        ['Adult/child', 'adult'],
+        ['Legacy sex', 'puppy'],
+        ['Contact', 'only when neccessary'],
+        ['Primary address', 'a13 Tenth Street\nHiveton\nOxbury\n7AN 8XD'],
+      ])
+    })
+  })
+
+  test.describe('Order information details', () => {
+    test('Displays all details of the order', async ({ page }) => {
+      await mockIntegrityApi.stubGetOrderDetails('0987', false, {
+        specials: 'no',
+        legacySubjectId: '0987',
+        firstName: 'Testopher',
+        lastName: 'Fakesmith',
+        orderStartDate: '2010-01-01',
+        orderEndDate: '2030-01-01',
+        offenceRisk: false,
+      })
+
+      const integrityOrderDetailsPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
+        legacySubjectId: '0987',
+      })
+
+      await expect(integrityOrderDetailsPage.order).toHaveItems([
         ['Order start date', '1 January 2010'],
         ['Order end date', '1 January 2030'],
       ])
@@ -144,7 +174,7 @@ test.describe('Integrity order summary', () => {
   })
 
   test.describe('Navigation between order sub-pages', () => {
-    test('Navigates to the order details page', async ({ page }) => {
+    test('Navigates to the order summary page', async ({ page }) => {
       await mockIntegrityApi.stubGetOrderDetails('5678', false, {
         specials: 'no',
         legacySubjectId: '5678',
@@ -153,13 +183,13 @@ test.describe('Integrity order summary', () => {
         offenceRisk: false,
       })
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '5678',
       })
 
-      await integrityOrderSummaryPage.subNavigationLink('Details').click()
+      await integrityOrderSummaryPage.subNavigationLink('Summary').click()
 
-      await AppPage.verifyOnPage(IntegrityOrderDetailsPage, page)
+      await AppPage.verifyOnPage(IntegrityOrderSummaryPage, page)
     })
 
     test('Navigates to the equipment details page', async ({ page }) => {
@@ -177,7 +207,7 @@ test.describe('Integrity order summary', () => {
         },
       ])
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '5678',
       })
 
@@ -209,7 +239,7 @@ test.describe('Integrity order summary', () => {
         },
       ])
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '5678',
       })
 
@@ -234,7 +264,7 @@ test.describe('Integrity order summary', () => {
         },
       ])
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '5678',
       })
 
@@ -258,7 +288,7 @@ test.describe('Integrity order summary', () => {
         },
       ])
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '5678',
       })
 
@@ -309,7 +339,7 @@ test.describe('Integrity order summary', () => {
         },
       ])
 
-      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, {
+      const integrityOrderSummaryPage = await AppPage.visit(IntegrityOrderDetailsPage, page, {
         legacySubjectId: '5678',
       })
 
@@ -319,3 +349,85 @@ test.describe('Integrity order summary', () => {
     })
   })
 })
+
+/*
+  ; (() => {
+    test.beforeEach(({ page }) => {
+      login(page, { name: 'Master Tester', roles: ['ROLE_EM_DATASTORE_GENERAL_RO'] })
+
+      mockIntegrityApi.stubGetOrderDetails(
+        '5678',
+        false,
+        {
+          specials: 'no',
+          legacySubjectId: '5678',
+          primaryAddressLine1: 'Address line 1',
+          primaryAddressLine2: 'Address line 2',
+          primaryAddressLine3: 'Address line 3',
+          primaryAddressPostCode: 'PostCode',
+          offenceRisk: false,
+        },
+      )
+    })
+
+    test.describe('Device wearer details', () => {
+
+      test('Includes expected row headers', () => {
+        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
+        orderDetailsPage.deviceWearerDetails.within($summary => {
+          cy.wrap($summary).getBySummaryListKey('Specials').contains('no')
+          cy.wrap($summary).getBySummaryListKey('Legacy subject ID').contains(legacySubjectId)
+
+          cy.wrap($summary).getBySummaryListKey('First name').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Last name').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Alias').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Date of birth').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Adult/child').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Legacy sex').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Contact').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Primary address').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Phone/mobile number').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('PPO').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('MAPPA').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Technical bail').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Manual risk').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Offence risk').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('PostCode risk').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('False limb risk').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Migrated risk').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Range risk').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Report risk').should('be.visible')
+        })
+      })
+
+      test('Displays primary address values in a single cell', () => {
+        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
+        orderDetailsPage.deviceWearerDetails
+          .getBySummaryListKey('Primary address')
+          .contains('Address line 1Address line 2Address line 3PostCode')
+      })
+    })
+
+    test.describe('Order details', () => {
+      test('Renders', () => {
+        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
+        orderDetailsPage.orderDetails.should('be.visible')
+      })
+
+      test('Includes expected row headers', () => {
+        const orderDetailsPage = Page.visit(OrderDetailsPage, { legacySubjectId })
+        orderDetailsPage.orderDetails.within($summary => {
+          cy.wrap($summary).getBySummaryListKey('Order start date').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Order end date').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Order type').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Order type description').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Order type detail').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Wearing wrist PID').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Notifying organisation name').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Responsible organisation').should('be.visible')
+          cy.wrap($summary).getBySummaryListKey('Responsible organisation region').should('be.visible')
+        })
+      })
+    })
+  }
+*/
