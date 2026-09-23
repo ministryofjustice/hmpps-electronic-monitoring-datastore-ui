@@ -54,7 +54,7 @@ export default function integrityRouter(services: Services): Router {
       }
 
       const viewModel = IntegritySearchResultView.construct(orders)
-      res.render('pages/searchResults', { viewModel, orderType: 'integrity' })
+      res.render('pages/search-results', { viewModel, orderType: 'integrity' })
     },
   )
 
@@ -72,7 +72,7 @@ export default function integrityRouter(services: Services): Router {
       })
 
       const viewModel = IntegrityOrderSummaryView.construct(legacySubjectId, orderDetails)
-      res.render('pages/integrity/summary', viewModel)
+      res.render('pages/integrity/order-summary', viewModel)
     },
   )
 
@@ -90,7 +90,7 @@ export default function integrityRouter(services: Services): Router {
       })
 
       const viewModel = IntegrityOrderDetailsView.construct(legacySubjectId, orderDetails)
-      res.render('pages/integrity/details', viewModel)
+      res.render('pages/integrity/order-details', viewModel)
     },
   )
 
