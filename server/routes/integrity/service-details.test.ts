@@ -15,7 +15,7 @@ import { IntegrityServiceDetails } from '../../data/models/integrityServiceDetai
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/integrity/serviceDetailsService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const integrityServiceDetailsService = new IntegrityServiceDetailsService(
   {} as IntegrityDatastoreClient,
 ) as jest.Mocked<IntegrityServiceDetailsService>
@@ -39,7 +39,7 @@ afterEach(() => {
 describe('Integrity service details', () => {
   it(`creates an INTEGRITY_SERVICE_DETAILS_PAGE audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_DETAILS, { legacySubjectId: 'service_details_001' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_HISTORY, { legacySubjectId: 'service_details_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_SERVICE_DETAILS, {
           who: user.username,
@@ -64,7 +64,7 @@ describe('Integrity service details', () => {
     ] as IntegrityServiceDetails[])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_DETAILS, { legacySubjectId: 'service_details_002' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_HISTORY, { legacySubjectId: 'service_details_002' }))
       .expect(_res => {
         expect(integrityServiceDetailsService.getServiceDetails).toHaveBeenCalledWith({
           legacySubjectId: 'service_details_002',
@@ -80,7 +80,7 @@ describe('Integrity service details', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_DETAILS, { legacySubjectId: 'service_details_003' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_HISTORY, { legacySubjectId: 'service_details_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -111,7 +111,7 @@ describe('Integrity service details', () => {
     ] as IntegrityServiceDetails[])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_DETAILS, { legacySubjectId: 'service_details_004' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.SERVICE_HISTORY, { legacySubjectId: 'service_details_004' }))
       .expect(res => {
         expect(res.text).toContain('address line 1')
         expect(res.text).toContain('address line 2')

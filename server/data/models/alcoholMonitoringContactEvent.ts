@@ -2,17 +2,17 @@ import z from 'zod'
 
 export type AlcoholMonitoringContactEventDetails = z.infer<typeof AlcoholMonitoringContactEventDetails>
 export const AlcoholMonitoringContactEventDetails = z.object({
-  contactDateTime: z.string().nullish(),
-  inboundOrOutbound: z.string().nullish(),
-  fromTo: z.string().nullish(),
-  channel: z.string().nullish(),
-  subjectConsentWithdrawn: z.string().nullish(),
-  callOutcome: z.string().nullish(),
-  statement: z.string().nullish(),
-  reasonForContact: z.string().nullish(),
-  outcomeOfContact: z.string().nullish(),
-  visitRequired: z.string().nullish(),
-  visitId: z.string().nullish(),
+  contactDateTime: z.string().optional(),
+  inboundOrOutbound: z.string().optional(),
+  fromTo: z.string().optional(),
+  channel: z.string().optional(),
+  subjectConsentWithdrawn: z.string().optional(),
+  callOutcome: z.string().optional(),
+  statement: z.string().optional(),
+  reasonForContact: z.string().optional(),
+  outcomeOfContact: z.string().optional(),
+  visitRequired: z.string().optional(),
+  visitId: z.string().optional(),
 })
 
 export type AlcoholMonitoringContactEvent = z.infer<typeof AlcoholMonitoringContactEvent>

@@ -7,17 +7,15 @@ import { Page } from '../../constants/pages'
 import { appWithAllRoutes, user } from '../testutils/appSetup'
 import { buildUrl } from '../../utils/utils'
 
-import IntegrityDatastoreClient from '../../data/integrityDatastoreClient'
-
 import IntegrityEquipmentDetailsService from '../../services/integrity/equipmentDetailsService'
 import { IntegrityEquipmentDetails } from '../../data/models/integrityEquipmentDetails'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/integrity/equipmentDetailsService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const integrityEquipmentDetailsService = new IntegrityEquipmentDetailsService(
-  {} as IntegrityDatastoreClient,
+  {} as never,
 ) as jest.Mocked<IntegrityEquipmentDetailsService>
 
 let app: Express
@@ -39,7 +37,7 @@ afterEach(() => {
 describe('Integrity equipment details', () => {
   it(`creates an INTEGRITY_EQUIPMENT_DETAILS audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_001' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_EQUIPMENT_DETAILS, {
           who: user.username,
@@ -52,7 +50,7 @@ describe('Integrity equipment details', () => {
     integrityEquipmentDetailsService.getEquipmentDetails.mockResolvedValue([])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_002' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_002' }))
       .expect(_res => {
         expect(integrityEquipmentDetailsService.getEquipmentDetails).toHaveBeenCalledWith({
           legacySubjectId: 'equipment_details_002',
@@ -68,7 +66,7 @@ describe('Integrity equipment details', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_003' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -95,7 +93,7 @@ describe('Integrity equipment details', () => {
     ] as IntegrityEquipmentDetails[])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_004' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_004' }))
       .expect(res => {
         expect(res.text).toContain('pid category')
         expect(res.text).toContain('hmu category')
@@ -106,9 +104,9 @@ describe('Integrity equipment details', () => {
     integrityEquipmentDetailsService.getEquipmentDetails.mockResolvedValue([] as IntegrityEquipmentDetails[])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_005' }))
+      .get(buildUrl(paths.INTEGRITY_ORDER.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_005' }))
       .expect(res => {
-        expect(res.text).toContain('No equipment details found')
+        expect(res.text).toContain('No equipment found')
       })
   })
 })

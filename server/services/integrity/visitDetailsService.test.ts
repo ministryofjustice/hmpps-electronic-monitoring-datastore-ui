@@ -27,12 +27,11 @@ describe('Integrity visit details service', () => {
       const expectedResult = [
         {
           legacySubjectId: '123',
-          address: null,
           actualWorkStartDateTime: '2020-02-02T00:00:00.000Z',
-          actualWorkEndDateTime: null,
-          visitNotes: null,
-          visitType: null,
-          visitOutcome: null,
+          actualWorkEndDateTime: '',
+          visitNotes: '',
+          visitType: '',
+          visitOutcome: '',
         } as IntegrityVisitDetails,
       ]
 
@@ -50,12 +49,11 @@ describe('Integrity visit details service', () => {
       const expectedResult = [
         {
           legacySubjectId: '123',
-          address: null,
           actualWorkStartDateTime: '2020-03-03T00:00:00.000Z',
-          actualWorkEndDateTime: null,
-          visitNotes: null,
-          visitType: null,
-          visitOutcome: null,
+          actualWorkEndDateTime: '',
+          visitNotes: '',
+          visitType: '',
+          visitOutcome: '',
         } as IntegrityVisitDetails,
       ]
 
@@ -73,30 +71,27 @@ describe('Integrity visit details service', () => {
       const expectedResult = [
         {
           legacySubjectId,
-          address: null,
           actualWorkStartDateTime: '2020-04-04T00:00:00.000Z',
-          actualWorkEndDateTime: null,
-          visitNotes: null,
-          visitType: null,
-          visitOutcome: null,
+          actualWorkEndDateTime: '',
+          visitNotes: '',
+          visitType: '',
+          visitOutcome: '',
         } as IntegrityVisitDetails,
         {
           legacySubjectId: '456',
-          address: null,
           actualWorkStartDateTime: '2020-05-05T00:00:00.000Z',
-          actualWorkEndDateTime: null,
-          visitNotes: null,
-          visitType: null,
-          visitOutcome: null,
+          actualWorkEndDateTime: '',
+          visitNotes: '',
+          visitType: '',
+          visitOutcome: '',
         } as IntegrityVisitDetails,
         {
           legacySubjectId: '789',
-          address: null,
           actualWorkStartDateTime: '2020-06-06T00:00:00.000Z',
-          actualWorkEndDateTime: null,
-          visitNotes: null,
-          visitType: null,
-          visitOutcome: null,
+          actualWorkEndDateTime: '',
+          visitNotes: '',
+          visitType: '',
+          visitOutcome: '',
         } as IntegrityVisitDetails,
       ]
 

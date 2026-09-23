@@ -2,19 +2,18 @@
 
 {% from "../../components/emsDateFilter.njk" import emsDateFilter %}
 {% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
-{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
 
 {% set pageTitle = "All event history" %}
 {% set subHeading = "Violation alerts, monitoring events and contact history" %}
 
 {% block innerContent %}
-  {% if eventHistory | length %}
-    {{ emsDateFilter() }}
+{% if eventHistory | length %}
+{{ emsDateFilter() }}
 
-    {{ emsEventTimeline(eventHistory) }}
-  {% else %}
-    <h3 class="govuk-heading-m no-results-heading">No events found</h3>
+{{ emsEventTimeline(eventHistory) }}
+{% else %}
+<h3 class="govuk-heading-m no-results-heading">No events found</h3>
 
-    <p class="no-results-message">No events information was found for this order</p>
-  {% endif %}
+<p class="no-results-message">No events information was found for this order</p>
+{% endif %}
 {% endblock %}

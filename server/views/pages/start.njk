@@ -1,0 +1,26 @@
+{% extends "../partials/layout-default.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% set pageTitle = "Electronic Monitoring Datastore" %}
+
+{% block innerContent %}
+<p>This service is for Contracts Management Team (CMT) users to search historial electronic monitoring data.</p>
+
+<div class="govuk-button-group">
+  {{ govukButton({
+      text: "Go to search page",
+      href: "/search",
+      isStartButton: true
+    }) }}
+
+  {% if (environmentName | upper == 'DEV') %}
+  {{ govukButton({
+        text: "Test API connection",
+        href: "/test",
+        isStartButton: true,
+        classes: "govuk-button--secondary"
+      }) }}
+  {% endif %}
+</div>
+{% endblock %}

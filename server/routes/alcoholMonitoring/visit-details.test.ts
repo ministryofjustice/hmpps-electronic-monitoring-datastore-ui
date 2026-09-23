@@ -15,7 +15,7 @@ import { AlcoholMonitoringVisitDetails } from '../../data/models/alcoholMonitori
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/alcoholMonitoring/visitDetailsService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const alcoholMonitoringVisitDetailsService = new AlcoholMonitoringVisitDetailsService(
   {} as AlcoholMonitoringDatastoreClient,
 ) as jest.Mocked<AlcoholMonitoringVisitDetailsService>
@@ -39,7 +39,7 @@ afterEach(() => {
 describe('Alcohol monitoring visit details', () => {
   it(`creates an ALCOHOL_MONITORING_VISIT_DETAILS_PAGE audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_DETAILS, { legacySubjectId: 'visit_details_001' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_HISTORY, { legacySubjectId: 'visit_details_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.ALCOHOL_MONITORING_VISIT_DETAILS, {
           who: user.username,
@@ -56,7 +56,7 @@ describe('Alcohol monitoring visit details', () => {
     ] as AlcoholMonitoringVisitDetails[])
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_DETAILS, { legacySubjectId: 'visit_details_002' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_HISTORY, { legacySubjectId: 'visit_details_002' }))
       .expect(_res => {
         expect(alcoholMonitoringVisitDetailsService.getVisitDetails).toHaveBeenCalledWith({
           legacySubjectId: 'visit_details_002',
@@ -71,7 +71,7 @@ describe('Alcohol monitoring visit details', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_DETAILS, { legacySubjectId: 'visit_details_003' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_HISTORY, { legacySubjectId: 'visit_details_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -99,7 +99,7 @@ describe('Alcohol monitoring visit details', () => {
     ] as AlcoholMonitoringVisitDetails[])
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_DETAILS, { legacySubjectId: 'visit_details_004' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.VISIT_HISTORY, { legacySubjectId: 'visit_details_004' }))
       .expect(res => {
         expect(res.text).toContain('test visit address')
         expect(res.text).toContain('visit notes')

@@ -15,7 +15,7 @@ import { IntegritySuspensionOfVisits } from '../../data/models/integritySuspensi
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/integrity/suspensionOfVisitsService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const integritySuspensionOfVisitsService = new IntegritySuspensionOfVisitsService(
   {} as IntegrityDatastoreClient,
 ) as jest.Mocked<IntegritySuspensionOfVisitsService>
@@ -39,7 +39,9 @@ afterEach(() => {
 describe('Integrity suspension of visits details', () => {
   it(`creates an INTEGRITY_SUSPENSION_OF_VISITS audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, { legacySubjectId: 'suspension_of_visits_001' }))
+      .get(
+        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_001' }),
+      )
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_SUSPENSION_OF_VISITS, {
           who: user.username,
@@ -52,7 +54,9 @@ describe('Integrity suspension of visits details', () => {
     integritySuspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, { legacySubjectId: 'suspension_of_visits_002' }))
+      .get(
+        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_002' }),
+      )
       .expect(_res => {
         expect(integritySuspensionOfVisitsService.getSuspensionOfVisits).toHaveBeenCalledWith({
           legacySubjectId: 'suspension_of_visits_002',
@@ -68,7 +72,9 @@ describe('Integrity suspension of visits details', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, { legacySubjectId: 'suspension_of_visits_003' }))
+      .get(
+        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_003' }),
+      )
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -88,7 +94,9 @@ describe('Integrity suspension of visits details', () => {
     ] as IntegritySuspensionOfVisits[])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS, { legacySubjectId: 'suspension_of_visits_004' }))
+      .get(
+        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_004' }),
+      )
       .expect(res => {
         expect(res.text).toContain('Yes')
         expect(res.text).toContain(' 1 January 2001')

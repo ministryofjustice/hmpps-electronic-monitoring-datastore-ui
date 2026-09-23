@@ -3,16 +3,15 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 
 {% block head %}
-  <link href="{{ '/assets/css/index.css' | assetMap }}" rel="stylesheet"/>
-  <link href="{{ '/assets/css/application.css' | assetMap }}" rel="stylesheet"/>
+<link href="{{ '/assets/css/index.css' | assetMap }}" rel="stylesheet" />
 {% endblock %}
 
 {% block pageTitle %}{{ pageTitle | default(applicationName) }}{% endblock %}
 
 {% block header %}
-  {% include "./header.njk" %}
+{% include "./header.njk" %}
 
-  {{ govukPhaseBanner({
+{{ govukPhaseBanner({
     tag: {
       text: "BETA"
     },
@@ -24,5 +23,5 @@
 {% endblock %}
 
 {% block bodyEnd %}
-  <script type="module" src="{{ '/assets/js/index.js' | assetMap }}"></script>
+<script type="module" src="{{ '/assets/js/index.js' | assetMap }}"></script>
 {% endblock %}

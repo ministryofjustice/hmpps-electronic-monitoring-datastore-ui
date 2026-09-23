@@ -1,0 +1,13 @@
+{%- extends "../partials/layout-full-width.njk" -%}
+
+{%- from '../partials/order-search-results/macro.njk' import orderSearchResults -%}
+
+{% set orders = viewModel %}
+{% set pageTitle = orderDescription + " orders" %}
+{% set searchUrl = "/search" %}
+{% set backText = "back to search" %}
+{% set backUrl = "/search" %}
+
+{% block innerContent %}
+{{ orderSearchResults(orders, 20, 1) }}
+{% endblock %}

@@ -1,29 +1,11 @@
 {
   "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
-    "target": "es2015",
-    "module": "esnext",
-    "moduleResolution": "bundler",
     "noEmit": true,
-    "lib": [
-      "es2015",
-      "es5",
-      "dom",
-      "es2015.promise"
-    ],
-    "types": [
-      "cypress",
-      "node"
-    ],
+    "lib": ["es5", "dom", "es2015.promise"],
+    "types": ["@playwright/test"],
     "esModuleInterop": true,
-    "skipLibCheck": true,
-    "strictNullChecks": false,
-    "strictPropertyInitialization": false,
-    "strictFunctionTypes": false,
-    "noImplicitAny": false,
-    "useUnknownInCatchVariables": false
+    "skipLibCheck": true
   },
-  "include": [
-    "**/*.ts"
-  ]
+  "include": ["**/*.ts"]
 }

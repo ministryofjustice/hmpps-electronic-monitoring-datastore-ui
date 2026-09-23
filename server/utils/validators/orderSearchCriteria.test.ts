@@ -1,4 +1,4 @@
-import { OrderSearchCriteria } from '../../models/requests/SearchOrdersRequest'
+import { OrderSearchCriteria } from '../../models/requests/OrderSearchRequest'
 
 describe('OrderSearchCriteria', () => {
   describe('safeParse', () => {
@@ -10,7 +10,7 @@ describe('OrderSearchCriteria', () => {
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: [],
           message: 'You must enter a value into at least one search field',
@@ -25,15 +25,15 @@ describe('OrderSearchCriteria', () => {
         firstName: '',
         lastName: '',
         alias: '',
-        dobDay: '',
-        dobMonth: '',
-        dobYear: '',
+        'dob-day': '',
+        'dob-month': '',
+        'dob-year': '',
       }
 
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: [],
           message: 'You must enter a value into at least one search field',
@@ -48,15 +48,15 @@ describe('OrderSearchCriteria', () => {
         firstName: 'John',
         lastName: '',
         alias: '',
-        dobDay: '10',
-        dobMonth: '02',
-        dobYear: '2021',
+        'dob-day': '10',
+        'dob-month': '02',
+        'dob-year': '2021',
       }
 
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: ['searchType'],
           message: 'Invalid option: expected one of "integrity"|"alcohol-monitoring"',
@@ -71,15 +71,15 @@ describe('OrderSearchCriteria', () => {
         firstName: 'John123',
         lastName: '',
         alias: '',
-        dobDay: '10',
-        dobMonth: '02',
-        dobYear: '2021',
+        'dob-day': '10',
+        'dob-month': '02',
+        'dob-year': '2021',
       }
 
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: ['firstName'],
           message: 'First name must contain letters only',
@@ -94,18 +94,18 @@ describe('OrderSearchCriteria', () => {
         firstName: 'John',
         lastName: '',
         alias: '',
-        dobDay: '32',
-        dobMonth: '13',
-        dobYear: '2021',
+        'dob-day': '32',
+        'dob-month': '13',
+        'dob-year': '2021',
       }
 
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual([
+      expect(result.error!.issues).toEqual([
         expect.objectContaining({
           path: ['dob'],
-          message: 'Please enter a real date in the format DD/MM/YYYY. For example, 24/10/2020',
+          message: 'Please enter a real date. For example, 24 10 2020',
         }),
       ])
     })
@@ -117,28 +117,24 @@ describe('OrderSearchCriteria', () => {
         firstName: 'John123',
         lastName: '',
         alias: '',
-        dobDay: 32,
-        dobMonth: 13,
-        dobYear: 2021,
+        'dob-day': 'q',
+        'dob-month': '13',
+        'dob-year': '2021',
       }
 
       const result = OrderSearchCriteria.safeParse(invalidInput)
 
       expect(result.error).toBeDefined()
-      expect(result.error.issues).toEqual(
-        expect.arrayContaining([
-          expect.objectContaining({
-            path: ['firstName'],
-            message: 'First name must contain letters only',
-          }),
-          /*
-          expect.objectContaining({
-            path: ['dob'],
-            message: 'Please enter a real date in the format DD/MM/YYYY. For example, 24/10/2020',
-          }),
-          */
-        ]),
-      )
+      expect(result.error!.issues).toEqual([
+        expect.objectContaining({
+          path: ['firstName'],
+          message: 'First name must contain letters only',
+        }),
+        expect.objectContaining({
+          path: ['dob-day'],
+          message: 'Please enter a real date. For example, 24 10 2020',
+        }),
+      ])
     })
 
     it('returns no errors when form data is valid', async () => {
@@ -148,9 +144,9 @@ describe('OrderSearchCriteria', () => {
         firstName: 'John',
         lastName: '',
         alias: '',
-        dobDay: '10',
-        dobMonth: '02',
-        dobYear: '2021',
+        'dob-day': '10',
+        'dob-month': '02',
+        'dob-year': '2021',
       }
 
       const result = OrderSearchCriteria.safeParse(validInput)

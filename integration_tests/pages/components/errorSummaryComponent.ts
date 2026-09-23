@@ -1,31 +1,15 @@
-import { PageElement } from '../page'
+import { type Locator, type Page } from '@playwright/test'
 
 export default class ErrorSummaryComponent {
-  protected get element(): PageElement {
-    return cy.get('.govuk-error-summary', { log: false })
-  }
+  private element: Locator
 
-  protected get title(): PageElement {
-    return this.element.get('.govuk-error-summary__title')
-  }
+  readonly title: Locator
 
-  protected get errorList(): PageElement {
-    return this.element.get('.govuk-error-summary__list')
-  }
+  readonly errorList: Locator
 
-  shouldExist() {
-    return this.element.should('exist')
-  }
-
-  shouldNotExist() {
-    return this.element.should('not.exist')
-  }
-
-  shouldHaveError(error: string) {
-    return this.errorList.contains(error)
-  }
-
-  shouldHaveTitle(title: string) {
-    return this.title.contains(title)
+  constructor(page: Page) {
+    this.element = page.locator('.govuk-error-summary')
+    this.title = this.element.locator('.govuk-error-summary__title')
+    this.errorList = this.element.locator('.govuk-error-summary__list')
   }
 }

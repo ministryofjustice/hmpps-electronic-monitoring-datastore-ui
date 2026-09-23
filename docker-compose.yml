@@ -5,7 +5,7 @@ services:
       - hmpps
     container_name: hmpps-auth
     ports:
-      - "8090:8080"
+      - "9090:8080"
     healthcheck:
       test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/8080"]
     environment:
@@ -31,6 +31,7 @@ services:
       - REDIS_HOST=localhost
       - HMPPS_AUTH_EXTERNAL_URL=http://localhost:9090/auth
       - HMPPS_AUTH_URL=http://hmpps-auth:8080/auth
+      # These will need to match new creds in the seed auth service auth
       - AUTH_CODE_CLIENT_ID=hmpps-electronic-monitoring-datastore-ui
       - AUTH_CODE_CLIENT_SECRET=clientsecret
       - CLIENT_CREDS_CLIENT_ID=hmpps-electronic-monitoring-datastore-api

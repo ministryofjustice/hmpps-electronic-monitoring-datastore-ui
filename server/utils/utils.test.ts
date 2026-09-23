@@ -13,7 +13,7 @@ describe('convert to title case', () => {
     ['Leading spaces', '  RobeRT', '  Robert'],
     ['Trailing spaces', 'RobeRT  ', 'Robert  '],
     ['Hyphenated', 'Robert-John SmiTH-jONes-WILSON', 'Robert-John Smith-Jones-Wilson'],
-  ])('%s convertToTitleCase(%s, %s)', (_: string | null, a: string | null, expected: string) => {
+  ])('%s convertToTitleCase(%s, %s)', (_: string | null, a: string | null | undefined, expected: string) => {
     expect(convertToTitleCase(a)).toEqual(expected)
   })
 })
@@ -27,7 +27,7 @@ describe('initialise name', () => {
     ['Two words', 'Robert James', 'R. James'],
     ['Three words', 'Robert James Smith', 'R. Smith'],
     ['Double barrelled', 'Robert-John Smith-Jones-Wilson', 'R. Smith-Jones-Wilson'],
-  ])('%s initialiseName(%s, %s)', (_: string | null, a: string | null, expected: string | null) => {
+  ])('%s initialiseName(%s, %s)', (_: string | null, a: string | null | undefined, expected: string | null) => {
     expect(initialiseName(a)).toEqual(expected)
   })
 })
@@ -46,6 +46,6 @@ describe('getError', () => {
       expected: { text: 'Field 1 is required' },
     },
   ])('getError($errors, $field)', ({ errors, field, expected }) => {
-    expect(getError(errors, field)).toEqual(expected)
+    expect(getError(field, errors)).toEqual(expected)
   })
 })

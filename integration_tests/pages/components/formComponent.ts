@@ -1,25 +1,25 @@
-import { PageElement } from '../page'
+import { expect, type Locator, type Page } from '@playwright/test'
 
 export default abstract class FormComponent {
-  protected elementCacheId: string = crypto.randomUUID()
+  protected readonly page: Page
 
-  constructor() {
-    cy.get('form', { log: false }).as(this.elementCacheId)
+  protected readonly element: Locator
+
+  constructor(page: Page) {
+    this.page = page
+
+    this.element = this.page.getByRole('form')
   }
 
-  protected get form(): PageElement {
-    return cy.get(`@${this.elementCacheId}`, { log: false })
+  async hasAction(action: string | RegExp): Promise<void> {
+    await expect(this.element).toHaveAttribute('action', action)
   }
 
-  checkHasForm(): void {
-    this.form.should('exist')
+  async shouldHaveEncType(encType: string): Promise<void> {
+    await expect(this.element).toHaveAttribute('encType', encType)
   }
 
-  hasAction(action: string | RegExp): PageElement {
-    return this.form.should('have.attr', 'action', action)
-  }
-
-  shouldHaveEncType(encType: string): PageElement {
-    return this.form.should('have.attr', 'encType', encType)
+  async isVisible(): Promise<boolean> {
+    return this.element.isVisible()
   }
 }

@@ -7,10 +7,8 @@ import { Page } from '../constants/pages'
 import { appWithAllRoutes, user } from './testutils/appSetup'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
-jest.mock('../services/emDatastoreOrderSearchService')
-jest.mock('../services/emDatastoreConnectionService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 
 let app: Express
 
@@ -29,7 +27,7 @@ afterEach(() => {
 
 describe('Start page', () => {
   it(`should render the start page successfully`, async () => {
-    auditService.logPageView.mockResolvedValue(null)
+    auditService.logPageView.mockResolvedValue()
 
     return request(app)
       .get(paths.START)
@@ -43,7 +41,7 @@ describe('Start page', () => {
   it(`creates an START_PAGE audit log record`, async () => {
     return request(app)
       .get(paths.START)
-      .expect(res => {
+      .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.START, {
           who: user.username,
           correlationId: expect.any(String),

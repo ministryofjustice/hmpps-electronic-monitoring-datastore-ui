@@ -14,7 +14,7 @@ import { IntegrityOrderDetails } from '../../data/models/integrityOrderDetails'
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/integrity/orderDetailsService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const integrityOrderDetailsService = new IntegrityOrderDetailsService(
   {} as IntegrityDatastoreClient,
 ) as jest.Mocked<IntegrityOrderDetailsService>
@@ -74,7 +74,7 @@ describe('Integrity orders list', () => {
   })
 
   it(`renders the integrity orders list successfully`, async () => {
-    auditService.logPageView.mockResolvedValue(null)
+    auditService.logPageView.mockResolvedValue()
     integrityOrderDetailsService.getSearchResults.mockResolvedValue([
       {
         legacyOrderId: '1',
@@ -86,12 +86,12 @@ describe('Integrity orders list', () => {
       .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {
-        expect(res.text).toContain('Search results')
+        expect(res.text).toContain('Integrity orders')
       })
   })
 
   it(`renders an empty integrity orders list successfully`, async () => {
-    auditService.logPageView.mockResolvedValue(null)
+    auditService.logPageView.mockResolvedValue()
     integrityOrderDetailsService.getSearchResults.mockResolvedValue([])
 
     return request(app)

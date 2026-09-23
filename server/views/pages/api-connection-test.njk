@@ -1,0 +1,23 @@
+{% extends "../partials/layout-default.njk" %}
+
+{% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
+
+{% set pageTitle = "API test page" %}
+{% set backUrl = "/" %}
+
+{% block innerContent %}
+{% set type = null %}
+{% if "success" in "" + data.message %}
+{% set type = "success" %}
+{% endif %}
+
+{{ govukNotificationBanner({
+    type: type,
+    titleText: "Server message",
+    text: data.message
+  }) }}
+
+<p class="govuk-body">
+  <a href="/" class="govuk-link">Go back to the start</a>
+</p>
+{% endblock %}

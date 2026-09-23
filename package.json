@@ -18,9 +18,12 @@
     "test": "jest",
     "test:ci": "jest --runInBand",
     "security_audit": "npx audit-ci --config audit-ci.json",
-    "int-test": "npx cypress run --config video=false",
-    "int-test-ui": "npx cypress open --e2e --browser chrome",
-    "int-test-init:ci": "npx cypress install",
+    "int-test": "npx playwright test",
+    "int-test-ui": "npx playwright test --ui",
+    "int-test-init:ci": "npx playwright install",
+    "int-test-cy": "npx cypress run --config video=false",
+    "int-test-cy-ui": "npx cypress open --e2e --browser chrome",
+    "int-test-cy-init:ci": "npx cypress install",
     "clean": "rm -rf dist test_results",
     "rebuild": "npm run clean && npm run setup && npm run build",
     "setup": "npm ci",
@@ -29,15 +32,6 @@
   "engines": {
     "node": "^24",
     "npm": "^12"
-  },
-  "lint-staged": {
-    "*.{ts,js,css}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.json": [
-      "prettier --write"
-    ]
   },
   "dependencies": {
     "@aws-sdk/client-sqs": "^3.1136.0",
@@ -70,10 +64,12 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@axe-core/playwright": "4.13.0",
     "@jgoz/esbuild-plugin-typecheck": "^5.0.0",
     "@ministryofjustice/eslint-config-hmpps": "^1.0.3",
     "@ministryofjustice/frontend-types": "2.0.2",
     "@ministryofjustice/hmpps-precommit-hooks": "3.0.2",
+    "@playwright/test": "^1.63.0",
     "@tsconfig/node24": "^24.0.5",
     "@types/bunyan": "^1.8.11",
     "@types/bunyan-format": "^0.2.9",
@@ -92,6 +88,7 @@
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
     "axe-core": "^4.13.0",
+    "cheerio": "1.2.0",
     "cypress": "15.21.1",
     "cypress-axe": "^1.7.0",
     "cypress-multi-reporters": "^2.0.5",

@@ -1,57 +1,44 @@
-import { PageElement } from '../page'
+import { type Locator, type Page } from '@playwright/test'
 
 export default class SummaryListComponent {
-  constructor(private readonly label: string) {}
+  private element: Locator
 
-  get element(): PageElement {
-    return cy.contains('h2', this.label)
-  }
+  readonly title: Locator
 
-  get list(): PageElement {
-    return this.element.siblings('.govuk-summary-list', { log: false })
+  readonly list: Locator
+
+  constructor(
+    private readonly page: Page,
+    readonly label: string,
+  ) {
+    this.title = page.getByRole('heading', { name: this.label })
+    this.element = page.locator('.govuk-summary-card', { has: this.title })
+    this.list = this.element.locator('.govuk-summary-list')
   }
 
   // Helpers
 
-  shouldNotExist() {
-    this.element.should('not.exist')
-    this.list.should('not.exist')
+  async isVisible(): Promise<boolean> {
+    const isElementVisible = await this.element.isVisible()
+    const isListVisible = await this.list.isVisible()
+
+    return isElementVisible && isListVisible
   }
 
-  shouldBeVisible() {
-    this.element.should('exist')
-    this.list.should('exist')
-    this.element.should('be.visible')
-    this.list.should('be.visible')
+  async hasItem(key: string, value: string): Promise<boolean> {
+    const keyLocator = this.page.locator('.govuk-summary-list__key', { hasText: key })
+    const rowLocator = this.list.locator('.govuk-summary-list__row', { has: keyLocator })
+    const valueLocator = rowLocator.locator('.govuk-summary-list__value')
+
+    const hasRow = (await rowLocator.count()) === 1
+    const hasKey = (await keyLocator.count()) === 1
+    const textValue = (await valueLocator.count()) === 1 ? await valueLocator.innerText() : ''
+    const hasValue = textValue === value
+
+    return hasRow && hasKey && hasValue
   }
 
-  shouldNotBeVisible() {
-    this.element.should('exist')
-    this.list.should('exist')
-    this.element.should('not.be.visible')
-    this.list.should('not.be.visible')
-  }
-
-  shouldHaveItem(key: string, value: string) {
-    return this.list
-      .contains('.govuk-summary-list__key', key, { log: false })
-      .siblings('.govuk-summary-list__value', { log: false })
-      .then($item => cy.wrap($item.text().trim().replace(/\s+/g, ' ')).should('equal', value))
-  }
-
-  shouldHaveItems(items: Array<{ key: string; value: string }>) {
-    return items.map(({ key, value }) => this.shouldHaveItem(key, value))
-  }
-
-  shouldNotHaveItem(key: string) {
-    return this.list.then($items => {
-      $items.each((_, $el) => {
-        cy.wrap($el.innerText.trim().replace(/\s+/g, ' ')).should('not.equal', key)
-      })
-    })
-  }
-
-  shouldNotHaveItems(keys: Array<string>) {
-    return keys.map(key => this.shouldNotHaveItem(key))
+  async hasItems(items: Array<[string, string]>): Promise<boolean> {
+    return (await Promise.all(items.map(([key, value]) => this.hasItem(key, value)))).every(Boolean)
   }
 }

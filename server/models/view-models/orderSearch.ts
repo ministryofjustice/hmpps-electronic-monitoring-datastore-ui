@@ -2,9 +2,9 @@ import z, { ZodError } from 'zod'
 
 import { getError } from '../../utils/utils'
 
-import { OrderSearchCriteria } from '../requests/SearchOrdersRequest'
+import { OrderSearchCriteria } from '../requests/OrderSearchRequest'
 import { ValidationError, ValidationResult } from '../validationResult'
-import { Date, ViewModel, ErrorSummary } from './utils'
+import { Date, ViewModel, ErrorSummary, ErrorListItem } from './utils'
 
 export const convertZodErrorToValidationError = (error: ZodError): ValidationResult => {
   type ZodIssueWithParams = z.core.$ZodIssue & {
@@ -31,7 +31,7 @@ export const convertZodErrorToValidationError = (error: ZodError): ValidationRes
   }, [] as ValidationResult)
 }
 
-export const createErrorSummary = (validationErrors: ValidationResult): ErrorSummary | null => {
+export const createErrorSummary = (validationErrors: ValidationResult = []): ErrorSummary | null => {
   if (validationErrors.length === 0) {
     return null
   }
@@ -40,84 +40,56 @@ export const createErrorSummary = (validationErrors: ValidationResult): ErrorSum
     errorList: validationErrors.map(issue => {
       return {
         field: issue.field,
-        error: issue.error,
-      }
+        message: issue.error,
+      } as ErrorListItem
     }),
   }
 }
 
 export type OrderSearchView = ViewModel<{
   searchType: 'integrity' | 'alcohol-monitoring'
-  legacySubjectId?: string
-  firstName?: string
-  lastName?: string
-  alias?: string
-  dateOfBirth?: Date
+  legacySubjectId: string
+  firstName: string
+  lastName: string
+  alias: string
+  dateOfBirth: Date
 }>
 export const OrderSearchView = {
-  construct(formData: OrderSearchCriteria, errors?: ValidationResult): OrderSearchView {
-    return constructFromFormData(formData, errors)
-  },
-}
-
-const constructFromFormData = (formData: OrderSearchCriteria, validationErrors?: ValidationResult): OrderSearchView => {
-  if (validationErrors && validationErrors?.length === 0) {
+  construct(formData: OrderSearchCriteria, validationErrors?: ValidationResult): OrderSearchView {
     return {
       searchType: {
         value: formData.searchType,
+        error: getError('searchType', validationErrors),
       },
       legacySubjectId: {
         value: formData.legacySubjectId,
+        error: getError('legacySubjectId', validationErrors),
       },
       firstName: {
         value: formData.firstName,
+        error: getError('firstName', validationErrors),
       },
       lastName: {
         value: formData.lastName,
+        error: getError('lastName', validationErrors),
       },
       alias: {
         value: formData.alias,
+        error: getError('alias', validationErrors),
       },
       dateOfBirth: {
         value: {
-          day: formData.dobDay,
-          month: formData.dobMonth,
-          year: formData.dobYear,
+          day: formData['dob-day'],
+          month: formData['dob-month'],
+          year: formData['dob-year'],
         },
+        error:
+          getError('dob', validationErrors) ||
+          getError('dob-day', validationErrors) ||
+          getError('dob-month', validationErrors) ||
+          getError('dob-year', validationErrors),
       },
-      errorSummary: undefined,
+      errorSummary: createErrorSummary(validationErrors),
     }
-  }
-
-  return {
-    searchType: {
-      value: formData.searchType,
-      error: getError(validationErrors, 'searchType'),
-    },
-    legacySubjectId: {
-      value: formData.legacySubjectId,
-      error: getError(validationErrors, 'legacySubjectId'),
-    },
-    firstName: {
-      value: formData.firstName,
-      error: getError(validationErrors, 'firstName'),
-    },
-    lastName: {
-      value: formData.lastName,
-      error: getError(validationErrors, 'lastName'),
-    },
-    alias: {
-      value: formData.alias,
-      error: getError(validationErrors, 'alias'),
-    },
-    dateOfBirth: {
-      value: {
-        day: formData.dobDay,
-        month: formData.dobMonth,
-        year: formData.dobYear,
-      },
-      error: getError(validationErrors, 'dateOfBirth'),
-    },
-    errorSummary: createErrorSummary(validationErrors),
-  }
+  },
 }

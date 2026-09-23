@@ -1,0 +1,25 @@
+{% extends "../../partials/layout-alcohol-monitoring-order.njk" %}
+
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from '../../components/safeDateFormatters.njk' import safeGovukDate %}
+
+{% set pageTitle = "Alcohol monitoring order" %}
+
+{% block innerContent %}
+{{ govukSummaryList({
+  card: {
+    title: {
+      text: "Order summary"
+    }
+  },
+  rows: [
+    { key: { text: 'Legacy Subject ID' }, value:  { text: legacySubjectId } },
+    { key: { text: 'Name' }, value:  { text: orderSummary.name } },
+    { key: { text: 'Alias' }, value:  { text: orderSummary.alias } },
+    { key: { text: 'Date of birth' }, value:  { text: orderSummary.dateOfBirth | safeGovukDate } },
+    { key: { text: 'Primary address' }, value:  { html: orderSummary.primaryAddress | reject(null) | join('<br>') } },
+    { key: { text: 'Order start date' }, value:  { text: orderSummary.orderStartDate | safeGovukDate } },
+    { key: { text: 'Order end date' }, value:  { text: orderSummary.orderEndDate | safeGovukDate } }
+  ]
+}) }}
+{% endblock %}
