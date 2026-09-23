@@ -10,9 +10,9 @@
 {% block beforeContent %}
 {% if backUrl %}
 {{ govukBackLink({
-      text: (backText if backText or "back"),
-      href: backUrl
-    }) }}
+  text: (backText if backText or "back"),
+  href: backUrl
+}) }}
 {% endif %}
 {% endblock %}
 
@@ -21,41 +21,39 @@
 
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
-    {{
-        mojSubNavigation({
-          label: "Order navigation",
-          items: [
-            {
-              text: "Order summary",
-              href: '/integrity/' + legacySubjectId
-            },
-            {
-              text: "Order details",
-              href: '/integrity/' + legacySubjectId + '/details'
-            },
-            {
-              text: "Visit details",
-              href: '/integrity/' + legacySubjectId + '/visit-details'
-            },
-            {
-              text: "Equipment details",
-              href: '/integrity/' + legacySubjectId + '/equipment-details'
-            },
-            {
-              text: "Suspension of visits",
-              href: '/integrity/' + legacySubjectId + '/suspension-of-visits'
-            },
-            {
-              text: "All event history",
-              href: '/integrity/' + legacySubjectId + '/event-history'
-            },
-            {
-              text: "Services",
-              href: '/integrity/' + legacySubjectId + '/service-details'
-            }
-          ]
-        })
-      }}
+    {{ mojSubNavigation({
+      label: "Integrity order navigation",
+      items: [
+        {
+          text: "Order summary",
+          href: '/integrity/' + legacySubjectId
+        },
+        {
+          text: "Order details",
+          href: '/integrity/' + legacySubjectId + '/details'
+        },
+        {
+          text: "Equipment",
+          href: '/integrity/' + legacySubjectId + '/equipment-history'
+        },
+        {
+          text: "Services",
+          href: '/integrity/' + legacySubjectId + '/service-history'
+        },
+        {
+          text: "Visits",
+          href: '/integrity/' + legacySubjectId + '/visit-history'
+        },
+        {
+          text: "Suspension of visits",
+          href: '/integrity/' + legacySubjectId + '/suspension-of-visits-history'
+        },
+        {
+          text: "Events",
+          href: '/integrity/' + legacySubjectId + '/event-history'
+        }
+      ]
+    }) }}
   </div>
 </div>
 

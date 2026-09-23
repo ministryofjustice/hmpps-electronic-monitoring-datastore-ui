@@ -54,7 +54,7 @@ export default function integrityRouter(services: Services): Router {
       }
 
       const viewModel = IntegritySearchResultView.construct(orders)
-      res.render('pages/search-results', { viewModel, orderType: 'integrity' })
+      res.render('pages/search-results', { viewModel, orderType: 'integrity', orderDescription: 'Integrity' })
     },
   )
 
@@ -95,7 +95,7 @@ export default function integrityRouter(services: Services): Router {
   )
 
   router.get(
-    paths.INTEGRITY_ORDER.VISIT_DETAILS,
+    paths.INTEGRITY_ORDER.VISIT_HISTORY,
     auditPageViewRequest({ services, page: Page.INTEGRITY_VISIT_DETAILS }),
     async (req: Request, res: Response) => {
       const { legacySubjectId } = req.params as { legacySubjectId: string }
@@ -115,7 +115,7 @@ export default function integrityRouter(services: Services): Router {
   )
 
   router.get(
-    paths.INTEGRITY_ORDER.EQUIPMENT_DETAILS,
+    paths.INTEGRITY_ORDER.EQUIPMENT_HISTORY,
     auditPageViewRequest({ services, page: Page.INTEGRITY_EQUIPMENT_DETAILS }),
     async (req: Request, res: Response) => {
       const { legacySubjectId } = req.params as { legacySubjectId: string }
@@ -135,7 +135,7 @@ export default function integrityRouter(services: Services): Router {
   )
 
   router.get(
-    paths.INTEGRITY_ORDER.SERVICE_DETAILS,
+    paths.INTEGRITY_ORDER.SERVICE_HISTORY,
     auditPageViewRequest({ services, page: Page.INTEGRITY_SERVICE_DETAILS }),
     async (req: Request, res: Response) => {
       const { legacySubjectId } = req.params as { legacySubjectId: string }
@@ -175,7 +175,7 @@ export default function integrityRouter(services: Services): Router {
   )
 
   router.get(
-    paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS,
+    paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY,
     auditPageViewRequest({ services, page: Page.INTEGRITY_SUSPENSION_OF_VISITS }),
     async (req: Request, res: Response) => {
       const legacySubjectId = req.params.legacySubjectId as string

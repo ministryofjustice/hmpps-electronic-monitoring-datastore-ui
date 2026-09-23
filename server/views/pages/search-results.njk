@@ -3,9 +3,9 @@
 {%- from '../partials/order-search-results/macro.njk' import orderSearchResults -%}
 
 {% set orders = viewModel %}
-{% set pageTitle = "Search results" %}
+{% set pageTitle = orderDescription + " orders" %}
 {% set searchUrl = "/search" %}
-{% set backText = "back to search form" %}
+{% set backText = "back to search" %}
 {% set backUrl = "/search" %}
 
 {% block innerContent %}

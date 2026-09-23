@@ -36,7 +36,11 @@ export default function alcoholMonitoringRouter(services: Services): Router {
         })
 
         const viewModel = AlchoholMonitoringSearchResultView.construct(orders)
-        res.render('pages/search-results', { viewModel, orderType: 'alcohol-monitoring' })
+        res.render('pages/search-results', {
+          viewModel,
+          orderType: 'alcohol-monitoring',
+          orderDescription: 'Alcohol monitoring',
+        })
       } catch (error) {
         const e = error as { message: string }
         if (e.message === 'Error retrieving search results: Invalid query execution ID') {
@@ -82,7 +86,7 @@ export default function alcoholMonitoringRouter(services: Services): Router {
   )
 
   router.get(
-    paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS,
+    paths.ALCOHOL_MONITORING.EQUIPMENT_HISTORY,
     auditPageViewRequest({ services, page: Page.ALCOHOL_MONITORING_EQUIPMENT_DETAILS }),
     async (req: Request, res: Response) => {
       const { legacySubjectId } = req.params as { legacySubjectId: string }
@@ -100,7 +104,7 @@ export default function alcoholMonitoringRouter(services: Services): Router {
   )
 
   router.get(
-    paths.ALCOHOL_MONITORING.VISIT_DETAILS,
+    paths.ALCOHOL_MONITORING.VISIT_HISTORY,
     auditPageViewRequest({ services, page: Page.ALCOHOL_MONITORING_VISIT_DETAILS }),
     async (req: Request, res: Response) => {
       const { legacySubjectId } = req.params as { legacySubjectId: string }
@@ -118,7 +122,7 @@ export default function alcoholMonitoringRouter(services: Services): Router {
   )
 
   router.get(
-    paths.ALCOHOL_MONITORING.SERVICE_DETAILS,
+    paths.ALCOHOL_MONITORING.SERVICE_HISTORY,
     auditPageViewRequest({ services, page: Page.ALCOHOL_MONITORING_SERVICE_DETAILS }),
     async (req: Request, res: Response) => {
       const { legacySubjectId } = req.params as { legacySubjectId: string }
