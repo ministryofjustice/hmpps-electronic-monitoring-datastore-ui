@@ -36,10 +36,10 @@ afterEach(() => {
   jest.resetAllMocks()
 })
 
-describe('Integrity equipment details', () => {
-  it(`creates an INTEGRITY_EQUIPMENT_DETAILS audit log record`, async () => {
+describe('Alcohol monitoring equipment details', () => {
+  it(`creates an ALCOHOL_MONITORING_EQUIPMENT_DETAILS audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_001' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.ALCOHOL_MONITORING_EQUIPMENT_DETAILS, {
           who: user.username,
@@ -52,7 +52,7 @@ describe('Integrity equipment details', () => {
     alcoholMonitoringEquipmentDetailsService.getEquipmentDetails.mockResolvedValue([])
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_002' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_002' }))
       .expect(_res => {
         expect(alcoholMonitoringEquipmentDetailsService.getEquipmentDetails).toHaveBeenCalledWith({
           legacySubjectId: 'equipment_details_002',
@@ -67,7 +67,7 @@ describe('Integrity equipment details', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_003' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -91,7 +91,7 @@ describe('Integrity equipment details', () => {
     ] as AlcoholMonitoringEquipmentDetails[])
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_004' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_004' }))
       .expect(res => {
         expect(res.text).toContain('test_device_type')
         expect(res.text).toContain('test_device_serial_number')
@@ -110,9 +110,9 @@ describe('Integrity equipment details', () => {
     )
 
     return request(app)
-      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_DETAILS, { legacySubjectId: 'equipment_details_005' }))
+      .get(buildUrl(paths.ALCOHOL_MONITORING.EQUIPMENT_HISTORY, { legacySubjectId: 'equipment_details_005' }))
       .expect(res => {
-        expect(res.text).toContain('No equipment details found')
+        expect(res.text).toContain('No equipment found')
       })
   })
 })
