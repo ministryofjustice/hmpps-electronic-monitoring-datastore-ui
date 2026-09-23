@@ -5,9 +5,9 @@ import { paths } from '../../server/constants/paths'
 import AppFormPage from './appFormPage'
 import OrderSearchFormComponent from './components/orderSearchForm'
 
-export default class SearchPage extends AppFormPage<OrderSearchFormComponent> {
+export default class OrderSearchPage extends AppFormPage<OrderSearchFormComponent> {
   constructor(page: Page) {
-    super(page, 'Search for order details', paths.SEARCH)
+    super(page, 'Search for orders', paths.SEARCH)
 
     this.formComponent = new OrderSearchFormComponent(this.page)
   }

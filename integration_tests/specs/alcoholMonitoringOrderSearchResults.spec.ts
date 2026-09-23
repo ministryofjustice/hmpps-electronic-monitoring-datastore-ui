@@ -5,7 +5,7 @@ import { login, resetStubs } from '../testUtils'
 import alcoholMonitoringDatastoreApi from '../mockApis/alcoholMonitoringDatastoreApi'
 
 import AppPage from '../pages/appPage'
-import SearchPage from '../pages/searchPage'
+import OrderSearchPage from '../pages/orderSearchPage'
 import AlcoholMonitoringSearchResultsPage from '../pages/alcoholMonitoringSearchResults'
 
 test.describe('Alcohol monitoring order search results', () => {
@@ -71,7 +71,7 @@ test.describe('Alcohol monitoring order search results', () => {
       )
       await alcoholMonitoringSearchResultsPage.backLink.click()
 
-      await AppPage.verifyOnPage(SearchPage, page)
+      await AppPage.verifyOnPage(OrderSearchPage, page)
     })
   })
 
@@ -101,7 +101,7 @@ test.describe('Alcohol monitoring order search results', () => {
       )
       await alcoholMonitoringSearchResultsPage.returnToSearchButton.click()
 
-      await AppPage.verifyOnPage(SearchPage, page)
+      await AppPage.verifyOnPage(OrderSearchPage, page)
     })
 
     test('Is accessible', async ({ page }) => {

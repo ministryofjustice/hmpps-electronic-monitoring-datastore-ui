@@ -5,7 +5,7 @@ import { login, resetStubs } from '../testUtils'
 import mockIntegrityApi from '../mockApis/integrityDatastoreApi'
 
 import AppPage from '../pages/appPage'
-import SearchPage from '../pages/searchPage'
+import OrderSearchPage from '../pages/orderSearchPage'
 import IntegrityOrderSummaryPage from '../pages/integrityOrderSummary'
 import IntegrityOrderDetailsPage from '../pages/integrityOrderDetails'
 import IntegrityEquipmentHistoryPage from '../pages/integrityEquipmentHistory'
@@ -90,7 +90,7 @@ test.describe('Integrity order summary', () => {
 
       await integrityOrderSummaryPage.backLink.click()
 
-      await AppPage.verifyOnPage(SearchPage, page)
+      await AppPage.verifyOnPage(OrderSearchPage, page)
     })
 
     test('Is accessible', async ({ page }) => {

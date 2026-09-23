@@ -2,7 +2,6 @@ import { Request, Response, NextFunction, Router } from 'express'
 
 import { Page } from '../constants/pages'
 import { paths } from '../constants/paths'
-import { strings } from '../constants/strings'
 import auditPageViewRequest from '../middleware/auditPageViewRequest'
 import auditSearchRequest from '../middleware/auditSearchRequest'
 
@@ -21,7 +20,7 @@ export default function routes(services: Services): Router {
     paths.START,
     auditPageViewRequest({ services, page: Page.START }),
     async (_req: Request, res: Response, _next: NextFunction) => {
-      res.render('pages/index')
+      res.render('pages/start')
     },
   )
 
@@ -33,7 +32,7 @@ export default function routes(services: Services): Router {
       const apiResult = await services.emDatastoreConnectionService.test(token)
 
       const viewModel = { data: apiResult }
-      res.render('pages/apiTest', viewModel)
+      res.render('pages/api-connection-test', viewModel)
     },
   )
 
@@ -46,14 +45,7 @@ export default function routes(services: Services): Router {
 
       const viewModel = OrderSearchView.construct(formData, validationErrors)
 
-      res.locals = {
-        ...res.locals,
-        page: {
-          title: strings.pageHeadings.searchOrderForm,
-        },
-      }
-
-      res.render('pages/search', viewModel)
+      res.render('pages/search-orders', viewModel)
     },
   )
 
