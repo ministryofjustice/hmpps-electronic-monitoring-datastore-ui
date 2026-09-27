@@ -12,7 +12,7 @@ export default class IntegrityEventHistoryPage extends AppPage {
   readonly subNavigation: Locator
 
   constructor(page: Page) {
-    super(page, 'All Event history', paths.INTEGRITY_ORDER.EVENT_HISTORY)
+    super(page, 'Events', paths.INTEGRITY.EVENT_HISTORY)
 
     this.eventHistory = new SummaryListComponent(page, 'Event history')
 

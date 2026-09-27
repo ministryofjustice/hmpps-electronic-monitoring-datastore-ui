@@ -14,7 +14,7 @@ export default class AlcoholMonitoringSearchResultsPage extends AppPage {
   readonly noResults: Locator
 
   constructor(page: Page) {
-    super(page, 'Alcohol monitoring orders', paths.ALCOHOL_MONITORING.INDEX)
+    super(page, 'Alcohol monitoring orders', paths.ALCOHOL_MONITORING.ORDERS)
 
     this.orderSearchResults = page.locator('.order-search-results__list')
     this.noResults = page.locator('.order-search-results__no-results')

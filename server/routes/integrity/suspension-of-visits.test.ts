@@ -39,9 +39,7 @@ afterEach(() => {
 describe('Integrity suspension of visits details', () => {
   it(`creates an INTEGRITY_SUSPENSION_OF_VISITS audit log record`, async () => {
     return request(app)
-      .get(
-        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_001' }),
-      )
+      .get(buildUrl(paths.INTEGRITY.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_SUSPENSION_OF_VISITS, {
           who: user.username,
@@ -54,9 +52,7 @@ describe('Integrity suspension of visits details', () => {
     integritySuspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([])
 
     return request(app)
-      .get(
-        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_002' }),
-      )
+      .get(buildUrl(paths.INTEGRITY.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_002' }))
       .expect(_res => {
         expect(integritySuspensionOfVisitsService.getSuspensionOfVisits).toHaveBeenCalledWith({
           legacySubjectId: 'suspension_of_visits_002',
@@ -72,9 +68,7 @@ describe('Integrity suspension of visits details', () => {
     })
 
     return request(app)
-      .get(
-        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_003' }),
-      )
+      .get(buildUrl(paths.INTEGRITY.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -88,21 +82,29 @@ describe('Integrity suspension of visits details', () => {
         suspensionOfVisits: 'Yes',
         requestedDate: '2001-01-01T01:01:01',
         startDate: '2002-02-02T02:02:02',
-        startTime: '03:03:03',
+        startTime: '2002-02-02T03:03:03',
         endDate: '2004-04-04T04:04:04',
       },
     ] as IntegritySuspensionOfVisits[])
 
     return request(app)
-      .get(
-        buildUrl(paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_004' }),
-      )
+      .get(buildUrl(paths.INTEGRITY.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_004' }))
       .expect(res => {
         expect(res.text).toContain('Yes')
         expect(res.text).toContain(' 1 January 2001')
         expect(res.text).toContain(' 2 February 2002')
-        expect(res.text).toContain(' 2:02am')
+        expect(res.text).toContain(' 3:03am')
         expect(res.text).toContain(' 4 April 2004')
+      })
+  })
+
+  it(`displays message when no suspension of visits history is returned from the integrity suspension of visits service`, async () => {
+    integritySuspensionOfVisitsService.getSuspensionOfVisits.mockResolvedValue([] as IntegritySuspensionOfVisits[])
+
+    return request(app)
+      .get(buildUrl(paths.INTEGRITY.SUSPENSION_OF_VISITS_HISTORY, { legacySubjectId: 'suspension_of_visits_005' }))
+      .expect(res => {
+        expect(res.text).toContain('No suspension of visits history found')
       })
   })
 })

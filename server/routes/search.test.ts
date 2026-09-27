@@ -37,7 +37,7 @@ describe('Order details search page', () => {
     auditService.logPageView.mockResolvedValue()
 
     return request(app)
-      .get(paths.SEARCH)
+      .get(paths.SEARCH_ORDERS)
       .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {
@@ -47,9 +47,9 @@ describe('Order details search page', () => {
 
   it(`Creates an ORDER_DETAILS_SEARCH_PAGE audit log record`, async () => {
     return request(app)
-      .get(paths.SEARCH)
+      .get(paths.SEARCH_ORDERS)
       .expect(_res => {
-        expect(auditService.logPageView).toHaveBeenCalledWith(Page.SEARCH, {
+        expect(auditService.logPageView).toHaveBeenCalledWith(Page.ORDER_SEARCH, {
           who: user.username,
           correlationId: expect.any(String),
         })
@@ -76,7 +76,7 @@ describe('Order details search page', () => {
     })
 
     return request(app)
-      .get(paths.SEARCH)
+      .get(paths.SEARCH_ORDERS)
       .expect(200)
       .expect('Content-Type', /html/)
       .expect(res => {

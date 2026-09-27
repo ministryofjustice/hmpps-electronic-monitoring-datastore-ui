@@ -12,7 +12,7 @@ export default class AlcoholMonitoringEventHistoryPage extends AppPage {
   readonly subNavigation: Locator
 
   constructor(page: Page) {
-    super(page, 'All Event history', paths.ALCOHOL_MONITORING.EVENT_HISTORY)
+    super(page, 'Events', paths.ALCOHOL_MONITORING.EVENT_HISTORY)
 
     this.eventHistory = new SummaryListComponent(page, 'Event history')
 

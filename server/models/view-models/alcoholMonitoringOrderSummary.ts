@@ -33,7 +33,7 @@ export const AlcoholMonitoringOrderSummaryView = {
         orderStartDate: orderDetails.orderStartDate,
         orderEndDate: orderDetails.orderEndDate,
       },
-      backUrl: paths.ALCOHOL_MONITORING.INDEX,
+      backUrl: paths.ALCOHOL_MONITORING.ORDERS,
     }
   },
 }

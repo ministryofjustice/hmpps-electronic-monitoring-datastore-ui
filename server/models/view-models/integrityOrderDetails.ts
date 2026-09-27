@@ -84,7 +84,7 @@ export const IntegrityOrderDetailsView = {
         responsibleOrganisation: orderDetails.responsibleOrganisation,
         responsibleOrganisationDetailsRegion: orderDetails.responsibleOrganisationDetailsRegion,
       },
-      backUrl: buildUrl(paths.INTEGRITY_ORDER.SUMMARY, { legacySubjectId }),
+      backUrl: buildUrl(paths.INTEGRITY.SUMMARY, { legacySubjectId }),
     }
   },
 }

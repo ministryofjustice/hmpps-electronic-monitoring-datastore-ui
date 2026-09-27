@@ -12,7 +12,7 @@ export default class IntegrityOrderSummaryPage extends AppPage {
   readonly subNavigation: Locator
 
   constructor(page: Page) {
-    super(page, 'Integrity order', paths.INTEGRITY_ORDER.SUMMARY)
+    super(page, 'Integrity order', paths.INTEGRITY.SUMMARY)
 
     this.orderSummary = new SummaryListComponent(page, 'Order summary')
 

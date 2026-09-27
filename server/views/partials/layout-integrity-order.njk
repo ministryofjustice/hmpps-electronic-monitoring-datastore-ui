@@ -42,7 +42,7 @@
         },
         {
           text: "Visits",
-          href: '/integrity/' + legacySubjectId + '/visit-history'
+          href: '/integrity/' + legacySubjectId + '/visits-history'
         },
         {
           text: "Suspension of visits",
@@ -58,12 +58,14 @@
 </div>
 
 <div class="govuk-grid-row">
-  <div class="govuk-grid-column-two-thirds">
+  <div class="govuk-grid-column-full">
     <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
     {% if subHeading %}
     <p class="govuk-body">{{ subHeading }}</p>
     {% endif %}
+  </div>
 
+  <div class="govuk-grid-column-full">
     {% block innerContent %}{% endblock %}
   </div>
 </div>

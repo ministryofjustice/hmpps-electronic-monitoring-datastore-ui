@@ -1,0 +1,16 @@
+{% extends "../../partials/layout-integrity-order.njk" %}
+
+{% from "../../partials/events-timeline/macro.njk" import eventTimeline %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{% set pageTitle = "Visits" %}
+
+{% block innerContent %}
+{%- if timeline | length -%}
+{{ eventTimeline(timeline) }}
+{% else %}
+<h2 class="govuk-heading-m no-results-heading">No visits history found</h2>
+
+<p class="no-results-message">No visits history was found for this order</p>
+{% endif %}
+{% endblock %}

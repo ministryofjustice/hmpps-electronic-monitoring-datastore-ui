@@ -35,7 +35,7 @@ afterEach(() => {
 describe('Order details search request', () => {
   it(`calls the order search service for a search request with valid data`, async () => {
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'integrity',
         firstName: 'John',
@@ -58,7 +58,7 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         firstName: 'jon',
       })
@@ -80,7 +80,7 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'integrity',
       })
@@ -103,14 +103,14 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: '1',
         firstName: 'bar',
       })
       .expect('Content-Type', /text\/plain/)
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
         expect(flashProvider).toHaveBeenCalledWith('formData', JSON.stringify({ searchType: '1', firstName: 'bar' }))
@@ -129,14 +129,14 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue(response)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'foo',
         firstName: 'bar',
       })
       .expect('Content-Type', /text\/plain/)
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
         expect(flashProvider).toHaveBeenCalledWith('formData', JSON.stringify({ searchType: 'foo', firstName: 'bar' }))
@@ -154,13 +154,13 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'integrity',
         firstName: '1',
       })
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
         expect(flashProvider).toHaveBeenCalledWith(
@@ -181,13 +181,13 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'integrity',
         lastName: '1',
       })
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
         expect(flashProvider).toHaveBeenCalledWith(
@@ -208,10 +208,10 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({})
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
         expect(flashProvider).not.toHaveBeenCalledWith('formData', JSON.stringify({ searchType: /.*/ }))
@@ -230,14 +230,14 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue(response)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'integrity',
         firstName: 'John',
       })
       .expect('Content-Type', /text\/plain/)
       .expect(302)
-      .expect('Location', `${paths.INTEGRITY_ORDER.INDEX}?search_id=query_execution_003`)
+      .expect('Location', `${paths.INTEGRITY.ORDERS}?search_id=query_execution_003`)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).toHaveBeenCalled()
       })
@@ -248,14 +248,14 @@ describe('Order details search request', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue(response)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'alcohol-monitoring',
         firstName: 'John',
       })
       .expect('Content-Type', /text\/plain/)
       .expect(302)
-      .expect('Location', `${paths.ALCOHOL_MONITORING.INDEX}?search_id=query_execution_004`)
+      .expect('Location', `${paths.ALCOHOL_MONITORING.ORDERS}?search_id=query_execution_004`)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).toHaveBeenCalled()
       })

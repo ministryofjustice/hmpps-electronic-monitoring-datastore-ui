@@ -3,12 +3,12 @@ import nunjucks from 'nunjucks'
 
 import { setUpNunJucksFilters } from '../../../utils/nunjucksSetup'
 
-import { IntegritySearchResult } from '../../../models/view-models/integritySearchResults'
+import { OrderSearchResult } from '../../../models/view-models/orderSearchResults'
 
 describe('Integrity Order search results', () => {
   let njkEnv: nunjucks.Environment
 
-  const renderMacro = (orders: IntegritySearchResult[], pageSize = 20, currentPage = 1) => {
+  const renderMacro = (orders: OrderSearchResult[], pageSize = 20, currentPage = 1) => {
     const template = `
       {% from "partials/order-search-results/macro.njk" import orderSearchResults %}
       {{ orderSearchResults(${JSON.stringify(orders)}, ${pageSize}, ${currentPage}) }}

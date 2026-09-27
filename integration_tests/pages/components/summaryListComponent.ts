@@ -1,44 +1,79 @@
 import { type Locator, type Page } from '@playwright/test'
 
 export default class SummaryListComponent {
-  private element: Locator
-
-  readonly title: Locator
-
-  readonly list: Locator
-
   constructor(
-    private readonly page: Page,
+    private readonly parent: Page | Locator,
     readonly label: string,
-  ) {
-    this.title = page.getByRole('heading', { name: this.label })
-    this.element = page.locator('.govuk-summary-card', { has: this.title })
-    this.list = this.element.locator('.govuk-summary-list')
-  }
+  ) {}
 
   // Helpers
 
-  async isVisible(): Promise<boolean> {
-    const isElementVisible = await this.element.isVisible()
-    const isListVisible = await this.list.isVisible()
+  private card: Locator | undefined
 
-    return isElementVisible && isListVisible
+  private async getCard(): Promise<Locator | undefined> {
+    if (this.card === undefined) {
+      const cards = await this.parent.locator('.govuk-summary-card').all()
+      this.card = (
+        await Promise.all(
+          cards.map(async card => ((await card.getByRole('heading', { name: this.label }).count()) > 0 ? card : null)),
+        )
+      ).find(card => card !== null)
+    }
+
+    return this.card
+  }
+
+  private readonly keys: string[] = []
+
+  private async getKeys(): Promise<string[]> {
+    if (this.keys.length > 0) {
+      return this.keys
+    }
+
+    const card = await this.getCard()
+    if (!card) {
+      return []
+    }
+
+    const keyLocators = card.locator('.govuk-summary-list__key')
+    const keyCount = await keyLocators.count()
+    for (let i = 0; i < keyCount; i += 1) {
+      // eslint-disable-next-line no-await-in-loop
+      this.keys.push(await keyLocators.nth(i).innerText())
+    }
+    return this.keys
+  }
+
+  private async getKeyIndex(key: string): Promise<number> {
+    const keys = await this.getKeys()
+    return keys.indexOf(key)
+  }
+
+  async isVisible(): Promise<boolean> {
+    const card = await this.getCard()
+    const isVisible = (await card?.isVisible()) && (await card?.locator('.govuk-summary-list').isVisible())
+    return isVisible || false
   }
 
   async hasItem(key: string, value: string): Promise<boolean> {
-    const keyLocator = this.page.locator('.govuk-summary-list__key', { hasText: key })
-    const rowLocator = this.list.locator('.govuk-summary-list__row', { has: keyLocator })
+    const card = await this.getCard()
+    if (!card) {
+      return false
+    }
+
+    const index = await this.getKeyIndex(key)
+    const rowLocator = card.locator('.govuk-summary-list__row').nth(index)
+    const keyLocator = rowLocator.locator('.govuk-summary-list__key')
     const valueLocator = rowLocator.locator('.govuk-summary-list__value')
 
-    const hasRow = (await rowLocator.count()) === 1
-    const hasKey = (await keyLocator.count()) === 1
-    const textValue = (await valueLocator.count()) === 1 ? await valueLocator.innerText() : ''
+    const rowCount = await rowLocator.count()
+    const hasRow = rowCount === 1
+    const keyCount = await keyLocator.count()
+    const hasKey = keyCount === 1
+    const valueCount = await valueLocator.count()
+    const textValue = valueCount === 1 ? await valueLocator.innerText() : ''
     const hasValue = textValue === value
 
     return hasRow && hasKey && hasValue
-  }
-
-  async hasItems(items: Array<[string, string]>): Promise<boolean> {
-    return (await Promise.all(items.map(([key, value]) => this.hasItem(key, value)))).every(Boolean)
   }
 }
