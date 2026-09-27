@@ -14,7 +14,7 @@ export default class IntegrityOrderDetailsPage extends AppPage {
   readonly subNavigation: Locator
 
   constructor(page: Page) {
-    super(page, 'Integrity order', paths.INTEGRITY_ORDER.DETAILS)
+    super(page, 'Integrity order', paths.INTEGRITY.DETAILS)
 
     this.deviceWearer = new SummaryListComponent(page, 'Device wearer')
     this.order = new SummaryListComponent(page, 'Order details')

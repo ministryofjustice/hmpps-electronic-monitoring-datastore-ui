@@ -37,8 +37,8 @@ export default function routes(services: Services): Router {
   )
 
   router.get(
-    paths.SEARCH,
-    auditPageViewRequest({ services, page: Page.SEARCH }),
+    paths.SEARCH_ORDERS,
+    auditPageViewRequest({ services, page: Page.ORDER_SEARCH }),
     async (req: Request, res: Response, _next: NextFunction) => {
       const validationErrors = (req.flash('validationErrors') || []).map(validationError => JSON.parse(validationError))
       const formData = (req.flash('formData') || []).map(data => JSON.parse(data))[0] || {}
@@ -50,8 +50,8 @@ export default function routes(services: Services): Router {
   )
 
   router.post(
-    paths.SEARCH,
-    auditSearchRequest({ services, page: Page.SEARCH }),
+    paths.SEARCH_ORDERS,
+    auditSearchRequest({ services, page: Page.ORDER_SEARCH }),
     async (req: Request, res: Response) => {
       const { token } = res.locals.user
       const { searchType } = req.body
@@ -63,7 +63,7 @@ export default function routes(services: Services): Router {
         req.flash('formData', JSON.stringify(req.body))
         errors.map(validationError => req.flash('validationErrors', JSON.stringify(validationError)))
 
-        res.redirect(paths.SEARCH)
+        res.redirect(paths.SEARCH_ORDERS)
         return
       }
 
@@ -73,8 +73,7 @@ export default function routes(services: Services): Router {
         token,
       )
 
-      const redirectUrl =
-        searchType === 'alcohol-monitoring' ? paths.ALCOHOL_MONITORING.INDEX : paths.INTEGRITY_ORDER.INDEX
+      const redirectUrl = searchType === 'alcohol-monitoring' ? paths.ALCOHOL_MONITORING.ORDERS : paths.INTEGRITY.ORDERS
       res.redirect(`${redirectUrl}?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
     },
   )

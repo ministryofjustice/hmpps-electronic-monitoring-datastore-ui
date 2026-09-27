@@ -170,7 +170,7 @@ describe('AlcoholMonitoring event history', () => {
     return request(app)
       .get(buildUrl(paths.ALCOHOL_MONITORING.EVENT_HISTORY, { legacySubjectId: 'event_history_008' }))
       .expect(res => {
-        expect(res.text).toContain('No events found')
+        expect(res.text).toContain('No event history found')
       })
   })
 })

@@ -42,7 +42,7 @@ afterEach(() => {
 describe('Integrity event history', () => {
   it(`creates an INTEGRITY_EVENT_HISTORY audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_001' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_EVENT_HISTORY, {
           who: user.username,
@@ -55,7 +55,7 @@ describe('Integrity event history', () => {
     integrityEventHistoryService.getEventHistory.mockResolvedValue([])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_002' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_002' }))
       .expect(_res => {
         expect(integrityEventHistoryService.getEventHistory).toHaveBeenCalledWith({
           legacySubjectId: 'event_history_002',
@@ -71,7 +71,7 @@ describe('Integrity event history', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_003' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -80,16 +80,18 @@ describe('Integrity event history', () => {
 
   it(`displays incident events in the event history from the integrity event history service`, async () => {
     integrityEventHistoryService.getEventHistory.mockResolvedValue([
-      IntegrityIncidentEvent.parse({
-        legacySubjectId: 'event_history_004',
-        type: 'TEST_INCIDENT_EVENT',
+      {
+        legacySubjectId: 'event_history_222',
+        type: 'incident',
         dateTime: '2022-02-02T02:02:02',
-        details: {},
-      }),
-    ] as (IntegrityMonitoringEvent | IntegrityIncidentEvent | IntegrityContactEvent | IntegrityViolationEvent)[])
+        details: {
+          type: 'TEST_INCIDENT_EVENT',
+        },
+      },
+    ])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_004' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_222' }))
       .expect(res => {
         expect(res.text).toContain('TEST_INCIDENT_EVENT')
       })
@@ -97,16 +99,18 @@ describe('Integrity event history', () => {
 
   it(`displays monitoring events in the event history from the integrity event history service`, async () => {
     integrityEventHistoryService.getEventHistory.mockResolvedValue([
-      IntegrityMonitoringEvent.parse({
-        legacySubjectId: 'event_history_004',
-        type: 'TEST_MONITORING_EVENT',
+      {
+        legacySubjectId: 'event_history_333',
+        type: 'monitoring',
         dateTime: '2022-02-02T02:02:02',
-        details: {},
-      }),
-    ] as (IntegrityMonitoringEvent | IntegrityIncidentEvent | IntegrityContactEvent | IntegrityViolationEvent)[])
+        details: {
+          type: 'TEST_MONITORING_EVENT',
+        },
+      },
+    ])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_005' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_333' }))
       .expect(res => {
         expect(res.text).toContain('TEST_MONITORING_EVENT')
       })
@@ -114,16 +118,18 @@ describe('Integrity event history', () => {
 
   it(`displays violation events in the event history from the integrity event history service`, async () => {
     integrityEventHistoryService.getEventHistory.mockResolvedValue([
-      IntegrityViolationEvent.parse({
-        legacySubjectId: 'event_history_004',
-        type: 'TEST_VIOLATION_EVENT',
+      {
+        legacySubjectId: 'event_history_444',
+        type: 'violation',
         dateTime: '2022-02-02T02:02:02',
-        details: {},
-      }),
-    ] as (IntegrityMonitoringEvent | IntegrityIncidentEvent | IntegrityContactEvent | IntegrityViolationEvent)[])
+        details: {
+          enforcementReason: 'TEST_VIOLATION_EVENT',
+        },
+      },
+    ])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_006' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_444' }))
       .expect(res => {
         expect(res.text).toContain('TEST_VIOLATION_EVENT')
       })
@@ -131,16 +137,18 @@ describe('Integrity event history', () => {
 
   it(`displays contact events in the event history from the integrity event history service`, async () => {
     integrityEventHistoryService.getEventHistory.mockResolvedValue([
-      IntegrityContactEvent.parse({
-        legacySubjectId: 'event_history_004',
-        type: 'TEST_CONTACT_EVENT',
+      {
+        legacySubjectId: 'event_history_555',
+        type: 'contact',
         dateTime: '2022-02-02T02:02:02',
-        details: {},
-      }),
-    ] as (IntegrityMonitoringEvent | IntegrityIncidentEvent | IntegrityContactEvent | IntegrityViolationEvent)[])
+        details: {
+          type: 'TEST_CONTACT_EVENT',
+        },
+      } as IntegrityContactEvent,
+    ])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_007' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_555' }))
       .expect(res => {
         expect(res.text).toContain('TEST_CONTACT_EVENT')
       })
@@ -150,9 +158,9 @@ describe('Integrity event history', () => {
     integrityEventHistoryService.getEventHistory.mockResolvedValue([] as IntegrityMonitoringEvent[])
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.EVENT_HISTORY, { legacySubjectId: 'event_history_008' }))
+      .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_888' }))
       .expect(res => {
-        expect(res.text).toContain('No events found')
+        expect(res.text).toContain('No event history found')
       })
   })
 })

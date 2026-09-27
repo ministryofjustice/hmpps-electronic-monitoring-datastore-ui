@@ -130,16 +130,17 @@ test.describe('Integrity order summary', () => {
 
       const summaryPage = await AppPage.visit(IntegrityOrderSummaryPage, page, { legacySubjectId: '0987' })
 
-      await expect(summaryPage.orderSummary).toHaveItems([
-        ['Specials', 'no'],
-        ['Legacy Subject ID', '0987'],
-        ['Name', 'Testopher Fakesmith'],
-        ['Alias', 'an old tv show'],
-        ['Date of birth', '1 January 1950'],
-        ['Primary address', '123 Fourth Street\nFiveton\nSixbury\n7AB 8CD'],
-        ['Order start date', '1 January 2010'],
-        ['Order end date', '1 January 2030'],
-      ])
+      await expect(summaryPage.orderSummary).toHaveItem('Specials', 'no')
+      await expect(summaryPage.orderSummary).toHaveItem('Legacy subject ID', '0987')
+      await expect(summaryPage.orderSummary).toHaveItem('Name', 'Testopher Fakesmith')
+      await expect(summaryPage.orderSummary).toHaveItem('Alias', 'an old tv show')
+      await expect(summaryPage.orderSummary).toHaveItem('Date of birth', '1 January 1950')
+      await expect(summaryPage.orderSummary).toHaveItem(
+        'Primary address',
+        '123 Fourth Street\nFiveton\nSixbury\n7AB 8CD',
+      )
+      await expect(summaryPage.orderSummary).toHaveItem('Order start date', '1 January 2010')
+      await expect(summaryPage.orderSummary).toHaveItem('Order end date', '1 January 2030')
     })
   })
 

@@ -35,7 +35,7 @@ export const IntegrityOrderSummaryView = {
         orderStartDate: orderDetails.orderStartDate,
         orderEndDate: orderDetails.orderEndDate,
       },
-      backUrl: paths.INTEGRITY_ORDER.INDEX,
+      backUrl: paths.INTEGRITY.ORDERS,
     }
   },
 }

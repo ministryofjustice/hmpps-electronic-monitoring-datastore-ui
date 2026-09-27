@@ -7,7 +7,7 @@ import OrderSearchFormComponent from './components/orderSearchForm'
 
 export default class OrderSearchPage extends AppFormPage<OrderSearchFormComponent> {
   constructor(page: Page) {
-    super(page, 'Search for orders', paths.SEARCH)
+    super(page, 'Search for orders', paths.SEARCH_ORDERS)
 
     this.formComponent = new OrderSearchFormComponent(this.page)
   }

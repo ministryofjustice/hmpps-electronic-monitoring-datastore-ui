@@ -12,7 +12,7 @@ export default class IntegrityVisitHistoryPage extends AppPage {
   readonly subNavigation: Locator
 
   constructor(page: Page) {
-    super(page, 'Visits', paths.INTEGRITY_ORDER.VISIT_HISTORY)
+    super(page, 'Visits', paths.INTEGRITY.VISITS_HISTORY)
 
     this.visitHistory = new SummaryListComponent(page, 'Visit history')
 

@@ -12,7 +12,7 @@ export default class IntegritySuspensionOfVisitsHistoryPage extends AppPage {
   readonly subNavigation: Locator
 
   constructor(page: Page) {
-    super(page, 'Suspension of visits', paths.INTEGRITY_ORDER.SUSPENSION_OF_VISITS_HISTORY)
+    super(page, 'Suspension of visits', paths.INTEGRITY.SUSPENSION_OF_VISITS_HISTORY)
 
     this.suspensionOfVisitsHistory = new SummaryListComponent(page, 'Suspension of visits history')
 

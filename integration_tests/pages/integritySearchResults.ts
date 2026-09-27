@@ -14,7 +14,7 @@ export default class IntegritySearchResultsPage extends AppPage {
   readonly noResults: Locator
 
   constructor(page: Page) {
-    super(page, 'Integrity orders', paths.INTEGRITY_ORDER.INDEX)
+    super(page, 'Integrity orders', paths.INTEGRITY.ORDERS)
 
     this.orderSearchResults = page.locator('.order-search-results__list')
     this.noResults = page.locator('.order-search-results__no-results')

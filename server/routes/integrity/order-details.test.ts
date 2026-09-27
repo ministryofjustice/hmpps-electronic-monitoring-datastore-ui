@@ -39,7 +39,7 @@ afterEach(() => {
 describe('Integrity order details', () => {
   it(`creates an INTEGRITY_ORDER_DETAILS_PAGE audit log record`, async () => {
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.DETAILS, { legacySubjectId: 'order_details_001' }))
+      .get(buildUrl(paths.INTEGRITY.DETAILS, { legacySubjectId: 'order_details_001' }))
       .expect(_res => {
         expect(auditService.logPageView).toHaveBeenCalledWith(Page.INTEGRITY_ORDER_DETAILS, {
           who: user.username,
@@ -56,7 +56,7 @@ describe('Integrity order details', () => {
     } as IntegrityOrderDetails)
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.DETAILS, { legacySubjectId: 'order_details_002' }))
+      .get(buildUrl(paths.INTEGRITY.DETAILS, { legacySubjectId: 'order_details_002' }))
       .expect(_res => {
         expect(integrityOrderDetailsService.getOrderDetails).toHaveBeenCalledWith({
           legacySubjectId: 'order_details_002',
@@ -72,7 +72,7 @@ describe('Integrity order details', () => {
     })
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.DETAILS, { legacySubjectId: 'order_details_003' }))
+      .get(buildUrl(paths.INTEGRITY.DETAILS, { legacySubjectId: 'order_details_003' }))
       .expect(500)
       .expect(res => {
         expect(res.text).toContain('Problem with the service')
@@ -87,7 +87,7 @@ describe('Integrity order details', () => {
     } as IntegrityOrderDetails)
 
     return request(app)
-      .get(buildUrl(paths.INTEGRITY_ORDER.DETAILS, { legacySubjectId: 'order_details_004' }))
+      .get(buildUrl(paths.INTEGRITY.DETAILS, { legacySubjectId: 'order_details_004' }))
       .expect(res => {
         expect(res.text).toContain('John')
         expect(res.text).toContain('West')

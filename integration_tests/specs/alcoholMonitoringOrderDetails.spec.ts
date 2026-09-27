@@ -119,7 +119,7 @@ test.describe('AlcoholMonitoring order details', () => {
         legacySubjectId: '0987',
       })
 
-      await expect(alcoholMonitoringOrderDetailsPage.deviceWearer).toHaveItem('Legacy Subject ID', '0987')
+      await expect(alcoholMonitoringOrderDetailsPage.deviceWearer).toHaveItem('Legacy subject ID', '0987')
       await expect(alcoholMonitoringOrderDetailsPage.deviceWearer).toHaveItem('First name', 'Testopher')
       await expect(alcoholMonitoringOrderDetailsPage.deviceWearer).toHaveItem('Last name', 'Fakesmith')
       await expect(alcoholMonitoringOrderDetailsPage.deviceWearer).toHaveItem('Alias', 'an old tv show')
@@ -146,10 +146,8 @@ test.describe('AlcoholMonitoring order details', () => {
         legacySubjectId: '0987',
       })
 
-      await expect(alcoholMonitoringOrderDetailsPage.order).toHaveItems([
-        ['Order start date', '1 January 2010'],
-        ['Order end date', '1 January 2030'],
-      ])
+      await expect(alcoholMonitoringOrderDetailsPage.order).toHaveItem('Order start date', '1 January 2010')
+      await expect(alcoholMonitoringOrderDetailsPage.order).toHaveItem('Order end date', '1 January 2030')
     })
   })
 

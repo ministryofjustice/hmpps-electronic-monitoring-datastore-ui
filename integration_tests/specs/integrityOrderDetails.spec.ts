@@ -134,18 +134,19 @@ test.describe('Integrity order details', () => {
         legacySubjectId: '0987',
       })
 
-      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItems([
-        ['Specials', 'no'],
-        ['Legacy Subject ID', '0987'],
-        ['First name', 'Testopher'],
-        ['Last name', 'Fakesmith'],
-        ['Alias', 'an old tv show'],
-        ['Date of birth', '1 January 1950'],
-        ['Adult/child', 'adult'],
-        ['Legacy sex', 'puppy'],
-        ['Contact', 'only when neccessary'],
-        ['Primary address', 'a13 Tenth Street\nHiveton\nOxbury\n7AN 8XD'],
-      ])
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Specials', 'no')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Legacy subject ID', '0987')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('First name', 'Testopher')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Last name', 'Fakesmith')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Alias', 'an old tv show')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Date of birth', '1 January 1950')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Adult/child', 'adult')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Legacy sex', 'puppy')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem('Contact', 'only when neccessary')
+      await expect(integrityOrderDetailsPage.deviceWearer).toHaveItem(
+        'Primary address',
+        'a13 Tenth Street\nHiveton\nOxbury\n7AN 8XD',
+      )
     })
   })
 
@@ -165,10 +166,8 @@ test.describe('Integrity order details', () => {
         legacySubjectId: '0987',
       })
 
-      await expect(integrityOrderDetailsPage.order).toHaveItems([
-        ['Order start date', '1 January 2010'],
-        ['Order end date', '1 January 2030'],
-      ])
+      await expect(integrityOrderDetailsPage.order).toHaveItem('Order start date', '1 January 2010')
+      await expect(integrityOrderDetailsPage.order).toHaveItem('Order end date', '1 January 2030')
     })
   })
 
