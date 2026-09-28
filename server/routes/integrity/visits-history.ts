@@ -17,56 +17,40 @@ import { IntegrityVisitDetails } from '../../data/models/integrityVisitDetails'
 const mojFilters = allMojFilters()
 
 const visitDetailsToTimelineCard = (event: IntegrityVisitDetails): TimelineCard => {
-  const properties: TimelineCardProperty[] = []
+  const { actualWorkStartDateTime, actualWorkEndDateTime } = event
 
-  if (event.visitType) {
-    properties.push({ label: 'Visit Type', value: event.visitType })
-  }
-
-  if (event.address) {
-    properties.push({
+  const properties: TimelineCardProperty[] = [
+    {
       label: 'Address',
       value: [
-        event.address.addressLine1,
-        event.address.addressLine2,
-        event.address.addressLine3,
-        event.address.addressLine4,
-        event.address.postcode,
+        event.address?.addressLine1,
+        event.address?.addressLine2,
+        event.address?.addressLine3,
+        event.address?.addressLine4,
+        event.address?.postcode,
       ]
         .filter(line => line && line.trim() !== '')
-        .join(', '),
-    })
-  }
-
-  if (event.actualWorkStartDateTime) {
-    properties.push({
+        .join('<br/>\n'),
+    },
+    {
       label: 'Actual work start date',
-      value: mojFilters.mojDate(event.actualWorkStartDateTime, 'date'),
-    })
-    properties.push({
+      value: actualWorkStartDateTime ? mojFilters.mojDate(actualWorkStartDateTime, 'date') : '',
+    },
+    {
       label: 'Actual work start time',
-      value: mojFilters.mojDate(event.actualWorkStartDateTime, 'time'),
-    })
-  }
-
-  if (event.actualWorkEndDateTime) {
-    properties.push({
+      value: actualWorkStartDateTime ? mojFilters.mojDate(actualWorkStartDateTime, 'time') : '',
+    },
+    {
       label: 'Actual work end date',
-      value: mojFilters.mojDate(event.actualWorkEndDateTime, 'date'),
-    })
-    properties.push({
+      value: actualWorkEndDateTime ? mojFilters.mojDate(actualWorkEndDateTime, 'date') : '',
+    },
+    {
       label: 'Actual work end time',
-      value: mojFilters.mojDate(event.actualWorkEndDateTime, 'time'),
-    })
-  }
-
-  if (event.visitOutcome) {
-    properties.push({ label: 'Visit Outcome', value: event.visitOutcome })
-  }
-
-  if (event.visitNotes) {
-    properties.push({ label: 'Visit Notes', value: event.visitNotes })
-  }
+      value: actualWorkEndDateTime ? mojFilters.mojDate(actualWorkEndDateTime, 'time') : '',
+    },
+    { label: 'Outcome', value: event.visitOutcome },
+    { label: 'Notes', value: event.visitNotes },
+  ]
 
   return {
     title: event.visitType || 'Visit',

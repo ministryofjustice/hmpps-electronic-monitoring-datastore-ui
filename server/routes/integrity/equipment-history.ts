@@ -17,13 +17,14 @@ import { TimelineCard, TimelineCardProperty, TimelineItem } from '../../models/v
 const mojFilters = allMojFilters()
 
 const fromEquipmentDetail = (deviceDetails: IntegrityEquipmentDetail): TimelineCardProperty[] => {
+  const { installedDateTime, removedDateTime } = deviceDetails
   return [
-    { label: 'Device ID', value: deviceDetails.id },
-    { label: 'Equipment category description', value: deviceDetails.equipmentCategoryDescription },
-    { label: 'Install date', value: mojFilters.mojDate(deviceDetails.installedDateTime, 'date') },
-    { label: 'Install time', value: mojFilters.mojDate(deviceDetails.installedDateTime, 'time') },
-    { label: 'Uninstall date', value: mojFilters.mojDate(deviceDetails.removedDateTime, 'date') },
-    { label: 'Uninstall time', value: mojFilters.mojDate(deviceDetails.removedDateTime, 'time') },
+    { label: 'Device ID', value: deviceDetails.id || '' },
+    { label: 'Equipment category description', value: deviceDetails.equipmentCategoryDescription || '' },
+    { label: 'Install date', value: installedDateTime ? mojFilters.mojDate(installedDateTime, 'date') : '' },
+    { label: 'Install time', value: installedDateTime ? mojFilters.mojDate(installedDateTime, 'time') : '' },
+    { label: 'Uninstall date', value: removedDateTime ? mojFilters.mojDate(removedDateTime, 'date') : '' },
+    { label: 'Uninstall time', value: removedDateTime ? mojFilters.mojDate(removedDateTime, 'time') : '' },
   ]
 }
 

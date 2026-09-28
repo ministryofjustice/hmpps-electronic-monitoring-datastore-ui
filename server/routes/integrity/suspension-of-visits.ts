@@ -20,40 +20,30 @@ export default function integritySuspensionOfVisitsRouter(services: Services): R
   const router = Router()
 
   const suspensionOfVisitsToTimelineCard = (event: IntegritySuspensionOfVisits): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
-    if (event.requestedDate) {
-      properties.push({
-        label: 'Requested Date',
-        value: mojFilters.mojDate(event.requestedDate, 'date'),
-      })
-    }
+    const { requestedDate, startDate, startTime, endDate } = event
 
-    if (event.startDate) {
-      properties.push({
-        label: 'Start Date',
-        value: mojFilters.mojDate(event.startDate, 'date'),
-      })
-    }
-    if (event.startTime) {
-      properties.push({
-        label: 'Start Time',
-        value: mojFilters.mojDate(event.startTime, 'time'),
-      })
-    }
-
-    if (event.endDate) {
-      properties.push({
-        label: 'End Date',
-        value: mojFilters.mojDate(event.endDate, 'date'),
-      })
-    }
-
-    if (event.suspensionOfVisits) {
-      properties.push({
+    const properties: TimelineCardProperty[] = [
+      {
         label: 'Suspension of Visits',
-        value: event.suspensionOfVisits,
-      })
-    }
+        value: event.suspensionOfVisits || '',
+      },
+      {
+        label: 'Requested Date',
+        value: requestedDate ? mojFilters.mojDate(requestedDate, 'date') : '',
+      },
+      {
+        label: 'Start Date',
+        value: startDate ? mojFilters.mojDate(startDate, 'date') : '',
+      },
+      {
+        label: 'Start Time',
+        value: startTime ? mojFilters.mojDate(startTime, 'time') : '',
+      },
+      {
+        label: 'End Date',
+        value: endDate ? mojFilters.mojDate(endDate, 'date') : '',
+      },
+    ]
 
     return {
       title: 'Suspension of visits',

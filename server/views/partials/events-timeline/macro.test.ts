@@ -28,7 +28,7 @@ describe('Integrity Event timeline', () => {
     setUpNunJucksFilters(njkEnv)
   })
 
-  describe('Equipment history', () => {
+  describe('Event history timeline', () => {
     test('Can see one event in the history', () => {
       const html = renderMacro([
         {

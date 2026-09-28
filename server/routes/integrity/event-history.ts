@@ -23,24 +23,13 @@ export default function integrityEventsHistoryRouter(services: Services): Router
   const router = Router()
 
   const monitoringEventToTimelineCard = (event: IntegrityMonitoringEvent): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
+    const { processedDateTime } = event.details
 
-    if (event.details?.type) {
-      properties.push({ label: 'Type', value: event.details.type })
-    }
-
-    if (event.details?.processedDateTime) {
-      properties.push(
-        {
-          label: 'Processed date',
-          value: mojFilters.mojDate(event.details.processedDateTime, 'date'),
-        },
-        {
-          label: 'Processed time',
-          value: mojFilters.mojDate(event.details.processedDateTime, 'time'),
-        },
-      )
-    }
+    const properties: TimelineCardProperty[] = [
+      { label: 'Type', value: event.details.type || '' },
+      { label: 'Processed date', value: processedDateTime ? mojFilters.mojDate(processedDateTime, 'date') : '' },
+      { label: 'Processed time', value: processedDateTime ? mojFilters.mojDate(processedDateTime, 'time') : '' },
+    ]
 
     return {
       title: event.type,
@@ -49,11 +38,7 @@ export default function integrityEventsHistoryRouter(services: Services): Router
   }
 
   const incidentEventToTimelineCard = (event: IntegrityIncidentEvent): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
-
-    if (event.details?.type) {
-      properties.push({ label: 'Type', value: event.details.type })
-    }
+    const properties: TimelineCardProperty[] = [{ label: 'Type', value: event.details.type || '' }]
 
     return {
       title: event.type,
@@ -62,36 +47,16 @@ export default function integrityEventsHistoryRouter(services: Services): Router
   }
 
   const contactEventToTimelineCard = (event: IntegrityContactEvent): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
+    const { modifiedDateTime } = event.details
 
-    if (event.details?.type) {
-      properties.push({ label: 'Type', value: event.details.type })
-    }
-
-    if (event.details?.channel) {
-      properties.push({ label: 'Channel', value: event.details.channel })
-    }
-
-    if (event.details?.modifiedDateTime) {
-      properties.push({ label: 'Modified date', value: mojFilters.mojDate(event.details.modifiedDateTime, 'date') })
-      properties.push({ label: 'Modified time', value: mojFilters.mojDate(event.details.modifiedDateTime, 'time') })
-    }
-
-    if (event.details?.reason) {
-      properties.push({ label: 'Reason', value: event.details.reason })
-    }
-
-    if (event.details?.outcome) {
-      properties.push({ label: 'Outcome', value: event.details.outcome })
-    }
-
-    if (event.details?.userId) {
-      properties.push({ label: 'User ID', value: event.details.userId })
-    }
-
-    if (event.details?.userName) {
-      properties.push({ label: 'User Name', value: event.details.userName })
-    }
+    const properties: TimelineCardProperty[] = [
+      { label: 'Contact channel', value: event.details.channel || '' },
+      { label: 'User', value: event.details.userName || '' },
+      { label: 'Reason', value: event.details.reason || '' },
+      { label: 'Outcome', value: event.details.outcome || '' },
+      { label: 'Modified date', value: modifiedDateTime ? mojFilters.mojDate(modifiedDateTime, 'date') : '' },
+      { label: 'Modified time', value: modifiedDateTime ? mojFilters.mojDate(modifiedDateTime, 'time') : '' },
+    ]
 
     return {
       title: event.details?.type || event.type,
@@ -100,104 +65,73 @@ export default function integrityEventsHistoryRouter(services: Services): Router
   }
 
   const violationEventToTimelineCard = (event: IntegrityViolationEvent): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
+    const {
+      breachDateTime,
+      breachIdentifiedDateTime,
+      breachPackRequestedDate,
+      breachPackSentDate,
+      authorityFirstNotifiedDateTime,
+      agencyResponseDate,
+      warningLetterSentDateTime,
+      subjectLetterSentDate,
+      summonsServedDate,
+      hearingDate,
+      section9Date,
+    } = event.details
 
-    if (event.details?.enforcementReason) {
-      properties.push({ label: 'Enforcement Reason', value: event.details.enforcementReason })
-    }
+    const properties: TimelineCardProperty[] = [
+      { label: 'Breach details', value: event.details.breachDetails },
+      { label: 'Breach enforcement outcome', value: event.details.breachEnforcementOutcome },
+      { label: 'Breach date', value: breachDateTime ? mojFilters.mojDate(breachDateTime, 'date') : '' },
+      { label: 'Breach time', value: breachDateTime ? mojFilters.mojDate(breachDateTime, 'time') : '' },
+      {
+        label: 'Breach identified date',
+        value: breachIdentifiedDateTime ? mojFilters.mojDate(breachIdentifiedDateTime, 'date') : '',
+      },
+      {
+        label: 'Breach identified time',
+        value: breachIdentifiedDateTime ? mojFilters.mojDate(breachIdentifiedDateTime, 'time') : '',
+      },
+      {
+        label: 'Breach pack requested date',
+        value: breachPackRequestedDate ? mojFilters.mojDate(breachPackRequestedDate, 'date') : '',
+      },
+      {
+        label: 'Breach pack sent date',
+        value: breachPackSentDate ? mojFilters.mojDate(breachPackSentDate, 'date') : '',
+      },
 
-    if (event.details?.investigationOutcomeReason) {
-      properties.push({ label: 'Investigation Outcome Reason', value: event.details.investigationOutcomeReason })
-    }
+      {
+        label: 'Authority first notified date',
+        value: authorityFirstNotifiedDateTime ? mojFilters.mojDate(authorityFirstNotifiedDateTime, 'date') : '',
+      },
+      {
+        label: 'Authority first notified time',
+        value: authorityFirstNotifiedDateTime ? mojFilters.mojDate(authorityFirstNotifiedDateTime, 'time') : '',
+      },
 
-    if (event.details?.breachDateTime) {
-      properties.push({ label: 'Breach Date', value: mojFilters.mojDate(event.details.breachDateTime, 'date') })
-      properties.push({ label: 'Breach Time', value: mojFilters.mojDate(event.details.breachDateTime, 'time') })
-    }
+      { label: 'Agency action', value: event.details.agencyAction },
+      { label: 'Agency action date', value: agencyResponseDate ? mojFilters.mojDate(agencyResponseDate, 'date') : '' },
 
-    if (event.details?.breachDetails) {
-      properties.push({ label: 'Breach Details', value: event.details.breachDetails })
-    }
+      { label: 'Investigation outcome reason', value: event.details.investigationOutcomeReason },
+      { label: 'Enforcement reason', value: event.details.enforcementReason },
 
-    if (event.details?.breachEnforcementOutcome) {
-      properties.push({ label: 'Breach Enforcement Outcome', value: event.details.breachEnforcementOutcome })
-    }
-
-    if (event.details?.breachIdentifiedDateTime) {
-      properties.push({
-        label: 'Breach Identified Date',
-        value: mojFilters.mojDate(event.details.breachIdentifiedDateTime, 'date'),
-      })
-      properties.push({
-        label: 'Breach Identified Time',
-        value: mojFilters.mojDate(event.details.breachIdentifiedDateTime, 'time'),
-      })
-    }
-
-    if (event.details?.authorityFirstNotifiedDateTime) {
-      properties.push({
-        label: 'Authority First Notified Date',
-        value: mojFilters.mojDate(event.details.authorityFirstNotifiedDateTime, 'date'),
-      })
-      properties.push({
-        label: 'Authority First Notified Time',
-        value: mojFilters.mojDate(event.details.authorityFirstNotifiedDateTime, 'time'),
-      })
-    }
-
-    if (event.details?.breachPackRequestedDate) {
-      properties.push({
-        label: 'Breach Pack Requested Date',
-        value: mojFilters.mojDate(event.details.breachPackRequestedDate, 'date'),
-      })
-    }
-
-    if (event.details?.breachPackSentDate) {
-      properties.push({
-        label: 'Breach Pack Sent Date',
-        value: mojFilters.mojDate(event.details.breachPackSentDate, 'date'),
-      })
-    }
-
-    if (event.details?.agencyResponseDate) {
-      properties.push({
-        label: 'Agency Response Date',
-        value: mojFilters.mojDate(event.details.agencyResponseDate, 'date'),
-      })
-    }
-
-    if (event.details?.agencyAction) {
-      properties.push({ label: 'Agency Action', value: event.details.agencyAction })
-    }
-
-    if (event.details?.section9Date) {
-      properties.push({ label: 'Section 9 Date', value: mojFilters.mojDate(event.details.section9Date, 'date') })
-    }
-
-    if (event.details?.hearingDate) {
-      properties.push({ label: 'Hearing Date', value: mojFilters.mojDate(event.details.hearingDate, 'date') })
-    }
-
-    if (event.details?.summonsServedDate) {
-      properties.push({
-        label: 'Summons Served Date',
-        value: mojFilters.mojDate(event.details.summonsServedDate, 'date'),
-      })
-    }
-
-    if (event.details?.subjectLetterSentDate) {
-      properties.push({
-        label: 'Subject Letter Sent Date',
-        value: mojFilters.mojDate(event.details.subjectLetterSentDate, 'date'),
-      })
-    }
-
-    if (event.details?.warningLetterSentDateTime) {
-      properties.push({
-        label: 'Warning Letter Sent Date',
-        value: mojFilters.mojDate(event.details.warningLetterSentDateTime, 'date'),
-      })
-    }
+      {
+        label: 'Warning letter sent date',
+        value: warningLetterSentDateTime ? mojFilters.mojDate(warningLetterSentDateTime, 'date') : '',
+      },
+      {
+        label: 'Warning letter sent time',
+        value: warningLetterSentDateTime ? mojFilters.mojDate(warningLetterSentDateTime, 'time') : '',
+      },
+      {
+        label: 'Subject letter sent date',
+        value: subjectLetterSentDate ? mojFilters.mojDate(subjectLetterSentDate, 'date') : '',
+      },
+      { label: 'Summons server date', value: summonsServedDate ? mojFilters.mojDate(summonsServedDate, 'date') : '' },
+      { label: 'Hearing date', value: hearingDate ? mojFilters.mojDate(hearingDate, 'date') : '' },
+      { label: 'Section 9 date', value: section9Date ? mojFilters.mojDate(section9Date, 'date') : '' },
+    ]
 
     return {
       title: event.type,
@@ -232,7 +166,7 @@ export default function integrityEventsHistoryRouter(services: Services): Router
           card = incidentEventToTimelineCard(event as IntegrityIncidentEvent)
           break
         case 'contact':
-          card = contactEventToTimelineCard(event.details as IntegrityContactEvent)
+          card = contactEventToTimelineCard(event as IntegrityContactEvent)
           break
         case 'violation':
           card = violationEventToTimelineCard(event as IntegrityViolationEvent)
