@@ -9,7 +9,7 @@
 {% for card in cards %}
 {%- set rows = [] -%}
 {%- for property in card.properties -%}
-{%- set rows = (rows.push({ key: { text: property.label }, value: { text: property.value } }), rows) -%}
+{%- set rows = (rows.push({ key: { text: property.label }, value: { html: property.value } }), rows) -%}
 {%- endfor -%}
 {{ govukSummaryList({
   card: { title: { text: card.title } } if card.title,

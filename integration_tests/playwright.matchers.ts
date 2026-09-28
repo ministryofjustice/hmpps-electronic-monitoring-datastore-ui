@@ -6,6 +6,7 @@ import DateInputComponent from './pages/components/dateInputComponent'
 import TextInputComponent from './pages/components/textInputComponent'
 import RadiosComponent from './pages/components/radiosComponent'
 import SummaryListComponent from './pages/components/summaryListComponent'
+import TimelineComponent from './pages/components/timelineComponent'
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
@@ -24,6 +25,8 @@ declare global {
 
       toHaveDateValue(expected: number | string | Date): Promise<R>
       toHaveItem(key: string, value: string): Promise<R>
+
+      toHaveEntries(expected: number): Promise<R>
     }
   }
 }
@@ -141,6 +144,19 @@ const customMatchers = {
         pass
           ? `Expected summary list not to have item with key "${key}" and value "${value}"`
           : `Expected summary list to have item with key "${key}" and value "${value}", but it was not found`,
+    }
+  },
+
+  async toHaveEntries(timelineComponent: TimelineComponent, expected: number) {
+    const count = await timelineComponent.hasEntries()
+    const pass = count === expected
+
+    return {
+      pass,
+      message: () =>
+        pass
+          ? `Expected timeline not to have "${expected}" entries`
+          : `Expected timeline to have "${expected}" entries, but found "${count}"`,
     }
   },
 }

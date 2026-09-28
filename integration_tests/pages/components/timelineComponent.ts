@@ -30,10 +30,17 @@ export default class TimelineComponent {
 
   readonly timeline: Locator
 
+  readonly noResultsHeading: Locator
+
+  readonly noResultsMessage: Locator
+
   constructor(private readonly parent: Page | Locator) {
     this.element = this.parent.locator('.events-timeline')
 
     this.timeline = this.element.locator('.events-timeline__timeline')
+
+    this.noResultsHeading = this.parent.locator('.no-results-heading')
+    this.noResultsMessage = this.parent.locator('.no-results-message')
   }
 
   getEntry(index: number): TimelineEntryComponent {
@@ -46,7 +53,7 @@ export default class TimelineComponent {
     return this.element.isVisible()
   }
 
-  async hasCount(numberOfItems: number): Promise<boolean> {
-    return (await this.timeline.locator('.events-timeline__item').all()).length === numberOfItems
+  async hasEntries(): Promise<number> {
+    return (await this.timeline.locator('.events-timeline__item').all()).length
   }
 }

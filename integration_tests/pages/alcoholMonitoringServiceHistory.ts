@@ -4,17 +4,17 @@ import { paths } from '../../server/constants/paths'
 
 import AppPage from './appPage'
 
-import SummaryListComponent from './components/summaryListComponent'
+import TimelineComponent from './components/timelineComponent'
 
 export default class AlcoholMonitoringServiceHistoryPage extends AppPage {
-  readonly serviceHistory: SummaryListComponent
+  readonly serviceHistory: TimelineComponent
 
   readonly subNavigation: Locator
 
   constructor(page: Page) {
     super(page, 'Services', paths.ALCOHOL_MONITORING.SERVICE_HISTORY)
 
-    this.serviceHistory = new SummaryListComponent(page, 'Service history')
+    this.serviceHistory = new TimelineComponent(page)
 
     this.subNavigation = page.locator('.moj-sub-navigation')
   }

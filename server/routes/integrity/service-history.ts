@@ -11,7 +11,7 @@ import type { Services } from '../../services'
 
 import auditPageViewRequest from '../../middleware/auditPageViewRequest'
 
-import { TimelineCard, TimelineCardProperty, TimelineItem } from '../../models/view-models/timelineItems'
+import { TimelineCard, TimelineItem } from '../../models/view-models/timelineItems'
 import { IntegrityServiceDetails } from '../../data/models/integrityServiceDetails'
 
 const mojFilters = allMojFilters()
@@ -20,17 +20,14 @@ export default function integrityServiceHistoryRouter(services: Services): Route
   const router = Router()
 
   const toEventSummary = (event: IntegrityServiceDetails): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
-    for (const [label, value] of Object.entries(event)) {
-      properties.push({ label, value: `${value}` })
-    }
+    const { serviceStartDate, serviceEndDate } = event
 
     return {
       title: 'Service',
       properties: [
         { label: 'Service ID', value: `${event.serviceId}` },
-        { label: 'Service start date', value: mojFilters.mojDate(event.serviceStartDate, 'date') },
-        { label: 'Service end date', value: mojFilters.mojDate(event.serviceEndDate, 'date') },
+        { label: 'Service start date', value: serviceStartDate ? mojFilters.mojDate(serviceStartDate, 'date') : '' },
+        { label: 'Service end date', value: serviceEndDate ? mojFilters.mojDate(serviceEndDate, 'date') : '' },
         {
           label: 'Service address',
           value: [
@@ -47,19 +44,19 @@ export default function integrityServiceHistoryRouter(services: Services): Route
   }
 
   const toCurfewSummary = (event: IntegrityServiceDetails): TimelineCard => {
+    const { curfewStartDate, curfewEndDate } = event
+    const curfewSchedule = `${curfewStartDate ? mojFilters.mojDate(curfewStartDate, 'date') : ''} - ${curfewEndDate ? mojFilters.mojDate(curfewEndDate, 'date') : ''}`
+
     return {
       title: 'Curfew schedule',
       properties: [
-        { label: 'Curfew Start Date', value: mojFilters.mojDate(event.curfewStartDate, 'date') },
-        { label: 'Curfew End Date', value: mojFilters.mojDate(event.curfewEndDate, 'date') },
-
-        { label: 'Monday', value: `${event.monday}` },
-        { label: 'Tuesday', value: `${event.tuesday}` },
-        { label: 'Wednesday', value: `${event.wednesday}` },
-        { label: 'Thursday', value: `${event.thursday}` },
-        { label: 'Friday', value: `${event.friday}` },
-        { label: 'Saturday', value: `${event.saturday}` },
-        { label: 'Sunday', value: `${event.sunday}` },
+        { label: 'Monday', value: event.monday === 1 ? curfewSchedule : '' },
+        { label: 'Tuesday', value: event.tuesday === 1 ? curfewSchedule : '' },
+        { label: 'Wednesday', value: event.wednesday === 1 ? curfewSchedule : '' },
+        { label: 'Thursday', value: event.thursday === 1 ? curfewSchedule : '' },
+        { label: 'Friday', value: event.friday === 1 ? curfewSchedule : '' },
+        { label: 'Saturday', value: event.saturday === 1 ? curfewSchedule : '' },
+        { label: 'Sunday', value: event.sunday === 1 ? curfewSchedule : '' },
       ],
     }
   }

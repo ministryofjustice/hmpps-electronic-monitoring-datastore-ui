@@ -184,7 +184,7 @@ describe('Integrity Datastore Client', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should fetch list of equipment details', async () => {
+    it('should fetch empty list of equipment details', async () => {
       const expectedResult = [] as IntegrityEquipmentDetails[]
       mockServer.withMockedGetResponse(
         `/orders/integrity/${legacySubjectId}/equipment-details?restricted=false`,
@@ -1124,7 +1124,7 @@ describe('Integrity Datastore Client', () => {
       expect(result).toEqual(expectedResult)
     })
 
-    it('should fetch list of visit details', async () => {
+    it('should fetch empty list of visit details', async () => {
       const expectedResult = [] as IntegrityVisitDetails[]
 
       mockServer.withMockedGetResponse(

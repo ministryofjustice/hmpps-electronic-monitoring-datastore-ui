@@ -10,10 +10,6 @@ import { buildUrl } from '../../utils/utils'
 import IntegrityDatastoreClient from '../../data/integrityDatastoreClient'
 
 import IntegrityEventHistoryService from '../../services/integrity/eventHistoryService'
-import { IntegrityMonitoringEvent } from '../../data/models/integrityMonitoringEvent'
-import { IntegrityContactEvent } from '../../data/models/integrityContactEvent'
-import { IntegrityIncidentEvent } from '../../data/models/integrityIncidentEvent'
-import { IntegrityViolationEvent } from '../../data/models/integrityViolationEvent'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../../services/integrity/eventHistoryService')
@@ -144,7 +140,7 @@ describe('Integrity event history', () => {
         details: {
           type: 'TEST_CONTACT_EVENT',
         },
-      } as IntegrityContactEvent,
+      },
     ])
 
     return request(app)
@@ -155,7 +151,7 @@ describe('Integrity event history', () => {
   })
 
   it(`displays message when no event history is returned from the integrity event history service`, async () => {
-    integrityEventHistoryService.getEventHistory.mockResolvedValue([] as IntegrityMonitoringEvent[])
+    integrityEventHistoryService.getEventHistory.mockResolvedValue([])
 
     return request(app)
       .get(buildUrl(paths.INTEGRITY.EVENT_HISTORY, { legacySubjectId: 'event_history_888' }))

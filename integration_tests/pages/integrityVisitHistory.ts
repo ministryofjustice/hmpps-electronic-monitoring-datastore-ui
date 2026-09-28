@@ -4,17 +4,17 @@ import { paths } from '../../server/constants/paths'
 
 import AppPage from './appPage'
 
-import SummaryListComponent from './components/summaryListComponent'
+import TimelineComponent from './components/timelineComponent'
 
 export default class IntegrityVisitHistoryPage extends AppPage {
-  readonly visitHistory: SummaryListComponent
+  readonly visitHistory: TimelineComponent
 
   readonly subNavigation: Locator
 
   constructor(page: Page) {
     super(page, 'Visits', paths.INTEGRITY.VISITS_HISTORY)
 
-    this.visitHistory = new SummaryListComponent(page, 'Visit history')
+    this.visitHistory = new TimelineComponent(page)
 
     this.subNavigation = page.locator('.moj-sub-navigation')
   }
