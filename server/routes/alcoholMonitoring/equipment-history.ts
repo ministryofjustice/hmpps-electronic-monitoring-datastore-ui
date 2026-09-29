@@ -10,7 +10,7 @@ import type { Services } from '../../services'
 
 import auditPageViewRequest from '../../middleware/auditPageViewRequest'
 
-import { TimelineCard, TimelineCardProperty, TimelineItem } from '../../models/view-models/timelineItems'
+import { TimelineCard, TimelineItem } from '../../models/view-models/timelineItems'
 import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMonitoringEquipmentDetails'
 
 const mojFilters = allMojFilters()
