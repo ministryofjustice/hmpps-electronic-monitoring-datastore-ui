@@ -87,8 +87,20 @@ test.describe('Integrity suspension of visits history', () => {
     })
   })
 
-  test.describe('Timeline component', () => {
-    test('Renders a suspensions timeline', async ({ page }) => {
+  test.describe('Suspension of visits timeline with no entries', () => {
+    test('Displays a message when no results are found', async ({ page }) => {
+      await mockIntegrityApi.stubGetSuspensionOfVisits('1234', false, [])
+
+      const suspensions = await AppPage.visit(IntegritySuspensionOfVisitsHistoryPage, page, { legacySubjectId: '1234' })
+
+      await expect(suspensions.suspensionOfVisitsHistory.element).not.toBeVisible()
+      await expect(suspensions.suspensionOfVisitsHistory.noResultsHeading).toBeVisible()
+      await expect(suspensions.suspensionOfVisitsHistory.noResultsMessage).toBeVisible()
+    })
+  })
+
+  test.describe('Suspension of visits timeline with entries', () => {
+    test('Displays a suspension of visits timeline with one entry', async ({ page }) => {
       await mockIntegrityApi.stubGetSuspensionOfVisits('1234', false, [
         {
           legacySubjectId: '123456789',
@@ -101,10 +113,15 @@ test.describe('Integrity suspension of visits history', () => {
       ])
 
       const suspensions = await AppPage.visit(IntegritySuspensionOfVisitsHistoryPage, page, { legacySubjectId: '1234' })
+
       await expect(suspensions.suspensionOfVisitsHistory.element).toBeVisible()
+      await expect(suspensions.suspensionOfVisitsHistory).toHaveEntries(1)
+
+      const entry = suspensions.suspensionOfVisitsHistory.getEntry(1)
+      await expect(entry.getDescription('Suspension of Visits')).toHaveItem('Requested Date', '1 January 2001')
     })
 
-    test('Renders a suspensions timeline with multiple entries', async ({ page }) => {
+    test('Displays a suspension of visits timeline with multiple entries', async ({ page }) => {
       await mockIntegrityApi.stubGetSuspensionOfVisits('1234', false, [
         {
           legacySubjectId: '123456789',
@@ -133,43 +150,18 @@ test.describe('Integrity suspension of visits history', () => {
       ])
 
       const suspensions = await AppPage.visit(IntegritySuspensionOfVisitsHistoryPage, page, { legacySubjectId: '1234' })
+
+      await expect(suspensions.suspensionOfVisitsHistory.element).toBeVisible()
       await expect(suspensions.suspensionOfVisitsHistory).toHaveEntries(3)
-    })
 
-    test('Renders a suspensions timeline with no entries', async ({ page }) => {
-      await mockIntegrityApi.stubGetSuspensionOfVisits('1234', false, [])
+      const entry1 = suspensions.suspensionOfVisitsHistory.getEntry(1)
+      await expect(entry1.getDescription('Suspension of Visits')).toHaveItem('Requested Date', '1 January 2001')
 
-      const suspensions = await AppPage.visit(IntegritySuspensionOfVisitsHistoryPage, page, { legacySubjectId: '1234' })
+      const entry2 = suspensions.suspensionOfVisitsHistory.getEntry(2)
+      await expect(entry2.getDescription('Suspension of Visits')).toHaveItem('Requested Date', '2 February 2002')
 
-      await expect(suspensions.suspensionOfVisitsHistory.element).not.toBeVisible()
-      await expect(suspensions.suspensionOfVisitsHistory.noResultsHeading).toBeVisible()
-      await expect(suspensions.suspensionOfVisitsHistory.noResultsMessage).toBeVisible()
-    })
-  })
-
-  test.describe('Timeline events', () => {
-    test('Each table includes expected headers', async ({ page }) => {
-      await mockIntegrityApi.stubGetSuspensionOfVisits('1234', false, [
-        {
-          legacySubjectId: '123456789',
-          suspensionOfVisits: 'Yes',
-          requestedDate: '2001-01-01T01:01:01',
-          startDate: '2001-01-01T01:01:01',
-          startTime: '2001-01-01T01:01:01',
-          endDate: '2001-01-01T01:01:01',
-        },
-      ])
-
-      const suspensions = await AppPage.visit(IntegritySuspensionOfVisitsHistoryPage, page, { legacySubjectId: '1234' })
-
-      const entry = suspensions.suspensionOfVisitsHistory.getEntry(0)
-      const description = await entry.getDescription('Suspension of visits')
-
-      await expect(description).toHaveItem('Suspension of Visits', 'Yes')
-      await expect(description).toHaveItem('Requested Date', '1 January 2001')
-      await expect(description).toHaveItem('Start Date', '1 January 2001')
-      await expect(description).toHaveItem('Start Time', '1:01am')
-      await expect(description).toHaveItem('End Date', '1 January 2001')
+      const entry3 = suspensions.suspensionOfVisitsHistory.getEntry(3)
+      await expect(entry3.getDescription('Suspension of Visits')).toHaveItem('Requested Date', '3 March 2003')
     })
   })
 

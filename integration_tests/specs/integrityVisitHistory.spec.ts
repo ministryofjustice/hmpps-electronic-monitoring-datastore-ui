@@ -92,33 +92,22 @@ test.describe('Integrity visits history', () => {
     })
   })
 
-  test.describe('timeline component', () => {
-    test('Renders a suspensions timeline', async ({ page }) => {
-      await mockIntegrityApi.stubGetVisitDetails('1234', false, [
-        {
-          legacySubjectId: '1234',
-          address: {
-            addressLine1: 'address line 1',
-            addressLine2: 'address line 2',
-            addressLine3: 'address line 3',
-            addressLine4: 'address line 4',
-            postcode: 'postCode',
-          },
-          actualWorkStartDateTime: '2002-02-02T01:01:01',
-          actualWorkEndDateTime: '2002-02-02T02:02:02',
-          visitNotes: 'TEST_NOTES',
-          visitType: 'TEST_VISIT_TYPE',
-          visitOutcome: 'TEST_OUTCOME',
-        },
-      ])
+  test.describe('Visit history timeline with no entries', () => {
+    test('Displays a message when no results are found', async ({ page }) => {
+      await mockIntegrityApi.stubGetVisitDetails('0000', false, [])
 
-      const suspensions = await AppPage.visit(IntegrityVisitHistoryPage, page, { legacySubjectId: '1234' })
-      await expect(suspensions.visitHistory.element).toBeVisible()
+      const integrityVisitHistoryPage = await AppPage.visit(IntegrityVisitHistoryPage, page, {
+        legacySubjectId: '0000',
+      })
+
+      await expect(integrityVisitHistoryPage.visitHistory.element).not.toBeVisible()
+      await expect(integrityVisitHistoryPage.visitHistory.noResultsHeading).toBeVisible()
+      await expect(integrityVisitHistoryPage.visitHistory.noResultsMessage).toBeVisible()
     })
   })
 
-  test.describe('Visit details timeline item', () => {
-    test('First table includes expected column headers', async ({ page }) => {
+  test.describe('Visit history timeline with entries', () => {
+    test('Displays a visit history timeline with one entry', async ({ page }) => {
       await mockIntegrityApi.stubGetVisitDetails('1234', false, [
         {
           legacySubjectId: '1234',
@@ -137,9 +126,10 @@ test.describe('Integrity visits history', () => {
         },
       ])
 
-      const visitDetails = await AppPage.visit(IntegrityVisitHistoryPage, page, { legacySubjectId: '1234' })
+      const visitHistoryPage = await AppPage.visit(IntegrityVisitHistoryPage, page, { legacySubjectId: '1234' })
+      await expect(visitHistoryPage.visitHistory.element).toBeVisible()
 
-      const visitHistory = visitDetails.visitHistory.getEntry(0)
+      const visitHistory = visitHistoryPage.visitHistory.getEntry(1)
       await expect(visitHistory.title).toHaveText('TEST_VISIT_TYPE')
 
       const summaryCard = visitHistory.getDescription('TEST_VISIT_TYPE')
@@ -155,7 +145,7 @@ test.describe('Integrity visits history', () => {
       await expect(summaryCard).toHaveItem('Outcome', 'TEST_OUTCOME')
     })
 
-    test('Second table includes expected column headers', async ({ page }) => {
+    test('displays a visit history timeline with multiple entries', async ({ page }) => {
       await mockIntegrityApi.stubGetVisitDetails('1234', false, [
         {
           legacySubjectId: '1234',
@@ -189,9 +179,9 @@ test.describe('Integrity visits history', () => {
         },
       ])
 
-      const visitDetails = await AppPage.visit(IntegrityVisitHistoryPage, page, { legacySubjectId: '1234' })
+      const visitHistoryPage = await AppPage.visit(IntegrityVisitHistoryPage, page, { legacySubjectId: '1234' })
 
-      const visitHistory = visitDetails.visitHistory.getEntry(1)
+      const visitHistory = visitHistoryPage.visitHistory.getEntry(2)
       await expect(visitHistory.title).toHaveText('TEST_VISIT_TYPE_2')
 
       const summaryCard = visitHistory.getDescription('TEST_VISIT_TYPE_2')

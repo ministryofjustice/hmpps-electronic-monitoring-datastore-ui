@@ -127,25 +127,24 @@ test.describe('Integrity event history', () => {
   })
 
   test.describe('Event history timeline with no entries', () => {
-    test.beforeEach(async () => {
+    test('Displays a message when no results are found', async ({ page }) => {
       await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [])
       await mockIntegrityApi.stubGetIncidentEvents('11111111', false, [])
       await mockIntegrityApi.stubGetContactEvents('11111111', false, [])
       await mockIntegrityApi.stubGetViolationEvents('11111111', false, [])
-    })
 
-    test('Renders a message', async ({ page }) => {
       const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '11111111',
       })
 
+      await expect(integrityEventHistoryPage.eventHistory.element).not.toBeVisible()
       await expect(integrityEventHistoryPage.eventHistory.noResultsHeading).toBeVisible()
       await expect(integrityEventHistoryPage.eventHistory.noResultsMessage).toBeVisible()
     })
   })
 
   test.describe('Event history timeline with entries', () => {
-    test.beforeEach(async () => {
+    test('Displays an event history timeline with one of each event type', async ({ page }) => {
       await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [
         {
           legacySubjectId: '11111111',
@@ -214,22 +213,38 @@ test.describe('Integrity event history', () => {
           },
         },
       ])
-    })
 
-    test('Renders an event timeline', async ({ page }) => {
       const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '11111111',
       })
 
-      await expect(integrityEventHistoryPage.eventHistory.getEntry(0).element).toBeVisible()
+      await expect(integrityEventHistoryPage.eventHistory.getEntry(1).element).toBeVisible()
+      await expect(integrityEventHistoryPage.eventHistory.getEntry(2).element).toBeVisible()
+      await expect(integrityEventHistoryPage.eventHistory.getEntry(3).element).toBeVisible()
+      await expect(integrityEventHistoryPage.eventHistory.getEntry(4).element).toBeVisible()
     })
 
-    test('Includes expected monitoring event', async ({ page }) => {
+    test('Displays an event history timeline with one monitoring event', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [
+        {
+          legacySubjectId: '11111111',
+          type: 'monitoring',
+          dateTime: '2022-02-02T01:03:03',
+          details: {
+            processedDateTime: '2022-02-02T01:03:03',
+          },
+        },
+      ])
+
+      await mockIntegrityApi.stubGetIncidentEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetContactEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetViolationEvents('11111111', false, [])
+
       const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '11111111',
       })
 
-      const event = integrityEventHistoryPage.eventHistory.getEntry(0)
+      const event = integrityEventHistoryPage.eventHistory.getEntry(1)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('monitoring')
       await expect(event.date).toHaveText('2 Feb 2022 at 1:03am')
@@ -239,7 +254,61 @@ test.describe('Integrity event history', () => {
       await expect(monitoringSummaryCard).toHaveItem('Processed time', '1:03am')
     })
 
-    test('Includes expected incident event', async ({ page }) => {
+    test('Displays an event history timeline with multiple monitoring events', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('22222222', false, [
+        {
+          legacySubjectId: '22222222',
+          type: 'monitoring',
+          dateTime: '2022-02-02T01:03:03',
+          details: {
+            processedDateTime: '2022-02-02T01:03:03',
+          },
+        },
+        {
+          legacySubjectId: '22222222',
+          type: 'monitoring',
+          dateTime: '2024-04-04T01:03:03',
+          details: {
+            processedDateTime: '2024-04-04T01:03:03',
+          },
+        },
+      ])
+
+      await mockIntegrityApi.stubGetIncidentEvents('22222222', false, [])
+      await mockIntegrityApi.stubGetContactEvents('22222222', false, [])
+      await mockIntegrityApi.stubGetViolationEvents('22222222', false, [])
+
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
+        legacySubjectId: '22222222',
+      })
+
+      const event = integrityEventHistoryPage.eventHistory.getEntry(2)
+      await expect(event.element).toBeVisible()
+      await expect(event.title).toHaveText('monitoring')
+      await expect(event.date).toHaveText('4 Apr 2024 at 1:03am')
+
+      const monitoringSummaryCard = event.getDescription('monitoring')
+      await expect(monitoringSummaryCard).toHaveItem('Processed date', '4 April 2024')
+      await expect(monitoringSummaryCard).toHaveItem('Processed time', '1:03am')
+    })
+
+    test('Displays an event history timeline with one incident event', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [])
+
+      await mockIntegrityApi.stubGetIncidentEvents('11111111', false, [
+        {
+          legacySubjectId: '11111111',
+          type: 'incident',
+          dateTime: '2022-02-02T01:06:06',
+          details: {
+            type: 'an incident occurred',
+          },
+        },
+      ])
+
+      await mockIntegrityApi.stubGetContactEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetViolationEvents('11111111', false, [])
+
       const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '11111111',
       })
@@ -253,12 +322,72 @@ test.describe('Integrity event history', () => {
       await expect(incidentSummaryCard).toHaveItem('Type', 'an incident occurred')
     })
 
-    test('Includes expected contact event', async ({ page }) => {
+    test('Displays an event history timeline with multiple incident events', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('33333333', false, [])
+
+      await mockIntegrityApi.stubGetIncidentEvents('33333333', false, [
+        {
+          legacySubjectId: '33333333',
+          type: 'incident',
+          dateTime: '2021-01-01T01:06:06',
+          details: {
+            type: 'first incident occurred',
+          },
+        },
+        {
+          legacySubjectId: '33333333',
+          type: 'incident',
+          dateTime: '2024-04-04T01:06:06',
+          details: {
+            type: 'a second incident occurred',
+          },
+        },
+      ])
+
+      await mockIntegrityApi.stubGetContactEvents('33333333', false, [])
+      await mockIntegrityApi.stubGetViolationEvents('33333333', false, [])
+
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
+        legacySubjectId: '33333333',
+      })
+
+      const event = integrityEventHistoryPage.eventHistory.getEntry(2)
+      await expect(event.element).toBeVisible()
+      await expect(event.title).toHaveText('incident')
+      await expect(event.date).toHaveText('4 Apr 2024 at 1:06am')
+
+      const incidentSummaryCard = event.getDescription('incident')
+      await expect(incidentSummaryCard).toHaveItem('Type', 'a second incident occurred')
+    })
+
+    test('Displays an event history timeline with one contact event', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetIncidentEvents('11111111', false, [])
+
+      await mockIntegrityApi.stubGetContactEvents('11111111', false, [
+        {
+          legacySubjectId: '11111111',
+          type: 'contact',
+          dateTime: '2022-02-03T01:09:09',
+          details: {
+            outcome: 'there was an outcome',
+            type: 'PHONE_CALL',
+            reason: 'there was a reason',
+            channel: 'TELEPHONE',
+            userId: 'Test User A',
+            userName: 'UID-123',
+            modifiedDateTime: '2022-02-03T01:09:09',
+          },
+        },
+      ])
+
+      await mockIntegrityApi.stubGetViolationEvents('11111111', false, [])
+
       const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '11111111',
       })
 
-      const event = integrityEventHistoryPage.eventHistory.getEntry(2)
+      const event = integrityEventHistoryPage.eventHistory.getEntry(1)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('contact')
       await expect(event.date).toHaveText('3 Feb 2022 at 1:09am')
@@ -272,11 +401,175 @@ test.describe('Integrity event history', () => {
       await expect(contactSummaryCard).toHaveItem('Modified time', '1:09am')
     })
 
-    test('Includes expected violation event', async ({ page }) => {
+    test('Displays an event history timeline with multiple contact events', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetIncidentEvents('11111111', false, [])
+
+      await mockIntegrityApi.stubGetContactEvents('11111111', false, [
+        {
+          legacySubjectId: '11111111',
+          type: 'contact',
+          dateTime: '2022-02-03T01:09:09',
+          details: {
+            outcome: 'there was an outcome',
+            type: 'PHONE_CALL',
+            reason: 'there was a reason',
+            channel: 'TELEPHONE',
+            userId: 'Test User A',
+            userName: 'UID-123',
+            modifiedDateTime: '2022-02-03T01:09:09',
+          },
+        },
+        {
+          legacySubjectId: '11111111',
+          type: 'contact',
+          dateTime: '2026-04-04T01:09:09',
+          details: {
+            outcome: 'there was an outcome',
+            type: 'VOICE_MAIL',
+            reason: 'there was a reason',
+            channel: 'TELEPHONE',
+            userId: 'Test User A',
+            userName: 'UID-123',
+            modifiedDateTime: '2026-04-04T01:09:09',
+          },
+        },
+      ])
+
+      await mockIntegrityApi.stubGetViolationEvents('11111111', false, [])
+
       const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '11111111',
       })
-      const event = integrityEventHistoryPage.eventHistory.getEntry(3)
+
+      const event = integrityEventHistoryPage.eventHistory.getEntry(2)
+      await expect(event.element).toBeVisible()
+      await expect(event.title).toHaveText('contact')
+      await expect(event.date).toHaveText('4 Apr 2026 at 1:09am')
+
+      const contactSummaryCard = event.getDescription('VOICE_MAIL')
+      await expect(contactSummaryCard).toHaveItem('Contact channel', 'TELEPHONE')
+      await expect(contactSummaryCard).toHaveItem('Outcome', 'there was an outcome')
+      await expect(contactSummaryCard).toHaveItem('Reason', 'there was a reason')
+      await expect(contactSummaryCard).toHaveItem('User', 'UID-123')
+      await expect(contactSummaryCard).toHaveItem('Modified date', '4 April 2026')
+      await expect(contactSummaryCard).toHaveItem('Modified time', '1:09am')
+    })
+
+    test('Displays an event history timeline with one violation event', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetIncidentEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetContactEvents('11111111', false, [])
+
+      await mockIntegrityApi.stubGetViolationEvents('11111111', false, [
+        {
+          legacySubjectId: '11111111',
+          type: 'violation',
+          dateTime: '2022-02-03T01:12:12',
+          details: {
+            breachDetails: 'details of breach',
+            breachEnforcementOutcome: 'outcome of breach',
+            breachDateTime: '2022-02-03T01:12:12',
+            breachIdentifiedDateTime: '2022-02-03T01:12:12',
+            breachPackRequestedDate: '2022-02-03T01:12:12',
+            breachPackSentDate: '2022-02-03T01:12:12',
+
+            authorityFirstNotifiedDateTime: '2022-02-03T01:12:12',
+
+            agencyAction: 'action of agency',
+            agencyResponseDate: '2022-02-03T01:12:12',
+
+            investigationOutcomeReason: 'invest outcome',
+            enforcementReason: 'enforce reason',
+
+            warningLetterSentDateTime: '2022-02-03T01:12:12',
+            subjectLetterSentDate: '2022-02-03T01:12:12',
+            summonsServedDate: '2022-02-03T01:12:12',
+            hearingDate: '2022-02-03T01:12:12',
+            section9Date: '2022-02-03T01:12:12',
+          },
+        },
+      ])
+
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
+        legacySubjectId: '11111111',
+      })
+
+      const event = integrityEventHistoryPage.eventHistory.getEntry(1)
+      await expect(event.element).toBeVisible()
+      await expect(event.title).toHaveText('violation')
+      await expect(event.date).toHaveText('3 Feb 2022 at 1:12am')
+
+      const violationSummaryCard = event.getDescription('violation')
+      await expect(violationSummaryCard).toHaveItem('Breach enforcement outcome', 'outcome of breach')
+      await expect(violationSummaryCard).toHaveItem('Breach date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Breach time', '1:12am')
+      await expect(violationSummaryCard).toHaveItem('Breach identified date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Breach identified time', '1:12am')
+      await expect(violationSummaryCard).toHaveItem('Breach pack requested date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Breach pack sent date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Authority first notified date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Authority first notified time', '1:12am')
+      await expect(violationSummaryCard).toHaveItem('Agency action', 'action of agency')
+      await expect(violationSummaryCard).toHaveItem('Agency action date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Investigation outcome reason', 'invest outcome')
+      await expect(violationSummaryCard).toHaveItem('Enforcement reason', 'enforce reason')
+      await expect(violationSummaryCard).toHaveItem('Warning letter sent date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Warning letter sent time', '1:12am')
+      await expect(violationSummaryCard).toHaveItem('Subject letter sent date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Summons server date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Hearing date', '3 February 2022')
+      await expect(violationSummaryCard).toHaveItem('Section 9 date', '3 February 2022')
+    })
+
+    test('Displays an event history timeline with multiple violation events', async ({ page }) => {
+      await mockIntegrityApi.stubGetMonitoringEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetIncidentEvents('11111111', false, [])
+      await mockIntegrityApi.stubGetContactEvents('11111111', false, [])
+
+      await mockIntegrityApi.stubGetViolationEvents('11111111', false, [
+        {
+          legacySubjectId: '11111111',
+          type: 'violation',
+          dateTime: '2021-01-01T01:12:12',
+          details: {
+            breachDetails: 'ignored breach',
+          },
+        },
+        {
+          legacySubjectId: '11111111',
+          type: 'violation',
+          dateTime: '2022-02-03T01:12:12',
+          details: {
+            breachDetails: 'details of breach',
+            breachEnforcementOutcome: 'outcome of breach',
+            breachDateTime: '2022-02-03T01:12:12',
+            breachIdentifiedDateTime: '2022-02-03T01:12:12',
+            breachPackRequestedDate: '2022-02-03T01:12:12',
+            breachPackSentDate: '2022-02-03T01:12:12',
+
+            authorityFirstNotifiedDateTime: '2022-02-03T01:12:12',
+
+            agencyAction: 'action of agency',
+            agencyResponseDate: '2022-02-03T01:12:12',
+
+            investigationOutcomeReason: 'invest outcome',
+            enforcementReason: 'enforce reason',
+
+            warningLetterSentDateTime: '2022-02-03T01:12:12',
+            subjectLetterSentDate: '2022-02-03T01:12:12',
+            summonsServedDate: '2022-02-03T01:12:12',
+            hearingDate: '2022-02-03T01:12:12',
+            section9Date: '2022-02-03T01:12:12',
+          },
+        },
+      ])
+
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
+        legacySubjectId: '11111111',
+      })
+
+      const event = integrityEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('violation')
       await expect(event.date).toHaveText('3 Feb 2022 at 1:12am')
@@ -306,7 +599,7 @@ test.describe('Integrity event history', () => {
 
   test.describe('Navigation between order sub-pages', () => {
     test.beforeEach(async () => {
-      mockIntegrityApi.stubGetMonitoringEvents('09876', false, [
+      await mockIntegrityApi.stubGetMonitoringEvents('09876', false, [
         {
           legacySubjectId: '09876',
           type: 'monitoring',
@@ -317,72 +610,12 @@ test.describe('Integrity event history', () => {
         },
       ])
 
-      mockIntegrityApi.stubGetIncidentEvents('09876', false, [
-        {
-          legacySubjectId: '09876',
-          type: 'incident',
-          dateTime: '2022-02-02T01:06:06',
-          details: {
-            type: 'an incident occurred',
-          },
-        },
-      ])
-
-      mockIntegrityApi.stubGetContactEvents('09876', false, [
-        {
-          legacySubjectId: '09876',
-          type: 'contact',
-          dateTime: '2022-02-03T01:09:09',
-          details: {
-            outcome: 'there was an outcome',
-            type: 'PHONE_CALL',
-            reason: 'there was a reason',
-            channel: 'TELEPHONE',
-            userId: 'Test User A',
-            userName: 'UID-123',
-            modifiedDateTime: '2022-02-03T01:09:09',
-          },
-        },
-      ])
-
-      mockIntegrityApi.stubGetViolationEvents('09876', false, [
-        {
-          legacySubjectId: '09876',
-          type: 'violation',
-          dateTime: '2022-02-03T01:12:12',
-          details: {
-            breachDetails: 'details of breach',
-            breachEnforcementOutcome: 'outcome of breach',
-            breachDateTime: '2022-02-03T01:12:12',
-            breachIdentifiedDateTime: '2022-02-03T01:12:12',
-            breachPackRequestedDate: '2022-02-03T01:12:12',
-            breachPackSentDate: '2022-02-03T01:12:12',
-
-            authorityFirstNotifiedDateTime: '2022-02-03T01:12:12',
-
-            agencyAction: 'action of agency',
-            agencyResponseDate: '2022-02-03T01:12:12',
-
-            investigationOutcomeReason: 'invest outcome',
-            enforcementReason: 'enforce reason',
-
-            warningLetterSentDateTime: '2022-02-03T01:12:12',
-            subjectLetterSentDate: '2022-02-03T01:12:12',
-            summonsServedDate: '2022-02-03T01:12:12',
-            hearingDate: '2022-02-03T01:12:12',
-            section9Date: '2022-02-03T01:12:12',
-          },
-        },
-      ])
+      await mockIntegrityApi.stubGetIncidentEvents('09876', false, [])
+      await mockIntegrityApi.stubGetContactEvents('09876', false, [])
+      await mockIntegrityApi.stubGetViolationEvents('09876', false, [])
     })
 
     test('Navigates to the order summary page', async ({ page }) => {
-      await mockIntegrityApi.stubGetEquipmentDetails('09876', false, [
-        {
-          legacySubjectId: '09876',
-        },
-      ])
-
       await mockIntegrityApi.stubGetOrderDetails('09876', false, {
         specials: 'no',
         legacySubjectId: '09876',
@@ -391,22 +624,16 @@ test.describe('Integrity event history', () => {
         offenceRisk: false,
       })
 
-      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '09876',
       })
 
-      await integrityEquipmentHistoryPage.subNavigationLink('Summary').click()
+      await integrityEventHistoryPage.subNavigationLink('Summary').click()
 
       await AppPage.verifyOnPage(IntegrityOrderSummaryPage, page)
     })
 
     test('Navigates to the order details page', async ({ page }) => {
-      await mockIntegrityApi.stubGetEquipmentDetails('09876', false, [
-        {
-          legacySubjectId: '09876',
-        },
-      ])
-
       await mockIntegrityApi.stubGetOrderDetails('09876', false, {
         specials: 'no',
         legacySubjectId: '09876',
@@ -415,46 +642,32 @@ test.describe('Integrity event history', () => {
         offenceRisk: false,
       })
 
-      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '09876',
       })
 
-      await integrityEquipmentHistoryPage.subNavigationLink('Details').click()
+      await integrityEventHistoryPage.subNavigationLink('Details').click()
 
       await AppPage.verifyOnPage(IntegrityOrderDetailsPage, page)
     })
 
     test('Navigates to the equipment details page', async ({ page }) => {
-      await mockIntegrityApi.stubGetOrderDetails('09876', false, {
-        specials: 'no',
-        legacySubjectId: '09876',
-        firstName: 'Testopher',
-        lastName: 'Fakesmith',
-        offenceRisk: false,
-      })
-
-      await mockIntegrityApi.stubGetEquipmentDetails('09876', false, [
-        {
-          legacySubjectId: '5678',
-        },
-      ])
-
-      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
-        legacySubjectId: '09876',
-      })
-
-      await integrityEquipmentHistoryPage.subNavigationLink('Equipment').click()
-
-      await AppPage.verifyOnPage(IntegrityEquipmentHistoryPage, page)
-    })
-
-    test('Navigates to the service details page', async ({ page }) => {
       await mockIntegrityApi.stubGetEquipmentDetails('09876', false, [
         {
           legacySubjectId: '09876',
         },
       ])
 
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
+        legacySubjectId: '09876',
+      })
+
+      await integrityEventHistoryPage.subNavigationLink('Equipment').click()
+
+      await AppPage.verifyOnPage(IntegrityEquipmentHistoryPage, page)
+    })
+
+    test('Navigates to the service details page', async ({ page }) => {
       await mockIntegrityApi.stubGetServiceDetails('09876', false, [
         {
           legacySubjectId: '09876',
@@ -469,22 +682,16 @@ test.describe('Integrity event history', () => {
         },
       ])
 
-      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '09876',
       })
 
-      await integrityEquipmentHistoryPage.subNavigationLink('Services').click()
+      await integrityEventHistoryPage.subNavigationLink('Services').click()
 
       await AppPage.verifyOnPage(IntegrityServiceHistoryPage, page)
     })
 
     test('Navigates to the visit details page', async ({ page }) => {
-      await mockIntegrityApi.stubGetEquipmentDetails('09876', false, [
-        {
-          legacySubjectId: '09876',
-        },
-      ])
-
       await mockIntegrityApi.stubGetVisitDetails('09876', false, [
         {
           legacySubjectId: '09876',
@@ -492,82 +699,36 @@ test.describe('Integrity event history', () => {
         },
       ])
 
-      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '09876',
       })
 
-      await integrityEquipmentHistoryPage.subNavigationLink('Visits').click()
+      await integrityEventHistoryPage.subNavigationLink('Visits').click()
 
       await AppPage.verifyOnPage(IntegrityVisitHistoryPage, page)
     })
 
     test('Navigates to the suspension of visits page', async ({ page }) => {
-      await mockIntegrityApi.stubGetEquipmentDetails('09876', false, [
-        {
-          legacySubjectId: '09876',
-        },
-      ])
-
       await mockIntegrityApi.stubGetSuspensionOfVisits('09876', false, [
         {
           legacySubjectId: '09876',
         },
       ])
-
-      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '09876',
       })
 
-      await integrityEquipmentHistoryPage.subNavigationLink('Suspension of visits').click()
+      await integrityEventHistoryPage.subNavigationLink('Suspension of visits').click()
 
       await AppPage.verifyOnPage(IntegritySuspensionOfVisitsHistoryPage, page)
     })
 
     test('Navigates to the event history page', async ({ page }) => {
-      await mockIntegrityApi.stubGetEquipmentDetails('09876', false, [
-        {
-          legacySubjectId: '09876',
-        },
-      ])
-
-      await mockIntegrityApi.stubGetViolationEvents('09876', false, [
-        {
-          legacySubjectId: '09876',
-          type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00',
-          details: {},
-        },
-      ])
-      await mockIntegrityApi.stubGetIncidentEvents('09876', false, [
-        {
-          legacySubjectId: '09876',
-          type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00',
-          details: {},
-        },
-      ])
-      await mockIntegrityApi.stubGetMonitoringEvents('09876', false, [
-        {
-          legacySubjectId: '09876',
-          type: 'MONITORING',
-          dateTime: '2024-06-01T09:00:00',
-          details: {},
-        },
-      ])
-      await mockIntegrityApi.stubGetContactEvents('09876', false, [
-        {
-          legacySubjectId: '09876',
-          type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00',
-          details: {},
-        },
-      ])
-
-      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+      const integrityEventHistoryPage = await AppPage.visit(IntegrityEventHistoryPage, page, {
         legacySubjectId: '09876',
       })
 
-      await integrityEquipmentHistoryPage.subNavigationLink('Events').click()
+      await integrityEventHistoryPage.subNavigationLink('Events').click()
 
       await AppPage.verifyOnPage(IntegrityEventHistoryPage, page)
     })

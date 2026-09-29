@@ -44,7 +44,7 @@ export default class TimelineComponent {
   }
 
   getEntry(index: number): TimelineEntryComponent {
-    return new TimelineEntryComponent(this.timeline, index)
+    return new TimelineEntryComponent(this.timeline, Math.max(index - 1, 0))
   }
 
   // Helpers

@@ -107,8 +107,22 @@ test.describe('Integrity equipment history', () => {
     })
   })
 
-  test.describe('Equipment history timeline', () => {
-    test('Displays a history of equipment used', async ({ page }) => {
+  test.describe('Equipment history timeline with no entries', () => {
+    test('Displays a message when no results are found', async ({ page }) => {
+      await mockIntegrityApi.stubGetEquipmentDetails('0000', false, [])
+
+      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+        legacySubjectId: '0000',
+      })
+
+      await expect(integrityEquipmentHistoryPage.equipmentHistory.element).not.toBeVisible()
+      await expect(integrityEquipmentHistoryPage.equipmentHistory.noResultsHeading).toBeVisible()
+      await expect(integrityEquipmentHistoryPage.equipmentHistory.noResultsMessage).toBeVisible()
+    })
+  })
+
+  test.describe('Equipment history timeline with entries', () => {
+    test('Displays an equipment history timeline with one entry', async ({ page }) => {
       await mockIntegrityApi.stubGetEquipmentDetails('0987', false, [
         {
           legacySubjectId: '0987',
@@ -131,7 +145,7 @@ test.describe('Integrity equipment history', () => {
         legacySubjectId: '0987',
       })
 
-      const event = integrityEquipmentHistoryPage.equipmentHistory.getEntry(0)
+      const event = integrityEquipmentHistoryPage.equipmentHistory.getEntry(1)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('Equipment')
       await expect(event.date).toHaveText('1 Jul 2024 at 1pm')
@@ -150,6 +164,66 @@ test.describe('Integrity equipment history', () => {
       await expect(pidSummaryCard).toHaveItem('Install date', '1 July 2024')
       await expect(pidSummaryCard).toHaveItem('Install time', '1pm')
       await expect(pidSummaryCard).toHaveItem('Uninstall date', '10 August 2024')
+      await expect(pidSummaryCard).toHaveItem('Uninstall time', '1pm')
+    })
+
+    test('Displays an equipment history timeline with multiple entries', async ({ page }) => {
+      await mockIntegrityApi.stubGetEquipmentDetails('0987', false, [
+        {
+          legacySubjectId: '0987',
+          pid: {
+            id: '1111',
+            equipmentCategoryDescription: 'Some PID description',
+            installedDateTime: '2024-07-01T12:00:00Z',
+            removedDateTime: '2024-08-10T12:00:00Z',
+          },
+          hmu: {
+            id: '2222',
+            equipmentCategoryDescription: 'Some HMU description',
+            installedDateTime: '2024-09-01T12:00:00Z',
+            removedDateTime: '2024-10-10T12:00:00Z',
+          },
+        },
+        {
+          legacySubjectId: '0987-2',
+          pid: {
+            id: '1111-2',
+            equipmentCategoryDescription: 'Some PID description',
+            installedDateTime: '2024-07-02T12:00:00Z',
+            removedDateTime: '2024-08-11T12:00:00Z',
+          },
+          hmu: {
+            id: '2222-2',
+            equipmentCategoryDescription: 'Some HMU description',
+            installedDateTime: '2024-09-02T12:00:00Z',
+            removedDateTime: '2024-10-11T12:00:00Z',
+          },
+        },
+      ])
+
+      const integrityEquipmentHistoryPage = await AppPage.visit(IntegrityEquipmentHistoryPage, page, {
+        legacySubjectId: '0987',
+      })
+
+      const event = integrityEquipmentHistoryPage.equipmentHistory.getEntry(2)
+      await expect(event.element).toBeVisible()
+      await expect(event.title).toHaveText('Equipment')
+      await expect(event.date).toHaveText('2 Jul 2024 at 1pm')
+
+      const hmuSummaryCard = event.getDescription('HMU')
+      await expect(hmuSummaryCard).toHaveItem('Device ID', '2222-2')
+      await expect(hmuSummaryCard).toHaveItem('Equipment category description', 'Some HMU description')
+      await expect(hmuSummaryCard).toHaveItem('Install date', '2 September 2024')
+      await expect(hmuSummaryCard).toHaveItem('Install time', '1pm')
+      await expect(hmuSummaryCard).toHaveItem('Uninstall date', '11 October 2024')
+      await expect(hmuSummaryCard).toHaveItem('Uninstall time', '1pm')
+
+      const pidSummaryCard = event.getDescription('PID')
+      await expect(pidSummaryCard).toHaveItem('Device ID', '1111-2')
+      await expect(pidSummaryCard).toHaveItem('Equipment category description', 'Some PID description')
+      await expect(pidSummaryCard).toHaveItem('Install date', '2 July 2024')
+      await expect(pidSummaryCard).toHaveItem('Install time', '1pm')
+      await expect(pidSummaryCard).toHaveItem('Uninstall date', '11 August 2024')
       await expect(pidSummaryCard).toHaveItem('Uninstall time', '1pm')
     })
   })
@@ -204,14 +278,6 @@ test.describe('Integrity equipment history', () => {
     })
 
     test('Navigates to the equipment details page', async ({ page }) => {
-      await mockIntegrityApi.stubGetOrderDetails('5678', false, {
-        specials: 'no',
-        legacySubjectId: '5678',
-        firstName: 'Testopher',
-        lastName: 'Fakesmith',
-        offenceRisk: false,
-      })
-
       await mockIntegrityApi.stubGetEquipmentDetails('5678', false, [
         {
           legacySubjectId: '5678',
