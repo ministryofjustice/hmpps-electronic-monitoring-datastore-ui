@@ -93,62 +93,22 @@ test.describe('Integrity service history', () => {
     })
   })
 
-  test.describe('No results message', () => {
-    test('Renders when no timetable entries have been found', async ({ page }) => {
+  test.describe('Service history timeline with no entries', () => {
+    test('Displays a message when no results are found', async ({ page }) => {
       await mockIntegrityApi.stubGetServiceDetails('test-legacy-subject-001', false, [])
 
       const serviceDetailsPage = await AppPage.visit(IntegrityServiceHistoryPage, page, {
         legacySubjectId: 'test-legacy-subject-001',
       })
 
+      await expect(serviceDetailsPage.serviceHistory.element).not.toBeVisible()
       await expect(serviceDetailsPage.serviceHistory.noResultsHeading).toBeVisible()
       await expect(serviceDetailsPage.serviceHistory.noResultsMessage).toBeVisible()
     })
-
-    test('Does not render when a timetable entry has been found', async ({ page }) => {
-      await mockIntegrityApi.stubGetServiceDetails('test-legacy-subject-002', false, [
-        {
-          legacySubjectId: 'test-legacy-subject-002',
-          serviceId: 321,
-          serviceAddress1: 'address line 1',
-          serviceAddress2: 'address line 2',
-          serviceAddress3: 'address line 3',
-          serviceAddressPostCode: 'postCode',
-          serviceStartDate: '2002-05-22T01:01:01',
-          serviceEndDate: '2002-05-22T01:01:01',
-          curfewStartDate: '2002-05-22T01:01:01',
-          curfewEndDate: '2002-05-22T01:01:01',
-          monday: 1,
-          tuesday: 2,
-          wednesday: 3,
-          thursday: 4,
-          friday: 5,
-          saturday: 6,
-          sunday: 7,
-        },
-      ])
-
-      const serviceDetailsPage = await AppPage.visit(IntegrityServiceHistoryPage, page, {
-        legacySubjectId: 'test-legacy-subject-002',
-      })
-
-      await expect(serviceDetailsPage.serviceHistory.noResultsHeading).not.toBeVisible()
-      await expect(serviceDetailsPage.serviceHistory.noResultsMessage).not.toBeVisible()
-    })
   })
 
-  test.describe('Timetables', () => {
-    test('Does not render when no timetable entries have been found', async ({ page }) => {
-      await mockIntegrityApi.stubGetServiceDetails('test-legacy-subject-003', false, [])
-
-      const serviceDetailsPage = await AppPage.visit(IntegrityServiceHistoryPage, page, {
-        legacySubjectId: 'test-legacy-subject-003',
-      })
-
-      await expect(serviceDetailsPage.serviceHistory.element).not.toBeVisible()
-    })
-
-    test('Renders when one timetable entry has been found', async ({ page }) => {
+  test.describe('Service history timeline with entries', () => {
+    test('Displays a service history timeline with one entry', async ({ page }) => {
       await mockIntegrityApi.stubGetServiceDetails('test-legacy-subject-004', false, [
         {
           legacySubjectId: 'test-legacy-subject-004',
@@ -177,10 +137,10 @@ test.describe('Integrity service history', () => {
 
       await expect(serviceDetailsPage.serviceHistory.element).toBeVisible()
       await expect(serviceDetailsPage.serviceHistory).toHaveEntries(1)
-      await expect(serviceDetailsPage.serviceHistory.getEntry(0).element).toContainText('Service ID 321')
+      await expect(serviceDetailsPage.serviceHistory.getEntry(1).element).toContainText('Service ID 321')
     })
 
-    test('Renders when multiple timetable entries have been found', async ({ page }) => {
+    test('Displays a service history timeline with multiple entries', async ({ page }) => {
       await mockIntegrityApi.stubGetServiceDetails('test-legacy-subject-005', false, [
         {
           legacySubjectId: 'test-legacy-subject-005',
@@ -228,8 +188,8 @@ test.describe('Integrity service history', () => {
 
       await expect(integrityServiceHistoryPage.serviceHistory.element).toBeVisible()
       await expect(integrityServiceHistoryPage.serviceHistory).toHaveEntries(2)
-      await expect(integrityServiceHistoryPage.serviceHistory.getEntry(0).element).toContainText('Service ID 321')
-      await expect(integrityServiceHistoryPage.serviceHistory.getEntry(1).element).toContainText('Service ID 654')
+      await expect(integrityServiceHistoryPage.serviceHistory.getEntry(1).element).toContainText('Service ID 321')
+      await expect(integrityServiceHistoryPage.serviceHistory.getEntry(2).element).toContainText('Service ID 654')
     })
   })
 
@@ -303,20 +263,6 @@ test.describe('Integrity service history', () => {
     })
 
     test('Navigates to the service details page', async ({ page }) => {
-      await mockIntegrityApi.stubGetServiceDetails('09876', false, [
-        {
-          legacySubjectId: '09876',
-          serviceId: 1111,
-          monday: 1,
-          tuesday: 1,
-          wednesday: 1,
-          thursday: 1,
-          friday: 1,
-          saturday: 1,
-          sunday: 1,
-        },
-      ])
-
       const integrityServiceHistoryPage = await AppPage.visit(IntegrityServiceHistoryPage, page, {
         legacySubjectId: '09876',
       })
