@@ -1,5 +1,3 @@
-import allMojFilters from '@ministryofjustice/frontend/moj/filters/all'
-
 import { Request, Response, Router } from 'express'
 
 import { Page } from '../../constants/pages'
@@ -21,8 +19,6 @@ import integrityVisitsHistoryRouter from './visits-history'
 import integrityServiceHistoryRouter from './service-history'
 import integrityEquipmentHistoryRouter from './equipment-history'
 import integritySuspensionOfVisitsRouter from './suspension-of-visits'
-
-const mojFilters = allMojFilters()
 
 export default function integrityRouter(services: Services): Router {
   const router = Router()
