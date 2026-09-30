@@ -16,23 +16,31 @@ import { AlcoholMonitoringEquipmentDetails } from '../../data/models/alcoholMoni
 const mojFilters = allMojFilters()
 
 const toEquipmentSummary = (event: AlcoholMonitoringEquipmentDetails): TimelineCard => {
+  const { deviceInstalledDateTime, deviceRemovedDateTime, hmuInstallDateTime, hmuRemovedDateTime } = event
+
   return {
     title: 'Equipment',
     properties: [
-      { label: 'Device type', value: event.deviceType },
-      { label: 'Device Serial Number', value: event.deviceSerialNumber },
-      { label: 'Device Address Type', value: event.deviceAddressType },
-      { label: 'Leg Fitting', value: event.legFitting },
-
-      { label: 'Device installed date', value: mojFilters.mojDate(event.deviceInstalledDateTime, 'date') },
-      { label: 'Device installed time', value: mojFilters.mojDate(event.deviceInstalledDateTime, 'time') },
-      { label: 'Device removed date', value: mojFilters.mojDate(event.deviceRemovedDateTime, 'date') },
-      { label: 'Device removed time', value: mojFilters.mojDate(event.deviceRemovedDateTime, 'time') },
-
-      { label: 'HMU installed date', value: mojFilters.mojDate(event.hmuInstallDateTime, 'date') },
-      { label: 'HMU installed time', value: mojFilters.mojDate(event.hmuInstallDateTime, 'time') },
-      { label: 'HMU removed date', value: mojFilters.mojDate(event.hmuRemovedDateTime, 'date') },
-      { label: 'HMU removed time', value: mojFilters.mojDate(event.hmuRemovedDateTime, 'time') },
+      { label: 'Device type', value: event.deviceType || '' },
+      { label: 'Device serial number', value: event.deviceSerialNumber || '' },
+      { label: 'Device address type', value: event.deviceAddressType || '' },
+      { label: 'Leg fitting', value: event.legFitting || '' },
+      {
+        label: 'Device installed date time',
+        value: deviceInstalledDateTime ? mojFilters.mojDate(deviceInstalledDateTime, 'datetime') : '',
+      },
+      {
+        label: 'Device removed date time',
+        value: deviceRemovedDateTime ? mojFilters.mojDate(deviceRemovedDateTime, 'datetime') : '',
+      },
+      {
+        label: 'HMU install date time',
+        value: hmuInstallDateTime ? mojFilters.mojDate(hmuInstallDateTime, 'datetime') : '',
+      },
+      {
+        label: 'HMU removed date time',
+        value: hmuRemovedDateTime ? mojFilters.mojDate(hmuRemovedDateTime, 'datetime') : '',
+      },
     ],
   }
 }
