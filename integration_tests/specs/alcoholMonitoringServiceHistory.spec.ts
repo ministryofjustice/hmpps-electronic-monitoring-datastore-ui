@@ -26,11 +26,11 @@ test.describe('AlcoholMonitoring service history', () => {
       await mockAlcoholMonitoringApi.stubGetServiceDetails('test-service-history-id', [
         {
           legacySubjectId: 'test-service-history-id',
-          serviceStartDate: '2001-01-01T00:00:00',
-          serviceEndDate: '2002-02-02T00:00:00',
+          serviceStartDate: '2001-01-01T00:00:00Z',
+          serviceEndDate: '2002-02-02T00:00:00Z',
           serviceAddress: 'service address',
-          equipmentStartDate: '2003-03-03T00:00:00',
-          equipmentEndDate: '2004-04-04T00:00:00',
+          equipmentStartDate: '2003-03-03T00:00:00Z',
+          equipmentEndDate: '2004-04-04T00:00:00Z',
           hmuSerialNumber: 'hmu-01',
           deviceSerialNumber: 'device-01',
         },
@@ -108,11 +108,11 @@ test.describe('AlcoholMonitoring service history', () => {
       await mockAlcoholMonitoringApi.stubGetServiceDetails('test-legacy-subject-004', [
         {
           legacySubjectId: 'test-legacy-subject-004',
-          serviceStartDate: '2001-01-01T00:00:00',
-          serviceEndDate: '2002-02-02T00:00:00',
+          serviceStartDate: '2001-01-01T00:00:00Z',
+          serviceEndDate: '2002-02-02T00:00:00Z',
           serviceAddress: 'service address',
-          equipmentStartDate: '2003-03-03T00:00:00',
-          equipmentEndDate: '2004-04-04T00:00:00',
+          equipmentStartDate: '2003-03-03T00:00:00Z',
+          equipmentEndDate: '2004-04-04T00:00:00Z',
           hmuSerialNumber: 'hmu-01',
           deviceSerialNumber: 'device-01',
         },
@@ -131,21 +131,21 @@ test.describe('AlcoholMonitoring service history', () => {
       await mockAlcoholMonitoringApi.stubGetServiceDetails('test-legacy-subject-005', [
         {
           legacySubjectId: 'test-legacy-subject-005',
-          serviceStartDate: '2001-01-01T00:00:00',
-          serviceEndDate: '2002-02-02T00:00:00',
+          serviceStartDate: '2001-01-01T00:00:00Z',
+          serviceEndDate: '2002-02-02T00:00:00Z',
           serviceAddress: 'service address',
-          equipmentStartDate: '2003-03-03T00:00:00',
-          equipmentEndDate: '2004-04-04T00:00:00',
+          equipmentStartDate: '2003-03-03T00:00:00Z',
+          equipmentEndDate: '2004-04-04T00:00:00Z',
           hmuSerialNumber: 'hmu-01',
           deviceSerialNumber: 'device-01',
         },
         {
           legacySubjectId: 'test-legacy-subject-005',
-          serviceStartDate: '2001-01-01T00:00:00',
-          serviceEndDate: '2002-02-02T00:00:00',
+          serviceStartDate: '2001-01-01T00:00:00Z',
+          serviceEndDate: '2002-02-02T00:00:00Z',
           serviceAddress: 'another service address',
-          equipmentStartDate: '2003-03-03T00:00:00',
-          equipmentEndDate: '2004-04-04T00:00:00',
+          equipmentStartDate: '2003-03-03T00:00:00Z',
+          equipmentEndDate: '2004-04-04T00:00:00Z',
           hmuSerialNumber: 'hmu-02',
           deviceSerialNumber: 'device-02',
         },
@@ -171,11 +171,11 @@ test.describe('AlcoholMonitoring service history', () => {
       await mockAlcoholMonitoringApi.stubGetServiceDetails('09876', [
         {
           legacySubjectId: '09876',
-          serviceStartDate: '2001-01-01T00:00:00',
-          serviceEndDate: '2002-02-02T00:00:00',
+          serviceStartDate: '2001-01-01T00:00:00Z',
+          serviceEndDate: '2002-02-02T00:00:00Z',
           serviceAddress: 'service address',
-          equipmentStartDate: '2003-03-03T00:00:00',
-          equipmentEndDate: '2004-04-04T00:00:00',
+          equipmentStartDate: '2003-03-03T00:00:00Z',
+          equipmentEndDate: '2004-04-04T00:00:00Z',
           hmuSerialNumber: 'hmu-01',
           deviceSerialNumber: 'device-01',
         },
@@ -244,7 +244,7 @@ test.describe('AlcoholMonitoring service history', () => {
       await mockAlcoholMonitoringApi.stubGetVisitDetails('09876', [
         {
           legacySubjectId: '09876',
-          actualWorkStartDateTime: '2024-06-01T09:00:00',
+          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
         },
       ])
 
@@ -262,7 +262,7 @@ test.describe('AlcoholMonitoring service history', () => {
         {
           legacySubjectId: '09876',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -270,7 +270,7 @@ test.describe('AlcoholMonitoring service history', () => {
         {
           legacySubjectId: '09876',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -278,7 +278,7 @@ test.describe('AlcoholMonitoring service history', () => {
         {
           legacySubjectId: '09876',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])

@@ -231,7 +231,7 @@ test.describe('Integrity order summary', () => {
       await mockIntegrityApi.stubGetVisitDetails('5678', false, [
         {
           legacySubjectId: '5678',
-          actualWorkStartDateTime: '2024-06-01T09:00:00',
+          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
         },
       ])
 
@@ -281,7 +281,7 @@ test.describe('Integrity order summary', () => {
         {
           legacySubjectId: '5678',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -289,7 +289,7 @@ test.describe('Integrity order summary', () => {
         {
           legacySubjectId: '5678',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -297,7 +297,7 @@ test.describe('Integrity order summary', () => {
         {
           legacySubjectId: '5678',
           type: 'MONITORING',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -305,7 +305,7 @@ test.describe('Integrity order summary', () => {
         {
           legacySubjectId: '5678',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])

@@ -127,10 +127,10 @@ test.describe('AlcoholMonitoring equipment history', () => {
           deviceSerialNumber: '740',
           deviceAddressType: 'secondary',
           legFitting: 'right',
-          deviceInstalledDateTime: '2001-01-01T01:10:10',
-          deviceRemovedDateTime: '2002-02-02T02:20:20',
-          hmuInstallDateTime: '2001-01-01T01:10:10',
-          hmuRemovedDateTime: '2002-02-02T02:20:20',
+          deviceInstalledDateTime: '2001-01-01T01:10:10Z',
+          deviceRemovedDateTime: '2002-02-02T02:20:20Z',
+          hmuInstallDateTime: '2001-01-01T01:10:10Z',
+          hmuRemovedDateTime: '2002-02-02T02:20:20Z',
         },
       ])
 
@@ -162,10 +162,10 @@ test.describe('AlcoholMonitoring equipment history', () => {
           deviceSerialNumber: '740',
           deviceAddressType: 'secondary',
           legFitting: 'right',
-          deviceInstalledDateTime: '2001-01-01T01:10:10',
-          deviceRemovedDateTime: '2002-02-02T02:20:20',
-          hmuInstallDateTime: '2001-01-01T01:10:10',
-          hmuRemovedDateTime: '2002-02-02T02:20:20',
+          deviceInstalledDateTime: '2001-01-01T01:10:10Z',
+          deviceRemovedDateTime: '2002-02-02T02:20:20Z',
+          hmuInstallDateTime: '2001-01-01T01:10:10Z',
+          hmuRemovedDateTime: '2002-02-02T02:20:20Z',
         },
         {
           legacySubjectId: '0987-2',
@@ -173,10 +173,10 @@ test.describe('AlcoholMonitoring equipment history', () => {
           deviceSerialNumber: '740',
           deviceAddressType: 'secondary',
           legFitting: 'right',
-          deviceInstalledDateTime: '2024-07-02T13:00:00',
-          deviceRemovedDateTime: '2002-02-02T02:20:20',
-          hmuInstallDateTime: '2001-01-01T01:10:10',
-          hmuRemovedDateTime: '2002-02-02T02:20:20',
+          deviceInstalledDateTime: '2024-07-02T13:00:00Z',
+          deviceRemovedDateTime: '2002-02-02T02:20:20Z',
+          hmuInstallDateTime: '2001-01-01T01:10:10Z',
+          hmuRemovedDateTime: '2002-02-02T02:20:20Z',
         },
       ])
 
@@ -187,14 +187,14 @@ test.describe('AlcoholMonitoring equipment history', () => {
       const event = alcoholMonitoringEquipmentHistoryPage.equipmentHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('Equipment')
-      await expect(event.date).toHaveText('2 Jul 2024 at 1pm')
+      await expect(event.date).toHaveText('2 Jul 2024 at 2pm')
 
       const hmuSummaryCard = event.getDescription('Equipment')
       await expect(hmuSummaryCard).toHaveItem('Device type', 'tag')
       await expect(hmuSummaryCard).toHaveItem('Device serial number', '740')
       await expect(hmuSummaryCard).toHaveItem('Device address type', 'secondary')
       await expect(hmuSummaryCard).toHaveItem('Leg fitting', 'right')
-      await expect(hmuSummaryCard).toHaveItem('Device installed date time', '2 July 2024 at 1pm')
+      await expect(hmuSummaryCard).toHaveItem('Device installed date time', '2 July 2024 at 2pm')
       await expect(hmuSummaryCard).toHaveItem('Device removed date time', '2 February 2002 at 2:20am')
       await expect(hmuSummaryCard).toHaveItem('HMU install date time', '1 January 2001 at 1:10am')
       await expect(hmuSummaryCard).toHaveItem('HMU removed date time', '2 February 2002 at 2:20am')
@@ -272,11 +272,11 @@ test.describe('AlcoholMonitoring equipment history', () => {
       await mockAlcoholMonitoringApi.stubGetServiceDetails('5678', [
         {
           legacySubjectId: '5678',
-          serviceStartDate: '2001-01-01T00:00:00',
-          serviceEndDate: '2002-02-02T00:00:00',
+          serviceStartDate: '2001-01-01T00:00:00Z',
+          serviceEndDate: '2002-02-02T00:00:00Z',
           serviceAddress: 'service address',
-          equipmentStartDate: '2003-03-03T00:00:00',
-          equipmentEndDate: '2004-04-04T00:00:00',
+          equipmentStartDate: '2003-03-03T00:00:00Z',
+          equipmentEndDate: '2004-04-04T00:00:00Z',
           hmuSerialNumber: 'hmu-01',
           deviceSerialNumber: 'device-01',
         },
@@ -301,7 +301,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
       await mockAlcoholMonitoringApi.stubGetVisitDetails('5678', [
         {
           legacySubjectId: '5678',
-          actualWorkStartDateTime: '2024-06-01T09:00:00',
+          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
         },
       ])
 
@@ -325,7 +325,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -333,7 +333,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -341,7 +341,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])

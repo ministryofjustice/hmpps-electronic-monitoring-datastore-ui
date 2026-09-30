@@ -105,10 +105,10 @@ test.describe('Integrity suspension of visits history', () => {
         {
           legacySubjectId: '123456789',
           suspensionOfVisits: 'Yes',
-          requestedDate: '2001-01-01T01:01:01',
-          startDate: '2001-01-01T01:01:01',
+          requestedDate: '2001-01-01T01:01:01Z',
+          startDate: '2001-01-01T01:01:01Z',
           startTime: '01:01:01',
-          endDate: '2001-01-01T01:01:01',
+          endDate: '2001-01-01T01:01:01Z',
         },
       ])
 
@@ -126,26 +126,26 @@ test.describe('Integrity suspension of visits history', () => {
         {
           legacySubjectId: '123456789',
           suspensionOfVisits: 'Yes',
-          requestedDate: '2001-01-01T01:01:01',
-          startDate: '2001-01-01T01:01:01',
+          requestedDate: '2001-01-01T01:01:01Z',
+          startDate: '2001-01-01T01:01:01Z',
           startTime: '01:01:01',
-          endDate: '2001-01-01T01:01:01',
+          endDate: '2001-01-01T01:01:01Z',
         },
         {
           legacySubjectId: '123456789',
           suspensionOfVisits: 'Yes',
-          requestedDate: '2002-02-02T02:02:02',
-          startDate: '2002-02-02T02:02:02',
+          requestedDate: '2002-02-02T02:02:02Z',
+          startDate: '2002-02-02T02:02:02Z',
           startTime: '02:02:02',
-          endDate: '2002-02-02T02:02:02',
+          endDate: '2002-02-02T02:02:02Z',
         },
         {
           legacySubjectId: '123456789',
           suspensionOfVisits: 'Yes',
-          requestedDate: '2003-03-03T03:03:03',
-          startDate: '2003-03-03T03:03:03',
+          requestedDate: '2003-03-03T03:03:03Z',
+          startDate: '2003-03-03T03:03:03Z',
           startTime: '03:03:03',
-          endDate: '2003-03-03T03:03:03',
+          endDate: '2003-03-03T03:03:03Z',
         },
       ])
 
@@ -254,7 +254,7 @@ test.describe('Integrity suspension of visits history', () => {
       await mockIntegrityApi.stubGetVisitDetails('09876', false, [
         {
           legacySubjectId: '09876',
-          actualWorkStartDateTime: '2024-06-01T09:00:00',
+          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
         },
       ])
 
@@ -288,7 +288,7 @@ test.describe('Integrity suspension of visits history', () => {
         {
           legacySubjectId: '09876',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -296,7 +296,7 @@ test.describe('Integrity suspension of visits history', () => {
         {
           legacySubjectId: '09876',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -304,7 +304,7 @@ test.describe('Integrity suspension of visits history', () => {
         {
           legacySubjectId: '09876',
           type: 'MONITORING',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -312,7 +312,7 @@ test.describe('Integrity suspension of visits history', () => {
         {
           legacySubjectId: '09876',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])

@@ -81,10 +81,10 @@ describe('AlcoholMonitoring event history', () => {
       AlcoholMonitoringIncidentEvent.parse({
         legacySubjectId: 'event_history_004',
         type: 'TEST_INCIDENT_EVENT',
-        dateTime: '2022-02-02T02:02:02',
+        dateTime: '2022-02-02T02:02:02Z',
         details: {
           violationAlertId: 'V001',
-          violationAlertDateTime: '2022-02-02T02:02:02',
+          violationAlertDateTime: '2022-02-02T02:02:02Z',
           violationAlertType: 'Test alert type',
           violationAlertResponseAction: 'Test response action',
           visitRequired: 'No',
@@ -108,18 +108,18 @@ describe('AlcoholMonitoring event history', () => {
       AlcoholMonitoringViolationEvent.parse({
         legacySubjectId: 'event_history_004',
         type: 'TEST_VIOLATION_EVENT',
-        dateTime: '2022-02-02T02:02:02',
+        dateTime: '2022-02-02T02:02:02Z',
         details: {
           enforcementId: 'E001',
           nonComplianceReason: 'Test noncompliance reason',
-          nonComplianceDateTime: '2022-02-02T02:02:02',
+          nonComplianceDateTime: '2022-02-02T02:02:02Z',
           violationAlertId: 'V001',
           violationAlertDescription: 'Test alert description',
-          violationEventNotificationDateTime: '2022-02-02T02:02:02',
+          violationEventNotificationDateTime: '2022-02-02T02:02:02Z',
           actionTakenEms: 'Test action taken EMS',
           nonComplianceOutcome: 'Test outcome',
           nonComplianceResolved: 'Yes',
-          dateResolved: '2022-02-02T02:02:02',
+          dateResolved: '2022-02-02T02:02:02Z',
           openClosed: 'Closed',
           visitRequired: 'No',
         },
@@ -138,9 +138,9 @@ describe('AlcoholMonitoring event history', () => {
       AlcoholMonitoringContactEvent.parse({
         legacySubjectId: 'event_history_004',
         type: 'TEST_CONTACT_EVENT',
-        dateTime: '2022-02-02T02:02:02',
+        dateTime: '2022-02-02T02:02:02Z',
         details: {
-          contactDateTime: '2023-03-03T03:03:03',
+          contactDateTime: '2023-03-03T03:03:03Z',
           inboundOrOutbound: 'Inbound',
           fromTo: 'From',
           channel: 'Probation',

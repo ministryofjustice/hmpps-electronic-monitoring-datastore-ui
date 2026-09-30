@@ -60,7 +60,7 @@ test.describe('Integrity visits history', () => {
       await mockIntegrityApi.stubGetVisitDetails('5678', false, [
         {
           legacySubjectId: '5678',
-          actualWorkStartDateTime: '2002-05-22T01:01:01',
+          actualWorkStartDateTime: '2002-05-22T01:01:01Z',
         },
       ])
 
@@ -118,8 +118,8 @@ test.describe('Integrity visits history', () => {
             addressLine4: 'address line 4',
             postcode: 'postCode',
           },
-          actualWorkStartDateTime: '2002-02-02T01:01:01',
-          actualWorkEndDateTime: '2002-02-02T02:02:02',
+          actualWorkStartDateTime: '2002-02-02T01:01:01Z',
+          actualWorkEndDateTime: '2002-02-02T02:02:02Z',
           visitNotes: 'TEST_NOTES',
           visitType: 'TEST_VISIT_TYPE',
           visitOutcome: 'TEST_OUTCOME',
@@ -156,8 +156,8 @@ test.describe('Integrity visits history', () => {
             addressLine4: 'address line 4',
             postcode: 'postCode',
           },
-          actualWorkStartDateTime: '2002-02-02T01:01:01',
-          actualWorkEndDateTime: '2002-02-02T02:02:02',
+          actualWorkStartDateTime: '2002-02-02T01:01:01Z',
+          actualWorkEndDateTime: '2002-02-02T02:02:02Z',
           visitNotes: 'TEST_NOTES',
           visitType: 'TEST_VISIT_TYPE',
           visitOutcome: 'TEST_OUTCOME',
@@ -171,8 +171,8 @@ test.describe('Integrity visits history', () => {
             addressLine4: 'address line 8',
             postcode: 'postCode 2',
           },
-          actualWorkStartDateTime: '2002-02-02T03:03:03',
-          actualWorkEndDateTime: '2002-02-02T04:04:04',
+          actualWorkStartDateTime: '2002-02-02T03:03:03Z',
+          actualWorkEndDateTime: '2002-02-02T04:04:04Z',
           visitNotes: 'TEST_NOTES_2',
           visitType: 'TEST_VISIT_TYPE_2',
           visitOutcome: 'TEST_OUTCOME_2',
@@ -203,7 +203,7 @@ test.describe('Integrity visits history', () => {
       await mockIntegrityApi.stubGetVisitDetails('09835', false, [
         {
           legacySubjectId: '09835',
-          actualWorkStartDateTime: '2002-02-02T01:01:01',
+          actualWorkStartDateTime: '2002-02-02T01:01:01Z',
         },
       ])
     })
@@ -288,7 +288,7 @@ test.describe('Integrity visits history', () => {
       await mockIntegrityApi.stubGetVisitDetails('09835', false, [
         {
           legacySubjectId: '09835',
-          actualWorkStartDateTime: '2024-06-01T09:00:00',
+          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
         },
       ])
 
@@ -322,7 +322,7 @@ test.describe('Integrity visits history', () => {
         {
           legacySubjectId: '09835',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -330,7 +330,7 @@ test.describe('Integrity visits history', () => {
         {
           legacySubjectId: '09835',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
@@ -338,15 +338,15 @@ test.describe('Integrity visits history', () => {
         {
           legacySubjectId: '09835',
           type: 'MONITORING',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])
       await mockIntegrityApi.stubGetContactEvents('09835', false, [
         {
-          legacySubjectId: '09876',
+          legacySubjectId: '09835',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])

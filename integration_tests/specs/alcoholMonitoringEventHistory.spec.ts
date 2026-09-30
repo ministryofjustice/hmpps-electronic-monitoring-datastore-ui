@@ -27,7 +27,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '09876',
           type: 'incident',
-          dateTime: '2022-02-02T01:03:03',
+          dateTime: '2022-02-02T01:03:03Z',
           details: {
             violationAlertId: 'V001',
           },
@@ -48,7 +48,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '09876',
           type: 'incident',
-          dateTime: '2022-02-02T01:03:03',
+          dateTime: '2022-02-02T01:03:03Z',
           details: {
             violationAlertId: 'V001',
           },
@@ -69,7 +69,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '09876',
           type: 'incident',
-          dateTime: '2022-02-02T01:03:03',
+          dateTime: '2022-02-02T01:03:03Z',
           details: {
             violationAlertId: 'V001',
           },
@@ -93,7 +93,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '09876',
           type: 'incident',
-          dateTime: '2022-02-02T01:03:03',
+          dateTime: '2022-02-02T01:03:03Z',
           details: {
             violationAlertId: 'V001',
           },
@@ -122,7 +122,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '09876',
           type: 'incident',
-          dateTime: '2022-02-02T01:03:03',
+          dateTime: '2022-02-02T01:03:03Z',
           details: {
             violationAlertId: 'V001',
           },
@@ -161,10 +161,10 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'incident',
-          dateTime: '2022-02-02T01:06:06',
+          dateTime: '2022-02-02T01:06:06Z',
           details: {
             violationAlertId: 'V001',
-            violationAlertDateTime: '2021-01-01T01:01:01',
+            violationAlertDateTime: '2021-01-01T01:01:01Z',
             violationAlertType: 'Test alert type',
             violationAlertResponseAction: 'Test response action',
             visitRequired: 'No',
@@ -180,9 +180,9 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2022-02-03T01:09:09',
+          dateTime: '2022-02-03T01:09:09Z',
           details: {
-            contactDateTime: '2023-03-03T03:03:03',
+            contactDateTime: '2023-03-03T03:03:03Z',
             inboundOrOutbound: 'Inbound',
             fromTo: 'From',
             channel: 'Probation',
@@ -201,18 +201,18 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'violation',
-          dateTime: '2022-02-03T01:12:12',
+          dateTime: '2022-02-03T01:12:12Z',
           details: {
             enforcementId: 'E001',
             nonComplianceReason: 'Test noncompliance reason',
-            nonComplianceDateTime: '2022-02-02T02:02:02',
+            nonComplianceDateTime: '2022-02-02T02:02:02Z',
             violationAlertId: 'V001',
             violationAlertDescription: 'Test alert description',
-            violationEventNotificationDateTime: '2023-03-03T03:03:03',
+            violationEventNotificationDateTime: '2023-03-03T03:03:03Z',
             actionTakenEms: 'Test action taken EMS',
             nonComplianceOutcome: 'Test outcome',
             nonComplianceResolved: 'Yes',
-            dateResolved: '2024-04-04T04:04:04',
+            dateResolved: '2024-04-04T04:04:04Z',
             openClosed: 'Closed',
             visitRequired: 'No',
           },
@@ -233,10 +233,10 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'incident',
-          dateTime: '2022-02-02T01:06:06',
+          dateTime: '2022-02-02T01:06:06Z',
           details: {
             violationAlertId: 'V001',
-            violationAlertDateTime: '2021-01-01T01:01:01',
+            violationAlertDateTime: '2021-01-01T01:01:01Z',
             violationAlertType: 'Test alert type',
             violationAlertResponseAction: 'Test response action',
             visitRequired: 'No',
@@ -269,10 +269,10 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '33333333',
           type: 'incident',
-          dateTime: '2021-01-01T01:06:06',
+          dateTime: '2021-01-01T01:06:06Z',
           details: {
             violationAlertId: 'V001',
-            violationAlertDateTime: '2021-01-01T01:01:01',
+            violationAlertDateTime: '2021-01-01T01:01:01Z',
             violationAlertType: 'Test alert type',
             violationAlertResponseAction: 'Test response action',
             visitRequired: 'No',
@@ -285,10 +285,10 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '33333333',
           type: 'incident',
-          dateTime: '2024-04-04T01:06:06',
+          dateTime: '2024-04-04T01:06:06Z',
           details: {
             violationAlertId: 'V002',
-            violationAlertDateTime: '2024-04-04T01:01:01',
+            violationAlertDateTime: '2024-04-04T01:01:01Z',
             violationAlertType: 'Test alert type 2',
             violationAlertResponseAction: 'Test response action 2',
             visitRequired: 'No',
@@ -310,7 +310,7 @@ test.describe('AlcoholMonitoring event history', () => {
       const event = alcoholMonitoringEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('incident')
-      await expect(event.date).toHaveText('4 Apr 2024 at 1:06am')
+      await expect(event.date).toHaveText('4 Apr 2024 at 2:06am')
 
       const incidentSummaryCard = event.getDescription('Test alert type 2')
       await expect(incidentSummaryCard).toHaveItem('Violation alert ID', 'V002')
@@ -323,9 +323,9 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2022-02-03T01:09:09',
+          dateTime: '2022-02-03T01:09:09Z',
           details: {
-            contactDateTime: '2023-03-03T03:03:03',
+            contactDateTime: '2023-03-03T03:03:03Z',
             inboundOrOutbound: 'Inbound',
             fromTo: 'From',
             channel: 'Probation',
@@ -364,7 +364,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2022-02-03T01:09:09',
+          dateTime: '2022-02-03T01:09:09Z',
           details: {
             visitId: 'V001',
           },
@@ -372,9 +372,9 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2026-04-04T01:09:09',
+          dateTime: '2026-04-04T01:09:09Z',
           details: {
-            contactDateTime: '2023-03-03T03:03:03',
+            contactDateTime: '2023-03-03T03:03:03Z',
             inboundOrOutbound: 'Inbound',
             fromTo: 'From',
             channel: 'Probation',
@@ -398,7 +398,7 @@ test.describe('AlcoholMonitoring event history', () => {
       const event = alcoholMonitoringEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('contact')
-      await expect(event.date).toHaveText('4 Apr 2026 at 1:09am')
+      await expect(event.date).toHaveText('4 Apr 2026 at 2:09am')
 
       const contactSummaryCard = event.getDescription('Probation')
       await expect(contactSummaryCard).toHaveItem('Contact channel', 'Probation')
@@ -414,18 +414,18 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'violation',
-          dateTime: '2022-02-03T01:12:12',
+          dateTime: '2022-02-03T01:12:12Z',
           details: {
             enforcementId: 'E001',
             nonComplianceReason: 'Test noncompliance reason',
-            nonComplianceDateTime: '2022-02-02T02:02:02',
+            nonComplianceDateTime: '2022-02-02T02:02:02Z',
             violationAlertId: 'V001',
             violationAlertDescription: 'Test alert description',
-            violationEventNotificationDateTime: '2023-03-03T03:03:03',
+            violationEventNotificationDateTime: '2023-03-03T03:03:03Z',
             actionTakenEms: 'Test action taken EMS',
             nonComplianceOutcome: 'Test outcome',
             nonComplianceResolved: 'Yes',
-            dateResolved: '2024-04-04T04:04:04',
+            dateResolved: '2024-04-04T04:04:04Z',
             openClosed: 'Closed',
             visitRequired: 'No',
           },
@@ -456,7 +456,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'violation',
-          dateTime: '2021-01-01T01:12:12',
+          dateTime: '2021-01-01T01:12:12Z',
           details: {
             enforcementId: 'E001',
           },
@@ -464,18 +464,18 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'violation',
-          dateTime: '2022-02-03T01:12:12',
+          dateTime: '2022-02-03T01:12:12Z',
           details: {
             enforcementId: 'E002',
             nonComplianceReason: 'Test noncompliance reason',
-            nonComplianceDateTime: '2022-02-02T02:02:02',
+            nonComplianceDateTime: '2022-02-02T02:02:02Z',
             violationAlertId: 'V001',
             violationAlertDescription: 'Test alert description',
-            violationEventNotificationDateTime: '2023-03-03T03:03:03',
+            violationEventNotificationDateTime: '2023-03-03T03:03:03Z',
             actionTakenEms: 'Test action taken EMS',
             nonComplianceOutcome: 'Test outcome',
             nonComplianceResolved: 'Yes',
-            dateResolved: '2024-04-04T04:04:04',
+            dateResolved: '2024-04-04T04:04:04Z',
             openClosed: 'Closed',
             visitRequired: 'No',
           },
@@ -513,10 +513,10 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '09876',
           type: 'incident',
-          dateTime: '2022-02-02T01:03:03',
+          dateTime: '2022-02-02T01:03:03Z',
           details: {
             violationAlertId: 'V001',
-            violationAlertDateTime: '2021-01-01T01:01:01',
+            violationAlertDateTime: '2021-01-01T01:01:01Z',
             violationAlertType: 'Test alert type',
             violationAlertResponseAction: 'Test response action',
             visitRequired: 'No',
