@@ -21,50 +21,25 @@ export default function alcoholMonitoringEventsHistoryRouter(services: Services)
   const router = Router()
 
   const incidentEventToTimelineCard = (event: AlcoholMonitoringIncidentEvent): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
-
-    if (event.details?.violationAlertId) {
-      properties.push({ label: 'Violation Alert ID', value: event.details.violationAlertId })
-    }
-
-    if (event.details?.violationAlertDateTime) {
-      properties.push({
-        label: 'Violation Alert Date',
-        value: mojFilters.mojDate(event.details.violationAlertDateTime, 'date'),
-      })
-      properties.push({
-        label: 'Violation Alert Time',
-        value: mojFilters.mojDate(event.details.violationAlertDateTime, 'time'),
-      })
-    }
-
-    if (event.details?.violationAlertType) {
-      properties.push({ label: 'Violation Alert Type', value: event.details.violationAlertType })
-    }
-
-    if (event.details?.violationAlertResponseAction) {
-      properties.push({ label: 'Violation Alert Response Action', value: event.details.violationAlertResponseAction })
-    }
-
-    if (event.details?.visitRequired) {
-      properties.push({ label: 'Visit Required', value: event.details.visitRequired })
-    }
-
-    if (event.details?.probationInteractionRequired) {
-      properties.push({ label: 'Probation Interaction Required', value: event.details.probationInteractionRequired })
-    }
-
-    if (event.details?.amsInteractionRequired) {
-      properties.push({ label: 'AMS Interaction Required', value: event.details.amsInteractionRequired })
-    }
-
-    if (event.details?.multipleAlerts) {
-      properties.push({ label: 'Multiple Alerts', value: event.details.multipleAlerts })
-    }
-
-    if (event.details?.additionalAlerts) {
-      properties.push({ label: 'Additional Alerts', value: event.details.additionalAlerts })
-    }
+    const { violationAlertDateTime } = event.details
+    const properties: TimelineCardProperty[] = [
+      { label: 'Violation alert type', value: event.details.violationAlertType || '' },
+      { label: 'Violation alert ID', value: event.details.violationAlertId || '' },
+      {
+        label: 'Violation alert date',
+        value: violationAlertDateTime ? mojFilters.mojDate(violationAlertDateTime, 'date') : '',
+      },
+      {
+        label: 'Violation alert time',
+        value: violationAlertDateTime ? mojFilters.mojDate(violationAlertDateTime, 'time') : '',
+      },
+      { label: 'Violation alert response action', value: event.details.violationAlertResponseAction || '' },
+      { label: 'Visit required', value: event.details.visitRequired || '' },
+      { label: 'Probation interaction required', value: event.details.probationInteractionRequired || '' },
+      { label: 'AMS interaction required', value: event.details.amsInteractionRequired || '' },
+      { label: 'Multiple alerts', value: event.details.multipleAlerts || '' },
+      { label: 'Additional alerts', value: event.details.additionalAlerts || '' },
+    ]
 
     return {
       title: event.details?.violationAlertType || event.type,
@@ -73,52 +48,22 @@ export default function alcoholMonitoringEventsHistoryRouter(services: Services)
   }
 
   const contactEventToTimelineCard = (event: AlcoholMonitoringContactEvent): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
+    const { contactDateTime } = event.details || {}
 
-    if (event.details?.visitId) {
-      properties.push({ label: 'Visit ID', value: event.details.visitId })
-    }
-
-    if (event.details?.contactDateTime) {
-      properties.push({ label: 'Contact Date', value: mojFilters.mojDate(event.details.contactDateTime, 'date') })
-      properties.push({ label: 'Contact Time', value: mojFilters.mojDate(event.details.contactDateTime, 'time') })
-    }
-
-    if (event.details?.inboundOrOutbound) {
-      properties.push({ label: 'Inbound or Outbound', value: event.details.inboundOrOutbound })
-    }
-
-    if (event.details?.fromTo) {
-      properties.push({ label: 'From/To', value: event.details.fromTo })
-    }
-
-    if (event.details?.channel) {
-      properties.push({ label: 'Channel', value: event.details.channel })
-    }
-
-    if (event.details?.subjectConsentWithdrawn) {
-      properties.push({ label: 'Subject Consent Withdrawn', value: event.details.subjectConsentWithdrawn })
-    }
-
-    if (event.details?.callOutcome) {
-      properties.push({ label: 'Call Outcome', value: event.details.callOutcome })
-    }
-
-    if (event.details?.statement) {
-      properties.push({ label: 'Statement', value: event.details.statement })
-    }
-
-    if (event.details?.reasonForContact) {
-      properties.push({ label: 'Reason for Contact', value: event.details.reasonForContact })
-    }
-
-    if (event.details?.outcomeOfContact) {
-      properties.push({ label: 'Outcome of Contact', value: event.details.outcomeOfContact })
-    }
-
-    if (event.details?.visitRequired) {
-      properties.push({ label: 'Visit Required', value: event.details.visitRequired })
-    }
+    const properties: TimelineCardProperty[] = [
+      { label: 'Contact channel', value: event.details.channel || '' },
+      { label: 'Contact date', value: contactDateTime ? mojFilters.mojDate(contactDateTime, 'date') : '' },
+      { label: 'Contact time', value: contactDateTime ? mojFilters.mojDate(contactDateTime, 'time') : '' },
+      { label: 'Reason for contact', value: event.details.reasonForContact || '' },
+      { label: 'Outcome of contact', value: event.details.outcomeOfContact || '' },
+      { label: 'Visit ID', value: event.details.visitId || '' },
+      { label: 'Visit required', value: event.details.visitRequired || '' },
+      { label: 'Inbound or outbound', value: event.details.inboundOrOutbound || '' },
+      { label: 'From to', value: event.details.fromTo || '' },
+      { label: 'Subject consent withdrawn', value: event.details.subjectConsentWithdrawn || '' },
+      { label: 'Call outcome', value: event.details.callOutcome || '' },
+      { label: 'Statement', value: event.details.statement || '' },
+    ]
 
     return {
       title: event.details?.channel || event.type,
@@ -127,69 +72,36 @@ export default function alcoholMonitoringEventsHistoryRouter(services: Services)
   }
 
   const violationEventToTimelineCard = (event: AlcoholMonitoringViolationEvent): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
+    const { nonComplianceDateTime, violationEventNotificationDateTime, dateResolved } = event.details
 
-    if (event.details?.violationAlertId) {
-      properties.push({ label: 'Violation Alert ID', value: event.details.violationAlertId })
-    }
-
-    if (event.details?.violationAlertDescription) {
-      properties.push({ label: 'Violation Alert Description', value: event.details.violationAlertDescription })
-    }
-
-    if (event.details?.violationEventNotificationDateTime) {
-      properties.push({
-        label: 'Violation Event Notification Date',
-        value: mojFilters.mojDate(event.details.violationEventNotificationDateTime, 'date'),
-      })
-      properties.push({
-        label: 'Violation Event Notification Time',
-        value: mojFilters.mojDate(event.details.violationEventNotificationDateTime, 'time'),
-      })
-    }
-
-    if (event.details?.nonComplianceReason) {
-      properties.push({ label: 'Non-Compliance Reason', value: event.details.nonComplianceReason })
-    }
-
-    if (event.details?.nonComplianceDateTime) {
-      properties.push({
-        label: 'Non-Compliance Date',
-        value: mojFilters.mojDate(event.details.nonComplianceDateTime, 'date'),
-      })
-      properties.push({
-        label: 'Non-Compliance Time',
-        value: mojFilters.mojDate(event.details.nonComplianceDateTime, 'time'),
-      })
-    }
-
-    if (event.details?.nonComplianceOutcome) {
-      properties.push({ label: 'Non-Compliance Outcome', value: event.details.nonComplianceOutcome })
-    }
-
-    if (event.details?.nonComplianceResolved) {
-      properties.push({ label: 'Non-Compliance Resolved', value: event.details.nonComplianceResolved })
-    }
-
-    if (event.details?.enforcementId) {
-      properties.push({ label: 'Enforcement ID', value: event.details.enforcementId })
-    }
-
-    if (event.details?.actionTakenEms) {
-      properties.push({ label: 'Action Taken EMS', value: event.details.actionTakenEms })
-    }
-
-    if (event.details?.dateResolved) {
-      properties.push({ label: 'Date Resolved', value: mojFilters.mojDate(event.details.dateResolved, 'date') })
-    }
-
-    if (event.details?.openClosed) {
-      properties.push({ label: 'Open/Closed', value: event.details.openClosed })
-    }
-
-    if (event.details?.visitRequired) {
-      properties.push({ label: 'Visit Required', value: event.details.visitRequired })
-    }
+    const properties: TimelineCardProperty[] = [
+      { label: 'Enforcement ID', value: event.details.enforcementId || '' },
+      { label: 'Non-compliance reason', value: event.details.nonComplianceReason || '' },
+      {
+        label: 'Non-compliance date',
+        value: nonComplianceDateTime ? mojFilters.mojDate(nonComplianceDateTime, 'date') : '',
+      },
+      {
+        label: 'Non-compliance time',
+        value: nonComplianceDateTime ? mojFilters.mojDate(nonComplianceDateTime, 'time') : '',
+      },
+      { label: 'Violation alert ID', value: event.details.violationAlertId || '' },
+      { label: 'Violation alert description', value: event.details.violationAlertDescription || '' },
+      {
+        label: 'Violation event notification date',
+        value: violationEventNotificationDateTime ? mojFilters.mojDate(violationEventNotificationDateTime, 'date') : '',
+      },
+      {
+        label: 'Violation event notification time',
+        value: violationEventNotificationDateTime ? mojFilters.mojDate(violationEventNotificationDateTime, 'time') : '',
+      },
+      { label: 'Action taken EMS', value: event.details.actionTakenEms || '' },
+      { label: 'Non-compliance outcome', value: event.details.nonComplianceOutcome || '' },
+      { label: 'Non-compliance resolved', value: event.details.nonComplianceResolved || '' },
+      { label: 'Date resolved', value: dateResolved ? mojFilters.mojDate(dateResolved, 'date') : '' },
+      { label: 'Open/closed', value: event.details.openClosed || '' },
+      { label: 'Visit required', value: event.details.visitRequired || '' },
+    ]
 
     return {
       title: event.type,
@@ -219,7 +131,7 @@ export default function alcoholMonitoringEventsHistoryRouter(services: Services)
           card = incidentEventToTimelineCard(event as AlcoholMonitoringIncidentEvent)
           break
         case 'contact':
-          card = contactEventToTimelineCard(event.details as AlcoholMonitoringContactEvent)
+          card = contactEventToTimelineCard(event as AlcoholMonitoringContactEvent)
           break
         case 'violation':
           card = violationEventToTimelineCard(event as AlcoholMonitoringViolationEvent)

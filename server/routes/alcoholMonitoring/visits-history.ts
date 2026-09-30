@@ -16,73 +16,29 @@ import { AlcoholMonitoringVisitDetails } from '../../data/models/alcoholMonitori
 const mojFilters = allMojFilters()
 
 const visitDetailsToTimelineCard = (event: AlcoholMonitoringVisitDetails): TimelineCard => {
-  const properties: TimelineCardProperty[] = []
+  const { dateVisitRaised, actualWorkStartDateTime, actualWorkEndDateTime } = event
 
-  if (event.visitId) {
-    properties.push({ label: 'Visit ID', value: event.visitId })
-  }
-
-  if (event.visitType) {
-    properties.push({ label: 'Visit Type', value: event.visitType })
-  }
-
-  if (event.visitAttempt) {
-    properties.push({ label: 'Visit Attempt', value: event.visitAttempt })
-  }
-
-  if (event.dateVisitRaised) {
-    properties.push({ label: 'Date Visit Raised', value: mojFilters.mojDate(event.dateVisitRaised, 'date') })
-  }
-
-  if (event.visitAddress) {
-    properties.push({ label: 'Visit Address', value: event.visitAddress })
-  }
-
-  if (event.visitNotes) {
-    properties.push({ label: 'Visit Notes', value: event.visitNotes })
-  }
-
-  if (event.visitOutcome) {
-    properties.push({ label: 'Visit Outcome', value: event.visitOutcome })
-  }
-
-  if (event.actualWorkStartDateTime) {
-    properties.push({
-      label: 'Actual Work Start Date',
-      value: mojFilters.mojDate(event.actualWorkStartDateTime, 'date'),
-    })
-    properties.push({
-      label: 'Actual Work Start Time',
-      value: mojFilters.mojDate(event.actualWorkStartDateTime, 'time'),
-    })
-  }
-
-  if (event.actualWorkEndDateTime) {
-    properties.push({
-      label: 'Actual Work End Date',
-      value: mojFilters.mojDate(event.actualWorkEndDateTime, 'date'),
-    })
-    properties.push({
-      label: 'Actual Work End Time',
-      value: mojFilters.mojDate(event.actualWorkEndDateTime, 'time'),
-    })
-  }
-
-  if (event.visitRejectionReason) {
-    properties.push({ label: 'Visit Rejection Reason', value: event.visitRejectionReason })
-  }
-
-  if (event.visitRejectionDescription) {
-    properties.push({ label: 'Visit Rejection Description', value: event.visitRejectionDescription })
-  }
-
-  if (event.visitCancelReason) {
-    properties.push({ label: 'Visit Cancel Reason', value: event.visitCancelReason })
-  }
-
-  if (event.visitCancelDescription) {
-    properties.push({ label: 'Visit Cancel Description', value: event.visitCancelDescription })
-  }
+  const properties: TimelineCardProperty[] = [
+    { label: 'Visit ID', value: event.visitId || '' },
+    { label: 'Visit types', value: event.visitType || '' },
+    { label: 'Visit attempt', value: event.visitAttempt || '' },
+    { label: 'Date visit raised', value: dateVisitRaised ? mojFilters.mojDate(dateVisitRaised, 'date') : '' },
+    { label: 'Visit address', value: event.visitAddress || '' },
+    { label: 'Visit notes', value: event.visitNotes || '' },
+    { label: 'Visit outcome', value: event.visitOutcome || '' },
+    {
+      label: 'Actual work start datetime',
+      value: actualWorkStartDateTime ? mojFilters.mojDate(actualWorkStartDateTime, 'datetime') : '',
+    },
+    {
+      label: 'Actual work end datetime',
+      value: actualWorkEndDateTime ? mojFilters.mojDate(actualWorkEndDateTime, 'datetime') : '',
+    },
+    { label: 'Visit rejection reason', value: event.visitRejectionReason || '' },
+    { label: 'Visit rejection description', value: event.visitRejectionDescription || '' },
+    { label: 'Visit cancel reason', value: event.visitCancelReason || '' },
+    { label: 'Visit cancel description', value: event.visitCancelDescription || '' },
+  ]
 
   return {
     title: event.visitType || 'Visit',

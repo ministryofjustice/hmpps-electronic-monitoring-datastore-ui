@@ -10,7 +10,7 @@ import type { Services } from '../../services'
 
 import auditPageViewRequest from '../../middleware/auditPageViewRequest'
 
-import { TimelineCard, TimelineCardProperty, TimelineItem } from '../../models/view-models/timelineItems'
+import { TimelineCard, TimelineItem } from '../../models/view-models/timelineItems'
 import { AlcoholMonitoringServiceDetails } from '../../data/models/alcoholMonitoringServiceDetails'
 
 const mojFilters = allMojFilters()
@@ -19,32 +19,28 @@ export default function alcoholMonitoringServiceHistoryRouter(services: Services
   const router = Router()
 
   const toServiceSummary = (event: AlcoholMonitoringServiceDetails): TimelineCard => {
+    const { serviceStartDate, serviceEndDate } = event
+
     return {
       title: 'Service',
       properties: [
-        { label: 'Start date', value: mojFilters.mojDate(event.serviceStartDate, 'date') },
-        { label: 'End date', value: mojFilters.mojDate(event.serviceEndDate, 'date') },
-        {
-          label: 'Address',
-          value: event.serviceAddress,
-        },
+        { label: 'Start date', value: serviceStartDate ? mojFilters.mojDate(serviceStartDate, 'date') : '' },
+        { label: 'End date', value: serviceEndDate ? mojFilters.mojDate(serviceEndDate, 'date') : '' },
+        { label: 'Address', value: event.serviceAddress || '' },
       ],
     }
   }
 
   const toEquipmentSummary = (event: AlcoholMonitoringServiceDetails): TimelineCard => {
-    const properties: TimelineCardProperty[] = []
-    for (const [label, value] of Object.entries(event)) {
-      properties.push({ label, value: `${value}` })
-    }
+    const { equipmentStartDate, equipmentEndDate } = event
 
     return {
       title: 'Equipment',
       properties: [
-        { label: 'Equipment start date', value: mojFilters.mojDate(event.equipmentStartDate, 'date') },
-        { label: 'Equipment end date', value: mojFilters.mojDate(event.equipmentEndDate, 'date') },
-        { label: 'HMU Serial Number', value: event.hmuSerialNumber },
-        { label: 'Device Serial Number', value: event.deviceSerialNumber },
+        { label: 'Start date', value: equipmentStartDate ? mojFilters.mojDate(equipmentStartDate, 'date') : '' },
+        { label: 'End date', value: equipmentEndDate ? mojFilters.mojDate(equipmentEndDate, 'date') : '' },
+        { label: 'HMU Serial Number', value: event.hmuSerialNumber || '' },
+        { label: 'Device Serial Number', value: event.deviceSerialNumber || '' },
       ],
     }
   }
