@@ -79,7 +79,7 @@ describe('Integrity event history', () => {
       {
         legacySubjectId: 'event_history_222',
         type: 'incident',
-        dateTime: '2022-02-02T02:02:02',
+        dateTime: '2022-02-02T02:02:02Z',
         details: {
           type: 'TEST_INCIDENT_EVENT',
         },
@@ -98,7 +98,7 @@ describe('Integrity event history', () => {
       {
         legacySubjectId: 'event_history_333',
         type: 'monitoring',
-        dateTime: '2022-02-02T02:02:02',
+        dateTime: '2022-02-02T02:02:02Z',
         details: {
           type: 'TEST_MONITORING_EVENT',
         },
@@ -117,7 +117,7 @@ describe('Integrity event history', () => {
       {
         legacySubjectId: 'event_history_444',
         type: 'violation',
-        dateTime: '2022-02-02T02:02:02',
+        dateTime: '2022-02-02T02:02:02Z',
         details: {
           enforcementReason: 'TEST_VIOLATION_EVENT',
         },
@@ -136,7 +136,7 @@ describe('Integrity event history', () => {
       {
         legacySubjectId: 'event_history_555',
         type: 'contact',
-        dateTime: '2022-02-02T02:02:02',
+        dateTime: '2022-02-02T02:02:02Z',
         details: {
           type: 'TEST_CONTACT_EVENT',
         },

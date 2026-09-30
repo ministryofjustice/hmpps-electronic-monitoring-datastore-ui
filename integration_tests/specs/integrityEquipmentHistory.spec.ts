@@ -403,7 +403,7 @@ test.describe('Integrity equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00',
+          dateTime: '2024-06-01T09:00:00Z',
           details: {},
         },
       ])

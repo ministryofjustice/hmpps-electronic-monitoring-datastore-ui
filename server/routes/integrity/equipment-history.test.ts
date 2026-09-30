@@ -80,13 +80,13 @@ describe('Integrity equipment history', () => {
         pid: {
           id: 'pid_id',
           equipmentCategoryDescription: 'pid category',
-          installedDateTime: '2022-02-02T02:02:02',
+          installedDateTime: '2022-02-02T02:02:02Z',
           removedDateTime: undefined,
         },
         hmu: {
           id: 'hmu_id',
           equipmentCategoryDescription: 'hmu category',
-          installedDateTime: '2022-02-02T02:02:02',
+          installedDateTime: '2022-02-02T02:02:02Z',
           removedDateTime: undefined,
         },
       },

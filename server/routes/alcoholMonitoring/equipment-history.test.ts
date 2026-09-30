@@ -83,10 +83,10 @@ describe('Alcohol monitoring equipment history', () => {
         deviceSerialNumber: 'test_device_serial_number',
         deviceAddressType: 'test_device_address_type',
         legFitting: 'test_leg_fitting',
-        deviceInstalledDateTime: '2022-02-02T02:02:02',
-        deviceRemovedDateTime: '2023-03-03T03:03:03',
-        hmuInstallDateTime: '2024-04-04T04:04:04',
-        hmuRemovedDateTime: '2025-05-05T05:05:05',
+        deviceInstalledDateTime: '2022-02-02T02:02:02Z',
+        deviceRemovedDateTime: '2023-03-03T03:03:03Z',
+        hmuInstallDateTime: '2024-04-04T04:04:04Z',
+        hmuRemovedDateTime: '2025-05-05T05:05:05Z',
       },
     ] as AlcoholMonitoringEquipmentDetails[])
 

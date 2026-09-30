@@ -82,11 +82,11 @@ describe('AlcoholMonitoring service details', () => {
     alcoholMonitoringServiceDetailsService.getServiceDetails.mockResolvedValue([
       {
         legacySubjectId: 'service_details_004',
-        serviceStartDate: '2022-02-02T02:02:02',
-        serviceEndDate: '2022-02-02T02:02:02',
+        serviceStartDate: '2022-02-02T02:02:02Z',
+        serviceEndDate: '2022-02-02T02:02:02Z',
         serviceAddress: 'Test service address',
-        equipmentStartDate: '2022-02-02T02:02:02',
-        equipmentEndDate: '2022-02-02T02:02:02',
+        equipmentStartDate: '2022-02-02T02:02:02Z',
+        equipmentEndDate: '2022-02-02T02:02:02Z',
         hmuSerialNumber: 'Test HMU serial number',
         deviceSerialNumber: 'Test device serial number',
       },

@@ -80,10 +80,10 @@ describe('Integrity suspension of visits details', () => {
       {
         legacySubjectId: 'suspension_of_visits_004',
         suspensionOfVisits: 'Yes',
-        requestedDate: '2001-01-01T01:01:01',
-        startDate: '2002-02-02T02:02:02',
-        startTime: '2002-02-02T03:03:03',
-        endDate: '2004-04-04T04:04:04',
+        requestedDate: '2001-01-01T01:01:01Z',
+        startDate: '2002-02-02T02:02:02Z',
+        startTime: '2002-02-02T03:03:03Z',
+        endDate: '2004-04-04T04:04:04Z',
       },
     ] as IntegritySuspensionOfVisits[])
 
