@@ -129,13 +129,13 @@ test.describe('Integrity equipment history', () => {
           pid: {
             id: '1111',
             equipmentCategoryDescription: 'Some PID description',
-            installedDateTime: '2024-07-01T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10Z',
             removedDateTime: '2024-08-10T12:00:00Z',
           },
           hmu: {
             id: '2222',
             equipmentCategoryDescription: 'Some HMU description',
-            installedDateTime: '2024-09-01T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10Z',
             removedDateTime: '2024-10-10T12:00:00Z',
           },
         },
@@ -148,21 +148,21 @@ test.describe('Integrity equipment history', () => {
       const event = integrityEquipmentHistoryPage.equipmentHistory.getEntry(1)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('Equipment')
-      await expect(event.date).toHaveText('1 Jul 2024 at 1pm')
+      await expect(event.date).toHaveText('1 Jan 2001 at 1:10am')
 
       const hmuSummaryCard = event.getDescription('HMU')
       await expect(hmuSummaryCard).toHaveItem('Device ID', '2222')
       await expect(hmuSummaryCard).toHaveItem('Equipment category description', 'Some HMU description')
-      await expect(hmuSummaryCard).toHaveItem('Install date', '1 September 2024')
-      await expect(hmuSummaryCard).toHaveItem('Install time', '1pm')
+      await expect(hmuSummaryCard).toHaveItem('Install date', '1 January 2001')
+      await expect(hmuSummaryCard).toHaveItem('Install time', '1:10am')
       await expect(hmuSummaryCard).toHaveItem('Uninstall date', '10 October 2024')
       await expect(hmuSummaryCard).toHaveItem('Uninstall time', '1pm')
 
       const pidSummaryCard = event.getDescription('PID')
       await expect(pidSummaryCard).toHaveItem('Device ID', '1111')
       await expect(pidSummaryCard).toHaveItem('Equipment category description', 'Some PID description')
-      await expect(pidSummaryCard).toHaveItem('Install date', '1 July 2024')
-      await expect(pidSummaryCard).toHaveItem('Install time', '1pm')
+      await expect(pidSummaryCard).toHaveItem('Install date', '1 January 2001')
+      await expect(pidSummaryCard).toHaveItem('Install time', '1:10am')
       await expect(pidSummaryCard).toHaveItem('Uninstall date', '10 August 2024')
       await expect(pidSummaryCard).toHaveItem('Uninstall time', '1pm')
     })
@@ -174,7 +174,7 @@ test.describe('Integrity equipment history', () => {
           pid: {
             id: '1111',
             equipmentCategoryDescription: 'Some PID description',
-            installedDateTime: '2024-07-01T12:00:00Z',
+            installedDateTime: '2000-07-01T12:00:00Z',
             removedDateTime: '2024-08-10T12:00:00Z',
           },
           hmu: {
@@ -189,13 +189,13 @@ test.describe('Integrity equipment history', () => {
           pid: {
             id: '1111-2',
             equipmentCategoryDescription: 'Some PID description',
-            installedDateTime: '2024-07-02T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10Z',
             removedDateTime: '2024-08-11T12:00:00Z',
           },
           hmu: {
             id: '2222-2',
             equipmentCategoryDescription: 'Some HMU description',
-            installedDateTime: '2024-09-02T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10Z',
             removedDateTime: '2024-10-11T12:00:00Z',
           },
         },
@@ -208,21 +208,21 @@ test.describe('Integrity equipment history', () => {
       const event = integrityEquipmentHistoryPage.equipmentHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('Equipment')
-      await expect(event.date).toHaveText('2 Jul 2024 at 1pm')
+      await expect(event.date).toHaveText('1 Jan 2001 at 1:10am')
 
       const hmuSummaryCard = event.getDescription('HMU')
       await expect(hmuSummaryCard).toHaveItem('Device ID', '2222-2')
       await expect(hmuSummaryCard).toHaveItem('Equipment category description', 'Some HMU description')
-      await expect(hmuSummaryCard).toHaveItem('Install date', '2 September 2024')
-      await expect(hmuSummaryCard).toHaveItem('Install time', '1pm')
+      await expect(hmuSummaryCard).toHaveItem('Install date', '1 January 2001')
+      await expect(hmuSummaryCard).toHaveItem('Install time', '1:10am')
       await expect(hmuSummaryCard).toHaveItem('Uninstall date', '11 October 2024')
       await expect(hmuSummaryCard).toHaveItem('Uninstall time', '1pm')
 
       const pidSummaryCard = event.getDescription('PID')
       await expect(pidSummaryCard).toHaveItem('Device ID', '1111-2')
       await expect(pidSummaryCard).toHaveItem('Equipment category description', 'Some PID description')
-      await expect(pidSummaryCard).toHaveItem('Install date', '2 July 2024')
-      await expect(pidSummaryCard).toHaveItem('Install time', '1pm')
+      await expect(pidSummaryCard).toHaveItem('Install date', '1 January 2001')
+      await expect(pidSummaryCard).toHaveItem('Install time', '1:10am')
       await expect(pidSummaryCard).toHaveItem('Uninstall date', '11 August 2024')
       await expect(pidSummaryCard).toHaveItem('Uninstall time', '1pm')
     })

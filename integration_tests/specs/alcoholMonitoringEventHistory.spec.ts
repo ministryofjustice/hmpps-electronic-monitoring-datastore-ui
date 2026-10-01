@@ -285,10 +285,10 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '33333333',
           type: 'incident',
-          dateTime: '2024-04-04T01:06:06Z',
+          dateTime: '2001-01-01T01:10:10Z',
           details: {
             violationAlertId: 'V002',
-            violationAlertDateTime: '2024-04-04T01:01:01Z',
+            violationAlertDateTime: '2001-01-01T01:10:00Z',
             violationAlertType: 'Test alert type 2',
             violationAlertResponseAction: 'Test response action 2',
             visitRequired: 'No',
@@ -310,10 +310,10 @@ test.describe('AlcoholMonitoring event history', () => {
       const event = alcoholMonitoringEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('incident')
-      await expect(event.date).toHaveText('4 Apr 2024 at 2:06am')
+      await expect(event.date).toHaveText('1 Jan 2021 at 1:06am')
 
-      const incidentSummaryCard = event.getDescription('Test alert type 2')
-      await expect(incidentSummaryCard).toHaveItem('Violation alert ID', 'V002')
+      const incidentSummaryCard = event.getDescription('Test alert type')
+      await expect(incidentSummaryCard).toHaveItem('Violation alert ID', 'V001')
     })
 
     test('Displays an event history timeline with one contact event', async ({ page }) => {
@@ -364,7 +364,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2022-02-03T01:09:09Z',
+          dateTime: '2001-01-01T00:10:10Z',
           details: {
             visitId: 'V001',
           },
@@ -372,7 +372,7 @@ test.describe('AlcoholMonitoring event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2026-04-04T01:09:09Z',
+          dateTime: '2001-01-01T01:10:10Z',
           details: {
             contactDateTime: '2023-03-03T03:03:03Z',
             inboundOrOutbound: 'Inbound',
@@ -398,7 +398,7 @@ test.describe('AlcoholMonitoring event history', () => {
       const event = alcoholMonitoringEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('contact')
-      await expect(event.date).toHaveText('4 Apr 2026 at 2:09am')
+      await expect(event.date).toHaveText('1 Jan 2001 at 1:10am')
 
       const contactSummaryCard = event.getDescription('Probation')
       await expect(contactSummaryCard).toHaveItem('Contact channel', 'Probation')

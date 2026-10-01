@@ -173,7 +173,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
           deviceSerialNumber: '740',
           deviceAddressType: 'secondary',
           legFitting: 'right',
-          deviceInstalledDateTime: '2024-07-02T13:00:00Z',
+          deviceInstalledDateTime: '2001-01-01T01:10:00Z',
           deviceRemovedDateTime: '2002-02-02T02:20:20Z',
           hmuInstallDateTime: '2001-01-01T01:10:10Z',
           hmuRemovedDateTime: '2002-02-02T02:20:20Z',
@@ -187,14 +187,14 @@ test.describe('AlcoholMonitoring equipment history', () => {
       const event = alcoholMonitoringEquipmentHistoryPage.equipmentHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('Equipment')
-      await expect(event.date).toHaveText('2 Jul 2024 at 2pm')
+      await expect(event.date).toHaveText('1 Jan 2001 at 1:10am')
 
       const hmuSummaryCard = event.getDescription('Equipment')
       await expect(hmuSummaryCard).toHaveItem('Device type', 'tag')
       await expect(hmuSummaryCard).toHaveItem('Device serial number', '740')
       await expect(hmuSummaryCard).toHaveItem('Device address type', 'secondary')
       await expect(hmuSummaryCard).toHaveItem('Leg fitting', 'right')
-      await expect(hmuSummaryCard).toHaveItem('Device installed date time', '2 July 2024 at 2pm')
+      await expect(hmuSummaryCard).toHaveItem('Device installed date time', '1 January 2001 at 1:10am')
       await expect(hmuSummaryCard).toHaveItem('Device removed date time', '2 February 2002 at 2:20am')
       await expect(hmuSummaryCard).toHaveItem('HMU install date time', '1 January 2001 at 1:10am')
       await expect(hmuSummaryCard).toHaveItem('HMU removed date time', '2 February 2002 at 2:20am')
