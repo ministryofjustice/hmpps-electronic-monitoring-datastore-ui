@@ -129,14 +129,14 @@ test.describe('Integrity equipment history', () => {
           pid: {
             id: '1111',
             equipmentCategoryDescription: 'Some PID description',
-            installedDateTime: '2001-01-01T01:10:10Z',
-            removedDateTime: '2024-08-10T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10+00:00',
+            removedDateTime: '2024-08-10T12:00:00+00:00',
           },
           hmu: {
             id: '2222',
             equipmentCategoryDescription: 'Some HMU description',
-            installedDateTime: '2001-01-01T01:10:10Z',
-            removedDateTime: '2024-10-10T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10+00:00',
+            removedDateTime: '2024-10-10T12:00:00+00:00',
           },
         },
       ])
@@ -174,14 +174,14 @@ test.describe('Integrity equipment history', () => {
           pid: {
             id: '1111',
             equipmentCategoryDescription: 'Some PID description',
-            installedDateTime: '2000-07-01T12:00:00Z',
-            removedDateTime: '2024-08-10T12:00:00Z',
+            installedDateTime: '2000-07-01T12:00:00+00:00',
+            removedDateTime: '2024-08-10T12:00:00+00:00',
           },
           hmu: {
             id: '2222',
             equipmentCategoryDescription: 'Some HMU description',
-            installedDateTime: '2024-09-01T12:00:00Z',
-            removedDateTime: '2024-10-10T12:00:00Z',
+            installedDateTime: '2024-09-01T12:00:00+00:00',
+            removedDateTime: '2024-10-10T12:00:00+00:00',
           },
         },
         {
@@ -189,14 +189,14 @@ test.describe('Integrity equipment history', () => {
           pid: {
             id: '1111-2',
             equipmentCategoryDescription: 'Some PID description',
-            installedDateTime: '2001-01-01T01:10:10Z',
-            removedDateTime: '2024-08-11T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10+00:00',
+            removedDateTime: '2024-08-11T12:00:00+00:00',
           },
           hmu: {
             id: '2222-2',
             equipmentCategoryDescription: 'Some HMU description',
-            installedDateTime: '2001-01-01T01:10:10Z',
-            removedDateTime: '2024-10-11T12:00:00Z',
+            installedDateTime: '2001-01-01T01:10:10+00:00',
+            removedDateTime: '2024-10-11T12:00:00+00:00',
           },
         },
       ])
@@ -403,7 +403,7 @@ test.describe('Integrity equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])

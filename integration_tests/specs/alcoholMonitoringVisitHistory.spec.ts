@@ -59,7 +59,7 @@ test.describe('AlcoholMonitoring visits history', () => {
       await mockAlcoholMonitoringApi.stubGetVisitDetails('5678', [
         {
           legacySubjectId: '5678',
-          actualWorkStartDateTime: '2002-05-22T01:01:01Z',
+          actualWorkStartDateTime: '2002-05-22T01:01:01+00:00',
         },
       ])
 
@@ -111,12 +111,12 @@ test.describe('AlcoholMonitoring visits history', () => {
           visitId: '300',
           visitType: 'TEST_VISIT_TYPE',
           visitAttempt: 'attempt 1',
-          dateVisitRaised: '2001-01-01T00:00:00Z',
+          dateVisitRaised: '2001-01-01T00:00:00+00:00',
           visitAddress: 'address line 1 address line 2 address line 3 postCode',
           visitNotes: 'TEST_NOTES',
           visitOutcome: 'TEST_OUTCOME',
-          actualWorkStartDateTime: '2002-02-02T01:01:01Z',
-          actualWorkEndDateTime: '2002-02-02T02:02:02Z',
+          actualWorkStartDateTime: '2002-02-02T01:01:01+00:00',
+          actualWorkEndDateTime: '2002-02-02T02:02:02+00:00',
           visitRejectionReason: 'rejection reason',
           visitRejectionDescription: 'rejection description',
           visitCancelReason: 'cancel reason',
@@ -145,12 +145,12 @@ test.describe('AlcoholMonitoring visits history', () => {
           visitId: '300',
           visitType: 'TEST_VISIT_TYPE',
           visitAttempt: 'attempt 1',
-          dateVisitRaised: '2001-01-01T00:00:00Z',
+          dateVisitRaised: '2001-01-01T00:00:00+00:00',
           visitAddress: 'address line 1 address line 2 address line 3 postCode',
           visitNotes: 'TEST_NOTES',
           visitOutcome: 'TEST_OUTCOME',
-          actualWorkStartDateTime: '2002-02-02T01:01:01Z',
-          actualWorkEndDateTime: '2002-02-02T02:02:02Z',
+          actualWorkStartDateTime: '2002-02-02T01:01:01+00:00',
+          actualWorkEndDateTime: '2002-02-02T02:02:02+00:00',
           visitRejectionReason: 'rejection reason',
           visitRejectionDescription: 'rejection description',
           visitCancelReason: 'cancel reason',
@@ -161,12 +161,12 @@ test.describe('AlcoholMonitoring visits history', () => {
           visitId: '302',
           visitType: 'TEST_VISIT_TYPE_2',
           visitAttempt: 'attempt 2',
-          dateVisitRaised: '2001-01-01T00:00:00Z',
+          dateVisitRaised: '2001-01-01T00:00:00+00:00',
           visitAddress: 'address line 1 address line 2 address line 3 postCode',
           visitNotes: 'TEST_NOTES_2',
           visitOutcome: 'TEST_OUTCOME_2',
-          actualWorkStartDateTime: '2002-02-02T01:01:01Z',
-          actualWorkEndDateTime: '2002-02-02T02:02:02Z',
+          actualWorkStartDateTime: '2002-02-02T01:01:01+00:00',
+          actualWorkEndDateTime: '2002-02-02T02:02:02+00:00',
           visitRejectionReason: 'rejection reason 2',
           visitRejectionDescription: 'rejection description 2',
           visitCancelReason: 'cancel reason 2',
@@ -193,7 +193,7 @@ test.describe('AlcoholMonitoring visits history', () => {
       await mockAlcoholMonitoringApi.stubGetVisitDetails('09835', [
         {
           legacySubjectId: '09835',
-          actualWorkStartDateTime: '2002-02-02T01:01:01Z',
+          actualWorkStartDateTime: '2002-02-02T01:01:01+00:00',
         },
       ])
     })

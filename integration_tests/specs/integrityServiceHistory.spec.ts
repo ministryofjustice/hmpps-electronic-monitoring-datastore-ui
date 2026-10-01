@@ -117,10 +117,10 @@ test.describe('Integrity service history', () => {
           serviceAddress2: 'address line 2',
           serviceAddress3: 'address line 3',
           serviceAddressPostCode: 'postCode',
-          serviceStartDate: '2002-05-22T01:01:01Z',
-          serviceEndDate: '2002-05-22T01:01:01Z',
-          curfewStartDate: '2002-05-22T01:01:01Z',
-          curfewEndDate: '2002-05-22T01:01:01Z',
+          serviceStartDate: '2002-05-22T01:01:01+00:00',
+          serviceEndDate: '2002-05-22T01:01:01+00:00',
+          curfewStartDate: '2002-05-22T01:01:01+00:00',
+          curfewEndDate: '2002-05-22T01:01:01+00:00',
           monday: 1,
           tuesday: 2,
           wednesday: 3,
@@ -149,10 +149,10 @@ test.describe('Integrity service history', () => {
           serviceAddress2: 'address line 2',
           serviceAddress3: 'address line 3',
           serviceAddressPostCode: 'postCode',
-          serviceStartDate: '2002-05-22T01:01:01Z',
-          serviceEndDate: '2002-05-22T01:01:01Z',
-          curfewStartDate: '2002-05-22T01:01:01Z',
-          curfewEndDate: '2002-05-22T01:01:01Z',
+          serviceStartDate: '2002-05-22T01:01:01+00:00',
+          serviceEndDate: '2002-05-22T01:01:01+00:00',
+          curfewStartDate: '2002-05-22T01:01:01+00:00',
+          curfewEndDate: '2002-05-22T01:01:01+00:00',
           monday: 1,
           tuesday: 2,
           wednesday: 3,
@@ -168,10 +168,10 @@ test.describe('Integrity service history', () => {
           serviceAddress2: 'address line 2',
           serviceAddress3: 'address line 3',
           serviceAddressPostCode: 'postCode',
-          serviceStartDate: '2002-05-22T01:01:01Z',
-          serviceEndDate: '2002-05-22T01:01:01Z',
-          curfewStartDate: '2002-05-22T01:01:01Z',
-          curfewEndDate: '2002-05-22T01:01:01Z',
+          serviceStartDate: '2002-05-22T01:01:01+00:00',
+          serviceEndDate: '2002-05-22T01:01:01+00:00',
+          curfewStartDate: '2002-05-22T01:01:01+00:00',
+          curfewEndDate: '2002-05-22T01:01:01+00:00',
           monday: 1,
           tuesday: 2,
           wednesday: 3,
@@ -276,7 +276,7 @@ test.describe('Integrity service history', () => {
       await mockIntegrityApi.stubGetVisitDetails('09876', false, [
         {
           legacySubjectId: '09876',
-          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
+          actualWorkStartDateTime: '2024-06-01T09:00:00+00:00',
         },
       ])
 
@@ -310,7 +310,7 @@ test.describe('Integrity service history', () => {
         {
           legacySubjectId: '09876',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
@@ -318,7 +318,7 @@ test.describe('Integrity service history', () => {
         {
           legacySubjectId: '09876',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
@@ -326,7 +326,7 @@ test.describe('Integrity service history', () => {
         {
           legacySubjectId: '09876',
           type: 'MONITORING',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
@@ -334,7 +334,7 @@ test.describe('Integrity service history', () => {
         {
           legacySubjectId: '09876',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])

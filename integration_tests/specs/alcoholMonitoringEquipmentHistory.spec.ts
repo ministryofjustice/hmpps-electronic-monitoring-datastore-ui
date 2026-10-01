@@ -127,10 +127,10 @@ test.describe('AlcoholMonitoring equipment history', () => {
           deviceSerialNumber: '740',
           deviceAddressType: 'secondary',
           legFitting: 'right',
-          deviceInstalledDateTime: '2001-01-01T01:10:10Z',
-          deviceRemovedDateTime: '2002-02-02T02:20:20Z',
-          hmuInstallDateTime: '2001-01-01T01:10:10Z',
-          hmuRemovedDateTime: '2002-02-02T02:20:20Z',
+          deviceInstalledDateTime: '2001-01-01T01:10:10+00:00',
+          deviceRemovedDateTime: '2002-02-02T02:20:20+00:00',
+          hmuInstallDateTime: '2001-01-01T01:10:10+00:00',
+          hmuRemovedDateTime: '2002-02-02T02:20:20+00:00',
         },
       ])
 
@@ -162,10 +162,10 @@ test.describe('AlcoholMonitoring equipment history', () => {
           deviceSerialNumber: '740',
           deviceAddressType: 'secondary',
           legFitting: 'right',
-          deviceInstalledDateTime: '2001-01-01T01:10:10Z',
-          deviceRemovedDateTime: '2002-02-02T02:20:20Z',
-          hmuInstallDateTime: '2001-01-01T01:10:10Z',
-          hmuRemovedDateTime: '2002-02-02T02:20:20Z',
+          deviceInstalledDateTime: '2001-01-01T01:10:10+00:00',
+          deviceRemovedDateTime: '2002-02-02T02:20:20+00:00',
+          hmuInstallDateTime: '2001-01-01T01:10:10+00:00',
+          hmuRemovedDateTime: '2002-02-02T02:20:20+00:00',
         },
         {
           legacySubjectId: '0987-2',
@@ -173,10 +173,10 @@ test.describe('AlcoholMonitoring equipment history', () => {
           deviceSerialNumber: '740',
           deviceAddressType: 'secondary',
           legFitting: 'right',
-          deviceInstalledDateTime: '2001-01-01T01:10:00Z',
-          deviceRemovedDateTime: '2002-02-02T02:20:20Z',
-          hmuInstallDateTime: '2001-01-01T01:10:10Z',
-          hmuRemovedDateTime: '2002-02-02T02:20:20Z',
+          deviceInstalledDateTime: '2001-01-01T01:10:00+00:00',
+          deviceRemovedDateTime: '2002-02-02T02:20:20+00:00',
+          hmuInstallDateTime: '2001-01-01T01:10:10+00:00',
+          hmuRemovedDateTime: '2002-02-02T02:20:20+00:00',
         },
       ])
 
@@ -272,11 +272,11 @@ test.describe('AlcoholMonitoring equipment history', () => {
       await mockAlcoholMonitoringApi.stubGetServiceDetails('5678', [
         {
           legacySubjectId: '5678',
-          serviceStartDate: '2001-01-01T00:00:00Z',
-          serviceEndDate: '2002-02-02T00:00:00Z',
+          serviceStartDate: '2001-01-01T00:00:00+00:00',
+          serviceEndDate: '2002-02-02T00:00:00+00:00',
           serviceAddress: 'service address',
-          equipmentStartDate: '2003-03-03T00:00:00Z',
-          equipmentEndDate: '2004-04-04T00:00:00Z',
+          equipmentStartDate: '2003-03-03T00:00:00+00:00',
+          equipmentEndDate: '2004-04-04T00:00:00+00:00',
           hmuSerialNumber: 'hmu-01',
           deviceSerialNumber: 'device-01',
         },
@@ -301,7 +301,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
       await mockAlcoholMonitoringApi.stubGetVisitDetails('5678', [
         {
           legacySubjectId: '5678',
-          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
+          actualWorkStartDateTime: '2024-06-01T09:00:00+00:00',
         },
       ])
 
@@ -325,7 +325,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
@@ -333,7 +333,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
@@ -341,7 +341,7 @@ test.describe('AlcoholMonitoring equipment history', () => {
         {
           legacySubjectId: '5678',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
