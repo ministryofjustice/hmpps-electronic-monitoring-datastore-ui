@@ -149,9 +149,9 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'monitoring',
-          dateTime: '2022-02-02T01:03:03+00:00',
+          dateTime: '2022-02-02 01:03:03',
           details: {
-            processedDateTime: '2022-02-02T01:03:03+00:00',
+            processedDateTime: '2022-02-02 01:03:03',
           },
         },
       ])
@@ -160,7 +160,7 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'incident',
-          dateTime: '2022-02-02T01:06:06+00:00',
+          dateTime: '2022-02-02 01:06:06',
           details: {
             type: 'an incident occurred',
           },
@@ -171,7 +171,7 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2022-02-03T01:09:09+00:00',
+          dateTime: '2022-02-03 01:09:09',
           details: {
             outcome: 'there was an outcome',
             type: 'PHONE_CALL',
@@ -179,7 +179,7 @@ test.describe('Integrity event history', () => {
             channel: 'TELEPHONE',
             userId: 'Test User A',
             userName: 'UID-123',
-            modifiedDateTime: '2022-02-03T01:09:09+00:00',
+            modifiedDateTime: '2022-02-03 01:09:09',
           },
         },
       ])
@@ -188,28 +188,28 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'violation',
-          dateTime: '2022-02-03T01:12:12+00:00',
+          dateTime: '2022-02-03 01:12:12',
           details: {
             breachDetails: 'details of breach',
             breachEnforcementOutcome: 'outcome of breach',
-            breachDateTime: '2022-02-03T01:12:12+00:00',
-            breachIdentifiedDateTime: '2022-02-03T01:12:12+00:00',
-            breachPackRequestedDate: '2022-02-03T01:12:12+00:00',
-            breachPackSentDate: '2022-02-03T01:12:12+00:00',
+            breachDateTime: '2022-02-03 01:12:12',
+            breachIdentifiedDateTime: '2022-02-03 01:12:12',
+            breachPackRequestedDate: '2022-02-03 01:12:12',
+            breachPackSentDate: '2022-02-03 01:12:12',
 
-            authorityFirstNotifiedDateTime: '2022-02-03T01:12:12+00:00',
+            authorityFirstNotifiedDateTime: '2022-02-03 01:12:12',
 
             agencyAction: 'action of agency',
-            agencyResponseDate: '2022-02-03T01:12:12+00:00',
+            agencyResponseDate: '2022-02-03 01:12:12',
 
             investigationOutcomeReason: 'invest outcome',
             enforcementReason: 'enforce reason',
 
-            warningLetterSentDateTime: '2022-02-03T01:12:12+00:00',
-            subjectLetterSentDate: '2022-02-03T01:12:12+00:00',
-            summonsServedDate: '2022-02-03T01:12:12+00:00',
-            hearingDate: '2022-02-03T01:12:12+00:00',
-            section9Date: '2022-02-03T01:12:12+00:00',
+            warningLetterSentDateTime: '2022-02-03 01:12:12',
+            subjectLetterSentDate: '2022-02-03 01:12:12',
+            summonsServedDate: '2022-02-03 01:12:12',
+            hearingDate: '2022-02-03 01:12:12',
+            section9Date: '2022-02-03 01:12:12',
           },
         },
       ])
