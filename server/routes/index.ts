@@ -2,7 +2,6 @@ import { Request, Response, NextFunction, Router } from 'express'
 
 import { Page } from '../constants/pages'
 import { paths } from '../constants/paths'
-import { strings } from '../constants/strings'
 import auditPageViewRequest from '../middleware/auditPageViewRequest'
 import auditSearchRequest from '../middleware/auditSearchRequest'
 
@@ -11,10 +10,8 @@ import type { Services } from '../services'
 import integrityRouter from './integrity'
 import alcoholMonitoringRouter from './alcoholMonitoring'
 
-import { OrderSearchCriteria } from '../models/requests/SearchOrdersRequest'
+import { OrderSearchCriteria } from '../models/requests/OrderSearchRequest'
 import { convertZodErrorToValidationError, OrderSearchView } from '../models/view-models/orderSearch'
-
-const orderSearchCriteria = OrderSearchCriteria
 
 export default function routes(services: Services): Router {
   const router = Router()
@@ -23,7 +20,7 @@ export default function routes(services: Services): Router {
     paths.START,
     auditPageViewRequest({ services, page: Page.START }),
     async (_req: Request, res: Response, _next: NextFunction) => {
-      res.render('pages/index')
+      res.render('pages/start')
     },
   )
 
@@ -35,49 +32,38 @@ export default function routes(services: Services): Router {
       const apiResult = await services.emDatastoreConnectionService.test(token)
 
       const viewModel = { data: apiResult }
-      res.render('pages/apiTest', viewModel)
+      res.render('pages/api-connection-test', viewModel)
     },
   )
 
   router.get(
-    paths.SEARCH,
-    auditPageViewRequest({ services, page: Page.SEARCH }),
+    paths.SEARCH_ORDERS,
+    auditPageViewRequest({ services, page: Page.ORDER_SEARCH }),
     async (req: Request, res: Response, _next: NextFunction) => {
-      const errors = (req.flash('validationErrors') || []).map(error => JSON.parse(error))
-      const formData = req.flash('formData') || {}
+      const validationErrors = (req.flash('validationErrors') || []).map(validationError => JSON.parse(validationError))
+      const formData = (req.flash('formData') || []).map(data => JSON.parse(data))[0] || {}
 
-      const viewModel = OrderSearchView.construct(formData as never, errors as never)
+      const viewModel = OrderSearchView.construct(formData, validationErrors)
 
-      res.locals = {
-        ...res.locals,
-        page: {
-          title: strings.pageHeadings.searchOrderForm,
-        },
-      }
-
-      res.render('pages/search', viewModel)
+      res.render('pages/search-orders', viewModel)
     },
   )
 
   router.post(
-    paths.SEARCH,
-    auditSearchRequest({ services, page: Page.SEARCH }),
+    paths.SEARCH_ORDERS,
+    auditSearchRequest({ services, page: Page.ORDER_SEARCH }),
     async (req: Request, res: Response) => {
       const { token } = res.locals.user
       const { searchType } = req.body
-      const invalidInput = req.body
-      const { data, error, success } = orderSearchCriteria.safeParse(invalidInput)
+      const { data, error, success } = OrderSearchCriteria.safeParse(req.body)
 
       if (!success) {
         const errors = convertZodErrorToValidationError(error)
 
-        req.flash('formData', req.body)
-        req.flash(
-          'validationErrors',
-          errors.map(validationError => JSON.stringify(validationError)),
-        )
+        req.flash('formData', JSON.stringify(req.body))
+        errors.map(validationError => req.flash('validationErrors', JSON.stringify(validationError)))
 
-        res.redirect(paths.SEARCH)
+        res.redirect(paths.SEARCH_ORDERS)
         return
       }
 
@@ -87,8 +73,7 @@ export default function routes(services: Services): Router {
         token,
       )
 
-      const redirectUrl =
-        searchType === 'alcohol-monitoring' ? paths.ALCOHOL_MONITORING.INDEX : paths.INTEGRITY_ORDER.INDEX
+      const redirectUrl = searchType === 'alcohol-monitoring' ? paths.ALCOHOL_MONITORING.ORDERS : paths.INTEGRITY.ORDERS
       res.redirect(`${redirectUrl}?search_id=${encodeURIComponent(queryExecutionResponse.queryExecutionId)}`)
     },
   )

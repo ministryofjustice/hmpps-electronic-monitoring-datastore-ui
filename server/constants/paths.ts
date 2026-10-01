@@ -1,26 +1,26 @@
 export const paths = {
   START: '/',
-  SEARCH: '/search',
+  SEARCH_ORDERS: '/search',
 
-  INTEGRITY_ORDER: {
-    INDEX: '/integrity',
+  INTEGRITY: {
+    ORDERS: '/integrity',
     SUMMARY: '/integrity/:legacySubjectId',
     DETAILS: '/integrity/:legacySubjectId/details',
-    VISIT_DETAILS: '/integrity/:legacySubjectId/visit-details',
-    EQUIPMENT_DETAILS: '/integrity/:legacySubjectId/equipment-details',
-    SUSPENSION_OF_VISITS: '/integrity/:legacySubjectId/suspension-of-visits',
+    EQUIPMENT_HISTORY: '/integrity/:legacySubjectId/equipment-history',
+    SERVICE_HISTORY: '/integrity/:legacySubjectId/service-history',
+    VISITS_HISTORY: '/integrity/:legacySubjectId/visits-history',
+    SUSPENSION_OF_VISITS_HISTORY: '/integrity/:legacySubjectId/suspension-of-visits-history',
     EVENT_HISTORY: '/integrity/:legacySubjectId/event-history',
-    SERVICE_DETAILS: '/integrity/:legacySubjectId/service-details',
   },
 
   ALCOHOL_MONITORING: {
-    INDEX: '/alcohol-monitoring',
+    ORDERS: '/alcohol-monitoring',
     SUMMARY: '/alcohol-monitoring/:legacySubjectId',
     DETAILS: '/alcohol-monitoring/:legacySubjectId/details',
-    VISIT_DETAILS: '/alcohol-monitoring/:legacySubjectId/visit-details',
-    EQUIPMENT_DETAILS: '/alcohol-monitoring/:legacySubjectId/equipment-details',
+    EQUIPMENT_HISTORY: '/alcohol-monitoring/:legacySubjectId/equipment-history',
+    SERVICE_HISTORY: '/alcohol-monitoring/:legacySubjectId/service-history',
+    VISITS_HISTORY: '/alcohol-monitoring/:legacySubjectId/visits-history',
     EVENT_HISTORY: '/alcohol-monitoring/:legacySubjectId/event-history',
-    SERVICE_DETAILS: '/alcohol-monitoring/:legacySubjectId/service-details',
   },
 
   API_CONNECTION_TEST: '/test',

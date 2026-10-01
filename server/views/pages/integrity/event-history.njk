@@ -1,20 +1,17 @@
 {% extends "../../partials/layout-integrity-order.njk" %}
 
-{% from "../../components/emsDateFilter.njk" import emsDateFilter %}
-{% from "../../components/emsEventTimeline.njk" import emsEventTimeline %}
-{% from "../../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from "../../partials/events-timeline/macro.njk" import eventTimeline %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
-{% set pageTitle = "All event history" %}
-{% set subHeading = "Violation alerts, monitoring events and contact history" %}
+{% set pageTitle = "Events" %}
+{% set subHeading = "Violation alerts, monitoring events, incidents and contact history" %}
 
 {% block innerContent %}
-  {% if eventHistory | length %}
-    {{ emsDateFilter() }}
+{%- if timeline | length -%}
+{{ eventTimeline(timeline) }}
+{% else %}
+<h2 class="govuk-heading-m no-results-heading">No event history found</h2>
 
-    {{ emsEventTimeline(eventHistory) }}
-  {% else %}
-    <h3 class="govuk-heading-m no-results-heading">No events found</h3>
-
-    <p class="no-results-message">No events information was found for this order</p>
-  {% endif %}
+<p class="no-results-message">No event history was found for this order</p>
+{% endif %}
 {% endblock %}

@@ -5,18 +5,15 @@ import request from 'supertest'
 import { paths } from '../constants/paths'
 import { appWithAllRoutes, flashProvider, user } from './testutils/appSetup'
 
-import IntegrityDatastoreClient from '../data/integrityDatastoreClient'
-
 import EmDatastoreOrderSearchService from '../services/emDatastoreOrderSearchService'
 import { QueryExecutionResponse } from '../models/queryExecutionResponse'
 
 jest.mock('@ministryofjustice/hmpps-audit-client')
 jest.mock('../services/emDatastoreOrderSearchService')
-jest.mock('../services/emDatastoreConnectionService')
 
-const auditService = new AuditService(undefined) as jest.Mocked<AuditService>
+const auditService = new AuditService({} as never) as jest.Mocked<AuditService>
 const emDatastoreOrderSearchService = new EmDatastoreOrderSearchService(
-  {} as IntegrityDatastoreClient,
+  {} as never,
 ) as jest.Mocked<EmDatastoreOrderSearchService>
 
 let app: Express
@@ -40,19 +37,20 @@ describe('Order details search request validation', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({})
       .expect('Content-Type', /text\/plain/)
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
-        expect(flashProvider).toHaveBeenCalledWith('formData', {})
-        expect(flashProvider).toHaveBeenCalledWith('validationErrors', [
+        expect(flashProvider).toHaveBeenCalledWith('formData', '{}')
+        expect(flashProvider).toHaveBeenCalledWith(
+          'validationErrors',
           JSON.stringify({
             error: 'You must enter a value into at least one search field',
             field: '',
           }),
-        ])
+        )
       })
   })
 
@@ -60,10 +58,10 @@ describe('Order details search request validation', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({})
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
       })
@@ -73,13 +71,13 @@ describe('Order details search request validation', () => {
     emDatastoreOrderSearchService.submitSearchQuery.mockResolvedValue({} as QueryExecutionResponse)
 
     return request(app)
-      .post(paths.SEARCH)
+      .post(paths.SEARCH_ORDERS)
       .send({
         searchType: 'integrity',
         firstName: 9,
       })
       .expect(302)
-      .expect('Location', paths.SEARCH)
+      .expect('Location', paths.SEARCH_ORDERS)
       .expect(_res => {
         expect(emDatastoreOrderSearchService.submitSearchQuery).not.toHaveBeenCalled()
       })
@@ -87,20 +85,28 @@ describe('Order details search request validation', () => {
 
   // This will need to be done in cypress
   it('renders page with validation errors and form data', async () => {
-    flashProvider.mockImplementationOnce(() => [
-      JSON.stringify({
-        error: 'First name must consist of letters only',
-        field: 'firstName',
-      }),
-      JSON.stringify({
-        error: 'Invalid date format',
-        field: 'dateOfBirth',
-      }),
-    ])
-    flashProvider.mockImplementationOnce(() => {})
+    flashProvider.mockImplementation(key => {
+      if (key === 'formData') {
+        return [JSON.stringify({})]
+      }
+      if (key === 'validationErrors') {
+        return [
+          JSON.stringify({
+            error: 'First name must consist of letters only',
+            field: 'firstName',
+          }),
+          JSON.stringify({
+            error: 'Invalid date format',
+            field: 'dateOfBirth',
+          }),
+        ]
+      }
+
+      return undefined
+    })
 
     return request(app)
-      .get(`${paths.SEARCH}`)
+      .get(`${paths.SEARCH_ORDERS}`)
       .send({
         searchType: 'alcohol-monitoring',
         firstName: 'John',

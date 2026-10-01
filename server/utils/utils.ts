@@ -94,7 +94,7 @@ export const trimSeconds = (timeString?: string | null): string => {
   return timeString.split(':').slice(0, 2).join(':')
 }
 
-export const getError = (validationErrors: ValidationResult, field: string): ErrorMessage | undefined => {
+export const getError = (field: string, validationErrors: ValidationResult = []): ErrorMessage | undefined => {
   const matchedError = validationErrors.find(e => e.field === field)
 
   if (matchedError) {
@@ -106,7 +106,7 @@ export const getError = (validationErrors: ValidationResult, field: string): Err
   return undefined
 }
 
-export const getErrors = (validationErrors: ValidationResult, fields: string[]): ErrorMessage | undefined => {
+export const getErrors = (fields: string[], validationErrors: ValidationResult = []): ErrorMessage | undefined => {
   const matchedErrors = validationErrors.filter(e => fields.includes(e.field))
 
   if (matchedErrors.length > 0) {
@@ -184,18 +184,6 @@ export const isNullOrUndefined = <T>(value: T | null | undefined): value is null
 }
 
 export const isNotNullOrUndefined = <T>(value: T | null | undefined): value is T => !isNullOrUndefined(value)
-
-export const extractParamsAndArgs = (args: unknown[]) => {
-  let params: Record<string, string | number | boolean> = {}
-  let query: Record<string, string | number | boolean> = {}
-
-  if (typeof args[0] !== 'string') {
-    params = args.shift() as Record<string, string | number | boolean>
-    query = args.shift() as Record<string, string | number | boolean>
-  }
-
-  return { params, query }
-}
 
 export const buildUrl = (
   template: string,

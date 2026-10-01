@@ -2,25 +2,27 @@
 
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
-{% from "../components/emsServiceInformation.njk" import emsServiceInformation %}
+{% from "../partials/service-information-banner/macro.njk" import serviceInformationBanner %}
+
+{% set mainClasses = "govuk-body" %}
 
 {% block beforeContent %}
-  {% if backUrl %}
-    {{ govukBackLink({
+{% if backUrl %}
+{{ govukBackLink({
       text: (backText if backText or "back"),
       href: backUrl
     }) }}
-  {% endif %}
+{% endif %}
 {% endblock %}
 
 {% block content %}
-  {{ emsServiceInformation() }}
+{{ serviceInformationBanner() }}
 
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-full">
-      <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-full">
+    <h1 class="govuk-heading-l">{{ pageTitle }}</h1>
 
-      {% block innerContent %}{% endblock %}
-    </div>
+    {% block innerContent %}{% endblock %}
   </div>
+</div>
 {% endblock %}

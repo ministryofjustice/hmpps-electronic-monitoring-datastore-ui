@@ -1,4 +1,4 @@
 export type Token = {
-  userToken?: string
+  userToken: string
   restricted?: boolean
 }

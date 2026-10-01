@@ -5,12 +5,12 @@ export type AlcoholMonitoringOrderSummaryView = {
   legacySubjectId: string
   orderSummary: {
     legacySubjectId: string
-    name?: string
-    alias?: string
-    dateOfBirth?: string
-    primaryAddress?: string[]
-    orderStartDate?: string
-    orderEndDate?: string
+    name?: string | null
+    alias?: string | null
+    dateOfBirth?: string | null
+    primaryAddress?: (string | null | undefined)[]
+    orderStartDate?: string | null
+    orderEndDate?: string | null
   }
   backUrl: string
 }
@@ -33,7 +33,7 @@ export const AlcoholMonitoringOrderSummaryView = {
         orderStartDate: orderDetails.orderStartDate,
         orderEndDate: orderDetails.orderEndDate,
       },
-      backUrl: paths.ALCOHOL_MONITORING.INDEX,
+      backUrl: paths.ALCOHOL_MONITORING.ORDERS,
     }
   },
 }

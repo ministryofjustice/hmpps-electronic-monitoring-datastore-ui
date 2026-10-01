@@ -8,11 +8,27 @@ import { initialiseName } from './utils'
 import config from '../config'
 import logger from '../../logger'
 
+export const setUpNunJucksFilters = (njkEnv: nunjucks.Environment, assetManifest: Record<string, string> = {}) => {
+  njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
+
+  njkEnv.addFilter('initialiseName', initialiseName)
+
+  // Add filters from MOJ Frontend
+  const mojFilters = Object.assign(allMojFilters())
+  Object.keys(mojFilters).forEach(filterName => {
+    njkEnv.addFilter(filterName, mojFilters[filterName])
+  })
+
+  njkEnv.addFilter('safeGovukDate', (date: string) => (date ? mojFilters.mojDate(date, 'date') : ''))
+  njkEnv.addFilter('safeGovukTime', (date: string) => (date ? mojFilters.mojDate(date, 'time') : ''))
+  njkEnv.addFilter('safeGovukDateTime', (date: string) => (date ? mojFilters.mojDate(date, 'datetime') : ''))
+}
+
 export default function nunjucksSetup(app: express.Express): void {
   app.set('view engine', 'njk')
 
   app.locals.asset_path = '/assets/'
-  app.locals.applicationName = config.applicationName
+  app.locals.applicationName = 'Electronic Monitoring Contract Management Service'
   app.locals.environmentName = config.environmentName
   app.locals.environmentNameColour = config.environmentName === 'PRE-PRODUCTION' ? 'govuk-tag--green' : ''
   let assetManifest: Record<string, string> = {}
@@ -39,12 +55,5 @@ export default function nunjucksSetup(app: express.Express): void {
     },
   )
 
-  njkEnv.addFilter('initialiseName', initialiseName)
-  njkEnv.addFilter('assetMap', (url: string) => assetManifest[url] || url)
-
-  // Add filters from MOJ Frontend
-  const mojFilters = Object.assign(allMojFilters())
-  Object.keys(mojFilters).forEach(filterName => {
-    njkEnv.addFilter(filterName, mojFilters[filterName])
-  })
+  setUpNunJucksFilters(njkEnv, assetManifest)
 }

@@ -1,0 +1,117 @@
+{% extends "../partials/layout-default.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "../partials/validation-error-summary/macro.njk" import validationErrorSummary %}
+
+{% set pageTitle = 'Search for orders' %}
+{% set backUrl = "/" %}
+
+{% block innerContent %}
+{%- if errorSummary -%}
+{{ validationErrorSummary(errorSummary) }}
+{%- endif -%}
+
+<form role="form" action="" method="post" {{ formEncoding }} novalidate>
+  <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+  <p class="govuk-caption-l govuk-!-margin-bottom-5">You can search by subject ID, name, date of birth and alias</p>
+
+  {{ govukRadios({
+    classes: "govuk-radios--small",
+    name: "searchType",
+    fieldset: {
+      legend: {
+        text: "What data are you searching for?",
+        isPageHeading: false,
+        classes: "govuk-fieldset__legend--m"
+      }
+    },
+    items: [
+      {
+        value: "integrity",
+        text: "Integrity data only",
+        checked: true
+      },
+      {
+        value: "alcohol-monitoring",
+        text: "Alcohol monitoring data only"
+      }
+    ]
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Legacy subject id",
+      classes: "govuk-label--s"
+    },
+    classes: "govuk-!-width-two-thirds",
+    id: "legacy-subject-id",
+    name: "legacySubjectId",
+    value: legacySubjectId.value,
+    errorMessage: legacySubjectId.error
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "First name",
+      classes: "govuk-label--s"
+    },
+    classes: "govuk-!-width-two-thirds",
+    id: "first-name",
+    name: "firstName",
+    value: firstName.value,
+    errorMessage: firstName.error
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Last name",
+      classes: "govuk-label--s"
+    },
+    classes: "govuk-!-width-two-thirds",
+    id: "last-name",
+    name: "lastName",
+    value: lastName.value,
+    errorMessage: lastName.error
+  }) }}
+
+  {{ govukDateInput({
+    id: "dob",
+    namePrefix: "dob",
+    fieldset: {
+      legend: {
+        text: "Date of birth",
+        isPageHeading: false,
+        classes: "govuk-fieldset__legend--s"
+      }
+    },
+    hint: {
+      text: "For example, 01 02 1990"
+    },
+    errorMessage: dateOfBirth.error,
+    values: dateOfBirth.value
+  }) }}
+
+  {{ govukInput({
+    label: {
+      text: "Alias",
+      classes: "govuk-label--s"
+    },
+    classes: "govuk-!-width-two-thirds",
+    id: "alias",
+    name: "alias",
+    value: alias.value,
+    errorMessage: alias.error
+  }) }}
+
+  <div class="govuk-button-group">
+    {{ govukButton({
+      text: "Search",
+      classes: "ems-search-form__button--submit"
+    }) }}
+  </div>
+</form>
+{% endblock %}

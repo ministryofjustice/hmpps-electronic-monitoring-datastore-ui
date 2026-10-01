@@ -1,0 +1,67 @@
+{%- from "moj/components/filter/macro.njk" import mojFilter -%}
+{%- from "moj/components/timeline/macro.njk" import mojTimeline -%}
+{%- from "govuk/components/summary-list/macro.njk" import govukSummaryList -%}
+
+{%- from "../../components/emsDateFilter.njk" import emsDateFilter -%}
+{%- set filterOptionsHtml %}{{ emsDateFilter() }}{%- endset -%}
+
+{% macro formatEventCards(cards) %}
+{% for card in cards %}
+{%- set rows = [] -%}
+{%- for property in card.properties -%}
+{%- set rows = (rows.push({ key: { text: property.label }, value: { html: property.value } }), rows) -%}
+{%- endfor -%}
+{{ govukSummaryList({
+  card: { title: { text: card.title } } if card.title,
+  rows: rows
+}) }}
+{% endfor %}
+{% endmacro %}
+
+{% macro eventTimeline(items) %}
+{%- set timelineItems = [] -%}
+{%- for item in items -%}
+{%- set eventSummary = formatEventCards(item.cards) -%}
+{%- set timelineItems = (timelineItems.push({
+  classes: 'events-timeline__item',
+  label: { text: item.label },
+  html: eventSummary,
+  datetime: { timestamp: item.dateTime, type: 'shortdatetime' },
+  byline: { text: item.byline } if item.byline
+}), timelineItems) -%}
+{%- endfor -%}
+
+<div class="moj-filter-layout events-timeline">
+  <div class="moj-filter-layout__filter" data-module="moj-filter">
+    <form method="get">
+      {{ mojFilter({
+        heading: {
+          text: "Filter"
+        },
+        selectedFilters: {
+          heading: {
+            text: "Selected filters"
+          },
+          clearLink: {
+            text: "Clear filters"
+          },
+          categories: []
+        },
+        optionsHtml: filterOptionsHtml
+      }) }}
+    </form>
+  </div>
+
+  <div class="moj-filter-layout__content">
+    <div class="moj-action-bar">
+      <div class="moj-action-bar__filter"></div>
+    </div>
+
+    {{ mojTimeline({
+      classes: 'events-timeline__timeline',
+      headingLevel: 2,
+      items: timelineItems
+    }) }}
+  </div>
+</div>
+{% endmacro %}
