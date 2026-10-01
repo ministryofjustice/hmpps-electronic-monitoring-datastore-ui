@@ -33,7 +33,7 @@ describe('Integrity Event timeline', () => {
       const html = renderMacro([
         {
           label: 'Test event',
-          dateTime: '2024-05-01T12:00:00Z',
+          dateTime: '2024-05-01 12:00:00',
         },
       ])
       const $ = cheerio.load(html)
@@ -46,15 +46,15 @@ describe('Integrity Event timeline', () => {
       const html = renderMacro([
         {
           label: 'Test event',
-          dateTime: '2024-05-01T12:00:00Z',
+          dateTime: '2024-05-01 12:00:00',
         },
         {
           label: 'Test event 2',
-          dateTime: '2024-05-01T13:00:00Z',
+          dateTime: '2024-05-01 13:00:00',
         },
         {
           label: 'Test event 3',
-          dateTime: '2024-05-01T14:00:00Z',
+          dateTime: '2024-05-01 14:00:00',
         },
       ])
       const $ = cheerio.load(html)
@@ -62,11 +62,11 @@ describe('Integrity Event timeline', () => {
       expect(cleanTextContent($('.events-timeline .events-timeline__item').text())).toEqual(
         [
           'Test event',
-          '1 May 2024 at 1pm',
+          '1 May 2024 at 12pm',
           'Test event 2',
-          '1 May 2024 at 2pm',
+          '1 May 2024 at 1pm',
           'Test event 3',
-          '1 May 2024 at 3pm',
+          '1 May 2024 at 2pm',
         ].join('\n'),
       )
     })
@@ -75,13 +75,13 @@ describe('Integrity Event timeline', () => {
       const html = renderMacro([
         {
           label: 'Test event',
-          dateTime: '2024-06-01T12:00:00Z',
+          dateTime: '2024-06-01 12:00:00',
         },
       ])
       const $ = cheerio.load(html)
 
       expect(cleanTextContent($('.events-timeline .events-timeline__item').text())).toEqual(
-        ['Test event', '1 Jun 2024 at 1pm'].join('\n'),
+        ['Test event', '1 Jun 2024 at 12pm'].join('\n'),
       )
     })
 
@@ -89,7 +89,7 @@ describe('Integrity Event timeline', () => {
       const html = renderMacro([
         {
           label: 'Test event',
-          dateTime: '2024-09-01T12:30:00Z',
+          dateTime: '2024-09-01 12:30:00',
           cards: [
             {
               title: 'Test card',
@@ -101,7 +101,7 @@ describe('Integrity Event timeline', () => {
       const $ = cheerio.load(html)
 
       expect(cleanTextContent($('.events-timeline .events-timeline__item').text())).toEqual(
-        ['Test event', '1 Sep 2024 at 1:30pm', 'Test card', 'Test property A', 'Test value 001'].join('\n'),
+        ['Test event', '1 Sep 2024 at 12:30pm', 'Test card', 'Test property A', 'Test value 001'].join('\n'),
       )
     })
 
@@ -109,7 +109,7 @@ describe('Integrity Event timeline', () => {
       const html = renderMacro([
         {
           label: 'Test event',
-          dateTime: '2024-05-01T12:00:00Z',
+          dateTime: '2024-05-01 12:00:00',
           cards: [
             {
               title: 'Alpha card',
