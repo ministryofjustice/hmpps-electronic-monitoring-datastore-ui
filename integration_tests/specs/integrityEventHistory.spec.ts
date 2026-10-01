@@ -229,9 +229,9 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'monitoring',
-          dateTime: '2022-02-02T01:03:03+00:00',
+          dateTime: '2022-02-02 01:03:03',
           details: {
-            processedDateTime: '2022-02-02T01:03:03+00:00',
+            processedDateTime: '2022-02-02 01:03:03',
           },
         },
       ])
@@ -259,17 +259,17 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '22222222',
           type: 'monitoring',
-          dateTime: '2022-02-02T01:03:03+00:00',
+          dateTime: '2022-02-02 01:03:03',
           details: {
-            processedDateTime: '2022-02-02T01:03:03+00:00',
+            processedDateTime: '2022-02-02 01:03:03',
           },
         },
         {
           legacySubjectId: '22222222',
           type: 'monitoring',
-          dateTime: '2024-04-04T01:03:03+00:00',
+          dateTime: '2024-04-04 01:03:03',
           details: {
-            processedDateTime: '2024-04-04T01:03:03+00:00',
+            processedDateTime: '2024-04-04 01:03:03',
           },
         },
       ])
@@ -285,11 +285,11 @@ test.describe('Integrity event history', () => {
       const event = integrityEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('monitoring')
-      await expect(event.date).toHaveText('4 Apr 2024 at 2:03am')
+      await expect(event.date).toHaveText('4 Apr 2024 at 1:03am')
 
       const monitoringSummaryCard = event.getDescription('monitoring')
       await expect(monitoringSummaryCard).toHaveItem('Processed date', '4 April 2024')
-      await expect(monitoringSummaryCard).toHaveItem('Processed time', '2:03am')
+      await expect(monitoringSummaryCard).toHaveItem('Processed time', '1:03am')
     })
 
     test('Displays an event history timeline with one incident event', async ({ page }) => {
@@ -299,7 +299,7 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'incident',
-          dateTime: '2022-02-02T01:06:06+00:00',
+          dateTime: '2022-02-02 01:06:06',
           details: {
             type: 'an incident occurred',
           },
@@ -329,7 +329,7 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '33333333',
           type: 'incident',
-          dateTime: '2021-01-01T01:06:06+00:00',
+          dateTime: '2021-01-01 01:06:06',
           details: {
             type: 'first incident occurred',
           },
@@ -337,7 +337,7 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '33333333',
           type: 'incident',
-          dateTime: '2024-04-04T01:06:06+00:00',
+          dateTime: '2024-04-04 01:06:06',
           details: {
             type: 'a second incident occurred',
           },
@@ -354,7 +354,7 @@ test.describe('Integrity event history', () => {
       const event = integrityEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('incident')
-      await expect(event.date).toHaveText('4 Apr 2024 at 2:06am')
+      await expect(event.date).toHaveText('4 Apr 2024 at 1:06am')
 
       const incidentSummaryCard = event.getDescription('incident')
       await expect(incidentSummaryCard).toHaveItem('Type', 'a second incident occurred')
@@ -368,7 +368,7 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2022-02-03T01:09:09+00:00',
+          dateTime: '2022-02-03 01:09:09',
           details: {
             outcome: 'there was an outcome',
             type: 'PHONE_CALL',
@@ -376,7 +376,7 @@ test.describe('Integrity event history', () => {
             channel: 'TELEPHONE',
             userId: 'Test User A',
             userName: 'UID-123',
-            modifiedDateTime: '2022-02-03T01:09:09+00:00',
+            modifiedDateTime: '2022-02-03 01:09:09',
           },
         },
       ])
@@ -409,7 +409,7 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2022-02-03T01:09:09+00:00',
+          dateTime: '2022-02-03 01:09:09',
           details: {
             outcome: 'there was an outcome',
             type: 'PHONE_CALL',
@@ -417,13 +417,13 @@ test.describe('Integrity event history', () => {
             channel: 'TELEPHONE',
             userId: 'Test User A',
             userName: 'UID-123',
-            modifiedDateTime: '2022-02-03T01:09:09+00:00',
+            modifiedDateTime: '2022-02-03 01:09:09',
           },
         },
         {
           legacySubjectId: '11111111',
           type: 'contact',
-          dateTime: '2026-04-04T01:09:09+00:00',
+          dateTime: '2026-04-04 01:09:09',
           details: {
             outcome: 'there was an outcome',
             type: 'VOICE_MAIL',
@@ -431,7 +431,7 @@ test.describe('Integrity event history', () => {
             channel: 'TELEPHONE',
             userId: 'Test User A',
             userName: 'UID-123',
-            modifiedDateTime: '2026-04-04T01:09:09+00:00',
+            modifiedDateTime: '2026-04-04 01:09:09',
           },
         },
       ])
@@ -445,7 +445,7 @@ test.describe('Integrity event history', () => {
       const event = integrityEventHistoryPage.eventHistory.getEntry(2)
       await expect(event.element).toBeVisible()
       await expect(event.title).toHaveText('contact')
-      await expect(event.date).toHaveText('4 Apr 2026 at 2:09am')
+      await expect(event.date).toHaveText('4 Apr 2026 at 1:09am')
 
       const contactSummaryCard = event.getDescription('VOICE_MAIL')
       await expect(contactSummaryCard).toHaveItem('Contact channel', 'TELEPHONE')
@@ -453,7 +453,7 @@ test.describe('Integrity event history', () => {
       await expect(contactSummaryCard).toHaveItem('Reason', 'there was a reason')
       await expect(contactSummaryCard).toHaveItem('User', 'UID-123')
       await expect(contactSummaryCard).toHaveItem('Modified date', '4 April 2026')
-      await expect(contactSummaryCard).toHaveItem('Modified time', '2:09am')
+      await expect(contactSummaryCard).toHaveItem('Modified time', '1:09am')
     })
 
     test('Displays an event history timeline with one violation event', async ({ page }) => {
@@ -465,28 +465,28 @@ test.describe('Integrity event history', () => {
         {
           legacySubjectId: '11111111',
           type: 'violation',
-          dateTime: '2022-02-03T01:12:12+00:00',
+          dateTime: '2022-02-03 01:12:12',
           details: {
             breachDetails: 'details of breach',
             breachEnforcementOutcome: 'outcome of breach',
-            breachDateTime: '2022-02-03T01:12:12+00:00',
-            breachIdentifiedDateTime: '2022-02-03T01:12:12+00:00',
-            breachPackRequestedDate: '2022-02-03T01:12:12+00:00',
-            breachPackSentDate: '2022-02-03T01:12:12+00:00',
+            breachDateTime: '2022-02-03 01:12:12',
+            breachIdentifiedDateTime: '2022-02-03 01:12:12',
+            breachPackRequestedDate: '2022-02-03 01:12:12',
+            breachPackSentDate: '2022-02-03 01:12:12',
 
-            authorityFirstNotifiedDateTime: '2022-02-03T01:12:12+00:00',
+            authorityFirstNotifiedDateTime: '2022-02-03 01:12:12',
 
             agencyAction: 'action of agency',
-            agencyResponseDate: '2022-02-03T01:12:12+00:00',
+            agencyResponseDate: '2022-02-03 01:12:12',
 
             investigationOutcomeReason: 'invest outcome',
             enforcementReason: 'enforce reason',
 
-            warningLetterSentDateTime: '2022-02-03T01:12:12+00:00',
-            subjectLetterSentDate: '2022-02-03T01:12:12+00:00',
-            summonsServedDate: '2022-02-03T01:12:12+00:00',
-            hearingDate: '2022-02-03T01:12:12+00:00',
-            section9Date: '2022-02-03T01:12:12+00:00',
+            warningLetterSentDateTime: '2022-02-03 01:12:12',
+            subjectLetterSentDate: '2022-02-03 01:12:12',
+            summonsServedDate: '2022-02-03 01:12:12',
+            hearingDate: '2022-02-03 01:12:12',
+            section9Date: '2022-02-03 01:12:12',
           },
         },
       ])
