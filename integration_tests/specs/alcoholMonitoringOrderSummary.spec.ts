@@ -201,7 +201,7 @@ test.describe('Alcohol monitoring order summary', () => {
       await mockAlcoholMonitoringApi.stubGetVisitDetails('5678', [
         {
           legacySubjectId: '5678',
-          actualWorkStartDateTime: '2024-06-01T09:00:00Z',
+          actualWorkStartDateTime: '2024-06-01T09:00:00+00:00',
         },
       ])
 
@@ -225,7 +225,7 @@ test.describe('Alcohol monitoring order summary', () => {
         {
           legacySubjectId: '5678',
           type: 'VIOLATION',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
@@ -233,7 +233,7 @@ test.describe('Alcohol monitoring order summary', () => {
         {
           legacySubjectId: '5678',
           type: 'INCIDENT',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
@@ -241,7 +241,7 @@ test.describe('Alcohol monitoring order summary', () => {
         {
           legacySubjectId: '5678',
           type: 'CONTACT',
-          dateTime: '2024-06-01T09:00:00Z',
+          dateTime: '2024-06-01T09:00:00+00:00',
           details: {},
         },
       ])
