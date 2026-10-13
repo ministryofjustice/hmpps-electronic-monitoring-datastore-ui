@@ -15,6 +15,9 @@ generic-service:
     EM_DATASTORE_API_URL: 'https://electronic-monitoring-datastore-api-dev.hmpps.service.justice.gov.uk'
     ENVIRONMENT_NAME: DEV
 
+  scheduledDowntime:
+    enabled: true
+
   allowlist:
     # Configure groups as appropriate to give the minimum ingress access required:
     #   digital_staff_and_mojo: devices on the MoJ network
@@ -32,5 +35,7 @@ generic-service:
   #       to configure modsecurity rules to suit your needs. Further information can be found here:
   #       https://user-guide.cloud-platform.service.justice.gov.uk/documentation/networking/modsecurity.html#modsecurity-web-application-firewall
 
+
+
 generic-prometheus-alerts:
-  alertSeverity: hmpps-em-contract-management-tool-alerts-nonprod
+  businessHoursOnly: true
