@@ -6,9 +6,9 @@ generic-service:
     host: electronic-monitoring-datastore.hmpps.service.justice.gov.uk
 
   env:
-    INGRESS_URL: 'https://electronic-monitoring-datastore.hmpps.service.justice.gov.uk'
-    HMPPS_AUTH_URL: 'https://sign-in.hmpps.service.justice.gov.uk/auth'
-    TOKEN_VERIFICATION_API_URL: 'https://token-verification-api.prison.service.justice.gov.uk'
+    INGRESS_URL: "https://electronic-monitoring-datastore.hmpps.service.justice.gov.uk"
+    HMPPS_AUTH_URL: "https://sign-in.hmpps.service.justice.gov.uk/auth"
+    TOKEN_VERIFICATION_API_URL: "https://token-verification-api.prison.service.justice.gov.uk"
     EM_DATASTORE_API_URL: 'https://electronic-monitoring-datastore-api.hmpps.service.justice.gov.uk'
 
   allowlist:
@@ -27,6 +27,3 @@ generic-service:
   #       entry in the ingress above. This will enable WAF protection of the endpoint. You will need
   #       to configure modsecurity rules to suit your needs. Further information can be found here:
   #       https://user-guide.cloud-platform.service.justice.gov.uk/documentation/networking/modsecurity.html#modsecurity-web-application-firewall
-
-generic-prometheus-alerts:
-  alertSeverity: hmpps-em-contract-management-tool-alerts
