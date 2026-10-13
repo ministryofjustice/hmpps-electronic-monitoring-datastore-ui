@@ -35,7 +35,7 @@
     "@ministryofjustice/frontend": "^11.1.0",
     "@ministryofjustice/hmpps-audit-client": "2.0.0",
     "@ministryofjustice/hmpps-auth-clients": "3.0.0",
-    "@ministryofjustice/hmpps-azure-telemetry": "^1.1.0",
+    "@ministryofjustice/hmpps-azure-telemetry": "1.1.0",
     "@ministryofjustice/hmpps-monitoring": "^2.1.0",
     "@ministryofjustice/hmpps-rest-client": "^2.2.0",
     "bunyan": "^1.8.15",
@@ -45,7 +45,6 @@
     "connect-redis": "^10.0.0",
     "csrf-sync": "^4.2.1",
     "express": "^5.2.1",
-    "express-rate-limit": "^8.7.1",
     "express-session": "^1.19.0",
     "govuk-frontend": "^6.5.1",
     "helmet": "^8.3.0",
@@ -56,12 +55,13 @@
     "passport": "^0.7.0",
     "passport-oauth2": "^1.8.0",
     "redis": "6.3.0",
-    "sass-embedded": "1.105.1",
     "superagent": "^10.4.1",
+
+    "express-rate-limit": "^8.7.1",
+    "sass-embedded": "1.105.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.13.0",
     "@jgoz/esbuild-plugin-typecheck": "^5.0.0",
     "@ministryofjustice/eslint-config-hmpps": "^1.0.3",
     "@ministryofjustice/frontend-types": "2.0.3",
@@ -82,10 +82,9 @@
     "@types/passport-oauth2": "^1.8.0",
     "@types/superagent": "^8.1.11",
     "@types/supertest": "^7.2.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "audit-ci": "^7.1.0",
     "aws-sdk-client-mock": "^4.1.0",
-    "axe-core": "^4.14.0",
-    "cheerio": "1.2.0",
     "del": "8.0.1",
     "esbuild": "^0.28.2",
     "esbuild-plugin-copy": "^2.1.1",
@@ -96,28 +95,35 @@
     "jest-junit": "^17.0.0",
     "jsonwebtoken": "^9.0.3",
     "lint-staged": "^17.6.0",
-    "mocha-junit-reporter": "^2.2.1",
     "nock": "^14.0.17",
     "supertest": "^7.3.1",
     "ts-jest": "^29.4.14",
-    "typescript": "^7.0.2"
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+
+    "@axe-core/playwright": "4.13.0",
+    "axe-core": "^4.14.0",
+    "cheerio": "1.2.0",
+    "mocha-junit-reporter": "^2.2.1"
   },
   "overrides": {
-    "@humanfs/node": "0.17.0",
+    "@jgoz/esbuild-plugin-typecheck": {
+      "typescript": "$typescript"
+    },
     "@opentelemetry/core": "2.11.0",
     "brace-expansion": "5.0.12",
-    "form-data": "4.0.6",
-    "immutable": "5.1.9",
-    "ip-address": "10.7.3",
     "js-yaml": "5.4.3",
-    "systeminformation": "5.33.15",
-    "tar": "7.5.22",
-    "qs": "6.16.0"
+    "ts-jest": {
+      "typescript": "$typescript"
+    },
+    "chokidar": {
+      "braces": "2.0.2"
+    }
   },
   "allowScripts": {
     "@parcel/watcher@2.6.0": true,
     "dtrace-provider@0.8.8": false,
     "fsevents@2.3.3": true,
+    "fsevents@2.3.2": true,
     "unrs-resolver@1.12.2": true,
     "esbuild@0.28.2": true
   }
