@@ -8,11 +8,14 @@ generic-service:
     host: electronic-monitoring-datastore-preprod.hmpps.service.justice.gov.uk
 
   env:
-    INGRESS_URL: 'https://electronic-monitoring-datastore-preprod.hmpps.service.justice.gov.uk'
-    HMPPS_AUTH_URL: 'https://sign-in-preprod.hmpps.service.justice.gov.uk/auth'
-    TOKEN_VERIFICATION_API_URL: 'https://token-verification-api-preprod.prison.service.justice.gov.uk'
+    INGRESS_URL: "https://electronic-monitoring-datastore-preprod.hmpps.service.justice.gov.uk"
+    HMPPS_AUTH_URL: "https://sign-in-preprod.hmpps.service.justice.gov.uk/auth"
+    TOKEN_VERIFICATION_API_URL: "https://token-verification-api-preprod.prison.service.justice.gov.uk"
     EM_DATASTORE_API_URL: 'https://electronic-monitoring-datastore-api-preprod.hmpps.service.justice.gov.uk'
     ENVIRONMENT_NAME: PRE-PRODUCTION
+
+  scheduledDowntime:
+    enabled: true
 
   allowlist:
     # Configure groups as appropriate to give the minimum ingress access required:
@@ -31,5 +34,8 @@ generic-service:
   #       to configure modsecurity rules to suit your needs. Further information can be found here:
   #       https://user-guide.cloud-platform.service.justice.gov.uk/documentation/networking/modsecurity.html#modsecurity-web-application-firewall
 
+
+
+
 generic-prometheus-alerts:
-  alertSeverity: hmpps-em-contract-management-tool-alerts-nonprod
+  businessHoursOnly: true
