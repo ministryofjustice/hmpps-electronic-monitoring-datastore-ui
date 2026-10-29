@@ -31,7 +31,7 @@
     "npm": "^12"
   },
   "dependencies": {
-    "@aws-sdk/client-sqs": "^3.1153.0",
+    "@aws-sdk/client-sqs": "^3.1156.0",
     "@ministryofjustice/frontend": "^11.1.0",
     "@ministryofjustice/hmpps-audit-client": "2.0.0",
     "@ministryofjustice/hmpps-auth-clients": "3.0.0",
@@ -56,7 +56,7 @@
     "passport": "^0.7.0",
     "passport-oauth2": "^1.8.0",
     "redis": "6.3.0",
-    "sass-embedded": "1.105.2",
+    "sass-embedded": "1.106.1",
     "superagent": "^10.4.1",
     "zod": "^4.6.7"
   },
