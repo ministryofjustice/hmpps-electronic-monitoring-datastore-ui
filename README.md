@@ -101,7 +101,7 @@ The template app is, by default, configured not to use REDIS when running locall
 
 The easiest way to run the app is to use docker compose to create the service and all dependencies:
 
-> Run `docker compose pull` then `docker compose up`
+The production image now uses the `hmpps-node:26-alpine-runtime` base image and starts with `node dist/server.js` directly, so npm is not present in the final runtime stage.
 
 If you want to run both the UI and the API locally:
 
@@ -118,10 +118,7 @@ If you want to run both the UI and the API locally:
 2. Start the services required for the UI app using:
    `docker compose up --scale=hmpps-electronic-monitoring-ui=0`
 
-3. Build the assets and start the app with esbuild: `npm run start:dev`
-   > This uses an .env file replicating the environment variables in docker-compose.yml (which themselves replicate/simulate the values in the .helm folders). Rename `.env.example` -> `.env` to use these values.
-   >
-   > Environment variables set in here will be available when running `start:dev`
+Install dependencies using `npm run setup`, ensuring you are using `node v26`
 
 ### Running both UI and API locally
 
