@@ -1,14 +1,15 @@
 name: Pipeline [test -> build -> deploy]
+
 on:
   push:
     branches:
-      - "**"
+      - '**'
   workflow_dispatch:
     inputs:
       additional_docker_tag:
         description: Additional docker tag that can be used to specify stable or testing tags
         required: false
-        default: ""
+        default: ''
         type: string
       push:
         description: Push docker image to registry flag
@@ -59,7 +60,7 @@ jobs:
   helm_lint:
     strategy:
       matrix:
-        environments: ["dev", "preprod", "prod"]
+        environments: ['dev', 'preprod', 'prod']
     name: helm lint
     uses: ministryofjustice/hmpps-github-actions/.github/workflows/test_helm_lint.yml@v2 # WORKFLOW_VERSION
     with:
@@ -76,7 +77,6 @@ jobs:
       packages: write
       id-token: write
       attestations: write
-    if: needs.check_publish.outputs.enabled == 'true'
     with:
       additional_docker_tag: ${{ inputs.additional_docker_tag }}
       push: ${{ needs.check_publish.outputs.enabled == 'true' }}
@@ -91,6 +91,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+    if: needs.check_publish.outputs.enabled == 'true'
     needs:
       - build
       - helm_lint
